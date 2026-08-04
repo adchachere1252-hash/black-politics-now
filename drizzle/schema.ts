@@ -302,3 +302,87 @@ export const newsCache = mysqlTable("news_cache", {
 });
 
 export type NewsCacheRow = typeof newsCache.$inferSelect;
+
+// ═══════════════════════════════════════════════════════════════════════════
+// REDISTRICTING + WORLD ELECTIONS
+// ═══════════════════════════════════════════════════════════════════════════
+
+// ─── Redistricting States ───────────────────────────────────────────────────
+export const redistrictingStates = mysqlTable("redistricting_states", {
+  id: int("id").autoincrement().primaryKey(),
+  stateCode: varchar("state_code", { length: 2 }).notNull().unique(),
+  stateName: varchar("state_name", { length: 64 }).notNull(),
+  enacted: boolean("enacted").default(false).notNull(),
+  reason: text("reason"),
+  status: varchar("status", { length: 128 }),
+  method: varchar("method", { length: 128 }),
+  delegationBefore: varchar("delegation_before", { length: 64 }),
+  projectedImpact: varchar("projected_impact", { length: 64 }),
+  litigationNotes: text("litigation_notes"),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type RedistrictingState = typeof redistrictingStates.$inferSelect;
+export type InsertRedistrictingState = typeof redistrictingStates.$inferInsert;
+
+// ─── World Elections ────────────────────────────────────────────────────────
+export const worldElections = mysqlTable("world_elections", {
+  id: int("id").autoincrement().primaryKey(),
+  country: varchar("country", { length: 128 }).notNull(),
+  countryCode: varchar("country_code", { length: 3 }).notNull(),
+  electionType: mysqlEnum("election_type", [
+    "Presidential", "Parliamentary", "Referendum", "Legislative", "Local"
+  ]).notNull(),
+  electionName: varchar("election_name", { length: 256 }).notNull(),
+  electionDate: varchar("election_date", { length: 16 }).notNull(),
+  endDate: varchar("end_date", { length: 16 }),
+  status: mysqlEnum("world_election_status", [
+    "Upcoming", "Voting Today", "Completed", "Postponed", "Cancelled"
+  ]).notNull().default("Upcoming"),
+  isDateConfirmed: boolean("is_date_confirmed").default(true).notNull(),
+  isSnap: boolean("is_snap").default(false).notNull(),
+  incumbent: varchar("incumbent", { length: 256 }),
+  incumbentParty: varchar("incumbent_party", { length: 128 }),
+  systemType: varchar("system_type", { length: 128 }),
+  termLength: varchar("term_length", { length: 64 }),
+  candidates: text("candidates"),
+  pollingData: text("polling_data"),
+  keyIssues: text("key_issues"),
+  winner: varchar("winner", { length: 256 }),
+  winnerParty: varchar("winner_party", { length: 128 }),
+  totalVotes: bigint("total_votes", { mode: "number" }),
+  turnoutPct: decimal("turnout_pct", { precision: 5, scale: 2 }),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type WorldElection = typeof worldElections.$inferSelect;
+export type InsertWorldElection = typeof worldElections.$inferInsert;
+
+// ═══════════════════════════════════════════════════════════════════════════
+// CONGRESSIONAL BLACK CAUCUS TRACKING
+// ═══════════════════════════════════════════════════════════════════════════
+
+export const cbcMembers = mysqlTable("cbc_members", {
+  id: int("id").autoincrement().primaryKey(),
+  district: varchar("district", { length: 16 }).notNull().unique(),
+  member: varchar("member", { length: 128 }).notNull(),
+  party: mysqlEnum("party", ["D", "R", "I"]).notNull(),
+  state: varchar("state", { length: 64 }).notNull(),
+  stateCode: varchar("state_code", { length: 2 }).notNull(),
+  chamber: mysqlEnum("chamber", ["house", "senate"]).notNull(),
+  status: mysqlEnum("cbc_status", [
+    "running", "retiring", "resigned", "deceased",
+    "running_for_governor", "running_for_senate",
+    "not_up_2026", "challenger"
+  ]).notNull().default("running"),
+  upIn2026: boolean("up_in_2026").default(true).notNull(),
+  primaryResult: varchar("primary_result", { length: 128 }),
+  generalOpponent: varchar("general_opponent", { length: 128 }),
+  notes: text("notes"),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type CbcMember = typeof cbcMembers.$inferSelect;
+export type InsertCbcMember = typeof cbcMembers.$inferInsert;

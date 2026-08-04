@@ -46,7 +46,7 @@
   --color-solid-d: oklch(0.55 0.18 260);
   --color-likely-d: oklch(0.62 0.15 260);
   --color-lean-d: oklch(0.72 0.10 260);
-  --color-tossup: oklch(0.75 0.15 85);
+  --color-tossup: oklch(0.55 0.2 290);
   --color-lean-r: oklch(0.68 0.14 25);
   --color-likely-r: oklch(0.58 0.18 25);
   --color-solid-r: oklch(0.50 0.22 25);
@@ -181,7 +181,7 @@
   .rating-solid-d { background: var(--color-solid-d); color: white; }
   .rating-likely-d { background: var(--color-likely-d); color: white; }
   .rating-lean-d { background: var(--color-lean-d); color: white; }
-  .rating-tossup { background: var(--color-tossup); color: oklch(0.15 0 0); }
+  .rating-tossup { background: var(--color-tossup); color: oklch(0.95 0.02 290); }
   .rating-lean-r { background: var(--color-lean-r); color: white; }
   .rating-likely-r { background: var(--color-likely-r); color: white; }
   .rating-solid-r { background: var(--color-solid-r); color: white; }

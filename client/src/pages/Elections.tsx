@@ -1,12 +1,99 @@
 import { trpc } from "@/lib/trpc";
-import { useState, useMemo } from "react";
-import { Search } from "lucide-react";
+import { useState, useMemo, useEffect, useRef } from "react";
+import { Search, Star, Users, Scale, MapPin, AlertTriangle } from "lucide-react";
 import { USMap } from "@/components/USMap";
 import { USMapFull } from "@/components/USMapFull";
 import { ResultsTicker } from "@/components/ResultsTicker";
 
 const RATINGS = ["All", "Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R"] as const;
-type ViewTab = "senate" | "house" | "governors" | "referendums";
+type ViewTab = "house" | "senate" | "governors" | "cbc" | "redistricting";
+
+// ─── Starfield Background ─────────────────────────────────────────────────────
+function Starfield() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    let animId: number;
+    const stars: { x: number; y: number; r: number; a: number; da: number }[] = [];
+    const shootingStars: { x: number; y: number; vx: number; vy: number; life: number; maxLife: number }[] = [];
+
+    function resize() {
+      canvas!.width = canvas!.offsetWidth * window.devicePixelRatio;
+      canvas!.height = canvas!.offsetHeight * window.devicePixelRatio;
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    // Generate stars
+    for (let i = 0; i < 200; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.5 + 0.3,
+        a: Math.random(),
+        da: (Math.random() - 0.5) * 0.02,
+      });
+    }
+
+    function spawnShootingStar() {
+      if (shootingStars.length < 2 && Math.random() < 0.005) {
+        shootingStars.push({
+          x: Math.random() * canvas!.width * 0.8,
+          y: Math.random() * canvas!.height * 0.3,
+          vx: 4 + Math.random() * 4,
+          vy: 2 + Math.random() * 2,
+          life: 0,
+          maxLife: 40 + Math.random() * 30,
+        });
+      }
+    }
+
+    function draw() {
+      ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
+      // Draw twinkling stars
+      for (const s of stars) {
+        s.a += s.da;
+        if (s.a > 1 || s.a < 0.1) s.da *= -1;
+        ctx!.beginPath();
+        ctx!.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx!.fillStyle = `rgba(255, 255, 255, ${s.a * 0.7})`;
+        ctx!.fill();
+      }
+      // Draw shooting stars
+      spawnShootingStar();
+      for (let i = shootingStars.length - 1; i >= 0; i--) {
+        const ss = shootingStars[i];
+        ss.x += ss.vx;
+        ss.y += ss.vy;
+        ss.life++;
+        const alpha = 1 - ss.life / ss.maxLife;
+        // Trail
+        const grad = ctx!.createLinearGradient(ss.x, ss.y, ss.x - ss.vx * 8, ss.y - ss.vy * 8);
+        grad.addColorStop(0, `rgba(255, 215, 0, ${alpha})`);
+        grad.addColorStop(1, `rgba(255, 215, 0, 0)`);
+        ctx!.beginPath();
+        ctx!.moveTo(ss.x, ss.y);
+        ctx!.lineTo(ss.x - ss.vx * 8, ss.y - ss.vy * 8);
+        ctx!.strokeStyle = grad;
+        ctx!.lineWidth = 2;
+        ctx!.stroke();
+        // Head
+        ctx!.beginPath();
+        ctx!.arc(ss.x, ss.y, 2, 0, Math.PI * 2);
+        ctx!.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+        ctx!.fill();
+        if (ss.life >= ss.maxLife) shootingStars.splice(i, 1);
+      }
+      animId = requestAnimationFrame(draw);
+    }
+    draw();
+    return () => { cancelAnimationFrame(animId); window.removeEventListener("resize", resize); };
+  }, []);
+  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />;
+}
 
 export default function Elections() {
   const [tab, setTab] = useState<ViewTab>("senate");
@@ -17,7 +104,8 @@ export default function Elections() {
   const { data: senateRaces = [] } = trpc.election.senate.useQuery();
   const { data: houseRaces = [] } = trpc.election.house.useQuery();
   const { data: governors = [] } = trpc.election.governors.useQuery();
-  const { data: referendumsList = [] } = trpc.election.referendums.useQuery();
+  const { data: cbcMembers = [] } = trpc.election.cbc.useQuery();
+  const { data: redistrictingStates = [] } = trpc.election.redistricting.useQuery();
   const { data: scoreboard } = trpc.election.scoreboard.useQuery();
 
   // Build map data from senate races
@@ -69,107 +157,154 @@ export default function Elections() {
     return races;
   }, [governors, ratingFilter, searchQuery, selectedState]);
 
-  const filteredRefs = useMemo(() => {
-    let refs = referendumsList as any[];
+  const filteredCbc = useMemo(() => {
+    let members = cbcMembers as any[];
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      refs = refs.filter(r => r.stateName?.toLowerCase().includes(q) || r.title?.toLowerCase().includes(q));
+      members = members.filter(m => m.member?.toLowerCase().includes(q) || m.state?.toLowerCase().includes(q) || m.district?.toLowerCase().includes(q));
     }
-    if (selectedState) refs = refs.filter(r => r.stateCode === selectedState);
-    return refs;
-  }, [referendumsList, searchQuery, selectedState]);
+    if (selectedState) members = members.filter(m => m.stateCode === selectedState);
+    return members;
+  }, [cbcMembers, searchQuery, selectedState]);
+
+  const filteredRedistricting = useMemo(() => {
+    let states = redistrictingStates as any[];
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      states = states.filter(s => s.stateName?.toLowerCase().includes(q) || s.reason?.toLowerCase().includes(q));
+    }
+    if (selectedState) states = states.filter(s => s.stateCode === selectedState);
+    return states;
+  }, [redistrictingStates, searchQuery, selectedState]);
+
+  const tabs: { id: ViewTab; label: string; icon: any }[] = [
+    { id: "cbc", label: "CBC", icon: Star },
+    { id: "governors", label: "Governor", icon: MapPin },
+    { id: "house", label: "House", icon: Users },
+    { id: "redistricting", label: "Redistricting", icon: AlertTriangle },
+    { id: "senate", label: "Senate", icon: Scale },
+  ];
 
   return (
-    <div className="container py-8">
-      <div className="mb-6">
-        <h1 className="text-3xl font-extrabold mb-1">2026 U.S. Election Center</h1>
-        <p className="text-muted-foreground text-sm">Real-time race ratings, results, and analysis.</p>
-      </div>
+    <div className="relative min-h-screen">
+      {/* Starfield background */}
+      <Starfield />
 
-      {/* Results Ticker */}
-      <div className="mb-6">
-        <ResultsTicker senateRaces={senateRaces as any[]} houseRaces={houseRaces as any[]} governors={governors as any[]} />
-      </div>
+      <div className="container py-8 relative z-10">
+        <div className="mb-6">
+          <h1 className="text-3xl font-extrabold mb-1">2026 U.S. Election Center</h1>
+          <p className="text-muted-foreground text-sm">Real-time race ratings, results, and analysis.</p>
+        </div>
 
-      {/* Interactive Map */}
-      <div className="glass-card rounded-xl p-4 mb-6">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Interactive Election Map</h2>
-          {selectedState && (
-            <button onClick={() => setSelectedState(null)} className="text-xs text-primary hover:underline">
-              Clear filter ({selectedState})
-            </button>
-          )}
+        {/* Results Ticker */}
+        <div className="mb-6">
+          <ResultsTicker senateRaces={senateRaces as any[]} houseRaces={houseRaces as any[]} governors={governors as any[]} />
         </div>
-        {/* Full geographic map on desktop, simplified on mobile */}
-        <div className="hidden md:block">
-          <USMapFull
-            raceData={mapData}
-            onStateClick={(id) => setSelectedState(prev => prev === id ? null : id)}
-            selectedState={selectedState}
-          />
-        </div>
-        <div className="md:hidden">
-          <USMap
-            raceData={mapData}
-            onStateClick={(id) => setSelectedState(prev => prev === id ? null : id)}
-            selectedState={selectedState}
-          />
-        </div>
-      </div>
 
-      {/* Scoreboard */}
-      {scoreboard && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-          <ScoreCard label="Senate Dem" value={scoreboard.senate.dem} color="var(--color-solid-d)" />
-          <ScoreCard label="Senate Rep" value={scoreboard.senate.rep} color="var(--color-solid-r)" />
-          <ScoreCard label="House Dem" value={scoreboard.house.dem} color="var(--color-solid-d)" />
-          <ScoreCard label="House Rep" value={scoreboard.house.rep} color="var(--color-solid-r)" />
-        </div>
-      )}
-
-      {/* Tabs + Filters */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
-        <div className="flex gap-1 bg-muted rounded-lg p-1">
-          {(["senate", "house", "governors", "referendums"] as ViewTab[]).map(t => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`px-3 py-1.5 rounded-md text-sm font-medium capitalize transition-colors ${tab === t ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
-        <div className="flex-1 flex gap-2">
-          <div className="relative flex-1">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-            <input
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search races..."
-              className="w-full pl-8 pr-3 py-2 bg-muted rounded-lg text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+        {/* Interactive Map */}
+        <div className="glass-card rounded-xl p-4 mb-6">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Interactive Election Map</h2>
+            {selectedState && (
+              <button onClick={() => setSelectedState(null)} className="text-xs text-primary hover:underline">
+                Clear filter ({selectedState})
+              </button>
+            )}
+          </div>
+          {/* Full geographic map on desktop, simplified on mobile */}
+          <div className="hidden md:block">
+            <USMapFull
+              raceData={mapData}
+              onStateClick={(id) => setSelectedState(prev => prev === id ? null : id)}
+              selectedState={selectedState}
             />
           </div>
-          {tab !== "referendums" && (
-            <select
-              value={ratingFilter}
-              onChange={e => setRatingFilter(e.target.value)}
-              className="bg-muted rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-            >
-              {RATINGS.map(r => <option key={r} value={r}>{r}</option>)}
-            </select>
-          )}
+          <div className="md:hidden">
+            <USMap
+              raceData={mapData}
+              onStateClick={(id) => setSelectedState(prev => prev === id ? null : id)}
+              selectedState={selectedState}
+            />
+          </div>
+          {/* Legend */}
+          <div className="flex flex-wrap gap-3 mt-4 justify-center">
+            {["Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R"].map(r => (
+              <div key={r} className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: getRatingColor(r) }} />
+                <span className="text-xs text-muted-foreground">{r}</span>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* Race list */}
-      {tab === "senate" && <RaceGrid races={filteredSenate} chamber="senate" />}
-      {tab === "house" && <RaceGrid races={filteredHouse} chamber="house" />}
-      {tab === "governors" && <GovernorGrid races={filteredGovs} />}
-      {tab === "referendums" && <ReferendumGrid refs={filteredRefs} />}
+        {/* Scoreboard */}
+        {scoreboard && (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+            <ScoreCard label="Senate Dem" value={scoreboard.senate.dem} color="var(--color-solid-d)" />
+            <ScoreCard label="Senate Rep" value={scoreboard.senate.rep} color="var(--color-solid-r)" />
+            <ScoreCard label="House Dem" value={scoreboard.house.dem} color="var(--color-solid-d)" />
+            <ScoreCard label="House Rep" value={scoreboard.house.rep} color="var(--color-solid-r)" />
+          </div>
+        )}
+
+        {/* Tabs + Filters */}
+        <div className="flex flex-col sm:flex-row gap-3 mb-6">
+          <div className="flex gap-1 bg-muted/50 backdrop-blur rounded-lg p-1 overflow-x-auto">
+            {tabs.map(t => (
+              <button
+                key={t.id}
+                onClick={() => setTab(t.id)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium whitespace-nowrap transition-colors ${tab === t.id ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                <t.icon size={14} />
+                {t.label}
+              </button>
+            ))}
+          </div>
+          <div className="flex-1 flex gap-2">
+            <div className="relative flex-1">
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <input
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Search races..."
+                className="w-full pl-8 pr-3 py-2 bg-muted/50 backdrop-blur rounded-lg text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+              />
+            </div>
+            {(tab === "senate" || tab === "house" || tab === "governors") && (
+              <select
+                value={ratingFilter}
+                onChange={e => setRatingFilter(e.target.value)}
+                className="bg-muted/50 backdrop-blur rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+              >
+                {RATINGS.map(r => <option key={r} value={r}>{r}</option>)}
+              </select>
+            )}
+          </div>
+        </div>
+
+        {/* Race list */}
+        {tab === "senate" && <RaceGrid races={filteredSenate} chamber="senate" />}
+        {tab === "house" && <RaceGrid races={filteredHouse} chamber="house" />}
+        {tab === "governors" && <GovernorGrid races={filteredGovs} />}
+        {tab === "cbc" && <CbcGrid members={filteredCbc} />}
+        {tab === "redistricting" && <RedistrictingGrid states={filteredRedistricting} />}
+      </div>
     </div>
   );
+}
+
+function getRatingColor(rating: string | null): string {
+  switch (rating) {
+    case "Solid D": return "#1a3a6b";
+    case "Likely D": return "#3a6fc0";
+    case "Lean D": return "#7baaf0";
+    case "Toss-up": return "#7c3aed";
+    case "Lean R": return "#f07b7b";
+    case "Likely R": return "#c03a3a";
+    case "Solid R": return "#6b1a1a";
+    default: return "#4a4a4a";
+  }
 }
 
 function ScoreCard({ label, value, color }: { label: string; value: number; color: string }) {
@@ -186,7 +321,7 @@ function RaceGrid({ races, chamber }: { races: any[]; chamber: string }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
       {races.map((race) => (
-        <div key={race.id} className="glass-card rounded-lg p-4">
+        <div key={race.id} className="glass-card rounded-lg p-4 hover:border-primary/30 transition-colors">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-bold">
               {race.stateName}
@@ -222,7 +357,7 @@ function GovernorGrid({ races }: { races: any[] }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
       {races.map((race) => (
-        <div key={race.id} className="glass-card rounded-lg p-4">
+        <div key={race.id} className="glass-card rounded-lg p-4 hover:border-primary/30 transition-colors">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-bold">{race.stateName}</h3>
             <RatingBadge rating={race.rating} />
@@ -240,20 +375,128 @@ function GovernorGrid({ races }: { races: any[] }) {
   );
 }
 
-function ReferendumGrid({ refs }: { refs: any[] }) {
-  if (refs.length === 0) return <p className="text-center text-muted-foreground py-8">No referendums match your search.</p>;
+function CbcGrid({ members }: { members: any[] }) {
+  if (members.length === 0) return <p className="text-center text-muted-foreground py-8">No CBC members match your search.</p>;
+
+  const statusColors: Record<string, string> = {
+    running: "bg-green-500/20 text-green-400",
+    retiring: "bg-amber-500/20 text-amber-400",
+    resigned: "bg-red-500/20 text-red-400",
+    deceased: "bg-gray-500/20 text-gray-400",
+    running_for_governor: "bg-purple-500/20 text-purple-400",
+    running_for_senate: "bg-blue-500/20 text-blue-400",
+    not_up_2026: "bg-gray-500/20 text-gray-400",
+    challenger: "bg-cyan-500/20 text-cyan-400",
+  };
+
+  const statusLabels: Record<string, string> = {
+    running: "Running",
+    retiring: "Retiring",
+    resigned: "Resigned",
+    deceased: "Deceased/Vacancy",
+    running_for_governor: "Running for Governor",
+    running_for_senate: "Running for Senate",
+    not_up_2026: "Not Up in 2026",
+    challenger: "Challenger",
+  };
+
+  // Summary stats
+  const running = members.filter(m => m.status === "running").length;
+  const retiring = members.filter(m => m.status === "retiring").length;
+  const runningForHigher = members.filter(m => m.status === "running_for_governor" || m.status === "running_for_senate").length;
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-      {refs.map((ref) => (
-        <div key={ref.id} className="glass-card rounded-lg p-4">
-          <div className="flex items-center justify-between mb-1">
-            <h3 className="text-sm font-bold">{ref.stateName} - {ref.measureId}</h3>
-            <span className={`text-xs px-2 py-0.5 rounded-full ${ref.result === "Passed" ? "bg-green-500/20 text-green-400" : ref.result === "Failed" ? "bg-red-500/20 text-red-400" : "bg-muted text-muted-foreground"}`}>
-              {ref.result ?? "Pending"}
+    <div>
+      {/* Summary bar */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <div className="glass-card rounded-lg p-3 text-center">
+          <p className="text-xs text-muted-foreground">Total Members</p>
+          <p className="text-2xl font-bold text-primary">{members.length}</p>
+        </div>
+        <div className="glass-card rounded-lg p-3 text-center">
+          <p className="text-xs text-muted-foreground">Running</p>
+          <p className="text-2xl font-bold text-green-400">{running}</p>
+        </div>
+        <div className="glass-card rounded-lg p-3 text-center">
+          <p className="text-xs text-muted-foreground">Retiring</p>
+          <p className="text-2xl font-bold text-amber-400">{retiring}</p>
+        </div>
+        <div className="glass-card rounded-lg p-3 text-center">
+          <p className="text-xs text-muted-foreground">Running for Higher Office</p>
+          <p className="text-2xl font-bold text-purple-400">{runningForHigher}</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+        {members.map((m) => (
+          <div key={m.id} className="glass-card rounded-lg p-4 hover:border-primary/30 transition-colors">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-sm font-bold">{m.member}</h3>
+              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColors[m.status] ?? "bg-muted text-muted-foreground"}`}>
+                {statusLabels[m.status] ?? m.status}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <span className={`font-bold ${m.party === "D" ? "text-blue-400" : m.party === "R" ? "text-red-400" : "text-gray-400"}`}>
+                ({m.party})
+              </span>
+              <span>{m.district}</span>
+              <span>•</span>
+              <span>{m.state}</span>
+            </div>
+            <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+              <span className="capitalize">{m.chamber}</span>
+              {!m.upIn2026 && <span className="text-gray-500">• Not up in 2026</span>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RedistrictingGrid({ states }: { states: any[] }) {
+  if (states.length === 0) return <p className="text-center text-muted-foreground py-8">No redistricting states match your search.</p>;
+  return (
+    <div className="grid grid-cols-1 gap-4">
+      {states.map((s) => (
+        <div key={s.id} className="glass-card rounded-lg p-5 hover:border-primary/30 transition-colors">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-lg font-bold">{s.stateName} ({s.stateCode})</h3>
+            <span className={`text-xs px-3 py-1 rounded-full font-medium ${s.enacted ? "bg-green-500/20 text-green-400" : "bg-amber-500/20 text-amber-400"}`}>
+              {s.enacted ? "Enacted" : "Pending"}
             </span>
           </div>
-          <p className="text-xs text-muted-foreground line-clamp-2">{ref.title}</p>
-          {ref.category && <p className="text-xs text-primary/70 mt-1">{ref.category}</p>}
+          {s.reason && <p className="text-sm text-foreground/80 mb-2">{s.reason}</p>}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3">
+            {s.method && (
+              <div>
+                <p className="text-xs text-muted-foreground">Method</p>
+                <p className="text-sm font-medium">{s.method}</p>
+              </div>
+            )}
+            {s.delegationBefore && (
+              <div>
+                <p className="text-xs text-muted-foreground">Delegation Before</p>
+                <p className="text-sm font-medium">{s.delegationBefore}</p>
+              </div>
+            )}
+            {s.projectedImpact && (
+              <div>
+                <p className="text-xs text-muted-foreground">Projected Impact</p>
+                <p className="text-sm font-medium text-primary">{s.projectedImpact}</p>
+              </div>
+            )}
+          </div>
+          {s.litigationNotes && (
+            <div className="mt-3 p-3 bg-muted/50 rounded-lg">
+              <p className="text-xs text-muted-foreground mb-1 font-medium">Litigation Notes</p>
+              <p className="text-xs text-foreground/70 leading-relaxed">{s.litigationNotes}</p>
+            </div>
+          )}
+          {s.status && (
+            <p className="text-xs text-muted-foreground mt-2">Status: {s.status}</p>
+          )}
         </div>
       ))}
     </div>

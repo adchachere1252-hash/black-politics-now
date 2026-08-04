@@ -1,0 +1,43 @@
+CREATE TABLE `redistricting_states` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`state_code` varchar(2) NOT NULL,
+	`state_name` varchar(64) NOT NULL,
+	`enacted` boolean NOT NULL DEFAULT false,
+	`reason` text,
+	`status` varchar(128),
+	`method` varchar(128),
+	`delegation_before` varchar(64),
+	`projected_impact` varchar(64),
+	`litigation_notes` text,
+	`updated_at` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `redistricting_states_id` PRIMARY KEY(`id`),
+	CONSTRAINT `redistricting_states_state_code_unique` UNIQUE(`state_code`)
+);
+--> statement-breakpoint
+CREATE TABLE `world_elections` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`country` varchar(128) NOT NULL,
+	`country_code` varchar(3) NOT NULL,
+	`election_type` enum('Presidential','Parliamentary','Referendum','Legislative','Local') NOT NULL,
+	`election_name` varchar(256) NOT NULL,
+	`election_date` varchar(16) NOT NULL,
+	`end_date` varchar(16),
+	`world_election_status` enum('Upcoming','Voting Today','Completed','Postponed','Cancelled') NOT NULL DEFAULT 'Upcoming',
+	`is_date_confirmed` boolean NOT NULL DEFAULT true,
+	`is_snap` boolean NOT NULL DEFAULT false,
+	`incumbent` varchar(256),
+	`incumbent_party` varchar(128),
+	`system_type` varchar(128),
+	`term_length` varchar(64),
+	`candidates` text,
+	`polling_data` text,
+	`key_issues` text,
+	`winner` varchar(256),
+	`winner_party` varchar(128),
+	`total_votes` bigint,
+	`turnout_pct` decimal(5,2),
+	`notes` text,
+	`created_at` timestamp NOT NULL DEFAULT (now()),
+	`updated_at` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `world_elections_id` PRIMARY KEY(`id`)
+);

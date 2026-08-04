@@ -6,6 +6,7 @@ import { z } from "zod";
 import { getEpisodesFormatted, subscribeEmail, unsubscribeEmail, getPipelineRuns } from "./podcastDb";
 import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateReferendum } from "./electionDb";
 import { fetchWithCache } from "./newsCache";
+import { getAllCbcMembers, getAllRedistrictingStates } from "./cbcDb";
 
 export const appRouter = router({
   system: systemRouter,
@@ -58,6 +59,9 @@ export const appRouter = router({
     updateReferendum: adminProcedure
       .input(z.object({ id: z.number(), data: z.record(z.string(), z.unknown()) }))
       .mutation(async ({ input }) => { await updateReferendum(input.id, input.data as any); return { success: true }; }),
+    // CBC
+    cbc: publicProcedure.query(async () => getAllCbcMembers()),
+    redistricting: publicProcedure.query(async () => getAllRedistrictingStates()),
   }),
 
   // ─── News (WordPress proxy) ──────────────────────────────────────────────────

@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { ArrowRight, Play, Maximize2, Download, RotateCcw, Info } from "lucide-react";
 import { USMapFull } from "@/components/USMapFull";
 
-type MapView = "house" | "senate" | "president";
+type MapView = "house" | "senate" | "governor";
 
 export default function Home() {
   const { data: newsData, isLoading: newsLoading } = trpc.news.list.useQuery({ page: 1, perPage: 6 });
@@ -13,6 +13,7 @@ export default function Home() {
   const { data: scoreboard } = trpc.election.scoreboard.useQuery();
   const { data: senateRaces } = trpc.election.senate.useQuery();
   const { data: houseRaces } = trpc.election.house.useQuery();
+  const { data: governors } = trpc.election.governors.useQuery();
   const { play, voicePreference } = useAudio();
   const [mapView, setMapView] = useState<MapView>("house");
   const [selectedState, setSelectedState] = useState<string | null>(null);
@@ -33,6 +34,17 @@ export default function Home() {
           };
         }
       });
+    } else if (mapView === "governor") {
+      (governors as any[] ?? []).forEach((r: any) => {
+        if (r.stateCode) {
+          data[r.stateCode] = {
+            rating: r.rating,
+            candidate1: `${r.demCandidate ?? "TBD"} (D)`,
+            candidate2: `${r.repCandidate ?? "TBD"} (R)`,
+            calledWinner: r.calledWinner,
+          };
+        }
+      });
     } else {
       // For house view, aggregate by state - show the most competitive rating
       const stateRatings: Record<string, string[]> = {};
@@ -49,12 +61,12 @@ export default function Home() {
       });
     }
     return data;
-  }, [senateRaces, houseRaces, mapView]);
+  }, [senateRaces, houseRaces, governors, mapView]);
 
   // Calculate rating counts for the scoreboard
   const ratingCounts = useMemo(() => {
     const counts = { solidD: 0, likelyD: 0, leanD: 0, tossup: 0, leanR: 0, likelyR: 0, solidR: 0, noData: 0 };
-    const races = mapView === "senate" ? (senateRaces as any[] ?? []) : (houseRaces as any[] ?? []);
+    const races = mapView === "senate" ? (senateRaces as any[] ?? []) : mapView === "governor" ? (governors as any[] ?? []) : (houseRaces as any[] ?? []);
     races.forEach((r: any) => {
       switch (r.rating) {
         case "Solid D": counts.solidD++; break;
@@ -68,7 +80,7 @@ export default function Home() {
       }
     });
     return counts;
-  }, [senateRaces, houseRaces, mapView]);
+  }, [senateRaces, houseRaces, governors, mapView]);
 
   return (
     <div className="min-h-screen">
@@ -136,7 +148,7 @@ export default function Home() {
 
           {/* Map view tabs */}
           <div className="flex justify-center gap-2 mb-4">
-            {(["house", "senate", "president"] as const).map(v => (
+            {(["governor", "house", "senate"] as const).map(v => (
               <button
                 key={v}
                 onClick={() => setMapView(v)}
