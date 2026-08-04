@@ -51,16 +51,19 @@
 
 
 ## Election Center Enhancements (Phase 2)
-- [ ] Fix tabs: Governor, House, Redistricting, Senate (remove President, add World link)
-- [ ] Add redistricting_states table to schema
-- [ ] Add world_elections table to schema
-- [ ] Import 16 redistricting states data
-- [ ] Import 48 world elections data
-- [ ] Add starfield background image to election map area
-- [ ] Add TwinklingStars SVG animation component
-- [ ] Add ShootingStar animation component
-- [ ] Fix Toss-up color from gold to purple (#7c3aed)
-- [ ] Match original rating colors (Solid D, Likely D, Lean D, Lean R, Likely R, Solid R)
+- [x] Fix tabs: CBC, Governor, House, Redistricting, Senate (alphabetical order)
+- [x] Add redistricting_states table to schema
+- [x] Add world_elections table to schema
+- [x] Import 16 redistricting states data
+- [x] Import 48 world elections data
+- [x] Add starfield canvas background with twinkling stars
+- [x] Add shooting star animations (frequent, visible, blue-white trails)
+- [x] Fix Toss-up color from gold to purple
+- [x] Match original rating colors (Solid D, Likely D, Lean D, Lean R, Likely R, Solid R)
+- [x] CBC tab with 67 Congressional Black Caucus members
+- [x] Redistricting tab with 16 states
+- [x] Make tab categories smaller/more compact (text-xs, reduced padding)
+- [x] Make starfield more visible (400 stars, brighter, glow effects, deep space background)
 - [ ] World Elections page (/world with 3D globe) — DEFERRED to future session
 - [ ] Historical Atlas page (/atlas with D3 district maps) — DEFERRED to future session
 

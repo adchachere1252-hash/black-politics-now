@@ -27,40 +27,50 @@ function Starfield() {
     resize();
     window.addEventListener("resize", resize);
 
-    // Generate stars
-    for (let i = 0; i < 200; i++) {
+    // Generate stars — 400 for dense starfield
+    for (let i = 0; i < 400; i++) {
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        r: Math.random() * 1.5 + 0.3,
-        a: Math.random(),
-        da: (Math.random() - 0.5) * 0.02,
+        r: Math.random() * 2.5 + 0.5,
+        a: Math.random() * 0.6 + 0.4,
+        da: (Math.random() - 0.5) * 0.03,
       });
     }
 
     function spawnShootingStar() {
-      if (shootingStars.length < 2 && Math.random() < 0.005) {
+      if (shootingStars.length < 3 && Math.random() < 0.02) {
         shootingStars.push({
           x: Math.random() * canvas!.width * 0.8,
           y: Math.random() * canvas!.height * 0.3,
-          vx: 4 + Math.random() * 4,
-          vy: 2 + Math.random() * 2,
+          vx: 5 + Math.random() * 6,
+          vy: 2.5 + Math.random() * 3,
           life: 0,
-          maxLife: 40 + Math.random() * 30,
+          maxLife: 50 + Math.random() * 40,
         });
       }
     }
 
     function draw() {
-      ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
+      // Fill with deep space background for maximum contrast
+      ctx!.fillStyle = "#06060f";
+      ctx!.fillRect(0, 0, canvas!.width, canvas!.height);
       // Draw twinkling stars
       for (const s of stars) {
         s.a += s.da;
-        if (s.a > 1 || s.a < 0.1) s.da *= -1;
+        if (s.a > 1) { s.a = 1; s.da *= -1; }
+        if (s.a < 0.3) { s.a = 0.3; s.da *= -1; }
         ctx!.beginPath();
         ctx!.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx!.fillStyle = `rgba(255, 255, 255, ${s.a * 0.7})`;
+        ctx!.fillStyle = `rgba(255, 255, 255, ${s.a})`;
         ctx!.fill();
+        // Add glow effect for larger stars
+        if (s.r > 1.5) {
+          ctx!.beginPath();
+          ctx!.arc(s.x, s.y, s.r * 2.5, 0, Math.PI * 2);
+          ctx!.fillStyle = `rgba(200, 220, 255, ${s.a * 0.15})`;
+          ctx!.fill();
+        }
       }
       // Draw shooting stars
       spawnShootingStar();
@@ -71,19 +81,25 @@ function Starfield() {
         ss.life++;
         const alpha = 1 - ss.life / ss.maxLife;
         // Trail
-        const grad = ctx!.createLinearGradient(ss.x, ss.y, ss.x - ss.vx * 8, ss.y - ss.vy * 8);
-        grad.addColorStop(0, `rgba(255, 215, 0, ${alpha})`);
-        grad.addColorStop(1, `rgba(255, 215, 0, 0)`);
+        const grad = ctx!.createLinearGradient(ss.x, ss.y, ss.x - ss.vx * 12, ss.y - ss.vy * 12);
+        grad.addColorStop(0, `rgba(255, 255, 255, ${alpha})`);
+        grad.addColorStop(0.3, `rgba(180, 200, 255, ${alpha * 0.8})`);
+        grad.addColorStop(1, `rgba(100, 150, 255, 0)`);
         ctx!.beginPath();
         ctx!.moveTo(ss.x, ss.y);
-        ctx!.lineTo(ss.x - ss.vx * 8, ss.y - ss.vy * 8);
+        ctx!.lineTo(ss.x - ss.vx * 12, ss.y - ss.vy * 12);
         ctx!.strokeStyle = grad;
-        ctx!.lineWidth = 2;
+        ctx!.lineWidth = 2.5;
         ctx!.stroke();
         // Head
         ctx!.beginPath();
-        ctx!.arc(ss.x, ss.y, 2, 0, Math.PI * 2);
+        ctx!.arc(ss.x, ss.y, 3, 0, Math.PI * 2);
         ctx!.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+        ctx!.fill();
+        // Bright glow around head
+        ctx!.beginPath();
+        ctx!.arc(ss.x, ss.y, 6, 0, Math.PI * 2);
+        ctx!.fillStyle = `rgba(180, 200, 255, ${alpha * 0.3})`;
         ctx!.fill();
         if (ss.life >= ss.maxLife) shootingStars.splice(i, 1);
       }
@@ -92,7 +108,7 @@ function Starfield() {
     draw();
     return () => { cancelAnimationFrame(animId); window.removeEventListener("resize", resize); };
   }, []);
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />;
+  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0" style={{ background: "#06060f" }} />;
 }
 
 export default function Elections() {
@@ -248,15 +264,15 @@ export default function Elections() {
         )}
 
         {/* Tabs + Filters */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-6">
-          <div className="flex gap-1 bg-muted/50 backdrop-blur rounded-lg p-1 overflow-x-auto">
+        <div className="flex flex-col sm:flex-row gap-2 mb-6">
+          <div className="flex gap-0.5 bg-muted/50 backdrop-blur rounded-lg p-0.5 overflow-x-auto">
             {tabs.map(t => (
               <button
                 key={t.id}
                 onClick={() => setTab(t.id)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium whitespace-nowrap transition-colors ${tab === t.id ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+                className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold whitespace-nowrap transition-colors ${tab === t.id ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
               >
-                <t.icon size={14} />
+                <t.icon size={12} />
                 {t.label}
               </button>
             ))}
@@ -296,14 +312,14 @@ export default function Elections() {
 
 function getRatingColor(rating: string | null): string {
   switch (rating) {
-    case "Solid D": return "#1a3a6b";
+    case "Solid D": return "#1a4fa0";
     case "Likely D": return "#3a6fc0";
-    case "Lean D": return "#7baaf0";
+    case "Lean D": return "#5b8fd4";
     case "Toss-up": return "#7c3aed";
-    case "Lean R": return "#f07b7b";
-    case "Likely R": return "#c03a3a";
-    case "Solid R": return "#6b1a1a";
-    default: return "#4a4a4a";
+    case "Lean R": return "#d96b4a";
+    case "Likely R": return "#c04040";
+    case "Solid R": return "#b22222";
+    default: return "#2a2f3a";
   }
 }
 

@@ -43,14 +43,14 @@
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-display: 'Syne', 'Inter', sans-serif;
   /* Election rating colors */
-  --color-solid-d: oklch(0.55 0.18 260);
-  --color-likely-d: oklch(0.62 0.15 260);
-  --color-lean-d: oklch(0.72 0.10 260);
-  --color-tossup: oklch(0.55 0.2 290);
-  --color-lean-r: oklch(0.68 0.14 25);
-  --color-likely-r: oklch(0.58 0.18 25);
-  --color-solid-r: oklch(0.50 0.22 25);
-  --color-no-data: oklch(0.30 0.01 260);
+  --color-solid-d: #1a4fa0;
+  --color-likely-d: #3a6fc0;
+  --color-lean-d: #5b8fd4;
+  --color-tossup: #7c3aed;
+  --color-lean-r: #d96b4a;
+  --color-likely-r: #c04040;
+  --color-solid-r: #b22222;
+  --color-no-data: #2a2f3a;
 }
 
 :root {
