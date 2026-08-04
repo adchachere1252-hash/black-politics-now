@@ -18,7 +18,6 @@ function Starfield() {
     if (!ctx) return;
     let animId: number;
     const stars: { x: number; y: number; r: number; a: number; da: number; color: string }[] = [];
-    const shootingStars: { x: number; y: number; vx: number; vy: number; life: number; maxLife: number }[] = [];
 
     function resize() {
       canvas!.width = canvas!.offsetWidth * window.devicePixelRatio;
@@ -27,125 +26,56 @@ function Starfield() {
     resize();
     window.addEventListener("resize", resize);
 
-    // Generate stars — 800 for ultra-dense starfield
-    const starColors = ["255,255,255", "200,220,255", "255,240,200", "180,200,255", "255,200,180"];
-    for (let i = 0; i < 800; i++) {
+    // Generate small, subtle stars — tiny pinpoints like a real night sky
+    const starColors = ["255,255,255", "210,225,255", "255,245,220", "190,210,255"];
+    for (let i = 0; i < 300; i++) {
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        r: Math.random() * 3.5 + 0.8,
-        a: Math.random() * 0.5 + 0.5,
-        da: (Math.random() - 0.5) * 0.02,
+        r: Math.random() * 1.0 + 0.3, // tiny: 0.3px to 1.3px
+        a: Math.random() * 0.4 + 0.3, // subtle: 0.3 to 0.7 opacity
+        da: (Math.random() - 0.5) * 0.008, // very gentle twinkle
         color: starColors[Math.floor(Math.random() * starColors.length)],
       });
     }
 
-    function spawnShootingStar() {
-      if (shootingStars.length < 4 && Math.random() < 0.04) {
-        shootingStars.push({
-          x: Math.random() * canvas!.width * 0.8,
-          y: Math.random() * canvas!.height * 0.5,
-          vx: 6 + Math.random() * 8,
-          vy: 3 + Math.random() * 4,
-          life: 0,
-          maxLife: 60 + Math.random() * 50,
-        });
-      }
-    }
-
     function draw() {
-      // Fill with pure black for maximum star contrast
-      ctx!.fillStyle = "#020208";
+      ctx!.fillStyle = "#0a0a14";
       ctx!.fillRect(0, 0, canvas!.width, canvas!.height);
 
-      // Draw subtle nebula clouds for depth
-      const time = Date.now() * 0.0001;
-      const nebulas = [
-        { x: canvas!.width * 0.2, y: canvas!.height * 0.3, r: canvas!.width * 0.25, color: "20, 40, 80" },
-        { x: canvas!.width * 0.7, y: canvas!.height * 0.6, r: canvas!.width * 0.2, color: "60, 20, 60" },
-        { x: canvas!.width * 0.5, y: canvas!.height * 0.15, r: canvas!.width * 0.15, color: "20, 50, 60" },
-      ];
-      for (const n of nebulas) {
-        const grad = ctx!.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r);
-        grad.addColorStop(0, `rgba(${n.color}, 0.06)`);
-        grad.addColorStop(0.5, `rgba(${n.color}, 0.03)`);
-        grad.addColorStop(1, `rgba(${n.color}, 0)`);
-        ctx!.fillStyle = grad;
-        ctx!.fillRect(0, 0, canvas!.width, canvas!.height);
-      }
-
-      // Draw twinkling stars
+      // Draw small twinkling stars — no glow, no spikes, just pinpoints
       for (const s of stars) {
         s.a += s.da;
-        if (s.a > 1) { s.a = 1; s.da *= -1; }
-        if (s.a < 0.4) { s.a = 0.4; s.da *= -1; }
+        if (s.a > 0.7) { s.a = 0.7; s.da *= -1; }
+        if (s.a < 0.2) { s.a = 0.2; s.da *= -1; }
         ctx!.beginPath();
         ctx!.arc(s.x, s.y, s.r, 0, Math.PI * 2);
         ctx!.fillStyle = `rgba(${s.color}, ${s.a})`;
         ctx!.fill();
-        // Add glow effect for all stars above 1.5px
-        if (s.r > 1.2) {
-          ctx!.beginPath();
-          ctx!.arc(s.x, s.y, s.r * 3, 0, Math.PI * 2);
-          ctx!.fillStyle = `rgba(${s.color}, ${s.a * 0.2})`;
-          ctx!.fill();
-        }
-        // Extra bright glow for the biggest stars (cross/spike effect)
-        if (s.r > 2.5) {
-          ctx!.beginPath();
-          ctx!.arc(s.x, s.y, s.r * 5, 0, Math.PI * 2);
-          ctx!.fillStyle = `rgba(${s.color}, ${s.a * 0.08})`;
-          ctx!.fill();
-          // Draw cross spikes
-          ctx!.strokeStyle = `rgba(${s.color}, ${s.a * 0.4})`;
-          ctx!.lineWidth = 0.5;
-          ctx!.beginPath();
-          ctx!.moveTo(s.x - s.r * 4, s.y);
-          ctx!.lineTo(s.x + s.r * 4, s.y);
-          ctx!.moveTo(s.x, s.y - s.r * 4);
-          ctx!.lineTo(s.x, s.y + s.r * 4);
-          ctx!.stroke();
-        }
       }
-      // Draw shooting stars
-      spawnShootingStar();
-      for (let i = shootingStars.length - 1; i >= 0; i--) {
-        const ss = shootingStars[i];
-        ss.x += ss.vx;
-        ss.y += ss.vy;
-        ss.life++;
-        const alpha = 1 - ss.life / ss.maxLife;
-        // Longer, brighter trail
-        const trailLen = 18;
-        const grad = ctx!.createLinearGradient(ss.x, ss.y, ss.x - ss.vx * trailLen, ss.y - ss.vy * trailLen);
-        grad.addColorStop(0, `rgba(255, 255, 255, ${alpha})`);
-        grad.addColorStop(0.2, `rgba(180, 220, 255, ${alpha * 0.9})`);
-        grad.addColorStop(0.5, `rgba(100, 180, 255, ${alpha * 0.5})`);
-        grad.addColorStop(1, `rgba(100, 150, 255, 0)`);
+
+      // Occasional subtle shooting star (rare, thin, fast)
+      if (Math.random() < 0.003) {
+        const sx = Math.random() * canvas!.width * 0.7;
+        const sy = Math.random() * canvas!.height * 0.4;
+        const len = 40 + Math.random() * 30;
+        const grad = ctx!.createLinearGradient(sx, sy, sx + len, sy + len * 0.5);
+        grad.addColorStop(0, "rgba(255,255,255,0.6)");
+        grad.addColorStop(1, "rgba(255,255,255,0)");
         ctx!.beginPath();
-        ctx!.moveTo(ss.x, ss.y);
-        ctx!.lineTo(ss.x - ss.vx * trailLen, ss.y - ss.vy * trailLen);
+        ctx!.moveTo(sx, sy);
+        ctx!.lineTo(sx + len, sy + len * 0.5);
         ctx!.strokeStyle = grad;
-        ctx!.lineWidth = 3;
+        ctx!.lineWidth = 1;
         ctx!.stroke();
-        // Bright head
-        ctx!.beginPath();
-        ctx!.arc(ss.x, ss.y, 4, 0, Math.PI * 2);
-        ctx!.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-        ctx!.fill();
-        // Large glow around head
-        ctx!.beginPath();
-        ctx!.arc(ss.x, ss.y, 10, 0, Math.PI * 2);
-        ctx!.fillStyle = `rgba(150, 200, 255, ${alpha * 0.4})`;
-        ctx!.fill();
-        if (ss.life >= ss.maxLife) shootingStars.splice(i, 1);
       }
+
       animId = requestAnimationFrame(draw);
     }
     draw();
     return () => { cancelAnimationFrame(animId); window.removeEventListener("resize", resize); };
   }, []);
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0" style={{ background: "#020208" }} />;
+  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0" style={{ background: "#0a0a14" }} />;
 }
 
 export default function Elections() {
