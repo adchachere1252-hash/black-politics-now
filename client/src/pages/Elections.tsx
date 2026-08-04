@@ -1,5 +1,6 @@
 import { trpc } from "@/lib/trpc";
 import { useState, useMemo, useEffect, useRef } from "react";
+import { useTheme } from "@/contexts/ThemeContext";
 import { Search, Star, Users, Scale, MapPin, AlertTriangle } from "lucide-react";
 import { USMap } from "@/components/USMap";
 import { USMapFull } from "@/components/USMapFull";
@@ -83,6 +84,7 @@ export default function Elections() {
   const [ratingFilter, setRatingFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedState, setSelectedState] = useState<string | null>(null);
+  const { theme } = useTheme();
 
   const { data: senateRaces = [] } = trpc.election.senate.useQuery();
   const { data: houseRaces = [] } = trpc.election.house.useQuery();
@@ -170,8 +172,8 @@ export default function Elections() {
 
   return (
     <div className="relative min-h-screen">
-      {/* Starfield background */}
-      <Starfield />
+      {/* Starfield background - only in dark mode */}
+      {theme === "dark" && <Starfield />}
 
       <div className="container py-8 relative z-10">
         <div className="mb-6">

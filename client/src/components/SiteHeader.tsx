@@ -1,6 +1,7 @@
 import { Link, useLocation } from "wouter";
-import { Newspaper, Map, Headphones, Archive, Search as SearchIcon, Menu, X } from "lucide-react";
+import { Newspaper, Map, Headphones, Archive, Search as SearchIcon, Menu, X, Sun, Moon } from "lucide-react";
 import { useState } from "react";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const NAV_ITEMS = [
   { href: "/", label: "News", icon: Newspaper },
@@ -12,6 +13,7 @@ const NAV_ITEMS = [
 export default function SiteHeader() {
   const [location] = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/50 bg-background/95 backdrop-blur-md">
@@ -50,6 +52,14 @@ export default function SiteHeader() {
           >
             <SearchIcon size={16} />
           </Link>
+          {/* Light/Dark toggle */}
+          <button
+            onClick={toggleTheme}
+            className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
+            title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
         </nav>
 
         {/* Mobile toggle */}
@@ -80,6 +90,14 @@ export default function SiteHeader() {
               </Link>
             );
           })}
+          {/* Mobile theme toggle */}
+          <button
+            onClick={toggleTheme}
+            className="flex items-center gap-3 px-6 py-3 text-sm font-medium text-muted-foreground"
+          >
+            {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+            {theme === "dark" ? "Light Mode" : "Dark Mode"}
+          </button>
         </nav>
       )}
     </header>

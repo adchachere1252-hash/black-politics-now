@@ -114,6 +114,12 @@
 - [x] Run final verification check on all election data — ALL CLEAR
 
 ### Final Verification Results:
+
+## Light Mode Toggle (User Request Aug 4)
+- [x] Add light/dark mode toggle to site header
+- [x] Create proper light theme CSS variables (white background, dark text)
+- [x] Ensure Elections page starfield hides in light mode
+- [x] Test all pages in light mode for readability
 - Senate: 35 races, 0 errors
 - Governor: 36 races, 0 errors
 - House: 435 races, 0 same-party errors (only 12 legitimate CA/WA top-two)
