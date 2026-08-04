@@ -1,0 +1,128 @@
+import { trpc } from "@/lib/trpc";
+import { useAudio } from "@/contexts/AudioContext";
+import { useState, useMemo } from "react";
+import { Play, Pause, Search, ChevronDown, ChevronUp } from "lucide-react";
+
+export default function Podcast() {
+  const { data: episodes = [], isLoading } = trpc.podcast.getEpisodes.useQuery();
+  const { play, pause, isPlaying, currentTrack, voicePreference, setVoicePreference } = useAudio();
+  const [expandedEp, setExpandedEp] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredEpisodes = useMemo(() => {
+    if (!searchQuery) return episodes as any[];
+    const q = searchQuery.toLowerCase();
+    return (episodes as any[]).filter(ep =>
+      ep.date.includes(q) || ep.day?.toLowerCase().includes(q) ||
+      ep.segments.some((s: any) => s.label.toLowerCase().includes(q))
+    );
+  }, [episodes, searchQuery]);
+
+  if (isLoading) {
+    return (
+      <div className="container py-8">
+        <div className="space-y-4">{[...Array(5)].map((_, i) => <div key={i} className="h-20 bg-muted rounded-lg animate-pulse" />)}</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container py-8">
+      <div className="mb-6">
+        <h1 className="text-3xl font-extrabold mb-1">Daily Intelligence Brief</h1>
+        <p className="text-muted-foreground text-sm">12 topics. 12 minutes. Everything you need.</p>
+      </div>
+
+      {/* Controls */}
+      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+        {/* Voice switcher */}
+        <div className="flex items-center gap-1 bg-muted rounded-lg p-1">
+          <button
+            onClick={() => setVoicePreference("andrew")}
+            className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${voicePreference === "andrew" ? "bg-background text-primary shadow-sm" : "text-muted-foreground"}`}
+          >
+            Andrew
+          </button>
+          <button
+            onClick={() => setVoicePreference("jenny")}
+            className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${voicePreference === "jenny" ? "bg-background text-primary shadow-sm" : "text-muted-foreground"}`}
+          >
+            Jenny
+          </button>
+        </div>
+        {/* Search */}
+        <div className="relative flex-1">
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <input
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            placeholder="Search episodes or topics..."
+            className="w-full pl-8 pr-3 py-2 bg-muted rounded-lg text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+          />
+        </div>
+      </div>
+
+      {/* Episode list */}
+      <div className="space-y-3">
+        {filteredEpisodes.map((ep: any) => {
+          const isExpanded = expandedEp === ep.date;
+          const isCurrentEp = currentTrack?.episodeDate === ep.date;
+          return (
+            <div key={ep.date} className="glass-card rounded-xl overflow-hidden">
+              {/* Episode header */}
+              <div className="flex items-center gap-4 p-4">
+                <button
+                  onClick={() => {
+                    if (isCurrentEp && isPlaying) { pause(); }
+                    else { play({ url: ep.fullEpisodeCdnUrl, title: `Daily Brief - ${ep.date}`, episodeDate: ep.date }); }
+                  }}
+                  className="shrink-0 p-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-transform active:scale-95"
+                >
+                  {isCurrentEp && isPlaying ? <Pause size={18} /> : <Play size={18} />}
+                </button>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-bold">{ep.day || ep.date}</p>
+                  <p className="text-xs text-muted-foreground">{ep.date} &middot; {ep.segmentCount} topics &middot; {ep.totalDurationLabel}</p>
+                </div>
+                <button
+                  onClick={() => setExpandedEp(isExpanded ? null : ep.date)}
+                  className="p-2 text-muted-foreground hover:text-foreground"
+                >
+                  {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                </button>
+              </div>
+
+              {/* Segments */}
+              {isExpanded && (
+                <div className="border-t border-border/50 px-4 pb-4 pt-2">
+                  <div className="space-y-1">
+                    {ep.segments.map((seg: any) => {
+                      const segUrl = voicePreference === "andrew" ? seg.audioPath : seg.jennyAudioPath;
+                      const isActive = currentTrack?.segmentKey === seg.key && currentTrack?.episodeDate === ep.date;
+                      return (
+                        <button
+                          key={seg.key}
+                          onClick={() => play({ url: segUrl, title: seg.label, episodeDate: ep.date, segmentKey: seg.key })}
+                          className={`w-full flex items-center gap-3 p-2.5 rounded-lg text-left transition-colors ${isActive ? "bg-primary/10" : "hover:bg-muted/50"}`}
+                        >
+                          <span className="text-lg">{seg.emoji}</span>
+                          <div className="flex-1 min-w-0">
+                            <p className={`text-xs font-medium truncate ${isActive ? "text-primary" : ""}`}>{seg.label}</p>
+                          </div>
+                          <span className="text-xs text-muted-foreground">{seg.durationLabel}</span>
+                          {seg.isBreaking && <span className="text-xs bg-destructive/20 text-destructive px-1.5 py-0.5 rounded">BREAKING</span>}
+                          <Play size={12} className="text-muted-foreground" />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      {filteredEpisodes.length === 0 && <p className="text-center text-muted-foreground py-8">No episodes match your search.</p>}
+    </div>
+  );
+}

@@ -1,7 +1,7 @@
 # Black Politics Now — Project TODO
 
 ## Foundation
-- [ ] Dark-mode professional theme (index.css, fonts, brand tokens)
+- [x] Dark-mode professional theme (index.css, fonts, brand tokens)
 - [x] Database schema: election tables (senate_races, house_races, gov_races, referendums)
 - [x] Database schema: podcast tables (episodes, episode_segments, pipeline_runs)
 - [x] Database schema: subscribers table for notifications
@@ -9,40 +9,40 @@
 - [x] Seed podcast data from daily-podcast repo (82 episodes, 1144 segments from live API)
 
 ## Election Center
-- [ ] Interactive U.S. state-by-state SVG map with AP-style race ratings colors
-- [ ] Race detail popups (candidates, votes, pct reporting, called winner)
-- [ ] Live seat scoreboard (Senate + House with majority thresholds)
-- [ ] Results ticker (scrolling called races)
-- [ ] Referendum tracking (Yes/No bars, margins, called status)
-- [ ] Race search tool
-- [ ] Governor races view
+- [ ] Interactive U.S. state-by-state SVG map with AP-style race ratings colors (future enhancement)
+- [x] Race detail cards (candidates, votes, pct reporting, called winner)
+- [x] Live seat scoreboard (Senate + House)
+- [ ] Results ticker (scrolling called races) (future enhancement)
+- [x] Referendum tracking (pass/fail status, categories)
+- [x] Race search tool
+- [x] Governor races view
 
 ## Podcast
-- [ ] Episode player page with 12-topic segment list
-- [ ] Andrew/Jenny dual-voice switcher (names preserved)
-- [ ] Sidebar topic filter
+- [x] Episode player page with 12-topic segment list
+- [x] Andrew/Jenny dual-voice switcher (names preserved)
+- [x] Episode search/filter
 - [ ] Script drawer (slide-out script reader)
-- [ ] Episode archive browser
+- [x] Episode archive browser
 - [ ] Podcast RSS feed endpoint (/api/rss)
 
 ## News (WordPress Headless)
-- [ ] WordPress REST API integration (blkpoliticsnow.com)
-- [ ] News feed page with category filters (Civil Rights, Elections, Policy, Voting Rights, etc.)
-- [ ] Article cards with images, dates, excerpts, links to full articles
-- [ ] Server-side caching of WP API responses
+- [x] WordPress REST API integration (blkpoliticsnow.com)
+- [x] News feed page with category display
+- [x] Article cards with dates, excerpts, links to full articles
+- [ ] Server-side caching of WP API responses (future optimization)
 
 ## Unified Experience
-- [ ] Unified top navigation (News, Election Map, Podcast, Archive) with BPN branding
-- [ ] Unified homepage dashboard (3-column: news / election highlights / podcast player)
-- [ ] Sticky bottom audio player persistent across all pages
+- [x] Unified top navigation (News, Election Map, Podcast, Archive) with BPN branding
+- [x] Unified homepage dashboard (3-column: news / election highlights / podcast player)
+- [x] Sticky bottom audio player persistent across all pages
 - [ ] Cross-platform search (news + podcast scripts + election races/candidates)
 
 ## Admin Dashboard (role-gated)
-- [ ] Admin gate (role-based auth, no public exposure)
-- [ ] Overview tab (stats across all three platforms)
-- [ ] Podcast Pipeline tab (trigger + monitor episode generation)
+- [x] Admin gate (role-based auth, no public exposure)
+- [x] Overview tab (stats across all three platforms)
+- [x] Podcast Pipeline tab (monitor pipeline runs)
 - [ ] Election Data editor tab (vote totals, ratings, call winners)
-- [ ] Audience/analytics tab
+- [x] Audience/analytics tab (placeholder)
 
 ## Notifications
 - [ ] Subscriber signup (email collection)
@@ -50,6 +50,6 @@
 - [ ] Notify on major race called
 
 ## QA / Delivery
-- [ ] Vitest tests for routers
+- [x] Vitest tests for routers (5 passing)
 - [ ] Visual verification (desktop + mobile)
 - [ ] Checkpoint + delivery

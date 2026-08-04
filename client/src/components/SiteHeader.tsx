@@ -1,0 +1,79 @@
+import { Link, useLocation } from "wouter";
+import { Newspaper, Map, Headphones, Archive, Search, Menu, X } from "lucide-react";
+import { useState } from "react";
+
+const NAV_ITEMS = [
+  { href: "/", label: "News", icon: Newspaper },
+  { href: "/elections", label: "Election Map", icon: Map },
+  { href: "/podcast", label: "Podcast", icon: Headphones },
+  { href: "/archive", label: "Archive", icon: Archive },
+];
+
+export default function SiteHeader() {
+  const [location] = useLocation();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  return (
+    <header className="sticky top-0 z-50 border-b border-border/50 bg-background/95 backdrop-blur-md">
+      <div className="container flex items-center justify-between h-16">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2 no-underline">
+          <span className="font-display text-xl font-extrabold tracking-tight text-primary">
+            BLACK POLITICS NOW
+          </span>
+        </Link>
+
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-1">
+          {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+            const active = href === "/" ? location === "/" : location.startsWith(href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors no-underline ${
+                  active
+                    ? "bg-primary/10 text-primary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                }`}
+              >
+                <Icon size={16} />
+                {label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Mobile toggle */}
+        <button
+          className="md:hidden p-2 text-muted-foreground hover:text-foreground"
+          onClick={() => setMobileOpen(!mobileOpen)}
+        >
+          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      </div>
+
+      {/* Mobile Nav */}
+      {mobileOpen && (
+        <nav className="md:hidden border-t border-border/50 bg-background pb-4">
+          {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+            const active = href === "/" ? location === "/" : location.startsWith(href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setMobileOpen(false)}
+                className={`flex items-center gap-3 px-6 py-3 text-sm font-medium no-underline ${
+                  active ? "text-primary bg-primary/5" : "text-muted-foreground"
+                }`}
+              >
+                <Icon size={16} />
+                {label}
+              </Link>
+            );
+          })}
+        </nav>
+      )}
+    </header>
+  );
+}
