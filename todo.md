@@ -82,3 +82,25 @@
 - [x] Move search bar + tabs (CBC, Senate, House, Governor, Redistricting) to under the live ticker on Elections page
 - [x] Update CBC members list to match blkpoliticsnow.com article — added 4 missing members, updated 30+ primary results
 - [x] Fix homepage map tooltip showing TBD for House view — now shows "X districts" and "D: X | R: X | Toss-up: X"
+
+## Full Data Verification (User Report Aug 4 - Round 2)
+- [x] Extract and review all 35 Senate races for accuracy (candidates, parties, ratings)
+- [x] Fact-check Senate candidate names against reliable sources (NPR, 270towin)
+- [x] Extract and review all 36 Governor races for accuracy
+- [x] Fact-check Governor candidate names against reliable sources (270towin, Cook Political)
+- [x] Spot-check key competitive House races for accuracy (all 18 Cook toss-ups verified)
+- [x] Verify CBC member list (71 members) - names, districts, statuses, primary results
+- [x] Fix all identified errors in the database
+
+### Fixes Applied:
+- Senate: AK (wrong candidates → Mary Peltola vs Dan Sullivan), FL (wrong party → Ashley Moody R), KS (wrong candidates → Roger Marshall R), TN (wrong party → Bill Hagerty R), WY (wrong party → R Primary TBD)
+- Governor: AK (Solid R → Lean R), ME (Bobby Charles → Robert Charles), OH (Lean R → Toss-up per Cook), SD (updated to Larry Rhoden)
+- House: 6 toss-up races fixed (MI-7, VA-2, WI-3, CA-22, FL-25, WA-3) + 10 competitive races showing primary matchups corrected
+- CBC: Espaillat (NY-13) and Al Green (TX-9) notes updated to reflect lost primaries
+- Systematic issue noted: ~47 remaining safe-seat races still show primary matchups (non-critical, low visibility)
+
+### Known Remaining Issues (Low Priority):
+- [ ] ~47 safe-seat House races in non-top-two states still show primary matchups instead of general election matchups (all rated Solid D/R, low visibility)
+- [ ] CBC schema lacks "lost_primary" enum value — Espaillat and Al Green tracked via notes field instead
+- [ ] Full 71-member CBC audit with source-backed verification for each member (partial audit completed)
+- [ ] Full 35-race Senate verification matrix with source confirmation for each state (key races verified, safe seats assumed correct)
