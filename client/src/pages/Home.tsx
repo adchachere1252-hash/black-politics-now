@@ -28,8 +28,8 @@ export default function Home() {
         if (r.stateCode) {
           data[r.stateCode] = {
             rating: r.rating,
-            candidate1: `${r.candidate1Name ?? "TBD"} (${r.candidate1Party ?? "?"})`,
-            candidate2: `${r.candidate2Name ?? "TBD"} (${r.candidate2Party ?? "?"})`,
+            candidate1: r.candidate1Name ? `${r.candidate1Name} (${r.candidate1Party ?? "?"})` : "Pending",
+            candidate2: r.candidate2Name ? `${r.candidate2Name} (${r.candidate2Party ?? "?"})` : "Pending",
             calledWinner: r.calledWinner,
           };
         }
@@ -39,8 +39,8 @@ export default function Home() {
         if (r.stateCode) {
           data[r.stateCode] = {
             rating: r.rating,
-            candidate1: `${r.demCandidate ?? "TBD"} (D)`,
-            candidate2: `${r.repCandidate ?? "TBD"} (R)`,
+            candidate1: r.demCandidate ? `${r.demCandidate} (D)` : "Dem: Pending",
+            candidate2: r.repCandidate ? `${r.repCandidate} (R)` : "Rep: Pending",
             calledWinner: r.calledWinner,
           };
         }
@@ -57,7 +57,15 @@ export default function Home() {
       Object.entries(stateRatings).forEach(([code, ratings]) => {
         const priority = ["Toss-up", "Lean D", "Lean R", "Likely D", "Likely R", "Solid D", "Solid R"];
         const best = priority.find(p => ratings.includes(p)) ?? ratings[0] ?? null;
-        data[code] = { rating: best, candidate1: "", candidate2: "", calledWinner: null };
+        const dCount = ratings.filter(r => r.includes("D")).length;
+        const rCount = ratings.filter(r => r.includes("R")).length;
+        const tossups = ratings.filter(r => r === "Toss-up").length;
+        data[code] = {
+          rating: best,
+          candidate1: `${ratings.length} districts`,
+          candidate2: `D: ${dCount} | R: ${rCount}${tossups ? ` | Toss-up: ${tossups}` : ""}`,
+          calledWinner: null,
+        };
       });
     }
     return data;

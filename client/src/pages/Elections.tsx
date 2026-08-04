@@ -17,7 +17,7 @@ function Starfield() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     let animId: number;
-    const stars: { x: number; y: number; r: number; a: number; da: number }[] = [];
+    const stars: { x: number; y: number; r: number; a: number; da: number; color: string }[] = [];
     const shootingStars: { x: number; y: number; vx: number; vy: number; life: number; maxLife: number }[] = [];
 
     function resize() {
@@ -27,49 +27,84 @@ function Starfield() {
     resize();
     window.addEventListener("resize", resize);
 
-    // Generate stars — 400 for dense starfield
-    for (let i = 0; i < 400; i++) {
+    // Generate stars — 800 for ultra-dense starfield
+    const starColors = ["255,255,255", "200,220,255", "255,240,200", "180,200,255", "255,200,180"];
+    for (let i = 0; i < 800; i++) {
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        r: Math.random() * 2.5 + 0.5,
-        a: Math.random() * 0.6 + 0.4,
-        da: (Math.random() - 0.5) * 0.03,
+        r: Math.random() * 3.5 + 0.8,
+        a: Math.random() * 0.5 + 0.5,
+        da: (Math.random() - 0.5) * 0.02,
+        color: starColors[Math.floor(Math.random() * starColors.length)],
       });
     }
 
     function spawnShootingStar() {
-      if (shootingStars.length < 3 && Math.random() < 0.02) {
+      if (shootingStars.length < 4 && Math.random() < 0.04) {
         shootingStars.push({
           x: Math.random() * canvas!.width * 0.8,
-          y: Math.random() * canvas!.height * 0.3,
-          vx: 5 + Math.random() * 6,
-          vy: 2.5 + Math.random() * 3,
+          y: Math.random() * canvas!.height * 0.5,
+          vx: 6 + Math.random() * 8,
+          vy: 3 + Math.random() * 4,
           life: 0,
-          maxLife: 50 + Math.random() * 40,
+          maxLife: 60 + Math.random() * 50,
         });
       }
     }
 
     function draw() {
-      // Fill with deep space background for maximum contrast
-      ctx!.fillStyle = "#06060f";
+      // Fill with pure black for maximum star contrast
+      ctx!.fillStyle = "#020208";
       ctx!.fillRect(0, 0, canvas!.width, canvas!.height);
+
+      // Draw subtle nebula clouds for depth
+      const time = Date.now() * 0.0001;
+      const nebulas = [
+        { x: canvas!.width * 0.2, y: canvas!.height * 0.3, r: canvas!.width * 0.25, color: "20, 40, 80" },
+        { x: canvas!.width * 0.7, y: canvas!.height * 0.6, r: canvas!.width * 0.2, color: "60, 20, 60" },
+        { x: canvas!.width * 0.5, y: canvas!.height * 0.15, r: canvas!.width * 0.15, color: "20, 50, 60" },
+      ];
+      for (const n of nebulas) {
+        const grad = ctx!.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r);
+        grad.addColorStop(0, `rgba(${n.color}, 0.06)`);
+        grad.addColorStop(0.5, `rgba(${n.color}, 0.03)`);
+        grad.addColorStop(1, `rgba(${n.color}, 0)`);
+        ctx!.fillStyle = grad;
+        ctx!.fillRect(0, 0, canvas!.width, canvas!.height);
+      }
+
       // Draw twinkling stars
       for (const s of stars) {
         s.a += s.da;
         if (s.a > 1) { s.a = 1; s.da *= -1; }
-        if (s.a < 0.3) { s.a = 0.3; s.da *= -1; }
+        if (s.a < 0.4) { s.a = 0.4; s.da *= -1; }
         ctx!.beginPath();
         ctx!.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx!.fillStyle = `rgba(255, 255, 255, ${s.a})`;
+        ctx!.fillStyle = `rgba(${s.color}, ${s.a})`;
         ctx!.fill();
-        // Add glow effect for larger stars
-        if (s.r > 1.5) {
+        // Add glow effect for all stars above 1.5px
+        if (s.r > 1.2) {
           ctx!.beginPath();
-          ctx!.arc(s.x, s.y, s.r * 2.5, 0, Math.PI * 2);
-          ctx!.fillStyle = `rgba(200, 220, 255, ${s.a * 0.15})`;
+          ctx!.arc(s.x, s.y, s.r * 3, 0, Math.PI * 2);
+          ctx!.fillStyle = `rgba(${s.color}, ${s.a * 0.2})`;
           ctx!.fill();
+        }
+        // Extra bright glow for the biggest stars (cross/spike effect)
+        if (s.r > 2.5) {
+          ctx!.beginPath();
+          ctx!.arc(s.x, s.y, s.r * 5, 0, Math.PI * 2);
+          ctx!.fillStyle = `rgba(${s.color}, ${s.a * 0.08})`;
+          ctx!.fill();
+          // Draw cross spikes
+          ctx!.strokeStyle = `rgba(${s.color}, ${s.a * 0.4})`;
+          ctx!.lineWidth = 0.5;
+          ctx!.beginPath();
+          ctx!.moveTo(s.x - s.r * 4, s.y);
+          ctx!.lineTo(s.x + s.r * 4, s.y);
+          ctx!.moveTo(s.x, s.y - s.r * 4);
+          ctx!.lineTo(s.x, s.y + s.r * 4);
+          ctx!.stroke();
         }
       }
       // Draw shooting stars
@@ -80,26 +115,28 @@ function Starfield() {
         ss.y += ss.vy;
         ss.life++;
         const alpha = 1 - ss.life / ss.maxLife;
-        // Trail
-        const grad = ctx!.createLinearGradient(ss.x, ss.y, ss.x - ss.vx * 12, ss.y - ss.vy * 12);
+        // Longer, brighter trail
+        const trailLen = 18;
+        const grad = ctx!.createLinearGradient(ss.x, ss.y, ss.x - ss.vx * trailLen, ss.y - ss.vy * trailLen);
         grad.addColorStop(0, `rgba(255, 255, 255, ${alpha})`);
-        grad.addColorStop(0.3, `rgba(180, 200, 255, ${alpha * 0.8})`);
+        grad.addColorStop(0.2, `rgba(180, 220, 255, ${alpha * 0.9})`);
+        grad.addColorStop(0.5, `rgba(100, 180, 255, ${alpha * 0.5})`);
         grad.addColorStop(1, `rgba(100, 150, 255, 0)`);
         ctx!.beginPath();
         ctx!.moveTo(ss.x, ss.y);
-        ctx!.lineTo(ss.x - ss.vx * 12, ss.y - ss.vy * 12);
+        ctx!.lineTo(ss.x - ss.vx * trailLen, ss.y - ss.vy * trailLen);
         ctx!.strokeStyle = grad;
-        ctx!.lineWidth = 2.5;
+        ctx!.lineWidth = 3;
         ctx!.stroke();
-        // Head
+        // Bright head
         ctx!.beginPath();
-        ctx!.arc(ss.x, ss.y, 3, 0, Math.PI * 2);
+        ctx!.arc(ss.x, ss.y, 4, 0, Math.PI * 2);
         ctx!.fillStyle = `rgba(255, 255, 255, ${alpha})`;
         ctx!.fill();
-        // Bright glow around head
+        // Large glow around head
         ctx!.beginPath();
-        ctx!.arc(ss.x, ss.y, 6, 0, Math.PI * 2);
-        ctx!.fillStyle = `rgba(180, 200, 255, ${alpha * 0.3})`;
+        ctx!.arc(ss.x, ss.y, 10, 0, Math.PI * 2);
+        ctx!.fillStyle = `rgba(150, 200, 255, ${alpha * 0.4})`;
         ctx!.fill();
         if (ss.life >= ss.maxLife) shootingStars.splice(i, 1);
       }
@@ -108,7 +145,7 @@ function Starfield() {
     draw();
     return () => { cancelAnimationFrame(animId); window.removeEventListener("resize", resize); };
   }, []);
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0" style={{ background: "#06060f" }} />;
+  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0" style={{ background: "#020208" }} />;
 }
 
 export default function Elections() {
@@ -217,6 +254,42 @@ export default function Elections() {
           <ResultsTicker senateRaces={senateRaces as any[]} houseRaces={houseRaces as any[]} governors={governors as any[]} />
         </div>
 
+        {/* Tabs + Filters (moved under ticker) */}
+        <div className="flex flex-col sm:flex-row gap-2 mb-6">
+          <div className="flex gap-0.5 bg-muted/50 backdrop-blur rounded-lg p-0.5 overflow-x-auto">
+            {tabs.map(t => (
+              <button
+                key={t.id}
+                onClick={() => setTab(t.id)}
+                className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold whitespace-nowrap transition-colors ${tab === t.id ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                <t.icon size={12} />
+                {t.label}
+              </button>
+            ))}
+          </div>
+          <div className="flex-1 flex gap-2">
+            <div className="relative flex-1">
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <input
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Search races..."
+                className="w-full pl-8 pr-3 py-2 bg-muted/50 backdrop-blur rounded-lg text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+              />
+            </div>
+            {(tab === "senate" || tab === "house" || tab === "governors") && (
+              <select
+                value={ratingFilter}
+                onChange={e => setRatingFilter(e.target.value)}
+                className="bg-muted/50 backdrop-blur rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+              >
+                {RATINGS.map(r => <option key={r} value={r}>{r}</option>)}
+              </select>
+            )}
+          </div>
+        </div>
+
         {/* Interactive Map */}
         <div className="glass-card rounded-xl p-4 mb-6">
           <div className="flex items-center justify-between mb-3">
@@ -262,42 +335,6 @@ export default function Elections() {
             <ScoreCard label="House Rep" value={scoreboard.house.rep} color="var(--color-solid-r)" />
           </div>
         )}
-
-        {/* Tabs + Filters */}
-        <div className="flex flex-col sm:flex-row gap-2 mb-6">
-          <div className="flex gap-0.5 bg-muted/50 backdrop-blur rounded-lg p-0.5 overflow-x-auto">
-            {tabs.map(t => (
-              <button
-                key={t.id}
-                onClick={() => setTab(t.id)}
-                className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold whitespace-nowrap transition-colors ${tab === t.id ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
-              >
-                <t.icon size={12} />
-                {t.label}
-              </button>
-            ))}
-          </div>
-          <div className="flex-1 flex gap-2">
-            <div className="relative flex-1">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                placeholder="Search races..."
-                className="w-full pl-8 pr-3 py-2 bg-muted/50 backdrop-blur rounded-lg text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
-              />
-            </div>
-            {(tab === "senate" || tab === "house" || tab === "governors") && (
-              <select
-                value={ratingFilter}
-                onChange={e => setRatingFilter(e.target.value)}
-                className="bg-muted/50 backdrop-blur rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-              >
-                {RATINGS.map(r => <option key={r} value={r}>{r}</option>)}
-              </select>
-            )}
-          </div>
-        </div>
 
         {/* Race list */}
         {tab === "senate" && <RaceGrid races={filteredSenate} chamber="senate" />}
@@ -464,6 +501,12 @@ function CbcGrid({ members }: { members: any[] }) {
               <span className="capitalize">{m.chamber}</span>
               {!m.upIn2026 && <span className="text-gray-500">• Not up in 2026</span>}
             </div>
+            {m.primaryResult && (
+              <p className="mt-2 text-xs text-green-400/80 italic">{m.primaryResult}</p>
+            )}
+            {m.notes && (
+              <p className="mt-1 text-xs text-muted-foreground/70">{m.notes}</p>
+            )}
           </div>
         ))}
       </div>

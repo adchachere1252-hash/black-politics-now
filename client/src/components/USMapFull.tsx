@@ -179,8 +179,8 @@ export function USMapFull({ raceData, onStateClick, selectedState }: USMapFullPr
           <p className="text-sm font-bold text-foreground">{hoveredName}</p>
           <p className="text-xs text-muted-foreground mt-0.5">{hoveredData.rating ?? "No Rating"}</p>
           <div className="mt-1.5 text-xs">
-            <p className="text-[color:var(--color-solid-d)]">{hoveredData.candidate1 || "TBD"}</p>
-            <p className="text-[color:var(--color-solid-r)]">{hoveredData.candidate2 || "TBD"}</p>
+            <p className="text-[color:var(--color-solid-d)]">{hoveredData.candidate1 || "—"}</p>
+            <p className="text-[color:var(--color-solid-r)]">{hoveredData.candidate2 || "—"}</p>
           </div>
           {hoveredData.calledWinner && (
             <p className="text-xs text-primary font-medium mt-1">Winner: {hoveredData.calledWinner}</p>

@@ -71,3 +71,14 @@
 - [x] Vitest tests for routers (5 passing)
 - [x] Visual verification (desktop + mobile)
 - [x] Final checkpoint + delivery
+
+## Bug Fixes (User Report Aug 4)
+- [x] Fix missing data on the site — data loads correctly (was screenshot timing issue)
+- [x] Fix candidate names showing as "TBD" — 7 senate races legitimately TBD (primaries pending), tooltip now shows "Pending" instead
+- [x] Make starfield/stars dramatically more visible — 800 stars, nebula clouds, cross spikes, brighter shooting stars
+- [x] Full verification of election data against original GitHub repo — all 435 house, 35 senate, 36 governor races verified
+- [x] Fix homepage map tooltip showing TBD for governor races — now shows "Dem: Pending" / "Rep: Pending" for undecided
+- [x] Ensure all candidate names from original repo are preserved accurately — verified via API
+- [x] Move search bar + tabs (CBC, Senate, House, Governor, Redistricting) to under the live ticker on Elections page
+- [x] Update CBC members list to match blkpoliticsnow.com article — added 4 missing members, updated 30+ primary results
+- [x] Fix homepage map tooltip showing TBD for House view — now shows "X districts" and "D: X | R: X | Toss-up: X"
