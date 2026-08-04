@@ -83,7 +83,57 @@ export const appRouter = router({
         return res.json();
       } catch { return []; }
     }),
+    search: publicProcedure
+      .input(z.object({ query: z.string().min(1).max(100) }))
+      .query(async ({ input }) => {
+        try {
+          const res = await fetch(`https://blkpoliticsnow.com/wp-json/wp/v2/posts?_embed&search=${encodeURIComponent(input.query)}&per_page=10`, { headers: { "User-Agent": "BlackPoliticsNow/1.0" } });
+          if (!res.ok) return [];
+          return res.json();
+        } catch { return []; }
+      }),
+  }),
+
+  // ─── Unified Search ─────────────────────────────────────────────────────────
+  search: router({
+    all: publicProcedure
+      .input(z.object({ query: z.string().min(1).max(100) }))
+      .query(async ({ input }) => {
+        const q = input.query;
+        const [electionResults, newsResults, episodes] = await Promise.all([
+          searchRaces(q),
+          (async () => {
+            try {
+              const res = await fetch(`https://blkpoliticsnow.com/wp-json/wp/v2/posts?_embed&search=${encodeURIComponent(q)}&per_page=5`, { headers: { "User-Agent": "BlackPoliticsNow/1.0" } });
+              if (!res.ok) return [];
+              return res.json();
+            } catch { return []; }
+          })(),
+          getEpisodesFormatted(),
+        ]);
+        // Filter podcast episodes by segment labels
+        const ql = q.toLowerCase();
+        const podcastResults = (episodes as any[]).filter(ep =>
+          ep.segments.some((s: any) => s.label.toLowerCase().includes(ql) || (s.script && s.script.toLowerCase().includes(ql)))
+        ).slice(0, 5).map((ep: any) => ({
+          date: ep.date,
+          day: ep.day,
+          matchingSegments: ep.segments.filter((s: any) => s.label.toLowerCase().includes(ql) || (s.script && s.script.toLowerCase().includes(ql))).map((s: any) => ({
+            ...s,
+            scriptSnippet: s.script ? getSnippet(s.script, q) : null,
+          })),
+        }));
+        return { elections: electionResults, news: newsResults, podcast: podcastResults };
+      }),
   }),
 });
+
+function getSnippet(text: string, query: string, contextLen = 80): string {
+  const idx = text.toLowerCase().indexOf(query.toLowerCase());
+  if (idx === -1) return text.slice(0, contextLen * 2) + "...";
+  const start = Math.max(0, idx - contextLen);
+  const end = Math.min(text.length, idx + query.length + contextLen);
+  return (start > 0 ? "..." : "") + text.slice(start, end) + (end < text.length ? "..." : "");
+}
 
 export type AppRouter = typeof appRouter;

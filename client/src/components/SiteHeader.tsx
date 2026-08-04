@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Newspaper, Map, Headphones, Archive, Search, Menu, X } from "lucide-react";
+import { Newspaper, Map, Headphones, Archive, Search as SearchIcon, Menu, X } from "lucide-react";
 import { useState } from "react";
 
 const NAV_ITEMS = [
@@ -42,6 +42,14 @@ export default function SiteHeader() {
               </Link>
             );
           })}
+          <Link
+            href="/search"
+            className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline ${
+              location === "/search" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+            }`}
+          >
+            <SearchIcon size={16} />
+          </Link>
         </nav>
 
         {/* Mobile toggle */}

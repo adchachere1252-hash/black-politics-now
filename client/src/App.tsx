@@ -14,6 +14,7 @@ const Elections = lazy(() => import("./pages/Elections"));
 const Podcast = lazy(() => import("./pages/Podcast"));
 const ArchivePage = lazy(() => import("./pages/Archive"));
 const AdminPage = lazy(() => import("./pages/Admin"));
+const SearchPage = lazy(() => import("./pages/Search"));
 
 function Router() {
   return (
@@ -30,6 +31,9 @@ function Router() {
       </Route>
       <Route path={"/admin"}>
         <Suspense fallback={<PageLoader />}><AdminPage /></Suspense>
+      </Route>
+      <Route path={"/search"}>
+        <Suspense fallback={<PageLoader />}><SearchPage /></Suspense>
       </Route>
       <Route component={NotFound} />
     </Switch>

@@ -35,7 +35,7 @@
 - [x] Unified top navigation (News, Election Map, Podcast, Archive) with BPN branding
 - [x] Unified homepage dashboard (3-column: news / election highlights / podcast player)
 - [x] Sticky bottom audio player persistent across all pages
-- [ ] Cross-platform search (news + podcast scripts + election races/candidates)
+- [x] Cross-platform search (news + podcast scripts + election races/candidates)
 
 ## Admin Dashboard (role-gated)
 - [x] Admin gate (role-based auth, no public exposure)
@@ -51,5 +51,5 @@
 
 ## QA / Delivery
 - [x] Vitest tests for routers (5 passing)
-- [ ] Visual verification (desktop + mobile)
-- [ ] Checkpoint + delivery
+- [x] Visual verification (desktop + mobile)
+- [x] Final checkpoint + delivery
