@@ -1,0 +1,1 @@
+ALTER TABLE `cbc_members` MODIFY COLUMN `cbc_status` enum('running','retiring','resigned','deceased','lost_primary','running_for_governor','running_for_senate','not_up_2026','challenger') NOT NULL DEFAULT 'running';

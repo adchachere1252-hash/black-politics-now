@@ -104,3 +104,18 @@
 - [ ] CBC schema lacks "lost_primary" enum value — Espaillat and Al Green tracked via notes field instead
 - [ ] Full 71-member CBC audit with source-backed verification for each member (partial audit completed)
 - [ ] Full 35-race Senate verification matrix with source confirmation for each state (key races verified, safe seats assumed correct)
+
+## House Race & CBC Fixes (User Request Aug 4 - Round 3)
+- [x] Fix ~47 safe-seat House races showing primary matchups instead of general election matchups
+- [x] Add "lost_primary" enum value to CBC schema
+- [x] Migrate Espaillat (NY-13) to lost_primary status
+- [x] Update 14 CBC members with correct statuses from article
+- [x] Move map categories under ticker on full screen Elections page (already done)
+- [x] Run final verification check on all election data — ALL CLEAR
+
+### Final Verification Results:
+- Senate: 35 races, 0 errors
+- Governor: 36 races, 0 errors
+- House: 435 races, 0 same-party errors (only 12 legitimate CA/WA top-two)
+- CBC: 71 members, proper status breakdown
+- All 5 vitest tests passing

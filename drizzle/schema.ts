@@ -373,7 +373,7 @@ export const cbcMembers = mysqlTable("cbc_members", {
   stateCode: varchar("state_code", { length: 2 }).notNull(),
   chamber: mysqlEnum("chamber", ["house", "senate"]).notNull(),
   status: mysqlEnum("cbc_status", [
-    "running", "retiring", "resigned", "deceased",
+    "running", "retiring", "resigned", "deceased", "lost_primary",
     "running_for_governor", "running_for_senate",
     "not_up_2026", "challenger"
   ]).notNull().default("running"),
