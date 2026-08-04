@@ -1,6 +1,9 @@
 import { trpc } from "@/lib/trpc";
 import { useState, useMemo } from "react";
-import { Search, Filter } from "lucide-react";
+import { Search } from "lucide-react";
+import { USMap } from "@/components/USMap";
+import { USMapFull } from "@/components/USMapFull";
+import { ResultsTicker } from "@/components/ResultsTicker";
 
 const RATINGS = ["All", "Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R"] as const;
 type ViewTab = "senate" | "house" | "governors" | "referendums";
@@ -9,6 +12,7 @@ export default function Elections() {
   const [tab, setTab] = useState<ViewTab>("senate");
   const [ratingFilter, setRatingFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedState, setSelectedState] = useState<string | null>(null);
 
   const { data: senateRaces = [] } = trpc.election.senate.useQuery();
   const { data: houseRaces = [] } = trpc.election.house.useQuery();
@@ -16,38 +20,102 @@ export default function Elections() {
   const { data: referendumsList = [] } = trpc.election.referendums.useQuery();
   const { data: scoreboard } = trpc.election.scoreboard.useQuery();
 
+  // Build map data from senate races
+  const mapData = useMemo(() => {
+    const data: Record<string, { rating: string | null; candidate1: string; candidate2: string; calledWinner?: string | null }> = {};
+    (senateRaces as any[]).forEach((r: any) => {
+      if (r.stateCode) {
+        data[r.stateCode] = {
+          rating: r.rating,
+          candidate1: `${r.candidate1Name ?? "TBD"} (${r.candidate1Party ?? "?"})`,
+          candidate2: `${r.candidate2Name ?? "TBD"} (${r.candidate2Party ?? "?"})`,
+          calledWinner: r.calledWinner,
+        };
+      }
+    });
+    return data;
+  }, [senateRaces]);
+
   const filteredSenate = useMemo(() => {
     let races = senateRaces as any[];
     if (ratingFilter !== "All") races = races.filter(r => r.rating === ratingFilter);
-    if (searchQuery) races = races.filter(r => r.stateName?.toLowerCase().includes(searchQuery.toLowerCase()) || r.candidate1Name?.toLowerCase().includes(searchQuery.toLowerCase()) || r.candidate2Name?.toLowerCase().includes(searchQuery.toLowerCase()));
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      races = races.filter(r => r.stateName?.toLowerCase().includes(q) || r.candidate1Name?.toLowerCase().includes(q) || r.candidate2Name?.toLowerCase().includes(q));
+    }
+    if (selectedState) races = races.filter(r => r.stateCode === selectedState);
     return races;
-  }, [senateRaces, ratingFilter, searchQuery]);
+  }, [senateRaces, ratingFilter, searchQuery, selectedState]);
 
   const filteredHouse = useMemo(() => {
     let races = houseRaces as any[];
     if (ratingFilter !== "All") races = races.filter(r => r.rating === ratingFilter);
-    if (searchQuery) races = races.filter(r => r.stateName?.toLowerCase().includes(searchQuery.toLowerCase()) || r.candidate1Name?.toLowerCase().includes(searchQuery.toLowerCase()) || r.candidate2Name?.toLowerCase().includes(searchQuery.toLowerCase()));
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      races = races.filter(r => r.stateName?.toLowerCase().includes(q) || r.candidate1Name?.toLowerCase().includes(q) || r.candidate2Name?.toLowerCase().includes(q));
+    }
+    if (selectedState) races = races.filter(r => r.stateCode === selectedState);
     return races;
-  }, [houseRaces, ratingFilter, searchQuery]);
+  }, [houseRaces, ratingFilter, searchQuery, selectedState]);
 
   const filteredGovs = useMemo(() => {
     let races = governors as any[];
     if (ratingFilter !== "All") races = races.filter(r => r.rating === ratingFilter);
-    if (searchQuery) races = races.filter(r => r.stateName?.toLowerCase().includes(searchQuery.toLowerCase()));
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      races = races.filter(r => r.stateName?.toLowerCase().includes(q));
+    }
+    if (selectedState) races = races.filter(r => r.stateCode === selectedState);
     return races;
-  }, [governors, ratingFilter, searchQuery]);
+  }, [governors, ratingFilter, searchQuery, selectedState]);
 
   const filteredRefs = useMemo(() => {
     let refs = referendumsList as any[];
-    if (searchQuery) refs = refs.filter(r => r.stateName?.toLowerCase().includes(searchQuery.toLowerCase()) || r.title?.toLowerCase().includes(searchQuery.toLowerCase()));
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      refs = refs.filter(r => r.stateName?.toLowerCase().includes(q) || r.title?.toLowerCase().includes(q));
+    }
+    if (selectedState) refs = refs.filter(r => r.stateCode === selectedState);
     return refs;
-  }, [referendumsList, searchQuery]);
+  }, [referendumsList, searchQuery, selectedState]);
 
   return (
     <div className="container py-8">
       <div className="mb-6">
         <h1 className="text-3xl font-extrabold mb-1">2026 U.S. Election Center</h1>
         <p className="text-muted-foreground text-sm">Real-time race ratings, results, and analysis.</p>
+      </div>
+
+      {/* Results Ticker */}
+      <div className="mb-6">
+        <ResultsTicker senateRaces={senateRaces as any[]} houseRaces={houseRaces as any[]} governors={governors as any[]} />
+      </div>
+
+      {/* Interactive Map */}
+      <div className="glass-card rounded-xl p-4 mb-6">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Interactive Election Map</h2>
+          {selectedState && (
+            <button onClick={() => setSelectedState(null)} className="text-xs text-primary hover:underline">
+              Clear filter ({selectedState})
+            </button>
+          )}
+        </div>
+        {/* Full geographic map on desktop, simplified on mobile */}
+        <div className="hidden md:block">
+          <USMapFull
+            raceData={mapData}
+            onStateClick={(id) => setSelectedState(prev => prev === id ? null : id)}
+            selectedState={selectedState}
+          />
+        </div>
+        <div className="md:hidden">
+          <USMap
+            raceData={mapData}
+            onStateClick={(id) => setSelectedState(prev => prev === id ? null : id)}
+            selectedState={selectedState}
+          />
+        </div>
       </div>
 
       {/* Scoreboard */}
@@ -116,7 +184,7 @@ function ScoreCard({ label, value, color }: { label: string; value: number; colo
 function RaceGrid({ races, chamber }: { races: any[]; chamber: string }) {
   if (races.length === 0) return <p className="text-center text-muted-foreground py-8">No races match your filters.</p>;
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
       {races.map((race) => (
         <div key={race.id} className="glass-card rounded-lg p-4">
           <div className="flex items-center justify-between mb-2">

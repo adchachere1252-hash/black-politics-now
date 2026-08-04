@@ -1,13 +1,14 @@
 import { trpc } from "@/lib/trpc";
 import { useAudio } from "@/contexts/AudioContext";
 import { useState, useMemo } from "react";
-import { Play, Pause, Search, ChevronDown, ChevronUp } from "lucide-react";
+import { Play, Pause, Search, ChevronDown, ChevronUp, FileText, X } from "lucide-react";
 
 export default function Podcast() {
   const { data: episodes = [], isLoading } = trpc.podcast.getEpisodes.useQuery();
   const { play, pause, isPlaying, currentTrack, voicePreference, setVoicePreference } = useAudio();
   const [expandedEp, setExpandedEp] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [scriptDrawer, setScriptDrawer] = useState<{ label: string; script: string } | null>(null);
 
   const filteredEpisodes = useMemo(() => {
     if (!searchQuery) return episodes as any[];
@@ -111,6 +112,15 @@ export default function Podcast() {
                           </div>
                           <span className="text-xs text-muted-foreground">{seg.durationLabel}</span>
                           {seg.isBreaking && <span className="text-xs bg-destructive/20 text-destructive px-1.5 py-0.5 rounded">BREAKING</span>}
+                          {seg.script && (
+                            <button
+                              onClick={(e) => { e.stopPropagation(); setScriptDrawer({ label: seg.label, script: seg.script }); }}
+                              className="p-1 rounded hover:bg-muted transition-colors"
+                              title="Read script"
+                            >
+                              <FileText size={12} className="text-muted-foreground hover:text-primary" />
+                            </button>
+                          )}
                           <Play size={12} className="text-muted-foreground" />
                         </button>
                       );
@@ -123,6 +133,31 @@ export default function Podcast() {
         })}
       </div>
       {filteredEpisodes.length === 0 && <p className="text-center text-muted-foreground py-8">No episodes match your search.</p>}
+
+      {/* Script Drawer */}
+      {scriptDrawer && (
+        <div className="fixed inset-0 z-50 flex justify-end">
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setScriptDrawer(null)} />
+          <div className="relative w-full max-w-lg bg-card border-l border-border shadow-2xl overflow-y-auto animate-in slide-in-from-right duration-300">
+            <div className="sticky top-0 bg-card border-b border-border p-4 flex items-center justify-between z-10">
+              <div className="flex items-center gap-2">
+                <FileText size={16} className="text-primary" />
+                <h3 className="text-sm font-bold">{scriptDrawer.label}</h3>
+              </div>
+              <button onClick={() => setScriptDrawer(null)} className="p-1.5 rounded-lg hover:bg-muted transition-colors">
+                <X size={16} />
+              </button>
+            </div>
+            <div className="p-6">
+              <div className="prose prose-invert prose-sm max-w-none">
+                {scriptDrawer.script.split("\n").map((line, i) => (
+                  <p key={i} className="text-sm text-foreground/90 leading-relaxed mb-3">{line || "\u00A0"}</p>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

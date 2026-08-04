@@ -5,6 +5,7 @@ import { publicProcedure, protectedProcedure, adminProcedure, router } from "./_
 import { z } from "zod";
 import { getEpisodesFormatted, subscribeEmail, unsubscribeEmail, getPipelineRuns } from "./podcastDb";
 import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateReferendum } from "./electionDb";
+import { fetchWithCache } from "./newsCache";
 
 export const appRouter = router({
   system: systemRouter,
@@ -68,28 +69,24 @@ export const appRouter = router({
         let url = `https://blkpoliticsnow.com/wp-json/wp/v2/posts?_embed&per_page=${perPage}&page=${page}`;
         if (category) url += `&categories=${category}`;
         try {
-          const res = await fetch(url, { headers: { "User-Agent": "BlackPoliticsNow/1.0" } });
-          if (!res.ok) return { posts: [], total: 0, totalPages: 0 };
-          const posts = await res.json();
-          const total = parseInt(res.headers.get("X-WP-Total") ?? "0");
-          const totalPages = parseInt(res.headers.get("X-WP-TotalPages") ?? "0");
+          const { data: posts, headers } = await fetchWithCache(url);
+          const total = parseInt(headers.get("X-WP-Total") ?? "0") || posts.length;
+          const totalPages = parseInt(headers.get("X-WP-TotalPages") ?? "0") || 1;
           return { posts, total, totalPages };
         } catch { return { posts: [], total: 0, totalPages: 0 }; }
       }),
     categories: publicProcedure.query(async () => {
       try {
-        const res = await fetch("https://blkpoliticsnow.com/wp-json/wp/v2/categories?per_page=50", { headers: { "User-Agent": "BlackPoliticsNow/1.0" } });
-        if (!res.ok) return [];
-        return res.json();
+        const { data } = await fetchWithCache("https://blkpoliticsnow.com/wp-json/wp/v2/categories?per_page=50");
+        return data;
       } catch { return []; }
     }),
     search: publicProcedure
       .input(z.object({ query: z.string().min(1).max(100) }))
       .query(async ({ input }) => {
         try {
-          const res = await fetch(`https://blkpoliticsnow.com/wp-json/wp/v2/posts?_embed&search=${encodeURIComponent(input.query)}&per_page=10`, { headers: { "User-Agent": "BlackPoliticsNow/1.0" } });
-          if (!res.ok) return [];
-          return res.json();
+          const { data } = await fetchWithCache(`https://blkpoliticsnow.com/wp-json/wp/v2/posts?_embed&search=${encodeURIComponent(input.query)}&per_page=10`);
+          return data;
         } catch { return []; }
       }),
   }),
@@ -104,9 +101,8 @@ export const appRouter = router({
           searchRaces(q),
           (async () => {
             try {
-              const res = await fetch(`https://blkpoliticsnow.com/wp-json/wp/v2/posts?_embed&search=${encodeURIComponent(q)}&per_page=5`, { headers: { "User-Agent": "BlackPoliticsNow/1.0" } });
-              if (!res.ok) return [];
-              return res.json();
+              const { data } = await fetchWithCache(`https://blkpoliticsnow.com/wp-json/wp/v2/posts?_embed&search=${encodeURIComponent(q)}&per_page=5`);
+              return data;
             } catch { return []; }
           })(),
           getEpisodesFormatted(),

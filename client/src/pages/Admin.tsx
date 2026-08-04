@@ -1,8 +1,8 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { startLogin } from "@/const";
-import { useState } from "react";
-import { Shield, Radio, MapPin, Users } from "lucide-react";
+import { useState, useMemo } from "react";
+import { Shield, Radio, MapPin, Users, Save, Check, Search } from "lucide-react";
 
 type AdminTab = "overview" | "podcast" | "elections" | "audience";
 
@@ -109,12 +109,259 @@ function PodcastOpsTab() {
   );
 }
 
+const RATINGS = ["Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R"];
+
 function ElectionOpsTab() {
+  const [chamber, setChamber] = useState<"senate" | "house" | "governors" | "referendums">("senate");
+  const [houseSearch, setHouseSearch] = useState("");
+  const { data: senateRaces = [] } = trpc.election.senate.useQuery();
+  const { data: houseRaces = [] } = trpc.election.house.useQuery();
+  const { data: governors = [] } = trpc.election.governors.useQuery();
+  const { data: referendums = [] } = trpc.election.referendums.useQuery();
+
+  const utils = trpc.useUtils();
+  const updateSenate = trpc.election.updateSenate.useMutation({ onSuccess: () => utils.election.senate.invalidate() });
+  const updateHouse = trpc.election.updateHouse.useMutation({ onSuccess: () => utils.election.house.invalidate() });
+  const updateGovernor = trpc.election.updateGovernor.useMutation({ onSuccess: () => utils.election.governors.invalidate() });
+  const updateReferendum = trpc.election.updateReferendum.useMutation({ onSuccess: () => utils.election.referendums.invalidate() });
+
   return (
     <div>
-      <h2 className="text-lg font-bold mb-4">Election Data Management</h2>
-      <p className="text-muted-foreground text-sm">Use the Election Center page to view race data. Admin editing features coming soon.</p>
-      <p className="text-xs text-muted-foreground mt-2">Tip: Race updates can be made via the database panel in Settings.</p>
+      <h2 className="text-lg font-bold mb-4">Election Data Editor</h2>
+      <p className="text-xs text-muted-foreground mb-4">Edit race ratings, vote totals, and call winners. Changes save immediately.</p>
+
+      <div className="flex gap-1 bg-muted rounded-lg p-1 mb-4 w-fit">
+        {(["senate", "house", "governors", "referendums"] as const).map(c => (
+          <button key={c} onClick={() => setChamber(c)} className={`px-3 py-1.5 rounded-md text-xs font-medium capitalize transition-colors ${chamber === c ? "bg-background text-foreground shadow-sm" : "text-muted-foreground"}`}>
+            {c}
+          </button>
+        ))}
+      </div>
+
+      {chamber === "senate" && (
+        <div className="space-y-2 max-h-[60vh] overflow-y-auto">
+          {(senateRaces as any[]).map((race: any) => (
+            <RaceEditor
+              key={race.id}
+              race={race}
+              onSave={(data) => updateSenate.mutate({ id: race.id, data })}
+              saving={updateSenate.isPending}
+            />
+          ))}
+        </div>
+      )}
+      {chamber === "house" && (
+        <div>
+          <div className="relative mb-3">
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <input
+              value={houseSearch}
+              onChange={e => setHouseSearch(e.target.value)}
+              placeholder="Search by state or district..."
+              className="w-full pl-8 pr-3 py-2 bg-muted rounded-lg text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+            />
+          </div>
+          <div className="space-y-2 max-h-[60vh] overflow-y-auto">
+          {(houseRaces as any[]).filter((r: any) => {
+            if (!houseSearch) return true;
+            const q = houseSearch.toLowerCase();
+            return r.stateName?.toLowerCase().includes(q) || r.stateCode?.toLowerCase().includes(q) || `${r.stateName} ${r.district}`.toLowerCase().includes(q) || r.candidate1Name?.toLowerCase().includes(q) || r.candidate2Name?.toLowerCase().includes(q);
+          }).map((race: any) => (
+            <RaceEditor
+              key={race.id}
+              race={race}
+              onSave={(data) => updateHouse.mutate({ id: race.id, data })}
+              saving={updateHouse.isPending}
+              showDistrict
+            />
+          ))}
+          </div>
+        </div>
+      )}
+      {chamber === "governors" && (
+        <div className="space-y-2 max-h-[60vh] overflow-y-auto">
+          {(governors as any[]).map((race: any) => (
+            <GovEditor
+              key={race.id}
+              race={race}
+              onSave={(data) => updateGovernor.mutate({ id: race.id, data })}
+              saving={updateGovernor.isPending}
+            />
+          ))}
+        </div>
+      )}
+      {chamber === "referendums" && (
+        <div className="space-y-2 max-h-[60vh] overflow-y-auto">
+          {(referendums as any[]).map((ref: any) => (
+            <RefEditor
+              key={ref.id}
+              referendum={ref}
+              onSave={(data) => updateReferendum.mutate({ id: ref.id, data })}
+              saving={updateReferendum.isPending}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function RaceEditor({ race, onSave, saving, showDistrict }: { race: any; onSave: (data: any) => void; saving: boolean; showDistrict?: boolean }) {
+  const [rating, setRating] = useState(race.rating ?? "");
+  const [calledWinner, setCalledWinner] = useState(race.calledWinner ?? "");
+  const [calledParty, setCalledParty] = useState(race.calledParty ?? "");
+  const [pctReporting, setPctReporting] = useState(race.pctReporting?.toString() ?? "0");
+  const [votes1, setVotes1] = useState(race.candidate1Votes?.toString() ?? "0");
+  const [votes2, setVotes2] = useState(race.candidate2Votes?.toString() ?? "0");
+  const [saved, setSaved] = useState(false);
+
+  const handleSave = () => {
+    onSave({
+      rating: rating || null,
+      calledWinner: calledWinner || null,
+      calledParty: calledParty || null,
+      pctReporting: parseFloat(pctReporting) || 0,
+      candidate1Votes: parseInt(votes1) || 0,
+      candidate2Votes: parseInt(votes2) || 0,
+    });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  return (
+    <div className="glass-card rounded-lg p-3">
+      <div className="flex items-center gap-3 flex-wrap">
+        <span className="text-sm font-bold min-w-[120px]">
+          {race.stateName}{showDistrict && race.district ? ` - D${race.district}` : ""}
+        </span>
+        <select value={rating} onChange={e => setRating(e.target.value)} className="bg-muted rounded px-2 py-1 text-xs">
+          <option value="">No Rating</option>
+          {RATINGS.map(r => <option key={r} value={r}>{r}</option>)}
+        </select>
+        <input
+          value={calledWinner}
+          onChange={e => setCalledWinner(e.target.value)}
+          placeholder="Called winner"
+          className="bg-muted rounded px-2 py-1 text-xs w-28"
+        />
+        <select value={calledParty} onChange={e => setCalledParty(e.target.value)} className="bg-muted rounded px-2 py-1 text-xs">
+          <option value="">Party</option>
+          <option value="D">D</option>
+          <option value="R">R</option>
+          <option value="I">I</option>
+        </select>
+        <div className="flex items-center gap-1">
+          <input
+            type="number"
+            min="0"
+            max="100"
+            step="0.1"
+            value={pctReporting}
+            onChange={e => setPctReporting(e.target.value)}
+            className="bg-muted rounded px-2 py-1 text-xs w-16"
+          />
+          <span className="text-xs text-muted-foreground">%</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <input
+            type="number"
+            min="0"
+            value={votes1}
+            onChange={e => setVotes1(e.target.value)}
+            placeholder="Votes D"
+            className="bg-muted rounded px-2 py-1 text-xs w-20"
+          />
+          <span className="text-xs text-muted-foreground">vs</span>
+          <input
+            type="number"
+            min="0"
+            value={votes2}
+            onChange={e => setVotes2(e.target.value)}
+            placeholder="Votes R"
+            className="bg-muted rounded px-2 py-1 text-xs w-20"
+          />
+        </div>
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className="ml-auto flex items-center gap-1 px-2 py-1 rounded bg-primary/20 text-primary text-xs hover:bg-primary/30 transition-colors disabled:opacity-50"
+        >
+          {saved ? <Check size={12} /> : <Save size={12} />}
+          {saved ? "Saved" : "Save"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function GovEditor({ race, onSave, saving }: { race: any; onSave: (data: any) => void; saving: boolean }) {
+  const [rating, setRating] = useState(race.rating ?? "");
+  const [calledWinner, setCalledWinner] = useState(race.calledWinner ?? "");
+  const [saved, setSaved] = useState(false);
+
+  const handleSave = () => {
+    onSave({ rating: rating || null, calledWinner: calledWinner || null });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  return (
+    <div className="glass-card rounded-lg p-3">
+      <div className="flex items-center gap-3 flex-wrap">
+        <span className="text-sm font-bold min-w-[120px]">{race.stateName}</span>
+        <span className="text-xs text-muted-foreground">{race.demCandidate ?? "TBD"} (D) vs {race.repCandidate ?? "TBD"} (R)</span>
+        <select value={rating} onChange={e => setRating(e.target.value)} className="bg-muted rounded px-2 py-1 text-xs">
+          <option value="">No Rating</option>
+          {RATINGS.map(r => <option key={r} value={r}>{r}</option>)}
+        </select>
+        <input
+          value={calledWinner}
+          onChange={e => setCalledWinner(e.target.value)}
+          placeholder="Called winner"
+          className="bg-muted rounded px-2 py-1 text-xs w-28"
+        />
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className="ml-auto flex items-center gap-1 px-2 py-1 rounded bg-primary/20 text-primary text-xs hover:bg-primary/30 transition-colors disabled:opacity-50"
+        >
+          {saved ? <Check size={12} /> : <Save size={12} />}
+          {saved ? "Saved" : "Save"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function RefEditor({ referendum, onSave, saving }: { referendum: any; onSave: (data: any) => void; saving: boolean }) {
+  const [result, setResult] = useState(referendum.result ?? "");
+  const [saved, setSaved] = useState(false);
+
+  const handleSave = () => {
+    onSave({ result: result || null });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  return (
+    <div className="glass-card rounded-lg p-3">
+      <div className="flex items-center gap-3 flex-wrap">
+        <span className="text-sm font-bold min-w-[120px]">{referendum.stateName} - {referendum.measureId}</span>
+        <span className="text-xs text-muted-foreground truncate max-w-[200px]">{referendum.title}</span>
+        <select value={result} onChange={e => setResult(e.target.value)} className="bg-muted rounded px-2 py-1 text-xs">
+          <option value="">Pending</option>
+          <option value="Passed">Passed</option>
+          <option value="Failed">Failed</option>
+        </select>
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className="ml-auto flex items-center gap-1 px-2 py-1 rounded bg-primary/20 text-primary text-xs hover:bg-primary/30 transition-colors disabled:opacity-50"
+        >
+          {saved ? <Check size={12} /> : <Save size={12} />}
+          {saved ? "Saved" : "Save"}
+        </button>
+      </div>
     </div>
   );
 }

@@ -9,10 +9,10 @@
 - [x] Seed podcast data from daily-podcast repo (82 episodes, 1144 segments from live API)
 
 ## Election Center
-- [ ] Interactive U.S. state-by-state SVG map with AP-style race ratings colors (future enhancement)
+- [x] Interactive U.S. state-by-state SVG map with AP-style race ratings colors
 - [x] Race detail cards (candidates, votes, pct reporting, called winner)
 - [x] Live seat scoreboard (Senate + House)
-- [ ] Results ticker (scrolling called races) (future enhancement)
+- [x] Results ticker (scrolling called races)
 - [x] Referendum tracking (pass/fail status, categories)
 - [x] Race search tool
 - [x] Governor races view
@@ -21,15 +21,15 @@
 - [x] Episode player page with 12-topic segment list
 - [x] Andrew/Jenny dual-voice switcher (names preserved)
 - [x] Episode search/filter
-- [ ] Script drawer (slide-out script reader)
+- [x] Script drawer (slide-out script reader)
 - [x] Episode archive browser
-- [ ] Podcast RSS feed endpoint (/api/rss)
+- [x] Podcast RSS feed endpoint (/api/rss)
 
 ## News (WordPress Headless)
 - [x] WordPress REST API integration (blkpoliticsnow.com)
 - [x] News feed page with category display
 - [x] Article cards with dates, excerpts, links to full articles
-- [ ] Server-side caching of WP API responses (future optimization)
+- [x] Server-side caching of WP API responses
 
 ## Unified Experience
 - [x] Unified top navigation (News, Election Map, Podcast, Archive) with BPN branding
@@ -41,13 +41,13 @@
 - [x] Admin gate (role-based auth, no public exposure)
 - [x] Overview tab (stats across all three platforms)
 - [x] Podcast Pipeline tab (monitor pipeline runs)
-- [ ] Election Data editor tab (vote totals, ratings, call winners)
+- [x] Election Data editor tab (vote totals, ratings, call winners)
 - [x] Audience/analytics tab (placeholder)
 
 ## Notifications
-- [ ] Subscriber signup (email collection)
-- [ ] Notify on new podcast episode published
-- [ ] Notify on major race called
+- [ ] Subscriber signup (email collection) — DEFERRED per user request
+- [ ] Notify on new podcast episode published — DEFERRED per user request
+- [ ] Notify on major race called — DEFERRED per user request
 
 ## QA / Delivery
 - [x] Vitest tests for routers (5 passing)
