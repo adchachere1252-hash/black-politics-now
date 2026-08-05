@@ -30,9 +30,12 @@ export function ResultsTicker({ senateRaces, houseRaces, governors }: ResultsTic
 
   if (calledRaces.length === 0) {
     return (
-      <div className="w-full overflow-hidden bg-muted/50 rounded-lg py-2 px-4">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-primary uppercase tracking-wider whitespace-nowrap">Results Ticker</span>
+      <div className="w-full overflow-hidden bg-muted/30 border border-border/50 rounded-lg py-2 px-4">
+        <div className="flex items-center gap-3">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-destructive/20 border border-destructive/40 text-[10px] font-black text-destructive uppercase tracking-widest whitespace-nowrap">
+            <span className="w-1.5 h-1.5 rounded-full bg-destructive animate-pulse" />
+            RESULTS
+          </span>
           <span className="text-xs text-muted-foreground">No races called yet — results will scroll here as winners are declared</span>
         </div>
       </div>
@@ -40,9 +43,12 @@ export function ResultsTicker({ senateRaces, houseRaces, governors }: ResultsTic
   }
 
   return (
-    <div className="w-full overflow-hidden bg-muted/50 rounded-lg py-2 relative">
+    <div className="w-full overflow-hidden bg-muted/30 border border-border/50 rounded-lg py-2 relative">
       <div className="flex items-center">
-        <span className="text-xs font-bold text-primary uppercase tracking-wider px-4 whitespace-nowrap z-10 bg-muted/50">Results</span>
+        <span className="inline-flex items-center gap-1 px-3 py-0.5 whitespace-nowrap z-10 bg-muted/80 border-r border-border/50">
+          <span className="w-1.5 h-1.5 rounded-full bg-destructive animate-pulse" />
+          <span className="text-[10px] font-black text-destructive uppercase tracking-widest">RESULTS</span>
+        </span>
         <div className="ticker-scroll flex gap-6">
           {[...calledRaces, ...calledRaces].map((race, i) => (
             <span key={i} className="whitespace-nowrap text-xs">
