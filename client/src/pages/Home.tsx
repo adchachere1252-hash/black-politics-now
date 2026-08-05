@@ -106,13 +106,13 @@ export default function Home() {
         <section className="border-r border-border/30 p-5 overflow-y-auto">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-bold uppercase tracking-wider">Latest News</h2>
-            <Link href="/news" className="text-xs text-primary hover:underline flex items-center gap-1">View All <ArrowRight size={12} /></Link>
+            <a href="https://blkpoliticsnow.com" target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline flex items-center gap-1">View All <ArrowRight size={12} /></a>
           </div>
           {newsLoading ? (
-            <div className="space-y-4">{[...Array(5)].map((_, i) => <div key={i} className="h-20 bg-muted rounded animate-pulse" />)}</div>
+            <div className="space-y-3">{[...Array(7)].map((_, i) => <div key={i} className="h-14 bg-muted rounded animate-pulse" />)}</div>
           ) : (
-            <div className="space-y-4">
-              {newsData?.posts?.slice(0, 6).map((post: any) => {
+            <div className="space-y-2">
+              {newsData?.posts?.slice(0, 8).map((post: any) => {
                 const thumbnail = post._embedded?.["wp:featuredmedia"]?.[0]?.media_details?.sizes?.thumbnail?.source_url
                   || post._embedded?.["wp:featuredmedia"]?.[0]?.source_url;
                 const category = post._embedded?.["wp:term"]?.[0]?.[0]?.name;
@@ -122,19 +122,19 @@ export default function Home() {
                     href={post.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex gap-3 p-2 rounded-lg hover:bg-muted/30 transition-colors no-underline group"
+                    className="flex gap-2 p-1.5 rounded-lg hover:bg-muted/30 transition-colors no-underline group"
                   >
                     {thumbnail && (
-                      <img src={thumbnail} alt="" className="w-20 h-16 object-cover rounded-md flex-shrink-0" />
+                      <img src={thumbnail} alt="" className="w-14 h-11 object-cover rounded flex-shrink-0" />
                     )}
                     <div className="flex-1 min-w-0">
                       {category && (
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-primary">{category}</span>
+                        <span className="text-[9px] font-bold uppercase tracking-wider text-primary">{category}</span>
                       )}
-                      <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-tight mt-0.5"
+                      <p className="text-xs font-medium text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-tight"
                         dangerouslySetInnerHTML={{ __html: post.title?.rendered ?? "" }}
                       />
-                      <p className="text-[10px] text-muted-foreground mt-1">
+                      <p className="text-[9px] text-muted-foreground mt-0.5">
                         {new Date(post.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                       </p>
                     </div>

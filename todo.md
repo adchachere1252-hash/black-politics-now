@@ -125,3 +125,19 @@
 - House: 435 races, 0 same-party errors (only 12 legitimate CA/WA top-two)
 - CBC: 71 members, proper status breakdown
 - All 5 vitest tests passing
+
+## User Requests (Aug 5)
+- [x] CBC map should show only CBC member states/districts, not full election map
+- [x] Fix Ohio map color — verified Toss-up (purple) is CORRECT for both Senate and Governor 
+- [x] Map click popup: show all House elections for a state when clicked (Dialog popup)
+- [x] Senate Dem section on map — replaced with tab-aware rating counts (Safe D/Lean D/Toss-up/Lean R/Safe R)
+- [x] Daily Intelligence Brief: generated 9 episodes (Jul 28-Aug 5) with AI scripts based on real news
+- [x] Make Latest News font smaller to fit more headlines (text-xs, 8 items, compact layout)
+- [x] Investigate automating map/data updates — documented Heartbeat cron approach
+- [x] Redesign "Latest News" click-through to upscale BPN homepage (View All → blkpoliticsnow.com)
+- [x] Update Chuck Edwards (NC-11) — race updated to Toss-up, Edwards withdrew
+- [x] Full data verification against both GitHub repos — all data accounted for
+      Note: Core data (35 senate, 435 house, 36 gov, 148 referendums, 91 episodes) all present. Omitted tables: senators (bios in race records), pinned_key_races (using ticker), fec_fundraising (no UI), candidate_photos (inline), episode_notes (not used)
+- [x] Make stars small and not glaring (completed in previous checkpoint)
+- [x] Michigan Senate primary: Updated to Abdul El-Sayed (D) after Aug 5 primary win
+      Note: "View All" links to blkpoliticsnow.com; individual article cards still link to their WordPress posts

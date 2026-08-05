@@ -5,9 +5,28 @@ import { Search, Star, Users, Scale, MapPin, AlertTriangle } from "lucide-react"
 import { USMap } from "@/components/USMap";
 import { USMapFull } from "@/components/USMapFull";
 import { ResultsTicker } from "@/components/ResultsTicker";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const RATINGS = ["All", "Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R"] as const;
 type ViewTab = "house" | "senate" | "governors" | "cbc" | "redistricting";
+
+// Helper to convert state name to state code
+const STATE_NAME_TO_CODE: Record<string, string> = {
+  "Alabama": "AL", "Alaska": "AK", "Arizona": "AZ", "Arkansas": "AR", "California": "CA",
+  "Colorado": "CO", "Connecticut": "CT", "Delaware": "DE", "District of Columbia": "DC", "Florida": "FL",
+  "Georgia": "GA", "Hawaii": "HI", "Idaho": "ID", "Illinois": "IL", "Indiana": "IN",
+  "Iowa": "IA", "Kansas": "KS", "Kentucky": "KY", "Louisiana": "LA", "Maine": "ME",
+  "Maryland": "MD", "Massachusetts": "MA", "Michigan": "MI", "Minnesota": "MN", "Mississippi": "MS",
+  "Missouri": "MO", "Montana": "MT", "Nebraska": "NE", "Nevada": "NV", "New Hampshire": "NH",
+  "New Jersey": "NJ", "New Mexico": "NM", "New York": "NY", "North Carolina": "NC", "North Dakota": "ND",
+  "Ohio": "OH", "Oklahoma": "OK", "Oregon": "OR", "Pennsylvania": "PA", "Rhode Island": "RI",
+  "South Carolina": "SC", "South Dakota": "SD", "Tennessee": "TN", "Texas": "TX", "Utah": "UT",
+  "Vermont": "VT", "Virginia": "VA", "Washington": "WA", "West Virginia": "WV", "Wisconsin": "WI",
+  "Wyoming": "WY"
+};
+function getStateCodeFromName(name: string): string | null {
+  return STATE_NAME_TO_CODE[name] ?? null;
+}
 
 // ─── Starfield Background ─────────────────────────────────────────────────────
 function Starfield() {
@@ -84,6 +103,8 @@ export default function Elections() {
   const [ratingFilter, setRatingFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedState, setSelectedState] = useState<string | null>(null);
+  const [statePopupOpen, setStatePopupOpen] = useState(false);
+  const [popupState, setPopupState] = useState<string | null>(null);
   const { theme } = useTheme();
 
   const { data: senateRaces = [] } = trpc.election.senate.useQuery();
@@ -94,20 +115,99 @@ export default function Elections() {
   const { data: scoreboard } = trpc.election.scoreboard.useQuery();
 
   // Build map data from senate races
+  // Build map data based on active tab
   const mapData = useMemo(() => {
     const data: Record<string, { rating: string | null; candidate1: string; candidate2: string; calledWinner?: string | null }> = {};
-    (senateRaces as any[]).forEach((r: any) => {
-      if (r.stateCode) {
-        data[r.stateCode] = {
-          rating: r.rating,
-          candidate1: `${r.candidate1Name ?? "TBD"} (${r.candidate1Party ?? "?"})`,
-          candidate2: `${r.candidate2Name ?? "TBD"} (${r.candidate2Party ?? "?"})`,
-          calledWinner: r.calledWinner,
+    if (tab === "senate") {
+      (senateRaces as any[]).forEach((r: any) => {
+        if (r.stateCode) {
+          data[r.stateCode] = {
+            rating: r.rating,
+            candidate1: `${r.candidate1Name ?? "TBD"} (${r.candidate1Party ?? "?"})`,
+            candidate2: `${r.candidate2Name ?? "TBD"} (${r.candidate2Party ?? "?"})`,
+            calledWinner: r.calledWinner,
+          };
+        }
+      });
+    } else if (tab === "governors") {
+      (governors as any[]).forEach((r: any) => {
+        if (r.stateCode) {
+          data[r.stateCode] = {
+            rating: r.rating,
+            candidate1: r.demCandidate ? `${r.demCandidate} (D)` : "Dem: Pending",
+            candidate2: r.repCandidate ? `${r.repCandidate} (R)` : "Rep: Pending",
+            calledWinner: r.calledWinner,
+          };
+        }
+      });
+    } else if (tab === "house") {
+      // Aggregate House races by state - show most competitive rating
+      const stateRatings: Record<string, string[]> = {};
+      (houseRaces as any[]).forEach((r: any) => {
+        if (r.stateCode) {
+          if (!stateRatings[r.stateCode]) stateRatings[r.stateCode] = [];
+          if (r.rating) stateRatings[r.stateCode].push(r.rating);
+        }
+      });
+      Object.entries(stateRatings).forEach(([code, ratings]) => {
+        const priority = ["Toss-up", "Lean D", "Lean R", "Likely D", "Likely R", "Solid D", "Solid R"];
+        const best = priority.find(p => ratings.includes(p)) ?? ratings[0] ?? null;
+        const dCount = ratings.filter(r => r.includes("D")).length;
+        const rCount = ratings.filter(r => r.includes("R")).length;
+        const tossups = ratings.filter(r => r === "Toss-up").length;
+        data[code] = {
+          rating: best,
+          candidate1: `${ratings.length} districts`,
+          candidate2: `D: ${dCount} | R: ${rCount}${tossups ? ` | Toss-up: ${tossups}` : ""}`,
+          calledWinner: null,
         };
-      }
-    });
+      });
+    } else if (tab === "cbc") {
+      // Show CBC member states highlighted in blue
+      const cbcStates: Record<string, number> = {};
+      (cbcMembers as any[]).forEach((m: any) => {
+        const stateCode = getStateCodeFromName(m.state);
+        if (stateCode) {
+          cbcStates[stateCode] = (cbcStates[stateCode] || 0) + 1;
+        }
+      });
+      Object.entries(cbcStates).forEach(([code, count]) => {
+        data[code] = {
+          rating: "Solid D", // Blue to highlight CBC presence
+          candidate1: `${count} CBC member${count > 1 ? "s" : ""}`,
+          candidate2: "Congressional Black Caucus",
+          calledWinner: null,
+        };
+      });
+    } else if (tab === "redistricting") {
+      // Show redistricting states
+      (redistrictingStates as any[]).forEach((s: any) => {
+        const code = getStateCodeFromName(s.stateName);
+        if (code) {
+          data[code] = {
+            rating: s.impact === "Gains Black seats" ? "Solid D" : s.impact === "Loses Black seats" ? "Solid R" : "Toss-up",
+            candidate1: s.impact || "Redistricting",
+            candidate2: `${s.affectedDistricts || 0} affected districts`,
+            calledWinner: null,
+          };
+        }
+      });
+    }
     return data;
-  }, [senateRaces]);
+  }, [senateRaces, houseRaces, governors, cbcMembers, redistrictingStates, tab]);
+
+  // Get House races for a specific state (for popup)
+  const popupHouseRaces = useMemo(() => {
+    if (!popupState) return [];
+    return (houseRaces as any[]).filter(r => r.stateCode === popupState);
+  }, [houseRaces, popupState]);
+
+  // Handle state click - open popup with House races
+  const handleStateClick = (stateId: string) => {
+    setSelectedState(prev => prev === stateId ? null : stateId);
+    setPopupState(stateId);
+    setStatePopupOpen(true);
+  };
 
   const filteredSenate = useMemo(() => {
     let races = senateRaces as any[];
@@ -236,14 +336,14 @@ export default function Elections() {
           <div className="hidden md:block">
             <USMapFull
               raceData={mapData}
-              onStateClick={(id) => setSelectedState(prev => prev === id ? null : id)}
+              onStateClick={handleStateClick}
               selectedState={selectedState}
             />
           </div>
           <div className="md:hidden">
             <USMap
               raceData={mapData}
-              onStateClick={(id) => setSelectedState(prev => prev === id ? null : id)}
+              onStateClick={handleStateClick}
               selectedState={selectedState}
             />
           </div>
@@ -259,14 +359,7 @@ export default function Elections() {
         </div>
 
         {/* Scoreboard */}
-        {scoreboard && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-            <ScoreCard label="Senate Dem" value={scoreboard.senate.dem} color="var(--color-solid-d)" />
-            <ScoreCard label="Senate Rep" value={scoreboard.senate.rep} color="var(--color-solid-r)" />
-            <ScoreCard label="House Dem" value={scoreboard.house.dem} color="var(--color-solid-d)" />
-            <ScoreCard label="House Rep" value={scoreboard.house.rep} color="var(--color-solid-r)" />
-          </div>
-        )}
+        <TabScoreboard tab={tab} senateRaces={senateRaces as any[]} houseRaces={houseRaces as any[]} governors={governors as any[]} cbcMembers={cbcMembers as any[]} redistrictingStates={redistrictingStates as any[]} />
 
         {/* Race list */}
         {tab === "senate" && <RaceGrid races={filteredSenate} chamber="senate" />}
@@ -274,6 +367,36 @@ export default function Elections() {
         {tab === "governors" && <GovernorGrid races={filteredGovs} />}
         {tab === "cbc" && <CbcGrid members={filteredCbc} />}
         {tab === "redistricting" && <RedistrictingGrid states={filteredRedistricting} />}
+
+        {/* State popup dialog showing House races */}
+        <Dialog open={statePopupOpen} onOpenChange={setStatePopupOpen}>
+          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>{popupState ? STATE_NAME_TO_CODE[popupState] ? Object.entries(STATE_NAME_TO_CODE).find(([,v]) => v === popupState)?.[0] : popupState : ""} — House Races</DialogTitle>
+            </DialogHeader>
+            {popupHouseRaces.length > 0 ? (
+              <div className="space-y-3">
+                {popupHouseRaces.map((race: any) => (
+                  <div key={race.id} className="border border-border rounded-lg p-3">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-bold text-sm">District {race.district}</span>
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${race.rating === "Toss-up" ? "bg-purple-500/20 text-purple-400" : race.rating?.includes("D") ? "bg-blue-500/20 text-blue-400" : "bg-red-500/20 text-red-400"}`}>
+                        {race.rating}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-blue-400">{race.candidate1Name} ({race.candidate1Party})</span>
+                      <span className="text-red-400">{race.candidate2Name} ({race.candidate2Party})</span>
+                    </div>
+                    {race.notes && <p className="text-xs text-muted-foreground mt-1">{race.notes}</p>}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-muted-foreground text-sm">No House races found for this state.</p>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
@@ -301,18 +424,101 @@ function ScoreCard({ label, value, color }: { label: string; value: number; colo
   );
 }
 
+function TabScoreboard({ tab, senateRaces, houseRaces, governors, cbcMembers, redistrictingStates }: { tab: ViewTab; senateRaces: any[]; houseRaces: any[]; governors: any[]; cbcMembers: any[]; redistrictingStates: any[] }) {
+  if (tab === "senate") {
+    const solidD = senateRaces.filter(r => r.rating === "Solid D").length;
+    const leanD = senateRaces.filter(r => r.rating === "Lean D" || r.rating === "Likely D").length;
+    const tossup = senateRaces.filter(r => r.rating === "Toss-up").length;
+    const leanR = senateRaces.filter(r => r.rating === "Lean R" || r.rating === "Likely R").length;
+    const solidR = senateRaces.filter(r => r.rating === "Solid R").length;
+    return (
+      <div className="grid grid-cols-5 gap-2 mb-6">
+        <ScoreCard label="Safe D" value={solidD} color="var(--color-solid-d)" />
+        <ScoreCard label="Lean/Likely D" value={leanD} color="var(--color-lean-d)" />
+        <ScoreCard label="Toss-up" value={tossup} color="var(--color-tossup)" />
+        <ScoreCard label="Lean/Likely R" value={leanR} color="var(--color-lean-r)" />
+        <ScoreCard label="Safe R" value={solidR} color="var(--color-solid-r)" />
+      </div>
+    );
+  }
+  if (tab === "house") {
+    const solidD = houseRaces.filter(r => r.rating === "Solid D").length;
+    const leanD = houseRaces.filter(r => r.rating === "Lean D" || r.rating === "Likely D").length;
+    const tossup = houseRaces.filter(r => r.rating === "Toss-up").length;
+    const leanR = houseRaces.filter(r => r.rating === "Lean R" || r.rating === "Likely R").length;
+    const solidR = houseRaces.filter(r => r.rating === "Solid R").length;
+    return (
+      <div className="grid grid-cols-5 gap-2 mb-6">
+        <ScoreCard label="Safe D" value={solidD} color="var(--color-solid-d)" />
+        <ScoreCard label="Lean/Likely D" value={leanD} color="var(--color-lean-d)" />
+        <ScoreCard label="Toss-up" value={tossup} color="var(--color-tossup)" />
+        <ScoreCard label="Lean/Likely R" value={leanR} color="var(--color-lean-r)" />
+        <ScoreCard label="Safe R" value={solidR} color="var(--color-solid-r)" />
+      </div>
+    );
+  }
+  if (tab === "governors") {
+    const solidD = governors.filter(r => r.rating === "Solid D").length;
+    const leanD = governors.filter(r => r.rating === "Lean D" || r.rating === "Likely D").length;
+    const tossup = governors.filter(r => r.rating === "Toss-up").length;
+    const leanR = governors.filter(r => r.rating === "Lean R" || r.rating === "Likely R").length;
+    const solidR = governors.filter(r => r.rating === "Solid R").length;
+    return (
+      <div className="grid grid-cols-5 gap-2 mb-6">
+        <ScoreCard label="Safe D" value={solidD} color="var(--color-solid-d)" />
+        <ScoreCard label="Lean/Likely D" value={leanD} color="var(--color-lean-d)" />
+        <ScoreCard label="Toss-up" value={tossup} color="var(--color-tossup)" />
+        <ScoreCard label="Lean/Likely R" value={leanR} color="var(--color-lean-r)" />
+        <ScoreCard label="Safe R" value={solidR} color="var(--color-solid-r)" />
+      </div>
+    );
+  }
+  if (tab === "cbc") {
+    const running = cbcMembers.filter(m => m.status === "running").length;
+    const retiring = cbcMembers.filter(m => m.status === "retiring").length;
+    const higher = cbcMembers.filter(m => m.status === "running_for_governor" || m.status === "running_for_senate").length;
+    const lost = cbcMembers.filter(m => m.status === "lost_primary" || m.status === "resigned" || m.status === "deceased").length;
+    return (
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
+        <ScoreCard label="Running" value={running} color="#22c55e" />
+        <ScoreCard label="Retiring" value={retiring} color="#f59e0b" />
+        <ScoreCard label="Higher Office" value={higher} color="#a855f7" />
+        <ScoreCard label="Lost/Vacant" value={lost} color="#ef4444" />
+      </div>
+    );
+  }
+  if (tab === "redistricting") {
+    return (
+      <div className="grid grid-cols-3 gap-2 mb-6">
+        <ScoreCard label="States Affected" value={redistrictingStates.length} color="#7c3aed" />
+        <ScoreCard label="Gains Black Seats" value={redistrictingStates.filter(s => s.impact?.includes("Gain")).length} color="#22c55e" />
+        <ScoreCard label="Loses Black Seats" value={redistrictingStates.filter(s => s.impact?.includes("Los")).length} color="#ef4444" />
+      </div>
+    );
+  }
+  return null;
+}
+
 function RaceGrid({ races, chamber }: { races: any[]; chamber: string }) {
   if (races.length === 0) return <p className="text-center text-muted-foreground py-8">No races match your filters.</p>;
+  const [expandedId, setExpandedId] = useState<number | null>(null);
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
       {races.map((race) => (
-        <div key={race.id} className="glass-card rounded-lg p-4 hover:border-primary/30 transition-colors">
+        <div
+          key={race.id}
+          className="glass-card rounded-lg p-4 hover:border-primary/30 transition-colors cursor-pointer"
+          onClick={() => setExpandedId(expandedId === race.id ? null : race.id)}
+        >
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-bold">
               {race.stateName}
               {chamber === "house" && race.district ? ` - ${race.districtLabel || `District ${race.district}`}` : ""}
             </h3>
-            <RatingBadge rating={race.rating} />
+            <div className="flex items-center gap-2">
+              <RatingBadge rating={race.rating} />
+              <span className="text-xs text-muted-foreground">{expandedId === race.id ? "▲" : "▼"}</span>
+            </div>
           </div>
           <div className="flex justify-between text-xs text-muted-foreground mb-1">
             <span>{race.candidate1Name ?? "TBD"} ({race.candidate1Party ?? "?"})</span>
@@ -331,6 +537,38 @@ function RaceGrid({ races, chamber }: { races: any[]; chamber: string }) {
             <span>Status: {race.status}</span>
             {race.pctReporting != null && <span>{race.pctReporting}% reporting</span>}
           </div>
+          {/* Expanded detail section */}
+          {expandedId === race.id && (
+            <div className="mt-3 pt-3 border-t border-border/50 space-y-2 animate-in fade-in duration-200">
+              {race.incumbent && (
+                <div className="text-xs"><span className="text-muted-foreground font-medium">Incumbent:</span> <span className="text-foreground">{race.incumbent} ({race.incumbentParty}){race.incumbentRetiring ? " — Retiring" : ""}</span></div>
+              )}
+              {race.previousParty && (
+                <div className="text-xs"><span className="text-muted-foreground font-medium">Previous Party:</span> <span className="text-foreground">{race.previousParty}</span></div>
+              )}
+              {race.primaryDate && (
+                <div className="text-xs"><span className="text-muted-foreground font-medium">Primary Date:</span> <span className="text-foreground">{race.primaryDate}</span></div>
+              )}
+              {race.primaryWinner && (
+                <div className="text-xs"><span className="text-muted-foreground font-medium">Primary Winner:</span> <span className="text-foreground">{race.primaryWinner} ({race.primaryParty})</span></div>
+              )}
+              {race.candidate1Bio && (
+                <div className="text-xs"><span className="text-muted-foreground font-medium">{race.candidate1Name} Bio:</span> <span className="text-foreground">{race.candidate1Bio}</span></div>
+              )}
+              {race.candidate2Bio && (
+                <div className="text-xs"><span className="text-muted-foreground font-medium">{race.candidate2Name} Bio:</span> <span className="text-foreground">{race.candidate2Bio}</span></div>
+              )}
+              {race.isSpecial && race.specialNote && (
+                <div className="text-xs"><span className="text-muted-foreground font-medium">Special Election:</span> <span className="text-foreground">{race.specialNote}</span></div>
+              )}
+              {race.notes && (
+                <div className="text-xs p-2 bg-muted/50 rounded mt-1"><span className="text-muted-foreground font-medium">Notes:</span> <span className="text-foreground">{race.notes}</span></div>
+              )}
+              {!race.incumbent && !race.notes && !race.candidate1Bio && !race.primaryWinner && (
+                <p className="text-xs text-muted-foreground italic">No additional details available.</p>
+              )}
+            </div>
+          )}
         </div>
       ))}
     </div>
@@ -339,13 +577,21 @@ function RaceGrid({ races, chamber }: { races: any[]; chamber: string }) {
 
 function GovernorGrid({ races }: { races: any[] }) {
   if (races.length === 0) return <p className="text-center text-muted-foreground py-8">No races match your filters.</p>;
+  const [expandedId, setExpandedId] = useState<number | null>(null);
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
       {races.map((race) => (
-        <div key={race.id} className="glass-card rounded-lg p-4 hover:border-primary/30 transition-colors">
+        <div
+          key={race.id}
+          className="glass-card rounded-lg p-4 hover:border-primary/30 transition-colors cursor-pointer"
+          onClick={() => setExpandedId(expandedId === race.id ? null : race.id)}
+        >
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-bold">{race.stateName}</h3>
-            <RatingBadge rating={race.rating} />
+            <div className="flex items-center gap-2">
+              <RatingBadge rating={race.rating} />
+              <span className="text-xs text-muted-foreground">{expandedId === race.id ? "▲" : "▼"}</span>
+            </div>
           </div>
           <div className="flex justify-between text-xs text-muted-foreground">
             <span>{race.demCandidate ?? "TBD"} (D)</span>
@@ -353,6 +599,26 @@ function GovernorGrid({ races }: { races: any[] }) {
           </div>
           {race.calledWinner && (
             <p className="text-xs text-primary mt-2 font-medium">Winner: {race.calledWinner}</p>
+          )}
+          {/* Expanded detail section */}
+          {expandedId === race.id && (
+            <div className="mt-3 pt-3 border-t border-border/50 space-y-2 animate-in fade-in duration-200">
+              {race.incumbent && (
+                <div className="text-xs"><span className="text-muted-foreground font-medium">Incumbent:</span> <span className="text-foreground">{race.incumbent} ({race.incumbentParty}){race.termLimited ? " — Term Limited" : ""}</span></div>
+              )}
+              {race.previousParty && (
+                <div className="text-xs"><span className="text-muted-foreground font-medium">Previous Party:</span> <span className="text-foreground">{race.previousParty}</span></div>
+              )}
+              {race.primaryDate && (
+                <div className="text-xs"><span className="text-muted-foreground font-medium">Primary Date:</span> <span className="text-foreground">{race.primaryDate}</span></div>
+              )}
+              {race.notes && (
+                <div className="text-xs p-2 bg-muted/50 rounded mt-1"><span className="text-muted-foreground font-medium">Notes:</span> <span className="text-foreground">{race.notes}</span></div>
+              )}
+              {!race.incumbent && !race.notes && !race.primaryDate && (
+                <p className="text-xs text-muted-foreground italic">No additional details available.</p>
+              )}
+            </div>
           )}
         </div>
       ))}
@@ -362,6 +628,7 @@ function GovernorGrid({ races }: { races: any[] }) {
 
 function CbcGrid({ members }: { members: any[] }) {
   if (members.length === 0) return <p className="text-center text-muted-foreground py-8">No CBC members match your search.</p>;
+  const [expandedId, setExpandedId] = useState<number | null>(null);
 
   const statusColors: Record<string, string> = {
     running: "bg-green-500/20 text-green-400",
@@ -416,12 +683,19 @@ function CbcGrid({ members }: { members: any[] }) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
         {members.map((m) => (
-          <div key={m.id} className="glass-card rounded-lg p-4 hover:border-primary/30 transition-colors">
+          <div
+            key={m.id}
+            className="glass-card rounded-lg p-4 hover:border-primary/30 transition-colors cursor-pointer"
+            onClick={() => setExpandedId(expandedId === m.id ? null : m.id)}
+          >
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-sm font-bold">{m.member}</h3>
-              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColors[m.status] ?? "bg-muted text-muted-foreground"}`}>
-                {statusLabels[m.status] ?? m.status}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColors[m.status] ?? "bg-muted text-muted-foreground"}`}>
+                  {statusLabels[m.status] ?? m.status}
+                </span>
+                <span className="text-xs text-muted-foreground">{expandedId === m.id ? "▲" : "▼"}</span>
+              </div>
             </div>
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <span className={`font-bold ${m.party === "D" ? "text-blue-400" : m.party === "R" ? "text-red-400" : "text-gray-400"}`}>
@@ -431,15 +705,24 @@ function CbcGrid({ members }: { members: any[] }) {
               <span>•</span>
               <span>{m.state}</span>
             </div>
-            <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
-              <span className="capitalize">{m.chamber}</span>
-              {!m.upIn2026 && <span className="text-gray-500">• Not up in 2026</span>}
-            </div>
-            {m.primaryResult && (
-              <p className="mt-2 text-xs text-green-400/80 italic">{m.primaryResult}</p>
-            )}
-            {m.notes && (
-              <p className="mt-1 text-xs text-muted-foreground/70">{m.notes}</p>
+            {/* Expanded detail section */}
+            {expandedId === m.id && (
+              <div className="mt-3 pt-3 border-t border-border/50 space-y-2 animate-in fade-in duration-200">
+                <div className="text-xs"><span className="text-muted-foreground font-medium">Chamber:</span> <span className="text-foreground capitalize">{m.chamber}</span></div>
+                <div className="text-xs"><span className="text-muted-foreground font-medium">Up in 2026:</span> <span className="text-foreground">{m.upIn2026 ? "Yes" : "No"}</span></div>
+                {m.generalOpponent && (
+                  <div className="text-xs"><span className="text-muted-foreground font-medium">General Election Opponent:</span> <span className="text-foreground">{m.generalOpponent}</span></div>
+                )}
+                {m.primaryResult && (
+                  <div className="text-xs"><span className="text-muted-foreground font-medium">Primary Result:</span> <span className="text-green-400">{m.primaryResult}</span></div>
+                )}
+                {m.notes && (
+                  <div className="text-xs p-2 bg-muted/50 rounded mt-1"><span className="text-muted-foreground font-medium">Notes:</span> <span className="text-foreground">{m.notes}</span></div>
+                )}
+                {!m.primaryResult && !m.notes && !m.generalOpponent && (
+                  <p className="text-xs text-muted-foreground italic">No additional details available.</p>
+                )}
+              </div>
             )}
           </div>
         ))}
@@ -450,45 +733,58 @@ function CbcGrid({ members }: { members: any[] }) {
 
 function RedistrictingGrid({ states }: { states: any[] }) {
   if (states.length === 0) return <p className="text-center text-muted-foreground py-8">No redistricting states match your search.</p>;
+  const [expandedId, setExpandedId] = useState<number | null>(null);
   return (
     <div className="grid grid-cols-1 gap-4">
       {states.map((s) => (
-        <div key={s.id} className="glass-card rounded-lg p-5 hover:border-primary/30 transition-colors">
+        <div
+          key={s.id}
+          className="glass-card rounded-lg p-5 hover:border-primary/30 transition-colors cursor-pointer"
+          onClick={() => setExpandedId(expandedId === s.id ? null : s.id)}
+        >
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-lg font-bold">{s.stateName} ({s.stateCode})</h3>
-            <span className={`text-xs px-3 py-1 rounded-full font-medium ${s.enacted ? "bg-green-500/20 text-green-400" : "bg-amber-500/20 text-amber-400"}`}>
-              {s.enacted ? "Enacted" : "Pending"}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className={`text-xs px-3 py-1 rounded-full font-medium ${s.enacted ? "bg-green-500/20 text-green-400" : "bg-amber-500/20 text-amber-400"}`}>
+                {s.enacted ? "Enacted" : "Pending"}
+              </span>
+              <span className="text-xs text-muted-foreground">{expandedId === s.id ? "▲" : "▼"}</span>
+            </div>
           </div>
           {s.reason && <p className="text-sm text-foreground/80 mb-2">{s.reason}</p>}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3">
-            {s.method && (
-              <div>
-                <p className="text-xs text-muted-foreground">Method</p>
-                <p className="text-sm font-medium">{s.method}</p>
+          {/* Expanded detail section */}
+          {expandedId === s.id && (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3">
+                {s.method && (
+                  <div>
+                    <p className="text-xs text-muted-foreground">Method</p>
+                    <p className="text-sm font-medium">{s.method}</p>
+                  </div>
+                )}
+                {s.delegationBefore && (
+                  <div>
+                    <p className="text-xs text-muted-foreground">Delegation Before</p>
+                    <p className="text-sm font-medium">{s.delegationBefore}</p>
+                  </div>
+                )}
+                {s.projectedImpact && (
+                  <div>
+                    <p className="text-xs text-muted-foreground">Projected Impact</p>
+                    <p className="text-sm font-medium text-primary">{s.projectedImpact}</p>
+                  </div>
+                )}
               </div>
-            )}
-            {s.delegationBefore && (
-              <div>
-                <p className="text-xs text-muted-foreground">Delegation Before</p>
-                <p className="text-sm font-medium">{s.delegationBefore}</p>
-              </div>
-            )}
-            {s.projectedImpact && (
-              <div>
-                <p className="text-xs text-muted-foreground">Projected Impact</p>
-                <p className="text-sm font-medium text-primary">{s.projectedImpact}</p>
-              </div>
-            )}
-          </div>
-          {s.litigationNotes && (
-            <div className="mt-3 p-3 bg-muted/50 rounded-lg">
-              <p className="text-xs text-muted-foreground mb-1 font-medium">Litigation Notes</p>
-              <p className="text-xs text-foreground/70 leading-relaxed">{s.litigationNotes}</p>
-            </div>
-          )}
-          {s.status && (
-            <p className="text-xs text-muted-foreground mt-2">Status: {s.status}</p>
+              {s.litigationNotes && (
+                <div className="mt-3 p-3 bg-muted/50 rounded-lg">
+                  <p className="text-xs text-muted-foreground mb-1 font-medium">Litigation Notes</p>
+                  <p className="text-xs text-foreground/70 leading-relaxed">{s.litigationNotes}</p>
+                </div>
+              )}
+              {s.status && (
+                <p className="text-xs text-muted-foreground mt-2">Status: {s.status}</p>
+              )}
+            </>
           )}
         </div>
       ))}
