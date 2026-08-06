@@ -35,6 +35,9 @@ function Router() {
       <Route path={"/search"}>
         <Suspense fallback={<PageLoader />}><SearchPage /></Suspense>
       </Route>
+      <Route path={"/colors"}>
+        <Suspense fallback={<PageLoader />}><ColorPreview /></Suspense>
+      </Route>
       <Route component={NotFound} />
     </Switch>
   );
@@ -68,3 +71,4 @@ function App() {
 }
 
 export default App;
+const ColorPreview = lazy(() => import("./pages/ColorPreview"));

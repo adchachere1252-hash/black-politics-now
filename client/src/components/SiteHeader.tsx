@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 
 const NAV_ITEMS = [
-  { href: "/", label: "News", icon: Newspaper },
+  { href: "https://blkpoliticsnow.com", label: "News", icon: Newspaper, external: true },
   { href: "/elections", label: "Election Map", icon: Map },
   { href: "/podcast", label: "Podcast", icon: Headphones },
   { href: "/archive", label: "Archive", icon: Archive },
@@ -27,8 +27,22 @@ export default function SiteHeader() {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-1">
-          {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+          {NAV_ITEMS.map(({ href, label, icon: Icon, external }) => {
             const active = href === "/" ? location === "/" : location.startsWith(href);
+            if (external) {
+              return (
+                <a
+                  key={href}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors no-underline text-muted-foreground hover:text-foreground hover:bg-muted"
+                >
+                  <Icon size={16} />
+                  {label}
+                </a>
+              );
+            }
             return (
               <Link
                 key={href}
@@ -74,8 +88,23 @@ export default function SiteHeader() {
       {/* Mobile Nav */}
       {mobileOpen && (
         <nav className="md:hidden border-t border-border/50 bg-background pb-4">
-          {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+          {NAV_ITEMS.map(({ href, label, icon: Icon, external }) => {
             const active = href === "/" ? location === "/" : location.startsWith(href);
+            if (external) {
+              return (
+                <a
+                  key={href}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-3 px-6 py-3 text-sm font-medium no-underline text-muted-foreground"
+                >
+                  <Icon size={16} />
+                  {label}
+                </a>
+              );
+            }
             return (
               <Link
                 key={href}

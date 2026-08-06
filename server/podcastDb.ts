@@ -11,7 +11,7 @@ const TOPIC_ACCENTS: Record<string, { color: string; bg: string; label: string; 
   "01_independence_day": { color: "#f87171", bg: "rgba(248,113,113,0.12)", label: "Independence Day Special", emoji: "🇺🇸" },
   "01_ai_trends": { color: "#22d3ee", bg: "rgba(34,211,238,0.12)", label: "AI Trends", emoji: "🤖" },
   "02_american_political_briefs": { color: "#f87171", bg: "rgba(248,113,113,0.12)", label: "American Political Briefs", emoji: "🇺🇸" },
-  "03_meta_news": { color: "#60a5fa", bg: "rgba(96,165,250,0.12)", label: "Meta News", emoji: "📘" },
+  "03_meta_news": { color: "#60a5fa", bg: "rgba(96,165,250,0.12)", label: "Tech News", emoji: "💻" },
   "04_ai_legal_briefs": { color: "#fbbf24", bg: "rgba(251,191,36,0.12)", label: "AI Legal Briefs", emoji: "⚖️" },
   "05_global_economy_briefs": { color: "#4ade80", bg: "rgba(74,222,128,0.12)", label: "Global Economy Briefs", emoji: "💹" },
   "06_global_ai_updates": { color: "#2dd4bf", bg: "rgba(45,212,191,0.12)", label: "Global AI Updates", emoji: "🌐" },

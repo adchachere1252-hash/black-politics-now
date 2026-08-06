@@ -193,7 +193,10 @@ export default function Home() {
 
           {/* Bottom actions */}
           <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/30">
-            <button className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
+            <button
+              onClick={() => alert("This interactive map shows 2026 U.S. election race ratings from Cook Political Report and Sabato's Crystal Ball. Colors indicate competitiveness: Solid (safe seat), Likely (strong lean), Lean (slight advantage), and Toss-up (either party could win). Data updates in real-time on election night via DDHQ. Switch between House, Senate, and Governor views using the tabs above.")}
+              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
               <Info size={14} /> About the Map
             </button>
             <Link href="/elections" className="flex items-center gap-1.5 text-xs text-primary hover:underline">
@@ -244,12 +247,12 @@ export default function Home() {
 
               {/* Segment count tagline */}
               <p className="text-xs font-bold text-primary uppercase tracking-wider mb-3">
-                {latestEpisode.segmentCount} Topics. {latestEpisode.totalDurationLabel}. Everything You Need.
+                {latestEpisode.totalDurationLabel}. Everything You Need.
               </p>
 
               {/* Numbered segment list */}
               <div className="space-y-0.5">
-                {latestEpisode.segments.map((seg: any, i: number) => (
+                {latestEpisode.segments.filter((seg: any) => !seg.key.includes("greeting") && !seg.key.includes("closing")).map((seg: any, i: number) => (
                   <button
                     key={seg.key}
                     onClick={() => play({
