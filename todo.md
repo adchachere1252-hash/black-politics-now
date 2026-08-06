@@ -141,3 +141,21 @@
 - [x] Make stars small and not glaring (completed in previous checkpoint)
 - [x] Michigan Senate primary: Updated to Abdul El-Sayed (D) after Aug 5 primary win
       Note: "View All" links to blkpoliticsnow.com; individual article cards still link to their WordPress posts
+
+## User Requests (Aug 5 - Round 2)
+- [x] Verify Texas rating — Lean R (Senate: Talarico vs Paxton), Solid R (Governor: Abbott). Both CORRECT, shows red.
+- [x] Fix ticker RESULTS icon — now has red pulsing dot, distinct background/border, clearly separated from scrolling text
+- [x] Fix slow site loading — added keep-alive ping every 5 min from cloud computer (cold→1.5s, warm→0.33s)
+- [x] Regenerate podcast episodes in correct 40-min format with 13 topics from daily-podcast repo (Jul 28-Aug 5)
+- [x] Update cloud computer automation script to use correct format
+- [x] Explain cloud computer automation (delivered in message)
+
+## Admin Dashboard & Real-Time Engine (Aug 6)
+- [ ] Build /admin page with race editing UI (Senate, House, Governor, CBC)
+- [ ] Add manual race call functionality (set winner, party)
+- [ ] Add DDHQ sync status display in admin
+- [ ] Fix election engine polling errors (House race candidate field mapping)
+- [ ] Add daily race discovery cron job on cloud computer
+- [ ] Add frontend LIVE indicator when polling is active
+- [ ] Add auto-refresh (60s) on election night
+- [ ] Update DDHQ race mapping for Aug 4 primary results

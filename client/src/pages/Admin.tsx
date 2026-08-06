@@ -2,9 +2,9 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { startLogin } from "@/const";
 import { useState, useMemo } from "react";
-import { Shield, Radio, MapPin, Users, Save, Check, Search } from "lucide-react";
+import { Shield, Radio, MapPin, Users, Save, Check, Search, Star } from "lucide-react";
 
-type AdminTab = "overview" | "podcast" | "elections" | "audience";
+type AdminTab = "overview" | "podcast" | "elections" | "cbc" | "audience";
 
 export default function AdminPage() {
   const { user, isAuthenticated, loading } = useAuth();
@@ -44,6 +44,7 @@ export default function AdminPage() {
           { key: "overview", label: "Overview", icon: Shield },
           { key: "podcast", label: "Podcast Ops", icon: Radio },
           { key: "elections", label: "Election Ops", icon: MapPin },
+          { key: "cbc", label: "CBC Members", icon: Star },
           { key: "audience", label: "Audience", icon: Users },
         ] as const).map(({ key, label, icon: Icon }) => (
           <button
@@ -59,6 +60,7 @@ export default function AdminPage() {
       {tab === "overview" && <OverviewTab />}
       {tab === "podcast" && <PodcastOpsTab />}
       {tab === "elections" && <ElectionOpsTab />}
+      {tab === "cbc" && <CbcOpsTab />}
       {tab === "audience" && <AudienceTab />}
     </div>
   );
@@ -353,6 +355,93 @@ function RefEditor({ referendum, onSave, saving }: { referendum: any; onSave: (d
           <option value="Passed">Passed</option>
           <option value="Failed">Failed</option>
         </select>
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className="ml-auto flex items-center gap-1 px-2 py-1 rounded bg-primary/20 text-primary text-xs hover:bg-primary/30 transition-colors disabled:opacity-50"
+        >
+          {saved ? <Check size={12} /> : <Save size={12} />}
+          {saved ? "Saved" : "Save"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function CbcOpsTab() {
+  const [search, setSearch] = useState("");
+  const { data: members = [] } = trpc.election.cbc.useQuery();
+  const utils = trpc.useUtils();
+  const updateCbc = trpc.election.updateCbc.useMutation({ onSuccess: () => utils.election.cbc.invalidate() });
+
+  const filtered = (members as any[]).filter((m: any) => {
+    if (!search) return true;
+    const q = search.toLowerCase();
+    return m.member?.toLowerCase().includes(q) || m.district?.toLowerCase().includes(q) || m.state?.toLowerCase().includes(q);
+  });
+
+  return (
+    <div>
+      <h2 className="text-lg font-bold mb-4">CBC Member Editor</h2>
+      <p className="text-xs text-muted-foreground mb-4">Edit CBC member statuses, primary results, and notes.</p>
+      <div className="relative mb-3">
+        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+        <input
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          placeholder="Search by name, district, or state..."
+          className="w-full pl-8 pr-3 py-2 bg-muted rounded-lg text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+        />
+      </div>
+      <div className="space-y-2 max-h-[60vh] overflow-y-auto">
+        {filtered.map((m: any) => (
+          <CbcEditor key={m.id} member={m} onSave={(data) => updateCbc.mutate({ id: m.id, data })} saving={updateCbc.isPending} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CbcEditor({ member, onSave, saving }: { member: any; onSave: (data: any) => void; saving: boolean }) {
+  const [status, setStatus] = useState(member.status ?? "running");
+  const [primaryResult, setPrimaryResult] = useState(member.primaryResult ?? "");
+  const [notes, setNotes] = useState(member.notes ?? "");
+  const [saved, setSaved] = useState(false);
+
+  const handleSave = () => {
+    onSave({ status, primaryResult: primaryResult || null, notes: notes || null });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  return (
+    <div className="glass-card rounded-lg p-3">
+      <div className="flex items-center gap-3 flex-wrap">
+        <span className="text-sm font-bold min-w-[140px]">{member.member}</span>
+        <span className="text-xs text-muted-foreground">{member.district}</span>
+        <select value={status} onChange={e => setStatus(e.target.value)} className="bg-muted rounded px-2 py-1 text-xs">
+          <option value="running">Running</option>
+          <option value="retiring">Retiring</option>
+          <option value="resigned">Resigned</option>
+          <option value="deceased">Deceased</option>
+          <option value="lost_primary">Lost Primary</option>
+          <option value="running_for_governor">Running for Gov</option>
+          <option value="running_for_senate">Running for Senate</option>
+          <option value="not_up_2026">Not Up 2026</option>
+          <option value="challenger">Challenger</option>
+        </select>
+        <input
+          value={primaryResult}
+          onChange={e => setPrimaryResult(e.target.value)}
+          placeholder="Primary result"
+          className="bg-muted rounded px-2 py-1 text-xs w-36"
+        />
+        <input
+          value={notes}
+          onChange={e => setNotes(e.target.value)}
+          placeholder="Notes"
+          className="bg-muted rounded px-2 py-1 text-xs flex-1 min-w-[120px]"
+        />
         <button
           onClick={handleSave}
           disabled={saving}

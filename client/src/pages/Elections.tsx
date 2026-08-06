@@ -107,12 +107,28 @@ export default function Elections() {
   const [popupState, setPopupState] = useState<string | null>(null);
   const { theme } = useTheme();
 
-  const { data: senateRaces = [] } = trpc.election.senate.useQuery();
-  const { data: houseRaces = [] } = trpc.election.house.useQuery();
-  const { data: governors = [] } = trpc.election.governors.useQuery();
+  // Auto-refresh every 60s when live results are coming in
+  const isLive = typeof window !== "undefined" && (window as any).__BPN_LIVE_MODE__;
+  const refetchInterval = isLive ? 60_000 : false;
+
+  const { data: senateRaces = [] } = trpc.election.senate.useQuery(undefined, { refetchInterval });
+  const { data: houseRaces = [] } = trpc.election.house.useQuery(undefined, { refetchInterval });
+  const { data: governors = [] } = trpc.election.governors.useQuery(undefined, { refetchInterval });
   const { data: cbcMembers = [] } = trpc.election.cbc.useQuery();
   const { data: redistrictingStates = [] } = trpc.election.redistricting.useQuery();
-  const { data: scoreboard } = trpc.election.scoreboard.useQuery();
+  const { data: scoreboard } = trpc.election.scoreboard.useQuery(undefined, { refetchInterval });
+
+  // Detect live mode: if any race has pctReporting > 0, we're in live mode
+  const hasLiveData = useMemo(() => {
+    return (senateRaces as any[]).some((r: any) => r.pctReporting > 0) ||
+      (houseRaces as any[]).some((r: any) => r.pctReporting > 0) ||
+      (governors as any[]).some((r: any) => r.pctReporting > 0);
+  }, [senateRaces, houseRaces, governors]);
+
+  // Set global live mode flag for auto-refresh
+  if (typeof window !== "undefined") {
+    (window as any).__BPN_LIVE_MODE__ = hasLiveData;
+  }
 
   // Build map data from senate races
   // Build map data based on active tab
@@ -277,8 +293,18 @@ export default function Elections() {
 
       <div className="container py-8 relative z-10">
         <div className="mb-6">
-          <h1 className="text-3xl font-extrabold mb-1">2026 U.S. Election Center</h1>
-          <p className="text-muted-foreground text-sm">Real-time race ratings, results, and analysis.</p>
+          <div className="flex items-center gap-3 mb-1">
+            <h1 className="text-3xl font-extrabold">2026 U.S. Election Center</h1>
+            {hasLiveData && (
+              <span className="flex items-center gap-1.5 px-2.5 py-1 bg-red-600/20 border border-red-500/40 rounded-full text-xs font-bold text-red-400 animate-pulse">
+                <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
+                LIVE
+              </span>
+            )}
+          </div>
+          <p className="text-muted-foreground text-sm">
+            {hasLiveData ? "Results updating every 60 seconds." : "Real-time race ratings, results, and analysis."}
+          </p>
         </div>
 
         {/* Results Ticker */}
