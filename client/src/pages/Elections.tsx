@@ -212,11 +212,16 @@ export default function Elections() {
     return data;
   }, [senateRaces, houseRaces, governors, cbcMembers, redistrictingStates, tab]);
 
-  // Get House races for a specific state (for popup)
-  const popupHouseRaces = useMemo(() => {
+  // Get data for a specific state based on active tab (for popup)
+  const popupData = useMemo(() => {
     if (!popupState) return [];
-    return (houseRaces as any[]).filter(r => r.stateCode === popupState);
-  }, [houseRaces, popupState]);
+    if (tab === "house") return (houseRaces as any[]).filter(r => r.stateCode === popupState);
+    if (tab === "senate") return (senateRaces as any[]).filter(r => r.stateCode === popupState);
+    if (tab === "governors") return (governors as any[]).filter(r => r.stateCode === popupState);
+    if (tab === "cbc") return (cbcMembers as any[]).filter(m => m.stateCode === popupState);
+    if (tab === "redistricting") return (redistrictingStates as any[]).filter(s => s.stateCode === popupState);
+    return [];
+  }, [tab, houseRaces, senateRaces, governors, cbcMembers, redistrictingStates, popupState]);
 
   // Handle state click - open popup with House races
   const handleStateClick = (stateId: string) => {
@@ -394,32 +399,90 @@ export default function Elections() {
         {tab === "cbc" && <CbcGrid members={filteredCbc} />}
         {tab === "redistricting" && <RedistrictingGrid states={filteredRedistricting} />}
 
-        {/* State popup dialog showing House races */}
+        {/* State popup dialog showing tab-specific data */}
         <Dialog open={statePopupOpen} onOpenChange={setStatePopupOpen}>
           <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{popupState ? STATE_NAME_TO_CODE[popupState] ? Object.entries(STATE_NAME_TO_CODE).find(([,v]) => v === popupState)?.[0] : popupState : ""} — House Races</DialogTitle>
+              <DialogTitle>{popupState ? Object.entries(STATE_NAME_TO_CODE).find(([,v]) => v === popupState)?.[0] || popupState : ""} — {tab === "senate" ? "Senate Race" : tab === "governors" ? "Governor Race" : tab === "house" ? "House Races" : tab === "cbc" ? "CBC Members" : "Redistricting"}</DialogTitle>
             </DialogHeader>
-            {popupHouseRaces.length > 0 ? (
+            {popupData.length > 0 ? (
               <div className="space-y-3">
-                {popupHouseRaces.map((race: any) => (
-                  <div key={race.id} className="border border-border rounded-lg p-3">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-bold text-sm">District {race.district}</span>
-                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${race.rating === "Toss-up" ? "bg-purple-500/20 text-purple-400" : race.rating?.includes("D") ? "bg-blue-500/20 text-blue-400" : "bg-red-500/20 text-red-400"}`}>
-                        {race.rating}
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-xs">
-                      <span className="text-blue-400">{race.candidate1Name} ({race.candidate1Party})</span>
-                      <span className="text-red-400">{race.candidate2Name} ({race.candidate2Party})</span>
-                    </div>
-                    {race.notes && <p className="text-xs text-muted-foreground mt-1">{race.notes}</p>}
+                {popupData.map((item: any, idx: number) => (
+                  <div key={item.id || idx} className="border border-border rounded-lg p-3">
+                    {tab === "house" && (
+                      <>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="font-bold text-sm">District {item.district}</span>
+                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${item.rating === "Toss-up" ? "bg-purple-500/20 text-purple-400" : item.rating?.includes("D") ? "bg-blue-500/20 text-blue-400" : "bg-red-500/20 text-red-400"}`}>
+                            {item.rating}
+                          </span>
+                        </div>
+                        <div className="flex justify-between text-xs">
+                          <span className="text-blue-400">{item.candidate1Name} ({item.candidate1Party})</span>
+                          <span className="text-red-400">{item.candidate2Name} ({item.candidate2Party})</span>
+                        </div>
+                      </>
+                    )}
+                    {tab === "senate" && (
+                      <>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="font-bold text-sm">{item.stateName} Senate</span>
+                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${item.rating === "Toss-up" ? "bg-purple-500/20 text-purple-400" : item.rating?.includes("D") ? "bg-blue-500/20 text-blue-400" : "bg-red-500/20 text-red-400"}`}>
+                            {item.rating}
+                          </span>
+                        </div>
+                        <div className="flex justify-between text-xs">
+                          <span className="text-blue-400">{item.candidate1Name} ({item.candidate1Party})</span>
+                          <span className="text-red-400">{item.candidate2Name} ({item.candidate2Party})</span>
+                        </div>
+                        {item.pctReporting > 0 && <p className="text-xs text-muted-foreground mt-1">{item.pctReporting}% reporting</p>}
+                        {item.incumbent && <p className="text-xs text-muted-foreground mt-1">Incumbent: {item.incumbent} ({item.incumbentParty})</p>}
+                      </>
+                    )}
+                    {tab === "governors" && (
+                      <>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="font-bold text-sm">{item.stateName} Governor</span>
+                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${item.rating === "Toss-up" ? "bg-purple-500/20 text-purple-400" : item.rating?.includes("D") ? "bg-blue-500/20 text-blue-400" : "bg-red-500/20 text-red-400"}`}>
+                            {item.rating}
+                          </span>
+                        </div>
+                        <div className="flex justify-between text-xs">
+                          <span className="text-blue-400">{item.demCandidate} (D)</span>
+                          <span className="text-red-400">{item.repCandidate} (R)</span>
+                        </div>
+                        {item.incumbent && <p className="text-xs text-muted-foreground mt-1">Incumbent: {item.incumbent} ({item.incumbentParty})</p>}
+                      </>
+                    )}
+                    {tab === "cbc" && (
+                      <>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="font-bold text-sm">{item.member}</span>
+                          <span className="text-xs text-muted-foreground">{item.district}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs">
+                          <span className={`px-2 py-0.5 rounded-full font-medium ${item.cbcStatus === "running" ? "bg-green-500/20 text-green-400" : item.cbcStatus === "retiring" ? "bg-yellow-500/20 text-yellow-400" : item.cbcStatus === "lost_primary" ? "bg-red-500/20 text-red-400" : "bg-gray-500/20 text-gray-400"}`}>
+                            {item.cbcStatus === "lost_primary" ? "Lost Primary" : item.cbcStatus}
+                          </span>
+                          {item.primaryResult && <span className="text-muted-foreground">{item.primaryResult}</span>}
+                        </div>
+                      </>
+                    )}
+                    {tab === "redistricting" && (
+                      <>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="font-bold text-sm">{item.stateName}</span>
+                          <span className="text-xs text-muted-foreground">{item.totalDistricts} districts</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">{item.description}</p>
+                      </>
+                    )}
+                    {item.notes && <p className="text-xs text-muted-foreground mt-1">{item.notes}</p>}
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-muted-foreground text-sm">No House races found for this state.</p>
+              <p className="text-muted-foreground text-sm">No {tab === "senate" ? "Senate race" : tab === "governors" ? "Governor race" : tab === "house" ? "House races" : tab === "cbc" ? "CBC members" : "redistricting data"} found for this state.</p>
             )}
           </DialogContent>
         </Dialog>
