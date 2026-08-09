@@ -1,0 +1,1 @@
+ALTER TABLE `cbc_members` ADD `photo` text;

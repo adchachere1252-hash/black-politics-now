@@ -777,8 +777,11 @@ function CbcGrid({ members }: { members: any[] }) {
             className="glass-card rounded-lg p-4 hover:border-primary/30 transition-colors cursor-pointer"
             onClick={() => setExpandedId(expandedId === m.id ? null : m.id)}
           >
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-bold">{m.member}</h3>
+            <div className="flex items-center justify-between mb-2 gap-2">
+              <div className="flex items-center gap-2">
+                {m.photo && <img src={m.photo} alt="" className="w-8 h-8 rounded-full object-cover border border-border/50" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />}
+                <h3 className="text-sm font-bold">{m.member}</h3>
+              </div>
               <div className="flex items-center gap-2">
                 <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColors[m.status] ?? "bg-muted text-muted-foreground"}`}>
                   {statusLabels[m.status] ?? m.status}

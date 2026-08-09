@@ -381,6 +381,7 @@ export const cbcMembers = mysqlTable("cbc_members", {
   primaryResult: varchar("primary_result", { length: 128 }),
   generalOpponent: varchar("general_opponent", { length: 128 }),
   notes: text("notes"),
+  photo: text("photo"),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
 });
 

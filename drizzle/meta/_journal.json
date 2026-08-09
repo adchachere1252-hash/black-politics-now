@@ -36,6 +36,13 @@
       "when": 1785886865106,
       "tag": "0004_hesitant_network",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1786299220631,
+      "tag": "0005_hesitant_harrier",
+      "breakpoints": true
     }
   ]
 }
