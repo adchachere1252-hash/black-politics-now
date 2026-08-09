@@ -241,14 +241,16 @@ export default function Home() {
                               {item.rating}
                             </span>
                           </div>
-                          <div className="flex justify-between text-xs mt-2">
-                            <span className={`px-2 py-1 rounded ${item.candidate1Party === "D" ? "bg-blue-500/15 text-blue-400 border border-blue-500/30" : item.candidate1Party === "R" ? "bg-red-500/15 text-red-400 border border-red-500/30" : "bg-gray-500/15 text-gray-400 border border-gray-500/30"}`}>
-                              {item.candidate1Name} ({item.candidate1Party})
-                            </span>
+                          <div className="flex justify-between items-center text-xs mt-2">
+                            <div className={`flex items-center gap-1.5 px-2 py-1 rounded ${item.candidate1Party === "D" ? "bg-blue-500/15 text-blue-400 border border-blue-500/30" : item.candidate1Party === "R" ? "bg-red-500/15 text-red-400 border border-red-500/30" : "bg-gray-500/15 text-gray-400 border border-gray-500/30"}`}>
+                              {item.candidate1Photo && <img src={item.candidate1Photo} alt="" className="w-5 h-5 rounded-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />}
+                              <span>{item.candidate1Name} ({item.candidate1Party})</span>
+                            </div>
                             <span className="text-muted-foreground self-center text-[10px]">vs</span>
-                            <span className={`px-2 py-1 rounded ${item.candidate2Party === "D" ? "bg-blue-500/15 text-blue-400 border border-blue-500/30" : item.candidate2Party === "R" ? "bg-red-500/15 text-red-400 border border-red-500/30" : "bg-gray-500/15 text-gray-400 border border-gray-500/30"}`}>
-                              {item.candidate2Name} ({item.candidate2Party})
-                            </span>
+                            <div className={`flex items-center gap-1.5 px-2 py-1 rounded ${item.candidate2Party === "D" ? "bg-blue-500/15 text-blue-400 border border-blue-500/30" : item.candidate2Party === "R" ? "bg-red-500/15 text-red-400 border border-red-500/30" : "bg-gray-500/15 text-gray-400 border border-gray-500/30"}`}>
+                              {item.candidate2Photo && <img src={item.candidate2Photo} alt="" className="w-5 h-5 rounded-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />}
+                              <span>{item.candidate2Name} ({item.candidate2Party})</span>
+                            </div>
                           </div>
                           {item.pctReporting > 0 && (
                             <div className="mt-2">
@@ -276,14 +278,16 @@ export default function Home() {
                               {item.rating}
                             </span>
                           </div>
-                          <div className="flex justify-between text-xs mt-2">
-                            <span className={`px-2 py-1 rounded ${item.candidate1Party === "D" ? "bg-blue-500/15 text-blue-400 border border-blue-500/30" : item.candidate1Party === "R" ? "bg-red-500/15 text-red-400 border border-red-500/30" : "bg-gray-500/15 text-gray-400 border border-gray-500/30"}`}>
-                              {item.candidate1Name} ({item.candidate1Party})
-                            </span>
+                          <div className="flex justify-between items-center text-xs mt-2">
+                            <div className={`flex items-center gap-1.5 px-2 py-1 rounded ${item.candidate1Party === "D" ? "bg-blue-500/15 text-blue-400 border border-blue-500/30" : item.candidate1Party === "R" ? "bg-red-500/15 text-red-400 border border-red-500/30" : "bg-gray-500/15 text-gray-400 border border-gray-500/30"}`}>
+                              {item.candidate1Photo && <img src={item.candidate1Photo} alt="" className="w-6 h-6 rounded-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />}
+                              <span>{item.candidate1Name} ({item.candidate1Party})</span>
+                            </div>
                             <span className="text-muted-foreground self-center text-[10px]">vs</span>
-                            <span className={`px-2 py-1 rounded ${item.candidate2Party === "D" ? "bg-blue-500/15 text-blue-400 border border-blue-500/30" : item.candidate2Party === "R" ? "bg-red-500/15 text-red-400 border border-red-500/30" : "bg-gray-500/15 text-gray-400 border border-gray-500/30"}`}>
-                              {item.candidate2Name} ({item.candidate2Party})
-                            </span>
+                            <div className={`flex items-center gap-1.5 px-2 py-1 rounded ${item.candidate2Party === "D" ? "bg-blue-500/15 text-blue-400 border border-blue-500/30" : item.candidate2Party === "R" ? "bg-red-500/15 text-red-400 border border-red-500/30" : "bg-gray-500/15 text-gray-400 border border-gray-500/30"}`}>
+                              {item.candidate2Photo && <img src={item.candidate2Photo} alt="" className="w-6 h-6 rounded-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />}
+                              <span>{item.candidate2Name} ({item.candidate2Party})</span>
+                            </div>
                           </div>
                           {item.pctReporting > 0 && (
                             <div className="mt-2">
@@ -312,14 +316,16 @@ export default function Home() {
                               {item.rating}
                             </span>
                           </div>
-                          <div className="flex justify-between text-xs mt-2">
-                            <span className="px-2 py-1 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30">
-                              {item.demCandidate || "TBD"} (D)
-                            </span>
+                          <div className="flex justify-between items-center text-xs mt-2">
+                            <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30">
+                              {item.demPhoto && <img src={item.demPhoto} alt="" className="w-6 h-6 rounded-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />}
+                              <span>{item.demCandidate || "TBD"} (D)</span>
+                            </div>
                             <span className="text-muted-foreground self-center text-[10px]">vs</span>
-                            <span className="px-2 py-1 rounded bg-red-500/15 text-red-400 border border-red-500/30">
-                              {item.repCandidate || "TBD"} (R)
-                            </span>
+                            <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-red-500/15 text-red-400 border border-red-500/30">
+                              {item.repPhoto && <img src={item.repPhoto} alt="" className="w-6 h-6 rounded-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />}
+                              <span>{item.repCandidate || "TBD"} (R)</span>
+                            </div>
                           </div>
                           {item.incumbentName && <p className="text-xs text-muted-foreground mt-1">Incumbent: {item.incumbentName} ({item.incumbentParty})</p>}
                           {item.calledWinner && (
