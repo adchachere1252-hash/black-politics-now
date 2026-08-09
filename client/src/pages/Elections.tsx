@@ -190,7 +190,7 @@ export default function Elections() {
       Object.entries(cbcStates).forEach(([code, count]) => {
         data[code] = {
           rating: "Solid D", // Blue to highlight CBC presence
-          candidate1: `${count} CBC member${count > 1 ? "s" : ""}`,
+          candidate1: `${count} Black member${count > 1 ? "s" : ""}`,
           candidate2: "Congressional Black Caucus",
           calledWinner: null,
         };
@@ -284,7 +284,7 @@ export default function Elections() {
   }, [redistrictingStates, searchQuery, selectedState]);
 
   const tabs: { id: ViewTab; label: string; icon: any }[] = [
-    { id: "cbc", label: "CBC", icon: Star },
+    { id: "cbc", label: "Black Rep", icon: Star },
     { id: "governors", label: "Governor", icon: MapPin },
     { id: "house", label: "House", icon: Users },
     { id: "redistricting", label: "Redistricting", icon: AlertTriangle },
@@ -403,7 +403,7 @@ export default function Elections() {
         <Dialog open={statePopupOpen} onOpenChange={setStatePopupOpen}>
           <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{popupState ? Object.entries(STATE_NAME_TO_CODE).find(([,v]) => v === popupState)?.[0] || popupState : ""} — {tab === "senate" ? "Senate Race" : tab === "governors" ? "Governor Race" : tab === "house" ? "House Races" : tab === "cbc" ? "CBC Members" : "Redistricting"}</DialogTitle>
+              <DialogTitle>{popupState ? Object.entries(STATE_NAME_TO_CODE).find(([,v]) => v === popupState)?.[0] || popupState : ""} — {tab === "senate" ? "Senate Race" : tab === "governors" ? "Governor Race" : tab === "house" ? "House Races" : tab === "cbc" ? "Black Representation" : "Redistricting"}</DialogTitle>
             </DialogHeader>
             {popupData.length > 0 ? (
               <div className="space-y-3">
@@ -482,7 +482,7 @@ export default function Elections() {
                 ))}
               </div>
             ) : (
-              <p className="text-muted-foreground text-sm">No {tab === "senate" ? "Senate race" : tab === "governors" ? "Governor race" : tab === "house" ? "House races" : tab === "cbc" ? "CBC members" : "redistricting data"} found for this state.</p>
+              <p className="text-muted-foreground text-sm">No {tab === "senate" ? "Senate race" : tab === "governors" ? "Governor race" : tab === "house" ? "House races" : tab === "cbc" ? "Black representatives" : "redistricting data"} found for this state.</p>
             )}
           </DialogContent>
         </Dialog>
@@ -716,7 +716,7 @@ function GovernorGrid({ races }: { races: any[] }) {
 }
 
 function CbcGrid({ members }: { members: any[] }) {
-  if (members.length === 0) return <p className="text-center text-muted-foreground py-8">No CBC members match your search.</p>;
+  if (members.length === 0) return <p className="text-center text-muted-foreground py-8">No members match your search.</p>;
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
   const statusColors: Record<string, string> = {
