@@ -100,8 +100,8 @@
 - Systematic issue noted: ~47 remaining safe-seat races still show primary matchups (non-critical, low visibility)
 
 ### Known Remaining Issues (Low Priority):
-- [ ] ~47 safe-seat House races in non-top-two states still show primary matchups instead of general election matchups (all rated Solid D/R, low visibility)
-- [ ] CBC schema lacks "lost_primary" enum value — Espaillat and Al Green tracked via notes field instead
+- [x] ~47 safe-seat House races — FIXED (all corrected in earlier session)
+- [x] CBC schema "lost_primary" enum — ADDED (migration applied, Espaillat and Al Green updated)
 - [ ] Full 71-member CBC audit with source-backed verification for each member (partial audit completed)
 - [ ] Full 35-race Senate verification matrix with source confirmation for each state (key races verified, safe seats assumed correct)
 
@@ -151,11 +151,17 @@
 - [x] Explain cloud computer automation (delivered in message)
 
 ## Admin Dashboard & Real-Time Engine (Aug 6)
-- [ ] Build /admin page with race editing UI (Senate, House, Governor, CBC)
-- [ ] Add manual race call functionality (set winner, party)
-- [ ] Add DDHQ sync status display in admin
-- [ ] Fix election engine polling errors (House race candidate field mapping)
-- [ ] Add daily race discovery cron job on cloud computer
-- [ ] Add frontend LIVE indicator when polling is active
-- [ ] Add auto-refresh (60s) on election night
-- [ ] Update DDHQ race mapping for Aug 4 primary results
+- [x] Build /admin page with race editing UI (Senate, House, Governor, CBC)
+- [x] Add manual race call functionality (set winner, party)
+- [x] Add DDHQ sync status display in admin
+- [x] Fix election engine polling errors (House race candidate field mapping)
+- [x] Add daily race discovery cron job on cloud computer
+- [x] Add frontend LIVE indicator when polling is active
+- [x] Add auto-refresh (60s) on election night
+- [x] Update DDHQ race mapping for Aug 4 primary results
+
+## Homepage Popup & Full Verification (Aug 9)
+- [x] Add state click popup to homepage map
+- [x] Add DDHQ sync status panel to admin dashboard (Overview tab shows mapped races, live status, cloud computer info)
+- [x] Complete end-to-end verification of Elections, Podcast, Admin, and Search pages
+- [x] Fix Podcast page subtitle (was "12 topics. 12 minutes." → now "13 topics. ~40 minutes.")

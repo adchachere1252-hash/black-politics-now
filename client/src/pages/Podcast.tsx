@@ -31,7 +31,7 @@ export default function Podcast() {
     <div className="container py-8">
       <div className="mb-6">
         <h1 className="text-3xl font-extrabold mb-1">Daily Intelligence Brief</h1>
-        <p className="text-muted-foreground text-sm">12 topics. 12 minutes. Everything you need.</p>
+        <p className="text-muted-foreground text-sm">13 topics. ~40 minutes. Everything you need.</p>
       </div>
 
       {/* Controls */}

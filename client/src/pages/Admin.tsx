@@ -69,19 +69,62 @@ export default function AdminPage() {
 function OverviewTab() {
   const { data: scoreboard } = trpc.election.scoreboard.useQuery();
   const { data: episodes } = trpc.podcast.getEpisodes.useQuery();
+  const { data: senateRaces } = trpc.election.senate.useQuery();
+  const { data: houseRaces } = trpc.election.house.useQuery();
+  const { data: governors } = trpc.election.governors.useQuery();
+
+  // Calculate live polling status
+  const liveRaces = (senateRaces as any[] ?? []).filter((r: any) => r.pctReporting > 0).length
+    + (houseRaces as any[] ?? []).filter((r: any) => r.pctReporting > 0).length
+    + (governors as any[] ?? []).filter((r: any) => r.pctReporting > 0).length;
+  const isLive = liveRaces > 0;
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div className="glass-card rounded-xl p-5">
-        <p className="text-sm text-muted-foreground mb-1">Total Episodes</p>
-        <p className="text-3xl font-bold">{(episodes as any[])?.length ?? 0}</p>
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="glass-card rounded-xl p-5">
+          <p className="text-sm text-muted-foreground mb-1">Total Episodes</p>
+          <p className="text-3xl font-bold">{(episodes as any[])?.length ?? 0}</p>
+        </div>
+        <div className="glass-card rounded-xl p-5">
+          <p className="text-sm text-muted-foreground mb-1">Senate Races Called</p>
+          <p className="text-3xl font-bold">{(scoreboard?.senate.dem ?? 0) + (scoreboard?.senate.rep ?? 0)}</p>
+        </div>
+        <div className="glass-card rounded-xl p-5">
+          <p className="text-sm text-muted-foreground mb-1">House Races Called</p>
+          <p className="text-3xl font-bold">{(scoreboard?.house.dem ?? 0) + (scoreboard?.house.rep ?? 0)}</p>
+        </div>
       </div>
+
+      {/* DDHQ Sync Status */}
       <div className="glass-card rounded-xl p-5">
-        <p className="text-sm text-muted-foreground mb-1">Senate Races Called</p>
-        <p className="text-3xl font-bold">{(scoreboard?.senate.dem ?? 0) + (scoreboard?.senate.rep ?? 0)}</p>
-      </div>
-      <div className="glass-card rounded-xl p-5">
-        <p className="text-sm text-muted-foreground mb-1">House Races Called</p>
-        <p className="text-3xl font-bold">{(scoreboard?.house.dem ?? 0) + (scoreboard?.house.rep ?? 0)}</p>
+        <h3 className="text-sm font-bold uppercase tracking-wider mb-3 flex items-center gap-2">
+          DDHQ Election Engine Status
+          {isLive && <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 text-xs font-bold"><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />LIVE</span>}
+        </h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <div>
+            <p className="text-muted-foreground text-xs">Senate Mapped</p>
+            <p className="font-bold">{(senateRaces as any[])?.length ?? 0} races</p>
+          </div>
+          <div>
+            <p className="text-muted-foreground text-xs">House Mapped</p>
+            <p className="font-bold">{(houseRaces as any[])?.length ?? 0} races</p>
+          </div>
+          <div>
+            <p className="text-muted-foreground text-xs">Governor Mapped</p>
+            <p className="font-bold">{(governors as any[])?.length ?? 0} races</p>
+          </div>
+          <div>
+            <p className="text-muted-foreground text-xs">Races Reporting</p>
+            <p className="font-bold">{liveRaces} {isLive ? "🔴" : "⚪"}</p>
+          </div>
+        </div>
+        <div className="mt-3 pt-3 border-t border-border/30 text-xs text-muted-foreground">
+          <p><strong>Cloud Computer:</strong> 35.229.72.71 — Polling every 60s when active</p>
+          <p><strong>Data Source:</strong> DDHQ Public API (same feed as Fox News/Newsweek)</p>
+          <p><strong>To start live polling:</strong> SSH → <code className="bg-muted px-1 rounded">cd /home/ubuntu/bpn-automation && node scripts/election-engine.mjs poll</code></p>
+        </div>
       </div>
     </div>
   );
