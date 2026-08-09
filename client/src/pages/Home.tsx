@@ -225,14 +225,14 @@ export default function Home() {
 
           {/* State Popup Dialog */}
           <Dialog open={statePopupOpen} onOpenChange={setStatePopupOpen}>
-            <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+            <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto animate-in fade-in-0 zoom-in-95 duration-200">
               <DialogHeader>
                 <DialogTitle>{selectedState ? `${STATE_NAMES[selectedState] || selectedState} — ${mapView === "senate" ? "Senate Race" : mapView === "governor" ? "Governor Race" : "House Races"}` : ""}</DialogTitle>
               </DialogHeader>
               {popupData.length > 0 ? (
                 <div className="space-y-3">
                   {popupData.map((item: any, idx: number) => (
-                    <div key={item.id || idx} className="border border-border rounded-lg p-3">
+                    <div key={item.id || idx} className="border border-border rounded-lg p-3 animate-in fade-in-0 slide-in-from-bottom-2 duration-300" style={{ animationDelay: `${idx * 50}ms`, animationFillMode: 'both' }}>
                       {mapView === "house" && (
                         <>
                           <div className="flex items-center justify-between mb-1">
@@ -241,12 +241,31 @@ export default function Home() {
                               {item.rating}
                             </span>
                           </div>
-                          <div className="flex justify-between text-xs">
-                            <span className="text-blue-400">{item.candidate1Name} ({item.candidate1Party})</span>
-                            <span className="text-red-400">{item.candidate2Name} ({item.candidate2Party})</span>
+                          <div className="flex justify-between text-xs mt-2">
+                            <span className={`px-2 py-1 rounded ${item.candidate1Party === "D" ? "bg-blue-500/15 text-blue-400 border border-blue-500/30" : item.candidate1Party === "R" ? "bg-red-500/15 text-red-400 border border-red-500/30" : "bg-gray-500/15 text-gray-400 border border-gray-500/30"}`}>
+                              {item.candidate1Name} ({item.candidate1Party})
+                            </span>
+                            <span className="text-muted-foreground self-center text-[10px]">vs</span>
+                            <span className={`px-2 py-1 rounded ${item.candidate2Party === "D" ? "bg-blue-500/15 text-blue-400 border border-blue-500/30" : item.candidate2Party === "R" ? "bg-red-500/15 text-red-400 border border-red-500/30" : "bg-gray-500/15 text-gray-400 border border-gray-500/30"}`}>
+                              {item.candidate2Name} ({item.candidate2Party})
+                            </span>
                           </div>
-                          {item.pctReporting > 0 && <p className="text-xs text-muted-foreground mt-1">{item.pctReporting}% reporting</p>}
-                          {item.calledWinner && <p className="text-xs text-green-400 mt-1 font-medium">Winner: {item.calledWinner} ({item.calledParty})</p>}
+                          {item.pctReporting > 0 && (
+                            <div className="mt-2">
+                              <div className="flex items-center gap-2">
+                                <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
+                                  <div className="h-full bg-primary/60 rounded-full transition-all duration-500" style={{ width: `${item.pctReporting}%` }} />
+                                </div>
+                                <span className="text-[10px] text-muted-foreground">{item.pctReporting}%</span>
+                              </div>
+                            </div>
+                          )}
+                          {item.calledWinner && (
+                            <div className="mt-2 flex items-center gap-1.5 px-2 py-1 bg-green-500/10 border border-green-500/30 rounded">
+                              <span className="w-2 h-2 rounded-full bg-green-500" />
+                              <span className="text-xs text-green-400 font-medium">Winner: {item.calledWinner} ({item.calledParty})</span>
+                            </div>
+                          )}
                         </>
                       )}
                       {mapView === "senate" && (
@@ -257,13 +276,32 @@ export default function Home() {
                               {item.rating}
                             </span>
                           </div>
-                          <div className="flex justify-between text-xs">
-                            <span className="text-blue-400">{item.candidate1Name} ({item.candidate1Party})</span>
-                            <span className="text-red-400">{item.candidate2Name} ({item.candidate2Party})</span>
+                          <div className="flex justify-between text-xs mt-2">
+                            <span className={`px-2 py-1 rounded ${item.candidate1Party === "D" ? "bg-blue-500/15 text-blue-400 border border-blue-500/30" : item.candidate1Party === "R" ? "bg-red-500/15 text-red-400 border border-red-500/30" : "bg-gray-500/15 text-gray-400 border border-gray-500/30"}`}>
+                              {item.candidate1Name} ({item.candidate1Party})
+                            </span>
+                            <span className="text-muted-foreground self-center text-[10px]">vs</span>
+                            <span className={`px-2 py-1 rounded ${item.candidate2Party === "D" ? "bg-blue-500/15 text-blue-400 border border-blue-500/30" : item.candidate2Party === "R" ? "bg-red-500/15 text-red-400 border border-red-500/30" : "bg-gray-500/15 text-gray-400 border border-gray-500/30"}`}>
+                              {item.candidate2Name} ({item.candidate2Party})
+                            </span>
                           </div>
-                          {item.pctReporting > 0 && <p className="text-xs text-muted-foreground mt-1">{item.pctReporting}% reporting</p>}
+                          {item.pctReporting > 0 && (
+                            <div className="mt-2">
+                              <div className="flex items-center gap-2">
+                                <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
+                                  <div className="h-full bg-primary/60 rounded-full transition-all duration-500" style={{ width: `${item.pctReporting}%` }} />
+                                </div>
+                                <span className="text-[10px] text-muted-foreground">{item.pctReporting}%</span>
+                              </div>
+                            </div>
+                          )}
                           {item.incumbent && <p className="text-xs text-muted-foreground mt-1">Incumbent: {item.incumbent} ({item.incumbentParty})</p>}
-                          {item.calledWinner && <p className="text-xs text-green-400 mt-1 font-medium">Winner: {item.calledWinner} ({item.calledParty})</p>}
+                          {item.calledWinner && (
+                            <div className="mt-2 flex items-center gap-1.5 px-2 py-1 bg-green-500/10 border border-green-500/30 rounded">
+                              <span className="w-2 h-2 rounded-full bg-green-500" />
+                              <span className="text-xs text-green-400 font-medium">Winner: {item.calledWinner} ({item.calledParty})</span>
+                            </div>
+                          )}
                         </>
                       )}
                       {mapView === "governor" && (
@@ -274,12 +312,22 @@ export default function Home() {
                               {item.rating}
                             </span>
                           </div>
-                          <div className="flex justify-between text-xs">
-                            <span className="text-blue-400">{item.demCandidate || "TBD"} (D)</span>
-                            <span className="text-red-400">{item.repCandidate || "TBD"} (R)</span>
+                          <div className="flex justify-between text-xs mt-2">
+                            <span className="px-2 py-1 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30">
+                              {item.demCandidate || "TBD"} (D)
+                            </span>
+                            <span className="text-muted-foreground self-center text-[10px]">vs</span>
+                            <span className="px-2 py-1 rounded bg-red-500/15 text-red-400 border border-red-500/30">
+                              {item.repCandidate || "TBD"} (R)
+                            </span>
                           </div>
                           {item.incumbentName && <p className="text-xs text-muted-foreground mt-1">Incumbent: {item.incumbentName} ({item.incumbentParty})</p>}
-                          {item.calledWinner && <p className="text-xs text-green-400 mt-1 font-medium">Winner: {item.calledWinner} ({item.calledParty})</p>}
+                          {item.calledWinner && (
+                            <div className="mt-2 flex items-center gap-1.5 px-2 py-1 bg-green-500/10 border border-green-500/30 rounded">
+                              <span className="w-2 h-2 rounded-full bg-green-500" />
+                              <span className="text-xs text-green-400 font-medium">Winner: {item.calledWinner} ({item.calledParty})</span>
+                            </div>
+                          )}
                         </>
                       )}
                     </div>
