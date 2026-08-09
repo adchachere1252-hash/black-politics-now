@@ -2,7 +2,8 @@ import { trpc } from "@/lib/trpc";
 import { useAudio } from "@/contexts/AudioContext";
 import { Link } from "wouter";
 import { useMemo, useState } from "react";
-import { ArrowRight, Play, Maximize2, Download, RotateCcw, Info } from "lucide-react";
+import { ArrowRight, Play, Maximize2, Download, RotateCcw, Info, X } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { USMapFull } from "@/components/USMapFull";
 
 type MapView = "house" | "senate" | "governor";
@@ -17,6 +18,24 @@ export default function Home() {
   const { play, voicePreference } = useAudio();
   const [mapView, setMapView] = useState<MapView>("house");
   const [selectedState, setSelectedState] = useState<string | null>(null);
+  const [statePopupOpen, setStatePopupOpen] = useState(false);
+
+  // State name lookup
+  const STATE_NAMES: Record<string, string> = { AL:"Alabama",AK:"Alaska",AZ:"Arizona",AR:"Arkansas",CA:"California",CO:"Colorado",CT:"Connecticut",DE:"Delaware",FL:"Florida",GA:"Georgia",HI:"Hawaii",ID:"Idaho",IL:"Illinois",IN:"Indiana",IA:"Iowa",KS:"Kansas",KY:"Kentucky",LA:"Louisiana",ME:"Maine",MD:"Maryland",MA:"Massachusetts",MI:"Michigan",MN:"Minnesota",MS:"Mississippi",MO:"Missouri",MT:"Montana",NE:"Nebraska",NV:"Nevada",NH:"New Hampshire",NJ:"New Jersey",NM:"New Mexico",NY:"New York",NC:"North Carolina",ND:"North Dakota",OH:"Ohio",OK:"Oklahoma",OR:"Oregon",PA:"Pennsylvania",RI:"Rhode Island",SC:"South Carolina",SD:"South Dakota",TN:"Tennessee",TX:"Texas",UT:"Utah",VT:"Vermont",VA:"Virginia",WA:"Washington",WV:"West Virginia",WI:"Wisconsin",WY:"Wyoming",DC:"District of Columbia" };
+
+  // Build popup data based on current map view and selected state
+  const popupData = useMemo(() => {
+    if (!selectedState) return [];
+    if (mapView === "house") return (houseRaces as any[] ?? []).filter(r => r.stateCode === selectedState);
+    if (mapView === "senate") return (senateRaces as any[] ?? []).filter(r => r.stateCode === selectedState);
+    if (mapView === "governor") return (governors as any[] ?? []).filter(r => r.stateCode === selectedState);
+    return [];
+  }, [mapView, houseRaces, senateRaces, governors, selectedState]);
+
+  const handleStateClick = (stateId: string) => {
+    setSelectedState(prev => prev === stateId ? null : stateId);
+    setStatePopupOpen(true);
+  };
 
   const latestEpisode = episodes?.[0];
 
@@ -175,7 +194,7 @@ export default function Home() {
           <div className="flex-1 flex items-center justify-center">
             <USMapFull
               raceData={mapData}
-              onStateClick={(id) => setSelectedState(prev => prev === id ? null : id)}
+              onStateClick={handleStateClick}
               selectedState={selectedState}
             />
           </div>
@@ -203,6 +222,74 @@ export default function Home() {
               View State Breakdown <ArrowRight size={14} />
             </Link>
           </div>
+
+          {/* State Popup Dialog */}
+          <Dialog open={statePopupOpen} onOpenChange={setStatePopupOpen}>
+            <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>{selectedState ? `${STATE_NAMES[selectedState] || selectedState} — ${mapView === "senate" ? "Senate Race" : mapView === "governor" ? "Governor Race" : "House Races"}` : ""}</DialogTitle>
+              </DialogHeader>
+              {popupData.length > 0 ? (
+                <div className="space-y-3">
+                  {popupData.map((item: any, idx: number) => (
+                    <div key={item.id || idx} className="border border-border rounded-lg p-3">
+                      {mapView === "house" && (
+                        <>
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="font-bold text-sm">District {item.district}</span>
+                            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${item.rating === "Toss-up" ? "bg-purple-500/20 text-purple-400" : item.rating?.includes("D") ? "bg-blue-500/20 text-blue-400" : "bg-red-500/20 text-red-400"}`}>
+                              {item.rating}
+                            </span>
+                          </div>
+                          <div className="flex justify-between text-xs">
+                            <span className="text-blue-400">{item.candidate1Name} ({item.candidate1Party})</span>
+                            <span className="text-red-400">{item.candidate2Name} ({item.candidate2Party})</span>
+                          </div>
+                          {item.pctReporting > 0 && <p className="text-xs text-muted-foreground mt-1">{item.pctReporting}% reporting</p>}
+                          {item.calledWinner && <p className="text-xs text-green-400 mt-1 font-medium">Winner: {item.calledWinner} ({item.calledParty})</p>}
+                        </>
+                      )}
+                      {mapView === "senate" && (
+                        <>
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="font-bold text-sm">{item.stateName} Senate</span>
+                            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${item.rating === "Toss-up" ? "bg-purple-500/20 text-purple-400" : item.rating?.includes("D") ? "bg-blue-500/20 text-blue-400" : "bg-red-500/20 text-red-400"}`}>
+                              {item.rating}
+                            </span>
+                          </div>
+                          <div className="flex justify-between text-xs">
+                            <span className="text-blue-400">{item.candidate1Name} ({item.candidate1Party})</span>
+                            <span className="text-red-400">{item.candidate2Name} ({item.candidate2Party})</span>
+                          </div>
+                          {item.pctReporting > 0 && <p className="text-xs text-muted-foreground mt-1">{item.pctReporting}% reporting</p>}
+                          {item.incumbent && <p className="text-xs text-muted-foreground mt-1">Incumbent: {item.incumbent} ({item.incumbentParty})</p>}
+                          {item.calledWinner && <p className="text-xs text-green-400 mt-1 font-medium">Winner: {item.calledWinner} ({item.calledParty})</p>}
+                        </>
+                      )}
+                      {mapView === "governor" && (
+                        <>
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="font-bold text-sm">{item.stateName} Governor</span>
+                            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${item.rating === "Toss-up" ? "bg-purple-500/20 text-purple-400" : item.rating?.includes("D") ? "bg-blue-500/20 text-blue-400" : "bg-red-500/20 text-red-400"}`}>
+                              {item.rating}
+                            </span>
+                          </div>
+                          <div className="flex justify-between text-xs">
+                            <span className="text-blue-400">{item.demCandidate || "TBD"} (D)</span>
+                            <span className="text-red-400">{item.repCandidate || "TBD"} (R)</span>
+                          </div>
+                          {item.incumbentName && <p className="text-xs text-muted-foreground mt-1">Incumbent: {item.incumbentName} ({item.incumbentParty})</p>}
+                          {item.calledWinner && <p className="text-xs text-green-400 mt-1 font-medium">Winner: {item.calledWinner} ({item.calledParty})</p>}
+                        </>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-muted-foreground text-sm">No {mapView === "senate" ? "Senate race" : mapView === "governor" ? "Governor race" : "House races"} found for this state.</p>
+              )}
+            </DialogContent>
+          </Dialog>
         </section>
 
         {/* Column 3: Daily Intelligence Brief */}
