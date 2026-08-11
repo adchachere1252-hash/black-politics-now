@@ -231,3 +231,16 @@
 - [x] Design a sophisticated News-page-only concept with real article treatment, a World Elections map slot, and a Selma Historical Atlas feature
 - [x] Keep John Lewis as a subtle supporting detail within the News page rather than a dominant visual
 - [x] Publish and verify the focused News-page-only concept preview
+
+## Full Platform Verification (Aug 11)
+- [x] Establish current production baseline for routes, response behavior, and client/server diagnostics
+- [x] Verify all public routes, responsive layouts, navigation, and core interactive workflows
+- [x] Verify election, podcast, WordPress News, World Elections, Historical Atlas, search, RSS, and admin data contracts
+- [x] Verify cloud-computer automation schedules, recent task logs, DDHQ mapping, and election-engine status
+- [ ] Resolve confirmed verification findings and rerun targeted checks
+- [ ] Document and deliver the full-platform verification results
+- [ ] Restore missing full-episode and segment audio assets for the current Daily Intelligence Brief run and verify public playback
+- [x] Correct the verified July 31 Daily Intelligence Brief segment-count mismatch or restore its missing segments before public playback verification
+- [x] Repair the Daily Intelligence Brief generator’s silent short-script fallback so newly generated episodes contain the intended full-length editorial scripts
+- [x] Prevent broken public play actions for episodes whose verified full-length audio asset is unavailable
+- [x] Assess and recommend a lightweight homepage placement for World Elections and the Historical Atlas without displacing the core News–map–podcast dashboard

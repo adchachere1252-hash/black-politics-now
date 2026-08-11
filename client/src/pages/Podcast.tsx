@@ -68,6 +68,7 @@ export default function Podcast() {
         {filteredEpisodes.map((ep: any) => {
           const isExpanded = expandedEp === ep.date;
           const isCurrentEp = currentTrack?.episodeDate === ep.date;
+          const hasFullAudio = Boolean(ep.fullEpisodeCdnUrl);
           return (
             <div key={ep.date} className="glass-card rounded-xl overflow-hidden">
               {/* Episode header */}
@@ -75,15 +76,18 @@ export default function Podcast() {
                 <button
                   onClick={() => {
                     if (isCurrentEp && isPlaying) { pause(); }
-                    else { play({ url: ep.fullEpisodeCdnUrl, title: `Daily Brief - ${ep.date}`, episodeDate: ep.date }); }
+                    else if (hasFullAudio) { play({ url: ep.fullEpisodeCdnUrl, title: `Daily Brief - ${ep.date}`, episodeDate: ep.date }); }
                   }}
-                  className="shrink-0 p-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-transform active:scale-95"
+                  disabled={!hasFullAudio}
+                  title={hasFullAudio ? "Play full Daily Intelligence Brief" : "Full episode audio is being prepared"}
+                  className="shrink-0 p-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-transform active:scale-95 disabled:cursor-not-allowed disabled:opacity-45"
                 >
                   {isCurrentEp && isPlaying ? <Pause size={18} /> : <Play size={18} />}
                 </button>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-bold">{ep.day || ep.date}</p>
                   <p className="text-xs text-muted-foreground">{ep.date} &middot; {ep.segmentCount} topics &middot; {ep.totalDurationLabel}</p>
+                  {!hasFullAudio && <p className="mt-1 text-[11px] text-muted-foreground">Audio preparation in progress</p>}
                 </div>
                 <button
                   onClick={() => setExpandedEp(isExpanded ? null : ep.date)}
@@ -99,12 +103,15 @@ export default function Podcast() {
                   <div className="space-y-1">
                     {ep.segments.map((seg: any) => {
                       const segUrl = voicePreference === "andrew" ? seg.audioPath : seg.jennyAudioPath;
+                      const hasSegmentAudio = Boolean(segUrl);
                       const isActive = currentTrack?.segmentKey === seg.key && currentTrack?.episodeDate === ep.date;
                       return (
                         <button
                           key={seg.key}
-                          onClick={() => play({ url: segUrl, title: seg.label, episodeDate: ep.date, segmentKey: seg.key })}
-                          className={`w-full flex items-center gap-3 p-2.5 rounded-lg text-left transition-colors ${isActive ? "bg-primary/10" : "hover:bg-muted/50"}`}
+                          onClick={() => hasSegmentAudio && play({ url: segUrl, title: seg.label, episodeDate: ep.date, segmentKey: seg.key })}
+                          disabled={!hasSegmentAudio}
+                          title={hasSegmentAudio ? `Play ${seg.label}` : "Segment audio is being prepared"}
+                          className={`w-full flex items-center gap-3 p-2.5 rounded-lg text-left transition-colors disabled:cursor-not-allowed disabled:opacity-55 ${isActive ? "bg-primary/10" : "hover:bg-muted/50"}`}
                         >
                           <span className="text-lg">{seg.emoji}</span>
                           <div className="flex-1 min-w-0">

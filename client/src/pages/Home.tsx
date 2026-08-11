@@ -38,6 +38,7 @@ export default function Home() {
   };
 
   const latestEpisode = episodes?.[0];
+  const latestEpisodeHasAudio = Boolean(latestEpisode?.fullEpisodeCdnUrl);
 
   // Build map data from senate races (for senate view) or house (aggregate by state)
   const mapData = useMemo(() => {
@@ -358,12 +359,14 @@ export default function Home() {
               {/* Play button + episode info */}
               <div className="flex items-center gap-3 mb-4">
                 <button
-                  onClick={() => play({
+                  onClick={() => latestEpisodeHasAudio && play({
                     url: latestEpisode.fullEpisodeCdnUrl,
                     title: `Daily Brief - ${latestEpisode.date}`,
                     episodeDate: latestEpisode.date,
                   })}
-                  className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-transform active:scale-95 flex-shrink-0"
+                  disabled={!latestEpisodeHasAudio}
+                  title={latestEpisodeHasAudio ? "Play full Daily Intelligence Brief" : "Full episode audio is being prepared"}
+                  className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-transform active:scale-95 flex-shrink-0 disabled:cursor-not-allowed disabled:opacity-45"
                 >
                   <Play size={20} fill="currentColor" />
                 </button>
@@ -378,11 +381,12 @@ export default function Home() {
               </div>
 
               {/* Progress bar placeholder */}
-              <div className="flex items-center gap-2 mb-4">
+                <div className="flex items-center gap-2 mb-4">
                 <span className="text-[10px] text-muted-foreground">00:00</span>
                 <div className="flex-1 h-1 bg-muted rounded-full overflow-hidden">
                   <div className="h-full w-0 bg-primary rounded-full" />
                 </div>
+                {!latestEpisodeHasAudio && <p className="text-[11px] text-muted-foreground mb-3">Full episode audio is being prepared. Scripts remain available below.</p>}
                 <span className="text-[10px] text-muted-foreground">{latestEpisode.totalDurationLabel}</span>
               </div>
 
@@ -393,23 +397,29 @@ export default function Home() {
 
               {/* Numbered segment list */}
               <div className="space-y-0.5">
-                {latestEpisode.segments.filter((seg: any) => !seg.key.includes("greeting") && !seg.key.includes("closing")).map((seg: any, i: number) => (
+                {latestEpisode.segments.filter((seg: any) => !seg.key.includes("greeting") && !seg.key.includes("closing")).map((seg: any, i: number) => {
+                  const segmentUrl = voicePreference === "andrew" ? seg.audioPath : seg.jennyAudioPath;
+                  const segmentHasAudio = Boolean(segmentUrl);
+                  return (
                   <button
                     key={seg.key}
-                    onClick={() => play({
-                      url: voicePreference === "andrew" ? seg.audioPath : seg.jennyAudioPath,
+                    onClick={() => segmentHasAudio && play({
+                      url: segmentUrl,
                       title: seg.label,
                       episodeDate: latestEpisode.date,
                       segmentKey: seg.key,
                     })}
-                    className="w-full flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-muted/30 transition-colors text-left group"
+                    disabled={!segmentHasAudio}
+                    title={segmentHasAudio ? `Play ${seg.label}` : "Segment audio is being prepared"}
+                    className="w-full flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-muted/30 transition-colors text-left group disabled:cursor-not-allowed disabled:opacity-55"
                   >
                     <span className="text-sm font-bold text-muted-foreground w-5 text-right">{i + 1}</span>
                     <span className="flex-1 text-xs font-medium text-foreground group-hover:text-primary transition-colors truncate">{seg.label}</span>
                     <span className="text-[10px] text-muted-foreground">{seg.durationLabel}</span>
                     <Play size={12} className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                   </button>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ) : (
