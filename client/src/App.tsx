@@ -18,6 +18,7 @@ const SearchPage = lazy(() => import("./pages/Search"));
 const WorldPage = lazy(() => import("./pages/World"));
 const AtlasPage = lazy(() => import("./pages/Atlas"));
 const NewsMockupPreview = lazy(() => import("./pages/NewsMockupPreview"));
+const FullSiteConceptPreview = lazy(() => import("./pages/FullSiteConceptPreview"));
 
 function Router() {
   return (
@@ -46,6 +47,9 @@ function Router() {
       </Route>
       <Route path={"/news-mockup"}>
         <Suspense fallback={<PageLoader />}><NewsMockupPreview /></Suspense>
+      </Route>
+      <Route path={"/site-concept"}>
+        <Suspense fallback={<PageLoader />}><FullSiteConceptPreview /></Suspense>
       </Route>
       <Route path={"/colors"}>
         <Suspense fallback={<PageLoader />}><ColorPreview /></Suspense>
