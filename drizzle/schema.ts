@@ -361,25 +361,49 @@ export type WorldElection = typeof worldElections.$inferSelect;
 export type InsertWorldElection = typeof worldElections.$inferInsert;
 
 // ═══════════════════════════════════════════════════════════════════════════
-// CONGRESSIONAL BLACK CAUCUS TRACKING
+// BLACK REPRESENTATION TRACKING
 // ═══════════════════════════════════════════════════════════════════════════
 
 export const cbcMembers = mysqlTable("cbc_members", {
   id: int("id").autoincrement().primaryKey(),
-  district: varchar("district", { length: 16 }).notNull().unique(),
+  // District is deliberately not unique: an incumbent, successor nominee, and
+  // challenger can all be relevant to Black political representation in one race.
+  district: varchar("district", { length: 16 }).notNull(),
   member: varchar("member", { length: 128 }).notNull(),
   party: mysqlEnum("party", ["D", "R", "I"]).notNull(),
   state: varchar("state", { length: 64 }).notNull(),
   stateCode: varchar("state_code", { length: 2 }).notNull(),
-  chamber: mysqlEnum("chamber", ["house", "senate"]).notNull(),
+  chamber: mysqlEnum("chamber", ["house", "senate", "governor"]).notNull(),
   status: mysqlEnum("cbc_status", [
     "running", "retiring", "resigned", "deceased", "lost_primary",
     "running_for_governor", "running_for_senate",
-    "not_up_2026", "challenger"
+    "not_up_2026", "challenger", "advanced_to_general", "in_runoff",
+    "too_close_to_call", "elected"
   ]).notNull().default("running"),
+  roleType: mysqlEnum("role_type", [
+    "incumbent", "nominee", "challenger", "former_member", "delegate"
+  ]).notNull().default("incumbent"),
+  isCurrentMember: boolean("is_current_member").default(true).notNull(),
   upIn2026: boolean("up_in_2026").default(true).notNull(),
+  raceStage: mysqlEnum("race_stage", [
+    "pre_primary", "primary", "runoff", "general", "special", "called", "not_up"
+  ]).notNull().default("general"),
   primaryResult: varchar("primary_result", { length: 128 }),
+  primaryVotes: bigint("primary_votes", { mode: "number" }),
+  primaryVotePct: decimal("primary_vote_pct", { precision: 5, scale: 2 }),
+  primaryOpponent: varchar("primary_opponent", { length: 128 }),
+  primaryDate: varchar("primary_date", { length: 32 }),
+  runoffVotes: bigint("runoff_votes", { mode: "number" }),
+  runoffVotePct: decimal("runoff_vote_pct", { precision: 5, scale: 2 }),
+  runoffOpponent: varchar("runoff_opponent", { length: 128 }),
+  runoffDate: varchar("runoff_date", { length: 32 }),
   generalOpponent: varchar("general_opponent", { length: 128 }),
+  sourceUrl: text("source_url"),
+  sourceLabel: varchar("source_label", { length: 128 }),
+  redistrictingContext: text("redistricting_context"),
+  aipacFunding: text("aipac_funding"),
+  raceSummary: text("race_summary"),
+  riskLevel: mysqlEnum("risk_level", ["safe", "watch", "endangered"]),
   notes: text("notes"),
   photo: text("photo"),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
@@ -387,3 +411,40 @@ export const cbcMembers = mysqlTable("cbc_members", {
 
 export type CbcMember = typeof cbcMembers.$inferSelect;
 export type InsertCbcMember = typeof cbcMembers.$inferInsert;
+
+/**
+ * Race-level records sourced from Black Politics Now's ongoing Black
+ * Representation tracker. This complements the candidate/member profile table
+ * above and preserves both winner and runner-up results for each contest.
+ */
+export const blackRepresentationElections = mysqlTable("black_representation_elections", {
+  id: int("id").autoincrement().primaryKey(),
+  district: varchar("district", { length: 16 }).notNull(),
+  state: varchar("state", { length: 64 }).notNull(),
+  stateCode: varchar("state_code", { length: 2 }).notNull(),
+  chamber: mysqlEnum("chamber", ["house", "senate", "governor"]).notNull(),
+  electionType: mysqlEnum("election_type", ["primary", "runoff", "general", "special"]).notNull(),
+  partyContest: varchar("party_contest", { length: 16 }),
+  electionDate: varchar("election_date", { length: 32 }),
+  resultStatus: mysqlEnum("result_status", ["called", "too_close_to_call", "upcoming", "uncontested"]).notNull().default("upcoming"),
+  winnerName: varchar("winner_name", { length: 128 }),
+  winnerParty: varchar("winner_party", { length: 8 }),
+  winnerVotes: bigint("winner_votes", { mode: "number" }),
+  winnerVotePct: decimal("winner_vote_pct", { precision: 5, scale: 2 }),
+  runnerUpName: varchar("runner_up_name", { length: 128 }),
+  runnerUpParty: varchar("runner_up_party", { length: 8 }),
+  runnerUpVotes: bigint("runner_up_votes", { mode: "number" }),
+  runnerUpVotePct: decimal("runner_up_vote_pct", { precision: 5, scale: 2 }),
+  generalOpponent: varchar("general_opponent", { length: 128 }),
+  sourceUrl: text("source_url"),
+  sourceLabel: varchar("source_label", { length: 128 }),
+  articleUrl: text("article_url"),
+  redistrictingContext: text("redistricting_context"),
+  notes: text("notes"),
+  lastVerifiedAt: timestamp("last_verified_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type BlackRepresentationElection = typeof blackRepresentationElections.$inferSelect;
+export type InsertBlackRepresentationElection = typeof blackRepresentationElections.$inferInsert;

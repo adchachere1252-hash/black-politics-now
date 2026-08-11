@@ -6,7 +6,7 @@ import { z } from "zod";
 import { getEpisodesFormatted, subscribeEmail, unsubscribeEmail, getPipelineRuns } from "./podcastDb";
 import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateReferendum } from "./electionDb";
 import { fetchWithCache } from "./newsCache";
-import { getAllCbcMembers, getAllRedistrictingStates, updateCbcMember } from "./cbcDb";
+import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
 
 export const appRouter = router({
   system: systemRouter,
@@ -61,9 +61,15 @@ export const appRouter = router({
       .mutation(async ({ input }) => { await updateReferendum(input.id, input.data as any); return { success: true }; }),
     // CBC
     cbc: publicProcedure.query(async () => getAllCbcMembers()),
+    blackRepresentationElections: publicProcedure
+      .input(z.object({ stateCode: z.string().length(2).optional() }).optional())
+      .query(async ({ input }) => getBlackRepresentationElections(input?.stateCode)),
     updateCbc: adminProcedure
       .input(z.object({ id: z.number(), data: z.record(z.string(), z.unknown()) }))
       .mutation(async ({ input }) => { await updateCbcMember(input.id, input.data as any); return { success: true }; }),
+    updateBlackRepresentationElection: adminProcedure
+      .input(z.object({ id: z.number(), data: z.record(z.string(), z.unknown()) }))
+      .mutation(async ({ input }) => { await updateBlackRepresentationElection(input.id, input.data as any); return { success: true }; }),
     redistricting: publicProcedure.query(async () => getAllRedistrictingStates()),
   }),
 

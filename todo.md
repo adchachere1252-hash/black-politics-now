@@ -165,3 +165,22 @@
 - [x] Add DDHQ sync status panel to admin dashboard (Overview tab shows mapped races, live status, cloud computer info)
 - [x] Complete end-to-end verification of Elections, Podcast, Admin, and Search pages
 - [x] Fix Podcast page subtitle (was "12 topics. 12 minutes." → now "13 topics. ~40 minutes.")
+
+## Black Representation Article Integration (Aug 11)
+- [x] Expand the Black Representation schema for article-backed primary, runoff, vote-total, source, and redistricting records
+- [x] Complete a record-by-record reconciliation of the 74 article election records against the source article
+- [x] Reconcile each existing Black Representation profile to article mentions, aliases, or documented out-of-scope status (92 article mentions/aliases; 1 documented retainer)
+- [x] Perform reverse article-roster-to-profile reconciliation to document every article person, alias, omission, and intentional retainer (11 newly added profiles; 104 total tracked profiles)
+- [x] Import article-backed primary and runoff results, general-election opponents, and source URLs
+- [x] Verify every imported election-record source link is accessible and correct the NJ-3 naming discrepancy (74/74 links reachable)
+- [x] Audit every imported election record’s substantive fields against its cited result source (winner, runner-up, vote totals, percentage, status, and general opponent) — regional audit found no substantive discrepancies
+- [x] Update the Black Representation tab, map popups, and expanded cards with result details and source links
+- [x] Rename and expand the admin editor to support Black Representation election records
+- [x] Verify the public Black Representation view and renamed admin workspace render cleanly, with API-level regression coverage for all election records
+- [x] Verify the public Black Representation view and administrative editor render the complete 74-record ledger
+- [x] Verify direct public and admin workspace routes render the complete Black Representation dataset
+- [x] Verify every article-backed election row passes the public data contract and protected administrative mutation regression suite
+- [x] Run browser-level public presence and source-link audit for all 74 article-backed election rows
+- [x] Run browser-level administrative editor control audit and protected mutation regression for all 74 article-backed election rows
+- [x] Verify per-record public display of status, vote/percentage, opponent, and available editorial context for all 74 rows (74/74 individual election cards passed)
+- [x] Run a real authenticated browser edit-and-persistence audit against the Black Representation admin workspace (edit persisted after reload and original source URL was restored)

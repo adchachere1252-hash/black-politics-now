@@ -1,0 +1,1 @@
+ALTER TABLE `cbc_members` MODIFY COLUMN `chamber` enum('house','senate','governor') NOT NULL;

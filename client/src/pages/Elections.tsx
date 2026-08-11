@@ -1,7 +1,7 @@
 import { trpc } from "@/lib/trpc";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
-import { Search, Star, Users, Scale, MapPin, AlertTriangle } from "lucide-react";
+import { Search, Star, Users, Scale, MapPin, AlertTriangle, ExternalLink, Trophy } from "lucide-react";
 import { USMap } from "@/components/USMap";
 import { USMapFull } from "@/components/USMapFull";
 import { ResultsTicker } from "@/components/ResultsTicker";
@@ -99,7 +99,10 @@ function Starfield() {
 }
 
 export default function Elections() {
-  const [tab, setTab] = useState<ViewTab>("senate");
+  const [tab, setTab] = useState<ViewTab>(() => {
+    const requested = typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("tab");
+    return requested === "cbc" || requested === "governors" || requested === "house" || requested === "redistricting" || requested === "senate" ? requested : "senate";
+  });
   const [ratingFilter, setRatingFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedState, setSelectedState] = useState<string | null>(null);
@@ -115,6 +118,7 @@ export default function Elections() {
   const { data: houseRaces = [] } = trpc.election.house.useQuery(undefined, { refetchInterval });
   const { data: governors = [] } = trpc.election.governors.useQuery(undefined, { refetchInterval });
   const { data: cbcMembers = [] } = trpc.election.cbc.useQuery();
+  const { data: blackRepresentationElections = [] } = trpc.election.blackRepresentationElections.useQuery();
   const { data: redistrictingStates = [] } = trpc.election.redistricting.useQuery();
   const { data: scoreboard } = trpc.election.scoreboard.useQuery(undefined, { refetchInterval });
 
@@ -189,9 +193,9 @@ export default function Elections() {
       });
       Object.entries(cbcStates).forEach(([code, count]) => {
         data[code] = {
-          rating: "Solid D", // Blue to highlight CBC presence
+          rating: "Toss-up", // Neutral purple: presence indicator, not a party rating
           candidate1: `${count} Black member${count > 1 ? "s" : ""}`,
-          candidate2: "Congressional Black Caucus",
+          candidate2: "Black Representation",
           calledWinner: null,
         };
       });
@@ -218,10 +222,14 @@ export default function Elections() {
     if (tab === "house") return (houseRaces as any[]).filter(r => r.stateCode === popupState);
     if (tab === "senate") return (senateRaces as any[]).filter(r => r.stateCode === popupState);
     if (tab === "governors") return (governors as any[]).filter(r => r.stateCode === popupState);
-    if (tab === "cbc") return (cbcMembers as any[]).filter(m => m.stateCode === popupState);
+    if (tab === "cbc") {
+      const members = (cbcMembers as any[]).filter(m => m.stateCode === popupState).map(m => ({ ...m, popupType: "member" }));
+      const elections = (blackRepresentationElections as any[]).filter(r => r.stateCode === popupState).map(r => ({ ...r, popupType: "election" }));
+      return [...members, ...elections];
+    }
     if (tab === "redistricting") return (redistrictingStates as any[]).filter(s => s.stateCode === popupState);
     return [];
-  }, [tab, houseRaces, senateRaces, governors, cbcMembers, redistrictingStates, popupState]);
+  }, [tab, houseRaces, senateRaces, governors, cbcMembers, blackRepresentationElections, redistrictingStates, popupState]);
 
   // Handle state click - open popup with House races
   const handleStateClick = (stateId: string) => {
@@ -380,9 +388,9 @@ export default function Elections() {
           </div>
           {/* Legend */}
           <div className="flex flex-wrap gap-3 mt-4 justify-center">
-            {["Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R"].map(r => (
+            {(tab === "cbc" ? ["Black Representation presence"] : ["Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R"]).map(r => (
               <div key={r} className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: getRatingColor(r) }} />
+                <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: tab === "cbc" ? getRatingColor("Toss-up") : getRatingColor(r) }} />
                 <span className="text-xs text-muted-foreground">{r}</span>
               </div>
             ))}
@@ -390,13 +398,13 @@ export default function Elections() {
         </div>
 
         {/* Scoreboard */}
-        <TabScoreboard tab={tab} senateRaces={senateRaces as any[]} houseRaces={houseRaces as any[]} governors={governors as any[]} cbcMembers={cbcMembers as any[]} redistrictingStates={redistrictingStates as any[]} />
+        <TabScoreboard tab={tab} senateRaces={senateRaces as any[]} houseRaces={houseRaces as any[]} governors={governors as any[]} cbcMembers={cbcMembers as any[]} blackRepresentationElections={blackRepresentationElections as any[]} redistrictingStates={redistrictingStates as any[]} />
 
         {/* Race list */}
         {tab === "senate" && <RaceGrid races={filteredSenate} chamber="senate" />}
         {tab === "house" && <RaceGrid races={filteredHouse} chamber="house" />}
         {tab === "governors" && <GovernorGrid races={filteredGovs} />}
-        {tab === "cbc" && <CbcGrid members={filteredCbc} />}
+        {tab === "cbc" && <CbcGrid members={filteredCbc} elections={(blackRepresentationElections as any[]).filter((r: any) => (!selectedState || r.stateCode === selectedState) && (!searchQuery || `${r.state} ${r.district} ${r.winnerName} ${r.runnerUpName}`.toLowerCase().includes(searchQuery.toLowerCase())))} />}
         {tab === "redistricting" && <RedistrictingGrid states={filteredRedistricting} />}
 
         {/* State popup dialog showing tab-specific data */}
@@ -454,18 +462,35 @@ export default function Elections() {
                         {item.incumbent && <p className="text-xs text-muted-foreground mt-1">Incumbent: {item.incumbent} ({item.incumbentParty})</p>}
                       </>
                     )}
-                    {tab === "cbc" && (
+                    {tab === "cbc" && item.popupType === "member" && (
                       <>
                         <div className="flex items-center justify-between mb-1">
                           <span className="font-bold text-sm">{item.member}</span>
                           <span className="text-xs text-muted-foreground">{item.district}</span>
                         </div>
                         <div className="flex items-center gap-2 text-xs">
-                          <span className={`px-2 py-0.5 rounded-full font-medium ${item.cbcStatus === "running" ? "bg-green-500/20 text-green-400" : item.cbcStatus === "retiring" ? "bg-yellow-500/20 text-yellow-400" : item.cbcStatus === "lost_primary" ? "bg-red-500/20 text-red-400" : "bg-gray-500/20 text-gray-400"}`}>
-                            {item.cbcStatus === "lost_primary" ? "Lost Primary" : item.cbcStatus}
+                          <span className={`px-2 py-0.5 rounded-full font-medium ${item.cbcStatus === "advanced_to_general" ? "bg-green-500/20 text-green-400" : item.cbcStatus === "in_runoff" || item.cbcStatus === "too_close_to_call" ? "bg-amber-500/20 text-amber-400" : item.cbcStatus === "retiring" ? "bg-yellow-500/20 text-yellow-400" : item.cbcStatus === "lost_primary" ? "bg-red-500/20 text-red-400" : "bg-gray-500/20 text-gray-400"}`}>
+                            {formatBlackRepStatus(item.cbcStatus)}
                           </span>
                           {item.primaryResult && <span className="text-muted-foreground">{item.primaryResult}</span>}
                         </div>
+                      </>
+                    )}
+                    {tab === "cbc" && item.popupType === "election" && (
+                      <>
+                        <div className="flex items-center justify-between gap-3 mb-1">
+                          <span className="font-bold text-sm">{item.district} · {item.electionType}</span>
+                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${item.resultStatus === "called" || item.resultStatus === "uncontested" ? "bg-green-500/20 text-green-400" : "bg-amber-500/20 text-amber-400"}`}>
+                            {item.resultStatus?.replaceAll("_", " ")}
+                          </span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          {item.winnerName ?? "Result pending"}{item.winnerParty ? ` (${item.winnerParty})` : ""}
+                          {item.winnerVotePct != null ? ` · ${Number(item.winnerVotePct).toFixed(1)}%` : ""}
+                          {item.winnerVotes ? ` · ${Number(item.winnerVotes).toLocaleString()} votes` : ""}
+                        </p>
+                        {item.generalOpponent && <p className="text-xs text-muted-foreground mt-1">General election: {item.generalOpponent}</p>}
+                        {item.sourceUrl && <a href={item.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-2">View source <ExternalLink size={11} /></a>}
                       </>
                     )}
                     {tab === "redistricting" && (
@@ -513,7 +538,7 @@ function ScoreCard({ label, value, color }: { label: string; value: number; colo
   );
 }
 
-function TabScoreboard({ tab, senateRaces, houseRaces, governors, cbcMembers, redistrictingStates }: { tab: ViewTab; senateRaces: any[]; houseRaces: any[]; governors: any[]; cbcMembers: any[]; redistrictingStates: any[] }) {
+function TabScoreboard({ tab, senateRaces, houseRaces, governors, cbcMembers, blackRepresentationElections, redistrictingStates }: { tab: ViewTab; senateRaces: any[]; houseRaces: any[]; governors: any[]; cbcMembers: any[]; blackRepresentationElections: any[]; redistrictingStates: any[] }) {
   if (tab === "senate") {
     const solidD = senateRaces.filter(r => r.rating === "Solid D").length;
     const leanD = senateRaces.filter(r => r.rating === "Lean D" || r.rating === "Likely D").length;
@@ -563,16 +588,15 @@ function TabScoreboard({ tab, senateRaces, houseRaces, governors, cbcMembers, re
     );
   }
   if (tab === "cbc") {
-    const running = cbcMembers.filter(m => m.status === "running").length;
-    const retiring = cbcMembers.filter(m => m.status === "retiring").length;
-    const higher = cbcMembers.filter(m => m.status === "running_for_governor" || m.status === "running_for_senate").length;
-    const lost = cbcMembers.filter(m => m.status === "lost_primary" || m.status === "resigned" || m.status === "deceased").length;
+    const advanced = cbcMembers.filter(m => m.cbcStatus === "advanced_to_general").length;
+    const pending = cbcMembers.filter(m => m.cbcStatus === "in_runoff" || m.cbcStatus === "too_close_to_call").length;
+    const retiring = cbcMembers.filter(m => m.cbcStatus === "retiring").length;
     return (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
-        <ScoreCard label="Running" value={running} color="#22c55e" />
+        <ScoreCard label="Advanced" value={advanced} color="#22c55e" />
+        <ScoreCard label="Runoff / Pending" value={pending} color="#a855f7" />
         <ScoreCard label="Retiring" value={retiring} color="#f59e0b" />
-        <ScoreCard label="Higher Office" value={higher} color="#a855f7" />
-        <ScoreCard label="Lost/Vacant" value={lost} color="#ef4444" />
+        <ScoreCard label="Article-Backed Races" value={blackRepresentationElections.length} color="#38bdf8" />
       </div>
     );
   }
@@ -715,7 +739,7 @@ function GovernorGrid({ races }: { races: any[] }) {
   );
 }
 
-function CbcGrid({ members }: { members: any[] }) {
+function CbcGrid({ members, elections }: { members: any[]; elections: any[] }) {
   if (members.length === 0) return <p className="text-center text-muted-foreground py-8">No members match your search.</p>;
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
@@ -729,6 +753,9 @@ function CbcGrid({ members }: { members: any[] }) {
     running_for_senate: "bg-blue-500/20 text-blue-400",
     not_up_2026: "bg-gray-500/20 text-gray-400",
     challenger: "bg-cyan-500/20 text-cyan-400",
+    advanced_to_general: "bg-green-500/20 text-green-400",
+    in_runoff: "bg-purple-500/20 text-purple-400",
+    too_close_to_call: "bg-amber-500/20 text-amber-400",
   };
 
   const statusLabels: Record<string, string> = {
@@ -741,32 +768,35 @@ function CbcGrid({ members }: { members: any[] }) {
     running_for_senate: "Running for Senate",
     not_up_2026: "Not Up in 2026",
     challenger: "Challenger",
+    advanced_to_general: "Advanced to General",
+    in_runoff: "In Runoff",
+    too_close_to_call: "Too Close to Call",
   };
 
   // Summary stats
-  const running = members.filter(m => m.status === "running").length;
-  const retiring = members.filter(m => m.status === "retiring").length;
-  const runningForHigher = members.filter(m => m.status === "running_for_governor" || m.status === "running_for_senate").length;
+  const advanced = members.filter(m => m.cbcStatus === "advanced_to_general").length;
+  const retiring = members.filter(m => m.cbcStatus === "retiring").length;
+  const pending = members.filter(m => m.cbcStatus === "in_runoff" || m.cbcStatus === "too_close_to_call").length;
 
   return (
     <div>
       {/* Summary bar */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         <div className="glass-card rounded-lg p-3 text-center">
-          <p className="text-xs text-muted-foreground">Total Members</p>
+          <p className="text-xs text-muted-foreground">Tracked People</p>
           <p className="text-2xl font-bold text-primary">{members.length}</p>
         </div>
         <div className="glass-card rounded-lg p-3 text-center">
-          <p className="text-xs text-muted-foreground">Running</p>
-          <p className="text-2xl font-bold text-green-400">{running}</p>
+          <p className="text-xs text-muted-foreground">Advanced</p>
+          <p className="text-2xl font-bold text-green-400">{advanced}</p>
         </div>
         <div className="glass-card rounded-lg p-3 text-center">
           <p className="text-xs text-muted-foreground">Retiring</p>
           <p className="text-2xl font-bold text-amber-400">{retiring}</p>
         </div>
         <div className="glass-card rounded-lg p-3 text-center">
-          <p className="text-xs text-muted-foreground">Running for Higher Office</p>
-          <p className="text-2xl font-bold text-purple-400">{runningForHigher}</p>
+          <p className="text-xs text-muted-foreground">Runoff / Pending</p>
+          <p className="text-2xl font-bold text-purple-400">{pending}</p>
         </div>
       </div>
 
@@ -783,8 +813,8 @@ function CbcGrid({ members }: { members: any[] }) {
                 <h3 className="text-sm font-bold">{m.member}</h3>
               </div>
               <div className="flex items-center gap-2">
-                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColors[m.status] ?? "bg-muted text-muted-foreground"}`}>
-                  {statusLabels[m.status] ?? m.status}
+                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColors[m.cbcStatus] ?? "bg-muted text-muted-foreground"}`}>
+                  {statusLabels[m.cbcStatus] ?? formatBlackRepStatus(m.cbcStatus)}
                 </span>
                 <span className="text-xs text-muted-foreground">{expandedId === m.id ? "▲" : "▼"}</span>
               </div>
@@ -808,6 +838,13 @@ function CbcGrid({ members }: { members: any[] }) {
                 {m.primaryResult && (
                   <div className="text-xs"><span className="text-muted-foreground font-medium">Primary Result:</span> <span className="text-green-400">{m.primaryResult}</span></div>
                 )}
+                {(m.primaryVotes || m.primaryVotePct != null) && (
+                  <div className="text-xs"><span className="text-muted-foreground font-medium">Primary Total:</span> <span className="text-foreground">{m.primaryVotes ? `${Number(m.primaryVotes).toLocaleString()} votes` : ""}{m.primaryVotes && m.primaryVotePct != null ? " · " : ""}{m.primaryVotePct != null ? `${Number(m.primaryVotePct).toFixed(1)}%` : ""}</span></div>
+                )}
+                {m.primaryOpponent && <div className="text-xs"><span className="text-muted-foreground font-medium">Primary Opponent:</span> <span className="text-foreground">{m.primaryOpponent}</span></div>}
+                {m.redistrictingContext && <div className="text-xs p-2 bg-purple-500/10 border border-purple-500/20 rounded"><span className="font-medium text-purple-300">Redistricting:</span> <span className="text-foreground">{m.redistrictingContext}</span></div>}
+                {m.aipacFunding && <div className="text-xs p-2 bg-amber-500/10 border border-amber-500/20 rounded"><span className="font-medium text-amber-300">Funding context:</span> <span className="text-foreground">{m.aipacFunding}</span></div>}
+                {m.sourceUrl && <a href={m.sourceUrl} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="inline-flex items-center gap-1 text-xs text-primary hover:underline">View source <ExternalLink size={11} /></a>}
                 {m.notes && (
                   <div className="text-xs p-2 bg-muted/50 rounded mt-1"><span className="text-muted-foreground font-medium">Notes:</span> <span className="text-foreground">{m.notes}</span></div>
                 )}
@@ -819,8 +856,46 @@ function CbcGrid({ members }: { members: any[] }) {
           </div>
         ))}
       </div>
+      <div className="mt-8">
+        <div className="flex items-center gap-2 mb-3">
+          <Trophy size={16} className="text-primary" />
+          <h2 className="text-sm font-bold uppercase tracking-wider">Article-Backed Election Results</h2>
+          <span className="text-xs text-muted-foreground">{elections.length} tracked contests</span>
+        </div>
+        {elections.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No article-backed contests match the current filter.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+            {elections.map((race: any) => (
+              <article key={race.id} className="glass-card rounded-lg p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-bold">{race.district}</p>
+                    <p className="text-xs text-muted-foreground">{race.state} · {race.electionType} {race.partyContest ? `· ${race.partyContest}` : ""}</p>
+                  </div>
+                  <span className={`shrink-0 text-[10px] uppercase tracking-wide px-2 py-0.5 rounded-full ${race.resultStatus === "called" || race.resultStatus === "uncontested" ? "bg-green-500/20 text-green-400" : "bg-amber-500/20 text-amber-400"}`}>{race.resultStatus?.replaceAll("_", " ")}</span>
+                </div>
+                <div className="mt-3 space-y-1 text-xs">
+                  <p className="font-semibold text-foreground">{race.winnerName ?? "Result pending"}{race.winnerParty ? ` (${race.winnerParty})` : ""}</p>
+                  {(race.winnerVotes || race.winnerVotePct != null) && <p className="text-muted-foreground">{race.winnerVotes ? `${Number(race.winnerVotes).toLocaleString()} votes` : ""}{race.winnerVotes && race.winnerVotePct != null ? " · " : ""}{race.winnerVotePct != null ? `${Number(race.winnerVotePct).toFixed(1)}%` : ""}</p>}
+                  {race.runnerUpName && <p className="text-muted-foreground">vs. {race.runnerUpName}{race.runnerUpParty ? ` (${race.runnerUpParty})` : ""}{race.runnerUpVotes ? ` · ${Number(race.runnerUpVotes).toLocaleString()} votes` : ""}{race.runnerUpVotePct != null ? `${race.runnerUpVotes ? " · " : " · "}${Number(race.runnerUpVotePct).toFixed(1)}%` : ""}</p>}
+                  {race.generalOpponent && <p className="text-muted-foreground">General: {race.generalOpponent}</p>}
+                </div>
+                {race.redistrictingContext && <p className="mt-3 text-xs p-2 bg-purple-500/10 border border-purple-500/20 rounded text-foreground/90">{race.redistrictingContext}</p>}
+                {race.notes && <p className="mt-3 text-xs p-2 bg-muted/50 rounded text-foreground/90">{race.notes}</p>}
+                {race.sourceUrl && <a href={race.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-3">View {race.sourceLabel ?? "source"} <ExternalLink size={11} /></a>}
+              </article>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
+}
+
+function formatBlackRepStatus(status?: string | null) {
+  if (!status) return "Tracking";
+  return status.replaceAll("_", " ").replace(/\b\w/g, char => char.toUpperCase());
 }
 
 function RedistrictingGrid({ states }: { states: any[] }) {

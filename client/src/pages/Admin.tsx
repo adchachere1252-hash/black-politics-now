@@ -8,7 +8,10 @@ type AdminTab = "overview" | "podcast" | "elections" | "cbc" | "audience";
 
 export default function AdminPage() {
   const { user, isAuthenticated, loading } = useAuth();
-  const [tab, setTab] = useState<AdminTab>("overview");
+  const [tab, setTab] = useState<AdminTab>(() => {
+    const requested = typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("tab");
+    return requested === "podcast" || requested === "elections" || requested === "cbc" || requested === "audience" ? requested : "overview";
+  });
 
   if (loading) return <div className="container py-8"><div className="h-40 bg-muted rounded animate-pulse" /></div>;
 
@@ -44,7 +47,7 @@ export default function AdminPage() {
           { key: "overview", label: "Overview", icon: Shield },
           { key: "podcast", label: "Podcast Ops", icon: Radio },
           { key: "elections", label: "Election Ops", icon: MapPin },
-          { key: "cbc", label: "CBC Members", icon: Star },
+          { key: "cbc", label: "Black Representation", icon: Star },
           { key: "audience", label: "Audience", icon: Users },
         ] as const).map(({ key, label, icon: Icon }) => (
           <button
@@ -414,8 +417,10 @@ function RefEditor({ referendum, onSave, saving }: { referendum: any; onSave: (d
 function CbcOpsTab() {
   const [search, setSearch] = useState("");
   const { data: members = [] } = trpc.election.cbc.useQuery();
+  const { data: elections = [] } = trpc.election.blackRepresentationElections.useQuery();
   const utils = trpc.useUtils();
   const updateCbc = trpc.election.updateCbc.useMutation({ onSuccess: () => utils.election.cbc.invalidate() });
+  const updateElection = trpc.election.updateBlackRepresentationElection.useMutation({ onSuccess: () => utils.election.blackRepresentationElections.invalidate() });
 
   const filtered = (members as any[]).filter((m: any) => {
     if (!search) return true;
@@ -425,8 +430,8 @@ function CbcOpsTab() {
 
   return (
     <div>
-      <h2 className="text-lg font-bold mb-4">CBC Member Editor</h2>
-      <p className="text-xs text-muted-foreground mb-4">Edit CBC member statuses, primary results, and notes.</p>
+      <h2 className="text-lg font-bold mb-1">Black Representation Editor</h2>
+      <p className="text-xs text-muted-foreground mb-4">Manage people, primary context, source links, and the article-backed contest ledger.</p>
       <div className="relative mb-3">
         <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
         <input
@@ -441,18 +446,24 @@ function CbcOpsTab() {
           <CbcEditor key={m.id} member={m} onSave={(data) => updateCbc.mutate({ id: m.id, data })} saving={updateCbc.isPending} />
         ))}
       </div>
+      <h3 className="text-sm font-bold mt-8 mb-3">Article-Backed Election Results</h3>
+      <div className="space-y-2 max-h-[60vh] overflow-y-auto">
+        {(elections as any[]).filter((race: any) => !search || `${race.state} ${race.district} ${race.winnerName} ${race.runnerUpName}`.toLowerCase().includes(search.toLowerCase())).map((race: any) => (
+          <BlackRepresentationElectionEditor key={race.id} race={race} onSave={(data: any) => updateElection.mutate({ id: race.id, data })} saving={updateElection.isPending} />
+        ))}
+      </div>
     </div>
   );
 }
 
 function CbcEditor({ member, onSave, saving }: { member: any; onSave: (data: any) => void; saving: boolean }) {
-  const [status, setStatus] = useState(member.status ?? "running");
+  const [status, setStatus] = useState(member.cbcStatus ?? "running");
   const [primaryResult, setPrimaryResult] = useState(member.primaryResult ?? "");
   const [notes, setNotes] = useState(member.notes ?? "");
   const [saved, setSaved] = useState(false);
 
   const handleSave = () => {
-    onSave({ status, primaryResult: primaryResult || null, notes: notes || null });
+    onSave({ cbcStatus: status, primaryResult: primaryResult || null, notes: notes || null });
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
@@ -472,6 +483,9 @@ function CbcEditor({ member, onSave, saving }: { member: any; onSave: (data: any
           <option value="running_for_senate">Running for Senate</option>
           <option value="not_up_2026">Not Up 2026</option>
           <option value="challenger">Challenger</option>
+          <option value="advanced_to_general">Advanced to General</option>
+          <option value="in_runoff">In Runoff</option>
+          <option value="too_close_to_call">Too Close to Call</option>
         </select>
         <input
           value={primaryResult}
@@ -492,6 +506,52 @@ function CbcEditor({ member, onSave, saving }: { member: any; onSave: (data: any
         >
           {saved ? <Check size={12} /> : <Save size={12} />}
           {saved ? "Saved" : "Save"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function BlackRepresentationElectionEditor({ race, onSave, saving }: { race: any; onSave: (data: any) => void; saving: boolean }) {
+  const [resultStatus, setResultStatus] = useState(race.resultStatus ?? "upcoming");
+  const [winnerName, setWinnerName] = useState(race.winnerName ?? "");
+  const [winnerVotes, setWinnerVotes] = useState(race.winnerVotes?.toString() ?? "");
+  const [winnerVotePct, setWinnerVotePct] = useState(race.winnerVotePct?.toString() ?? "");
+  const [generalOpponent, setGeneralOpponent] = useState(race.generalOpponent ?? "");
+  const [sourceUrl, setSourceUrl] = useState(race.sourceUrl ?? "");
+  const [saved, setSaved] = useState(false);
+
+  const handleSave = () => {
+    onSave({
+      resultStatus,
+      winnerName: winnerName || null,
+      winnerVotes: winnerVotes ? parseInt(winnerVotes) : null,
+      winnerVotePct: winnerVotePct || null,
+      generalOpponent: generalOpponent || null,
+      sourceUrl: sourceUrl || null,
+    });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  return (
+    <div className="glass-card rounded-lg p-3">
+      <div className="flex items-center gap-2 flex-wrap">
+        <span className="text-sm font-bold min-w-[110px]">{race.district}</span>
+        <span className="text-xs text-muted-foreground">{race.electionType} · {race.partyContest ?? "all-party"}</span>
+        <select value={resultStatus} onChange={e => setResultStatus(e.target.value)} className="bg-muted rounded px-2 py-1 text-xs">
+          <option value="called">Called</option>
+          <option value="uncontested">Uncontested</option>
+          <option value="too_close_to_call">Too Close</option>
+          <option value="upcoming">Upcoming</option>
+        </select>
+        <input value={winnerName} onChange={e => setWinnerName(e.target.value)} placeholder="Winner" className="bg-muted rounded px-2 py-1 text-xs w-32" />
+        <input value={winnerVotes} onChange={e => setWinnerVotes(e.target.value)} placeholder="Votes" type="number" className="bg-muted rounded px-2 py-1 text-xs w-24" />
+        <input value={winnerVotePct} onChange={e => setWinnerVotePct(e.target.value)} placeholder="Pct" type="number" step="0.1" className="bg-muted rounded px-2 py-1 text-xs w-16" />
+        <input value={generalOpponent} onChange={e => setGeneralOpponent(e.target.value)} placeholder="General opponent" className="bg-muted rounded px-2 py-1 text-xs w-36" />
+        <input value={sourceUrl} onChange={e => setSourceUrl(e.target.value)} placeholder="Source URL" className="bg-muted rounded px-2 py-1 text-xs flex-1 min-w-[180px]" />
+        <button onClick={handleSave} disabled={saving} className="ml-auto flex items-center gap-1 px-2 py-1 rounded bg-primary/20 text-primary text-xs hover:bg-primary/30 transition-colors disabled:opacity-50">
+          {saved ? <Check size={12} /> : <Save size={12} />}{saved ? "Saved" : "Save"}
         </button>
       </div>
     </div>
