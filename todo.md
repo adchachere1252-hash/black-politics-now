@@ -213,3 +213,10 @@
 - [x] Add Historical Atlas data regression coverage and automated UI checks for both standalone routes
 - [x] Verify desktop/mobile rendering for both standalone routes
 - [x] Verify keyboard interaction, source data, and browser-level lazy-loading behavior for both standalone routes
+
+## Black Politics Now News-Section Visual Mockups (Aug 11)
+- [ ] Create premium Black Politics Now News-section mockups focused on reporting, editorial categories, and article discovery
+- [ ] Compare several desktop news-hub directions while retaining the established dark-and-gold BPN identity
+- [ ] Validate the generated News-section mockups and present a recommended direction for implementation
+- [ ] Create an Original Style, Elevated News mockup that retains the original compact dark-and-gold BPN newsroom identity
+- [x] Add a direct live-platform preview route for the Original Style, Elevated News mockup

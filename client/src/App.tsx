@@ -17,6 +17,7 @@ const AdminPage = lazy(() => import("./pages/Admin"));
 const SearchPage = lazy(() => import("./pages/Search"));
 const WorldPage = lazy(() => import("./pages/World"));
 const AtlasPage = lazy(() => import("./pages/Atlas"));
+const NewsMockupPreview = lazy(() => import("./pages/NewsMockupPreview"));
 
 function Router() {
   return (
@@ -42,6 +43,9 @@ function Router() {
       </Route>
       <Route path={"/atlas"}>
         <Suspense fallback={<PageLoader />}><AtlasPage /></Suspense>
+      </Route>
+      <Route path={"/news-mockup"}>
+        <Suspense fallback={<PageLoader />}><NewsMockupPreview /></Suspense>
       </Route>
       <Route path={"/colors"}>
         <Suspense fallback={<PageLoader />}><ColorPreview /></Suspense>
