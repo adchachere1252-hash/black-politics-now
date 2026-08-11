@@ -252,3 +252,4 @@
 - [x] Create and publish a direct visual example of the homepage discovery rail for review before changing the default homepage
 - [x] Revise the homepage example to align with the user-provided compact editorial dashboard benchmark
 - [x] Rebuild the homepage example to closely follow the supplied reference’s three-column dashboard and single framed lower preview strip
+- [x] Replace the schematic World Elections globe in the homepage example with a more authentic slowly rotating geographic globe
