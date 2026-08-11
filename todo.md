@@ -102,8 +102,10 @@
 ### Known Remaining Issues (Low Priority):
 - [x] ~47 safe-seat House races — FIXED (all corrected in earlier session)
 - [x] CBC schema "lost_primary" enum — ADDED (migration applied, Espaillat and Al Green updated)
-- [ ] Full 71-member CBC audit with source-backed verification for each member (partial audit completed)
-- [ ] Full 35-race Senate verification matrix with source confirmation for each state (key races verified, safe seats assumed correct)
+- [x] Full 71-member CBC audit superseded by a source-backed 104-profile Black Representation audit, including reverse article-to-profile reconciliation
+- [x] Run the full 35-race Senate verification matrix with source confirmation for each state and apply material corrections
+- [x] Resolve the remaining pending-primary and nominee-format differences identified by the post-matrix comparison
+- [x] Re-run the 35-state Senate audit against the live API and require a zero-discrepancy result before marking the matrix complete (35/35 aligned; 0 discrepancies)
 
 ## House Race & CBC Fixes (User Request Aug 4 - Round 3)
 - [x] Fix ~47 safe-seat House races showing primary matchups instead of general election matchups
