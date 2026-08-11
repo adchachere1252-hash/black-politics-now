@@ -18,11 +18,12 @@ const SearchPage = lazy(() => import("./pages/Search"));
 const WorldPage = lazy(() => import("./pages/World"));
 const AtlasPage = lazy(() => import("./pages/Atlas"));
 const NewsConceptPreview = lazy(() => import("./pages/NewsConceptPreview"));
+const HomepageExample = lazy(() => import("./pages/HomepageExample"));
 
 function Router() {
   return (
     <Switch>
-      <Route path={"/"} component={Home} />
+      <Route path={"/"}><Home /></Route>
       <Route path={"/elections"}>
         <Suspense fallback={<PageLoader />}><Elections /></Suspense>
       </Route>
@@ -49,6 +50,9 @@ function Router() {
       </Route>
       <Route path={"/news-concept"}>
         <Suspense fallback={<PageLoader />}><NewsConceptPreview /></Suspense>
+      </Route>
+      <Route path={"/homepage-example"}>
+        <Suspense fallback={<PageLoader />}><HomepageExample /></Suspense>
       </Route>
       <Route path={"/colors"}>
         <Suspense fallback={<PageLoader />}><ColorPreview /></Suspense>

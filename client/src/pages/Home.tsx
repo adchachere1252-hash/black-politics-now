@@ -2,13 +2,13 @@ import { trpc } from "@/lib/trpc";
 import { useAudio } from "@/contexts/AudioContext";
 import { Link } from "wouter";
 import { useMemo, useState } from "react";
-import { ArrowRight, Play, Maximize2, Download, RotateCcw, Info, X } from "lucide-react";
+import { ArrowRight, Play, Maximize2, Download, RotateCcw, Info, X, Globe2, Landmark, ArrowUpRight } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { USMapFull } from "@/components/USMapFull";
 
 type MapView = "house" | "senate" | "governor";
 
-export default function Home() {
+export default function Home({ showDiscoveryRail = false, previewMode = false }: { showDiscoveryRail?: boolean; previewMode?: boolean }) {
   const { data: newsData, isLoading: newsLoading } = trpc.news.list.useQuery({ page: 1, perPage: 6 });
   const { data: episodes, isLoading: podLoading } = trpc.podcast.getEpisodes.useQuery();
   const { data: scoreboard } = trpc.election.scoreboard.useQuery();
@@ -112,6 +112,11 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
+      {previewMode && (
+        <div className="border-b border-primary/30 bg-primary/10 px-4 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-primary">
+          Homepage enhancement example · current dashboard retained above
+        </div>
+      )}
       {/* Tagline */}
       <div className="text-center py-4 border-b border-border/30">
         <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground font-medium">
@@ -427,7 +432,59 @@ export default function Home() {
           )}
         </section>
       </div>
+      {showDiscoveryRail && <HomepageDiscoveryRail />}
     </div>
+  );
+}
+
+function HomepageDiscoveryRail() {
+  return (
+    <section className="border-t border-border/50 bg-gradient-to-b from-background via-background to-muted/20 px-5 py-12 md:px-8 lg:px-12">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-primary">Explore Further</p>
+            <h2 className="mt-2 text-2xl font-bold tracking-tight">Global context. Historic perspective.</h2>
+          </div>
+          <p className="max-w-md text-sm leading-relaxed text-muted-foreground">Two quiet ways to go deeper without changing the newsroom, election map, or Daily Brief that readers already know.</p>
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-2">
+          <Link href="/world" className="group relative min-h-[260px] overflow-hidden rounded-2xl border border-border/60 bg-[#0c111c] p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/55 hover:shadow-[0_20px_50px_rgba(0,0,0,0.28)]">
+            <div className="relative z-10 max-w-[58%]">
+              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/35 bg-primary/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-primary">
+                <Globe2 size={13} /> World Elections
+              </div>
+              <h3 className="text-2xl font-bold leading-tight">The wider political world, in view.</h3>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">Follow scheduled elections, democratic transitions, and major political moments across the globe.</p>
+              <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-primary">Explore the globe <ArrowUpRight size={15} /></span>
+            </div>
+            <div aria-hidden="true" className="absolute right-[-28px] top-1/2 h-64 w-64 -translate-y-1/2 rounded-full border border-cyan-200/45 bg-[radial-gradient(circle_at_35%_30%,rgba(148,226,255,0.46),rgba(37,94,158,0.28)_36%,rgba(5,19,43,0.96)_69%)] shadow-[inset_-34px_-20px_55px_rgba(0,0,0,0.68),0_0_45px_rgba(63,166,255,0.18)] animate-[spin_36s_linear_infinite]">
+              <div className="absolute inset-x-5 top-1/2 h-10 -translate-y-1/2 rounded-[50%] border-y border-cyan-100/40" />
+              <div className="absolute inset-y-4 left-1/2 w-12 -translate-x-1/2 rounded-[50%] border-x border-cyan-100/40" />
+              <div className="absolute inset-y-8 left-1/2 w-28 -translate-x-1/2 rounded-[50%] border-x border-cyan-100/20" />
+              <div className="absolute left-12 top-16 h-10 w-16 rotate-[-20deg] rounded-[46%_54%_34%_66%] bg-cyan-100/25 blur-[1px]" />
+              <div className="absolute bottom-16 right-12 h-14 w-9 rotate-[20deg] rounded-[60%_40%_55%_45%] bg-cyan-100/20 blur-[1px]" />
+            </div>
+          </Link>
+
+          <Link href="/atlas" className="group relative min-h-[260px] overflow-hidden rounded-2xl border border-border/60 bg-card transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/55 hover:shadow-[0_20px_50px_rgba(0,0,0,0.28)]">
+            <img src="/manus-storage/selma-marchers-homepage_4dbcaa12.jpg" alt="Civil rights marchers crossing the Edmund Pettus Bridge in Selma" className="absolute inset-0 h-full w-full object-cover object-center opacity-80 transition-transform duration-700 group-hover:scale-105" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/75 to-black/10" />
+            <div className="relative z-10 flex h-full max-w-[72%] flex-col justify-between p-6">
+              <div>
+                <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/45 bg-black/45 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-primary">
+                  <Landmark size={13} /> Historical Atlas
+                </div>
+                <h3 className="text-2xl font-bold leading-tight text-white">Selma: the history behind representation.</h3>
+                <p className="mt-3 text-sm leading-relaxed text-white/75">Trace the places, maps, and political struggles that continue to shape the vote.</p>
+              </div>
+              <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary">Enter the Atlas <ArrowUpRight size={15} /></span>
+            </div>
+          </Link>
+        </div>
+      </div>
+    </section>
   );
 }
 

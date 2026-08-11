@@ -238,9 +238,15 @@
 - [x] Verify election, podcast, WordPress News, World Elections, Historical Atlas, search, RSS, and admin data contracts
 - [x] Verify cloud-computer automation schedules, recent task logs, DDHQ mapping, and election-engine status
 - [ ] Resolve confirmed verification findings and rerun targeted checks
-- [ ] Document and deliver the full-platform verification results
+- [x] Document and deliver the full-platform verification results
 - [ ] Restore missing full-episode and segment audio assets for the current Daily Intelligence Brief run and verify public playback
 - [x] Correct the verified July 31 Daily Intelligence Brief segment-count mismatch or restore its missing segments before public playback verification
 - [x] Repair the Daily Intelligence Brief generator’s silent short-script fallback so newly generated episodes contain the intended full-length editorial scripts
 - [x] Prevent broken public play actions for episodes whose verified full-length audio asset is unavailable
 - [x] Assess and recommend a lightweight homepage placement for World Elections and the Historical Atlas without displacing the core News–map–podcast dashboard
+
+## Homepage Discovery Rail
+- [x] Prepare the user-provided Selma march image for a respectful Historical Atlas feature card
+- [x] Add a subtle spinning-globe treatment to the World Elections feature card without increasing first-view load significantly
+- [ ] Implement and verify the two-card homepage discovery rail beneath the existing three-column dashboard
+- [ ] Create and publish a direct visual example of the homepage discovery rail for review before changing the default homepage
