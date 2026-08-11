@@ -186,3 +186,19 @@
 - [x] Run browser-level administrative editor control audit and protected mutation regression for all 74 article-backed election rows
 - [x] Verify per-record public display of status, vote/percentage, opponent, and available editorial context for all 74 rows (74/74 individual election cards passed)
 - [x] Run a real authenticated browser edit-and-persistence audit against the Black Representation admin workspace (edit persisted after reload and original source URL was restored)
+
+## Platform-Wide Verification (Aug 11)
+- [x] Establish live-production baseline: response timing, health, and client/server errors (HTTP 200; production logs clean; warm API/RSS requests measured at ~2.2–3.3s)
+- [x] Verify Home, Senate Election Center, Black Representation, Podcast, Archive, Search, and light-mode routes on desktop and mobile viewports
+- [x] Verify Governor, House, and Redistricting Election Center tabs in the live site-wide pass
+- [x] Verify the Not Found route content and themed rendering in both light and dark modes
+- [x] Explicitly test the Not Found Go Home escape action in dark mode
+- [x] Fix Election Center tab-route handling and redistricting empty-state behavior found during live verification
+- [x] Make the Not Found page theme-aware
+- [x] Resolve stale primary-era reporting that incorrectly triggers LIVE mode or appears on scheduled/general House races
+- [x] Verify core public workflows: navigation, map state popups, race-card expansion, search, podcast playback controls, RSS, and source links
+- [x] Verify admin access, editors, data contracts, election totals, news cache, podcast archive, and Black Representation ledger
+- [x] Verify cloud-computer cron jobs, recent logs, DDHQ mapping, and keep-alive behavior
+- [x] Resolve material platform-wide verification issues and re-run targeted checks
+- [x] Investigate production response latency and document the appropriate hosting solution (Autoscale retained; Reserved Hosting deferred by user decision)
+- [ ] Consider Reserved Hosting if measured response time becomes a practical concern (DEFERRED by user decision)

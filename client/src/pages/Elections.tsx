@@ -10,6 +10,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 const RATINGS = ["All", "Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R"] as const;
 type ViewTab = "house" | "senate" | "governors" | "cbc" | "redistricting";
 
+function normalizeViewTab(value: string | null): ViewTab {
+  if (value === "governor" || value === "governors") return "governors";
+  if (value === "cbc" || value === "house" || value === "redistricting" || value === "senate") return value;
+  return "senate";
+}
+
 // Helper to convert state name to state code
 const STATE_NAME_TO_CODE: Record<string, string> = {
   "Alabama": "AL", "Alaska": "AK", "Arizona": "AZ", "Arkansas": "AR", "California": "CA",
@@ -101,7 +107,7 @@ function Starfield() {
 export default function Elections() {
   const [tab, setTab] = useState<ViewTab>(() => {
     const requested = typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("tab");
-    return requested === "cbc" || requested === "governors" || requested === "house" || requested === "redistricting" || requested === "senate" ? requested : "senate";
+    return normalizeViewTab(requested);
   });
   const [ratingFilter, setRatingFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
@@ -110,9 +116,23 @@ export default function Elections() {
   const [popupState, setPopupState] = useState<string | null>(null);
   const { theme } = useTheme();
 
-  // Auto-refresh every 60s when live results are coming in
-  const isLive = typeof window !== "undefined" && (window as any).__BPN_LIVE_MODE__;
-  const refetchInterval = isLive ? 60_000 : false;
+  const selectTab = (nextTab: ViewTab) => {
+    setTab(nextTab);
+    setSelectedState(null);
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("tab", nextTab === "governors" ? "governor" : nextTab);
+    window.history.replaceState(null, "", `${window.location.pathname}?${params.toString()}`);
+  };
+
+  useEffect(() => {
+    const syncTabFromUrl = () => setTab(normalizeViewTab(new URLSearchParams(window.location.search).get("tab")));
+    window.addEventListener("popstate", syncTabFromUrl);
+    return () => window.removeEventListener("popstate", syncTabFromUrl);
+  }, []);
+
+  // Poll every minute so Election Night data begins flowing without requiring a page refresh.
+  const refetchInterval = 60_000;
 
   const { data: senateRaces = [] } = trpc.election.senate.useQuery(undefined, { refetchInterval });
   const { data: houseRaces = [] } = trpc.election.house.useQuery(undefined, { refetchInterval });
@@ -122,17 +142,16 @@ export default function Elections() {
   const { data: redistrictingStates = [] } = trpc.election.redistricting.useQuery();
   const { data: scoreboard } = trpc.election.scoreboard.useQuery(undefined, { refetchInterval });
 
-  // Detect live mode: if any race has pctReporting > 0, we're in live mode
+  // Detect live mode from in-progress contests only. Historical special/primary calls
+  // retain their results without making the entire Election Center look live.
   const hasLiveData = useMemo(() => {
-    return (senateRaces as any[]).some((r: any) => r.pctReporting > 0) ||
-      (houseRaces as any[]).some((r: any) => r.pctReporting > 0) ||
-      (governors as any[]).some((r: any) => r.pctReporting > 0);
+    const isInProgress = (race: any) => Number(race.pctReporting || 0) > 0
+      && !race.calledWinner
+      && race.status === "Voting";
+    return (senateRaces as any[]).some(isInProgress) ||
+      (houseRaces as any[]).some(isInProgress) ||
+      (governors as any[]).some(isInProgress);
   }, [senateRaces, houseRaces, governors]);
-
-  // Set global live mode flag for auto-refresh
-  if (typeof window !== "undefined") {
-    (window as any).__BPN_LIVE_MODE__ = hasLiveData;
-  }
 
   // Build map data from senate races
   // Build map data based on active tab
@@ -331,7 +350,7 @@ export default function Elections() {
             {tabs.map(t => (
               <button
                 key={t.id}
-                onClick={() => setTab(t.id)}
+                onClick={() => selectTab(t.id)}
                 className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold whitespace-nowrap transition-colors ${tab === t.id ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
               >
                 <t.icon size={12} />
