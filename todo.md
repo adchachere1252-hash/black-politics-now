@@ -230,4 +230,4 @@
 - [x] Extract the current Black Politics Now article-led News page structure and adapt it as the News-only refinement baseline
 - [x] Design a sophisticated News-page-only concept with real article treatment, a World Elections map slot, and a Selma Historical Atlas feature
 - [x] Keep John Lewis as a subtle supporting detail within the News page rather than a dominant visual
-- [ ] Publish and verify the focused News-page-only concept preview
+- [x] Publish and verify the focused News-page-only concept preview
