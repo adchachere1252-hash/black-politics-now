@@ -227,3 +227,7 @@
 - [x] Create a cohesive full-site Black Politics Now visual concept spanning News, Election Center, World Elections, Historical Atlas, and Podcast
 - [x] Reduce John Lewis’s visual weight to a restrained, dignified supporting presence in the full-site direction
 - [x] Publish and verify a direct full-site concept preview
+- [x] Extract the current Black Politics Now article-led News page structure and adapt it as the News-only refinement baseline
+- [x] Design a sophisticated News-page-only concept with real article treatment, a World Elections map slot, and a Selma Historical Atlas feature
+- [x] Keep John Lewis as a subtle supporting detail within the News page rather than a dominant visual
+- [ ] Publish and verify the focused News-page-only concept preview

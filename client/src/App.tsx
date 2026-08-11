@@ -17,8 +17,7 @@ const AdminPage = lazy(() => import("./pages/Admin"));
 const SearchPage = lazy(() => import("./pages/Search"));
 const WorldPage = lazy(() => import("./pages/World"));
 const AtlasPage = lazy(() => import("./pages/Atlas"));
-const NewsMockupPreview = lazy(() => import("./pages/NewsMockupPreview"));
-const FullSiteConceptPreview = lazy(() => import("./pages/FullSiteConceptPreview"));
+const NewsConceptPreview = lazy(() => import("./pages/NewsConceptPreview"));
 
 function Router() {
   return (
@@ -46,10 +45,10 @@ function Router() {
         <Suspense fallback={<PageLoader />}><AtlasPage /></Suspense>
       </Route>
       <Route path={"/news-mockup"}>
-        <Suspense fallback={<PageLoader />}><NewsMockupPreview /></Suspense>
+        <Suspense fallback={<PageLoader />}><NewsConceptPreview /></Suspense>
       </Route>
-      <Route path={"/site-concept"}>
-        <Suspense fallback={<PageLoader />}><FullSiteConceptPreview /></Suspense>
+      <Route path={"/news-concept"}>
+        <Suspense fallback={<PageLoader />}><NewsConceptPreview /></Suspense>
       </Route>
       <Route path={"/colors"}>
         <Suspense fallback={<PageLoader />}><ColorPreview /></Suspense>
