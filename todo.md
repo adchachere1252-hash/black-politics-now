@@ -226,4 +226,4 @@
 - [x] Record and surface the final recommended News direction and next implementation scope in-project
 - [x] Create a cohesive full-site Black Politics Now visual concept spanning News, Election Center, World Elections, Historical Atlas, and Podcast
 - [x] Reduce John Lewis’s visual weight to a restrained, dignified supporting presence in the full-site direction
-- [ ] Publish and verify a direct full-site concept preview
+- [x] Publish and verify a direct full-site concept preview
