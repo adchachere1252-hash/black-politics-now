@@ -7,6 +7,7 @@ import { getEpisodesFormatted, subscribeEmail, unsubscribeEmail, getPipelineRuns
 import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateReferendum } from "./electionDb";
 import { fetchWithCache } from "./newsCache";
 import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
+import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
 
 export const appRouter = router({
   system: systemRouter,
@@ -71,6 +72,14 @@ export const appRouter = router({
       .input(z.object({ id: z.number(), data: z.record(z.string(), z.unknown()) }))
       .mutation(async ({ input }) => { await updateBlackRepresentationElection(input.id, input.data as any); return { success: true }; }),
     redistricting: publicProcedure.query(async () => getAllRedistrictingStates()),
+  }),
+
+  // ─── World Elections ─────────────────────────────────────────────────────────
+  world: router({
+    elections: publicProcedure.query(async () => getWorldElections()),
+    byCountry: publicProcedure
+      .input(z.object({ countryCode: z.string().length(2) }))
+      .query(async ({ input }) => getWorldElectionsByCountry(input.countryCode)),
   }),
 
   // ─── News (WordPress proxy) ──────────────────────────────────────────────────

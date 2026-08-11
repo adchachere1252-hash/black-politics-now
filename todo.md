@@ -64,8 +64,8 @@
 - [x] Redistricting tab with 16 states
 - [x] Make tab categories smaller/more compact (text-xs, reduced padding)
 - [x] Make starfield more visible (400 stars, brighter, glow effects, deep space background)
-- [ ] World Elections page (/world with 3D globe) — DEFERRED to future session
-- [ ] Historical Atlas page (/atlas with D3 district maps) — DEFERRED to future session
+- [x] World Elections page (/world with lazy-loaded 3D globe)
+- [x] Historical Atlas page (/atlas with lazy-loaded district-map explorer)
 
 ## QA / Delivery
 - [x] Vitest tests for routers (5 passing)
@@ -202,3 +202,14 @@
 - [x] Resolve material platform-wide verification issues and re-run targeted checks
 - [x] Investigate production response latency and document the appropriate hosting solution (Autoscale retained; Reserved Hosting deferred by user decision)
 - [ ] Consider Reserved Hosting if measured response time becomes a practical concern (DEFERRED by user decision)
+
+## World Elections & Historical Atlas (Aug 11)
+- [x] Reuse the imported World Elections dataset with country-code coordinates for the globe explorer
+- [x] Run and document a full 48-record World Elections integrity audit (48 distinct records; no missing country, code, contest, date, status, or duplicate-key errors)
+- [x] Build the lazy-loaded /world route with globe navigation, country selection, election detail cards, and accessible non-3D fallback
+- [x] Build the lazy-loaded /atlas route with historical-atlas overview, state selection, district context, and existing redistricting records
+- [x] Add navigation entries without increasing the initial homepage visualization bundle
+- [x] Add World Elections public API regression coverage
+- [x] Add Historical Atlas data regression coverage and automated UI checks for both standalone routes
+- [x] Verify desktop/mobile rendering for both standalone routes
+- [x] Verify keyboard interaction, source data, and browser-level lazy-loading behavior for both standalone routes

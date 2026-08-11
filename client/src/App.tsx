@@ -15,6 +15,8 @@ const Podcast = lazy(() => import("./pages/Podcast"));
 const ArchivePage = lazy(() => import("./pages/Archive"));
 const AdminPage = lazy(() => import("./pages/Admin"));
 const SearchPage = lazy(() => import("./pages/Search"));
+const WorldPage = lazy(() => import("./pages/World"));
+const AtlasPage = lazy(() => import("./pages/Atlas"));
 
 function Router() {
   return (
@@ -34,6 +36,12 @@ function Router() {
       </Route>
       <Route path={"/search"}>
         <Suspense fallback={<PageLoader />}><SearchPage /></Suspense>
+      </Route>
+      <Route path={"/world"}>
+        <Suspense fallback={<PageLoader />}><WorldPage /></Suspense>
+      </Route>
+      <Route path={"/atlas"}>
+        <Suspense fallback={<PageLoader />}><AtlasPage /></Suspense>
       </Route>
       <Route path={"/colors"}>
         <Suspense fallback={<PageLoader />}><ColorPreview /></Suspense>

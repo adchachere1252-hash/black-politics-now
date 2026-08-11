@@ -1,11 +1,13 @@
 import { Link, useLocation } from "wouter";
-import { Newspaper, Map, Headphones, Archive, Search as SearchIcon, Menu, X, Sun, Moon } from "lucide-react";
+import { Newspaper, Map, Headphones, Archive, Search as SearchIcon, Menu, X, Sun, Moon, Globe2, Landmark } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 
 const NAV_ITEMS = [
   { href: "https://blkpoliticsnow.com", label: "News", icon: Newspaper, external: true },
   { href: "/elections", label: "Election Map", icon: Map },
+  { href: "/world", label: "World Elections", icon: Globe2 },
+  { href: "/atlas", label: "Historical Atlas", icon: Landmark },
   { href: "/podcast", label: "Podcast", icon: Headphones },
   { href: "/archive", label: "Archive", icon: Archive },
 ];

@@ -46,6 +46,18 @@ describe("election router", () => {
     expect(Array.isArray(races)).toBe(true);
   });
 
+  it("returns Historical Atlas redistricting records with state context", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const states = await caller.election.redistricting();
+    expect(Array.isArray(states)).toBe(true);
+    expect(states.length).toBeGreaterThan(0);
+    for (const state of states as any[]) {
+      expect(state.stateName).toEqual(expect.any(String));
+      expect(state.stateCode).toMatch(/^[A-Z]{2}$/);
+      expect(state.status).toEqual(expect.any(String));
+    }
+  });
+
   it("returns source-backed Black Representation election records", async () => {
     const caller = appRouter.createCaller(createPublicContext());
     const records = await caller.election.blackRepresentationElections();
@@ -102,5 +114,27 @@ describe("podcast router", () => {
       expect(ep).toHaveProperty("segments");
       expect(Array.isArray(ep.segments)).toBe(true);
     }
+  });
+});
+
+describe("world elections router", () => {
+  it("returns the imported World Elections calendar with display fields", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const elections = await caller.world.elections();
+    expect(Array.isArray(elections)).toBe(true);
+    expect(elections.length).toBeGreaterThan(0);
+    for (const election of elections as any[]) {
+      expect(election.country).toEqual(expect.any(String));
+      expect(election.countryCode).toMatch(/^[A-Z]{2}$/);
+      expect(election.electionName).toEqual(expect.any(String));
+      expect(election.status).toEqual(expect.any(String));
+    }
+  });
+
+  it("filters the World Elections calendar by country", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const japan = await caller.world.byCountry({ countryCode: "JP" });
+    expect(japan.length).toBeGreaterThan(0);
+    expect(japan.every((election: any) => election.countryCode === "JP")).toBe(true);
   });
 });
