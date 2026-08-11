@@ -250,3 +250,4 @@
 - [x] Add a subtle spinning-globe treatment to the World Elections feature card without increasing first-view load significantly
 - [ ] Implement and verify the two-card homepage discovery rail beneath the existing three-column dashboard
 - [ ] Create and publish a direct visual example of the homepage discovery rail for review before changing the default homepage
+- [x] Revise the homepage example to align with the user-provided compact editorial dashboard benchmark
