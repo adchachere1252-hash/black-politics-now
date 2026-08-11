@@ -1,7 +1,7 @@
 import { ArrowLeft, LayoutTemplate, Sparkles } from "lucide-react";
 import { Link } from "wouter";
 
-const mockupUrl = "/manus-storage/bpn-news-mockup-original-elevated_59837162.png";
+const mockupUrl = "/manus-storage/bpn-news-mockup-original-polish_f5bd0ca4.png";
 
 export default function NewsMockupPreview() {
   return (
@@ -16,9 +16,9 @@ export default function NewsMockupPreview() {
               <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-gold">
                 <Sparkles className="h-3.5 w-3.5" /> News-section concept
               </div>
-              <h1 className="font-display text-4xl font-semibold tracking-tight md:text-6xl">Original Style, Elevated</h1>
+              <h1 className="font-display text-4xl font-semibold tracking-tight md:text-6xl">Original Style, Refined</h1>
               <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-                A refined News hub that preserves Black Politics Now&apos;s familiar dark newsroom rhythm, warm-gold accents, compact story cards, and political-intelligence character.
+                This direction keeps Black Politics Now visually close to the newsroom readers already know: the same familiar structure, the same John Lewis presence, and only selective improvements to editorial polish and story discovery.
               </p>
             </div>
             <div className="flex items-center gap-3 rounded-xl border border-gold/20 bg-card/65 px-4 py-3 text-sm text-muted-foreground backdrop-blur">
@@ -32,15 +32,15 @@ export default function NewsMockupPreview() {
         <div className="overflow-hidden rounded-2xl border border-gold/20 bg-card shadow-2xl shadow-black/30">
           <img
             src={mockupUrl}
-            alt="Original Style, Elevated concept for the Black Politics Now News section"
+            alt="Original Style, Refined concept for the Black Politics Now News section with John Lewis as a mission anchor"
             className="block h-auto w-full bg-black"
           />
         </div>
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           {[
-            ["Preserves the identity", "Dark navy newsroom surfaces, warm-gold hierarchy, compact cards, and editorial density."],
-            ["Raises the story priority", "A clear lead investigation and sharper grouping of the latest reporting."],
-            ["Improves discovery", "Topic-led reading paths and a more intentional flow into your existing WordPress articles."],
+            ["Keeps the original flow", "A familiar masthead, lead story, headline list, and story grid stay recognizably Black Politics Now."],
+            ["Honors the mission", "John Lewis remains a dignified, permanent editorial anchor—visible without taking over the reporting."],
+            ["Polishes the reading experience", "Tighter hierarchy, warmer gold rules, calmer card treatment, and clearer article discovery improve the experience without a full revamp."],
           ].map(([title, body]) => (
             <div key={title} className="rounded-xl border border-border bg-card p-5">
               <h2 className="font-display text-lg font-semibold text-foreground">{title}</h2>

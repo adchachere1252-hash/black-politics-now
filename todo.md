@@ -220,3 +220,5 @@
 - [ ] Validate the generated News-section mockups and present a recommended direction for implementation
 - [ ] Create an Original Style, Elevated News mockup that retains the original compact dark-and-gold BPN newsroom identity
 - [x] Add a direct live-platform preview route for the Original Style, Elevated News mockup
+- [x] Preserve John Lewis as a respectful, permanent mission anchor in the revised News-section visual direction
+- [x] Create a restrained News enhancement concept that preserves the original Black Politics Now newsroom layout and applies only selective polish
