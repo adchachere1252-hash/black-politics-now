@@ -22,7 +22,7 @@ function ringsForFeature(feature: any): number[][][][] {
   return [];
 }
 
-export default function MiniRepositoryGlobe() {
+export default function MiniRepositoryGlobe({ theme = "dark" }: { theme?: "light" | "dark" }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -39,15 +39,16 @@ export default function MiniRepositoryGlobe() {
 
     const globe = new THREE.Group();
     globe.rotation.set(-0.18, -0.75, -0.05);
-    const oceanMaterial = new THREE.MeshStandardMaterial({ color: 0x071222, roughness: 0.68, metalness: 0.18 });
+    const isLight = theme === "light";
+    const oceanMaterial = new THREE.MeshStandardMaterial({ color: isLight ? 0xdce8f4 : 0x071222, roughness: 0.68, metalness: 0.18 });
     const ocean = new THREE.Mesh(new THREE.SphereGeometry(RADIUS, 56, 42), oceanMaterial);
-    const atmosphereMaterial = new THREE.MeshBasicMaterial({ color: 0x3e78b7, transparent: true, opacity: 0.13, side: THREE.BackSide });
+    const atmosphereMaterial = new THREE.MeshBasicMaterial({ color: isLight ? 0x78a4cf : 0x3e78b7, transparent: true, opacity: isLight ? 0.18 : 0.13, side: THREE.BackSide });
     const atmosphere = new THREE.Mesh(new THREE.SphereGeometry(RADIUS + 0.13, 56, 42), atmosphereMaterial);
     globe.add(ocean, atmosphere);
     scene.add(globe);
 
-    scene.add(new THREE.HemisphereLight(0x9cc9ff, 0x020306, 1.3));
-    const light = new THREE.DirectionalLight(0xffd88d, 1.4);
+    scene.add(new THREE.HemisphereLight(isLight ? 0xffffff : 0x9cc9ff, isLight ? 0x7b8da1 : 0x020306, 1.3));
+    const light = new THREE.DirectionalLight(isLight ? 0xfff4d8 : 0xffd88d, 1.4);
     light.position.set(3, 2, 4);
     scene.add(light);
 
@@ -96,12 +97,12 @@ export default function MiniRepositoryGlobe() {
         countryGeometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3));
         countryGeometry.setIndex(indices);
         countryGeometry.computeVertexNormals();
-        countryMaterial = new THREE.MeshBasicMaterial({ color: 0x254c76, transparent: true, opacity: 0.97, side: THREE.DoubleSide });
+        countryMaterial = new THREE.MeshBasicMaterial({ color: isLight ? 0x557fa4 : 0x254c76, transparent: true, opacity: 0.97, side: THREE.DoubleSide });
         globe.add(new THREE.Mesh(countryGeometry, countryMaterial));
 
         borderGeometry = new THREE.BufferGeometry();
         borderGeometry.setAttribute("position", new THREE.Float32BufferAttribute(borderPoints, 3));
-        borderMaterial = new THREE.LineBasicMaterial({ color: 0xc69d58, transparent: true, opacity: 0.52 });
+        borderMaterial = new THREE.LineBasicMaterial({ color: isLight ? 0x9a6e2f : 0xc69d58, transparent: true, opacity: isLight ? 0.62 : 0.52 });
         globe.add(new THREE.LineSegments(borderGeometry, borderMaterial));
       })
       .catch(() => undefined);
@@ -139,7 +140,7 @@ export default function MiniRepositoryGlobe() {
       renderer.dispose();
       container.removeChild(renderer.domElement);
     };
-  }, []);
+  }, [theme]);
 
   return <div ref={containerRef} className="h-full w-full" aria-label="Slowly rotating geographic political globe with country boundaries" />;
 }

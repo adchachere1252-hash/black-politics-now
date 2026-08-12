@@ -270,3 +270,12 @@
 - [x] Validate stripped spoken-word length against each Daily Brief segment duration before audio publication
 - [x] Keep incomplete Daily Brief runs out of public latest-episode selection until verified full audio is available
 - [x] Update the promoted desktop dashboard’s Daily Brief panel to display and play the latest verified episode instead of a fixed preparation placeholder
+
+## Professional Dashboard Refinement
+- [x] Audit the current World Elections and Historical Atlas dashboard previews against original repository functionality and professional newsroom standards
+- [x] Rebuild the World Elections dashboard preview with meaningful repository-derived live global-election data and polished globe interaction
+- [x] Rebuild the Historical Atlas dashboard preview with richer repository-derived historical context and a dignified Selma treatment
+- [x] Apply intentional light-mode design to the entire dashboard, including maps, imagery, typography, borders, and interactive states
+- [x] Verify the refined dashboard on desktop and mobile in both dark and light modes
+- [x] Fit the desktop dashboard into a deliberate no-scroll viewport while keeping full page navigation available through dedicated routes
+- [x] Preserve the existing mobile stacked, scrollable interface while enforcing the desktop no-scroll dashboard constraint
