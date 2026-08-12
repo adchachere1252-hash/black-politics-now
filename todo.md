@@ -253,3 +253,7 @@
 - [x] Revise the homepage example to align with the user-provided compact editorial dashboard benchmark
 - [x] Rebuild the homepage example to closely follow the supplied reference’s three-column dashboard and single framed lower preview strip
 - [x] Replace the schematic World Elections globe in the homepage example with a more authentic slowly rotating geographic globe
+- [x] Compare and, if better, reuse the original election-map repository globe in the homepage example
+- [x] Inventory all relevant election-map and Daily Intelligence Brief repository data, assets, and dashboard capabilities
+- [x] Compare the repository inventory against the current platform and document every verified covered item, intentional exclusion, and missing capability
+- [x] Integrate any verified missing dashboard-relevant repository capability before promoting the homepage example
