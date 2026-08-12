@@ -4,19 +4,22 @@ import { useMemo } from "react";
 import { ArrowUpRight, Globe2, Landmark, Mic2, Play } from "lucide-react";
 import { USMapFull } from "@/components/USMapFull";
 import MiniRepositoryGlobe from "@/components/MiniRepositoryGlobe";
+import { useAudio } from "@/contexts/AudioContext";
 
 const LEGEND = [
   ["Solid D", "bg-[#215da8]"], ["Likely D", "bg-[#3679cf]"], ["Lean D", "bg-[#77a6e8]"], ["Toss-up", "bg-[#7b3ff2]"],
   ["Lean R", "bg-[#de765d]"], ["Likely R", "bg-[#c84343]"], ["Solid R", "bg-[#961d21]"],
 ] as const;
 
-export default function HomepageExample() {
+export default function HomepageExample({ mode = "preview" }: { mode?: "preview" | "home" }) {
   const { data: news } = trpc.news.list.useQuery({ page: 1, perPage: 4 });
   const { data: senateRaces } = trpc.election.senate.useQuery();
   const { data: episodes } = trpc.podcast.getEpisodes.useQuery();
+  const { play } = useAudio();
   const latestEpisode: any = episodes?.[0];
   const posts: any[] = ((news as any)?.posts ?? []).slice(0, 4);
   const segments: any[] = (latestEpisode?.segments ?? []).slice(0, 5);
+  const latestEpisodeHasAudio = Boolean(latestEpisode?.fullEpisodeCdnUrl);
   const mapData = useMemo(() => {
     const entries: Record<string, { rating: string | null; candidate1: string; candidate2: string }> = {};
     (senateRaces as any[] ?? []).forEach((race) => {
@@ -28,10 +31,10 @@ export default function HomepageExample() {
   return (
     <div className="min-h-screen bg-[#05080d] px-3 py-3 sm:px-5 sm:py-5">
       <main className="mx-auto max-w-[1600px] rounded-[18px] border border-[#c69d58]/35 bg-[#080c13] p-3 shadow-2xl shadow-black/40 sm:p-4">
-        <div className="mb-3 flex items-center justify-between border-b border-[#c69d58]/30 pb-2">
+        {mode === "preview" && <div className="mb-3 flex items-center justify-between border-b border-[#c69d58]/30 pb-2">
           <span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[#c69d58]">Black Politics Now · Homepage direction</span>
           <span className="text-[9px] uppercase tracking-[0.14em] text-white/35">Reference-aligned visual example</span>
-        </div>
+        </div>}
 
         <section className="grid gap-3 lg:grid-cols-[0.9fr_1.65fr_0.95fr]">
           <aside className="rounded-md border border-white/10 bg-[#0b1019] p-3">
@@ -57,9 +60,9 @@ export default function HomepageExample() {
           </section>
 
           <aside className="rounded-md border border-white/10 bg-[#0b1019] p-3"><h2 className="text-[11px] font-bold uppercase tracking-[0.13em] text-[#c69d58]">Daily Intelligence Brief</h2>
-            <div className="mt-3 grid grid-cols-[88px_1fr] gap-3 border-b border-white/10 pb-4"><div className="flex aspect-[0.8] items-end rounded-sm border border-[#c69d58]/45 bg-[linear-gradient(145deg,#172232,#070a0f)] p-2"><div><p className="text-base font-black leading-[0.8] text-white">BLACK<br />POLITICS<br />NOW</p><p className="mt-2 border-t border-[#c69d58]/70 pt-1 text-[8px] font-bold tracking-[0.1em] text-[#c69d58]">DAILY BRIEF</p></div></div><div><p className="text-xs text-white/55">{latestEpisode?.episodeDate ?? "Today"}</p><h3 className="mt-2 text-lg font-bold leading-tight text-white">{latestEpisode?.title ?? "The Daily Intelligence Brief"}</h3><p className="mt-2 text-xs text-white/50">Current analysis and context</p></div></div>
-            <div className="flex items-center gap-3 border-b border-white/10 py-4"><button type="button" disabled className="grid h-9 w-9 place-items-center rounded-full bg-[#d5a34e] text-[#0b1019]"><Play size={16} fill="currentColor" /></button><span className="text-xs font-semibold text-white/80">Audio preparation in progress</span><div className="ml-auto flex h-7 items-center gap-0.5">{[10,22,14,29,18,26,12,21,16].map((h, index) => <i key={index} className="w-1 rounded-full bg-white/35" style={{ height: h }} />)}</div></div>
-            <div className="pt-3"><p className="mb-2 text-[9px] font-bold uppercase tracking-[0.15em] text-[#c69d58]">Episode Segments</p>{(segments.length ? segments : [{ title: "Opening Take" }, { title: "Congressional Roundup" }, { title: "State Watch" }, { title: "Global Black Politics" }, { title: "Final Word" }]).map((segment, index) => <div key={index} className="flex gap-2 py-1.5 text-[11px]"><span className="text-white/45">▶</span><span className="min-w-0 flex-1 truncate text-white/75">{segment.title}</span><span className="text-white/40">{segment.duration ?? "—"}</span></div>)}<Link href="/podcast" className="mt-3 inline-flex items-center gap-1 text-[10px] font-semibold text-[#c69d58]">View podcast archive <ArrowUpRight size={11} /></Link></div>
+            <div className="mt-3 grid grid-cols-[88px_1fr] gap-3 border-b border-white/10 pb-4"><div className="flex aspect-[0.8] items-end rounded-sm border border-[#c69d58]/45 bg-[linear-gradient(145deg,#172232,#070a0f)] p-2"><div><p className="text-base font-black leading-[0.8] text-white">BLACK<br />POLITICS<br />NOW</p><p className="mt-2 border-t border-[#c69d58]/70 pt-1 text-[8px] font-bold tracking-[0.1em] text-[#c69d58]">DAILY BRIEF</p></div></div><div><p className="text-xs text-white/55">{latestEpisode?.day ?? "Today"} {latestEpisode?.date ? `· ${latestEpisode.date}` : ""}</p><h3 className="mt-2 text-lg font-bold leading-tight text-white">The Daily Intelligence Brief</h3><p className="mt-2 text-xs text-white/50">{latestEpisode?.totalDurationLabel ? `${latestEpisode.totalDurationLabel} · ` : ""}Current analysis and context</p></div></div>
+            <div className="flex items-center gap-3 border-b border-white/10 py-4"><button type="button" onClick={() => latestEpisodeHasAudio && play({ url: latestEpisode.fullEpisodeCdnUrl, title: "The Daily Intelligence Brief", episodeDate: latestEpisode.date })} disabled={!latestEpisodeHasAudio} className="grid h-9 w-9 place-items-center rounded-full bg-[#d5a34e] text-[#0b1019] disabled:cursor-not-allowed disabled:opacity-50"><Play size={16} fill="currentColor" /></button><span className="text-xs font-semibold text-white/80">{latestEpisodeHasAudio ? "Play episode" : "Audio preparation in progress"}</span><div className="ml-auto flex h-7 items-center gap-0.5">{[10,22,14,29,18,26,12,21,16].map((h, index) => <i key={index} className="w-1 rounded-full bg-white/35" style={{ height: h }} />)}</div></div>
+            <div className="pt-3"><p className="mb-2 text-[9px] font-bold uppercase tracking-[0.15em] text-[#c69d58]">Episode Segments</p>{(segments.length ? segments : [{ label: "Opening Take" }, { label: "Congressional Roundup" }, { label: "State Watch" }, { label: "Global Black Politics" }, { label: "Final Word" }]).map((segment, index) => <div key={index} className="flex gap-2 py-1.5 text-[11px]"><span className="text-white/45">▶</span><span className="min-w-0 flex-1 truncate text-white/75">{segment.label}</span><span className="text-white/40">{segment.durationLabel ?? "—"}</span></div>)}<Link href="/podcast" className="mt-3 inline-flex items-center gap-1 text-[10px] font-semibold text-[#c69d58]">View podcast archive <ArrowUpRight size={11} /></Link></div>
           </aside>
         </section>
 

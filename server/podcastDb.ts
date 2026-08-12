@@ -42,13 +42,15 @@ export async function getEpisodesFormatted() {
   if (!db) return [];
   const allEpisodes = await db.select().from(episodes).orderBy(desc(episodes.date));
   if (!allEpisodes.length) return [];
+  const publishedEpisodes = allEpisodes.filter((episode) => episode.verificationStatus === "passed" && Boolean(episode.fullEpisodeCdnUrl));
+  if (!publishedEpisodes.length) return [];
   const allSegments = await db.select().from(episodeSegments).orderBy(episodeSegments.episodeDate, episodeSegments.sortOrder);
   const segmentsByDate: Record<string, EpisodeSegment[]> = {};
   for (const seg of allSegments) {
     if (!segmentsByDate[seg.episodeDate]) segmentsByDate[seg.episodeDate] = [];
     segmentsByDate[seg.episodeDate].push(seg);
   }
-  return allEpisodes.map((ep) => {
+  return publishedEpisodes.map((ep) => {
     const segs = segmentsByDate[ep.date] ?? [];
     const builtSegments = segs.map((seg) => {
       const accent = TOPIC_ACCENTS[seg.segmentKey] ?? TOPIC_ACCENTS["13_closing"];

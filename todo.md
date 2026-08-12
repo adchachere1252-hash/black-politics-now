@@ -237,9 +237,9 @@
 - [x] Verify all public routes, responsive layouts, navigation, and core interactive workflows
 - [x] Verify election, podcast, WordPress News, World Elections, Historical Atlas, search, RSS, and admin data contracts
 - [x] Verify cloud-computer automation schedules, recent task logs, DDHQ mapping, and election-engine status
-- [ ] Resolve confirmed verification findings and rerun targeted checks
+- [x] Resolve confirmed verification findings and rerun targeted checks
 - [x] Document and deliver the full-platform verification results
-- [ ] Restore missing full-episode and segment audio assets for the current Daily Intelligence Brief run and verify public playback
+- [x] Restore missing full-episode and segment audio assets for the current Daily Intelligence Brief run and verify public playback
 - [x] Correct the verified July 31 Daily Intelligence Brief segment-count mismatch or restore its missing segments before public playback verification
 - [x] Repair the Daily Intelligence Brief generator’s silent short-script fallback so newly generated episodes contain the intended full-length editorial scripts
 - [x] Prevent broken public play actions for episodes whose verified full-length audio asset is unavailable
@@ -248,7 +248,7 @@
 ## Homepage Discovery Rail
 - [x] Prepare the user-provided Selma march image for a respectful Historical Atlas feature card
 - [x] Add a subtle spinning-globe treatment to the World Elections feature card without increasing first-view load significantly
-- [ ] Implement and verify the two-card homepage discovery rail beneath the existing three-column dashboard
+- [x] Implement and verify the two-card homepage discovery rail beneath the existing three-column dashboard — superseded by the user-approved single framed lower preview strip
 - [x] Create and publish a direct visual example of the homepage discovery rail for review before changing the default homepage
 - [x] Revise the homepage example to align with the user-provided compact editorial dashboard benchmark
 - [x] Rebuild the homepage example to closely follow the supplied reference’s three-column dashboard and single framed lower preview strip
@@ -257,3 +257,16 @@
 - [x] Inventory all relevant election-map and Daily Intelligence Brief repository data, assets, and dashboard capabilities
 - [x] Compare the repository inventory against the current platform and document every verified covered item, intentional exclusion, and missing capability
 - [x] Integrate any verified missing dashboard-relevant repository capability before promoting the homepage example
+
+## Approved Dashboard Promotion & Daily Brief Recovery
+- [x] Promote the approved reference-aligned dashboard from preview to the default desktop homepage
+- [x] Preserve the existing stacked mobile homepage layout while applying the desktop-only dashboard promotion
+- [x] Restore verified full-length Daily Intelligence Brief scripts and playable audio for the affected current episode run
+- [x] Verify public desktop and mobile homepage behavior plus Daily Brief playback after promotion
+- [x] Ground Daily Intelligence Brief scripts in live source feeds before regenerating the affected episode run
+- [x] Remove the Friday short-script fallback so every published Daily Brief segment passes the full-length editorial quality gate
+- [x] Add durable morning-run publish gates, automatic retries, and clear failure logging for Daily Intelligence Brief generation and audio assembly
+- [x] Reconnect safely after long model runs and persist resumable Daily Brief drafts so an interrupted morning run does not discard completed verified segments
+- [x] Validate stripped spoken-word length against each Daily Brief segment duration before audio publication
+- [x] Keep incomplete Daily Brief runs out of public latest-episode selection until verified full audio is available
+- [x] Update the promoted desktop dashboard’s Daily Brief panel to display and play the latest verified episode instead of a fixed preparation placeholder

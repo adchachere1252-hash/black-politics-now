@@ -1,14 +1,29 @@
 import { trpc } from "@/lib/trpc";
 import { useAudio } from "@/contexts/AudioContext";
 import { Link } from "wouter";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, Play, Maximize2, Download, RotateCcw, Info, X, Globe2, Landmark, ArrowUpRight } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { USMapFull } from "@/components/USMapFull";
+import HomepageExample from "@/pages/HomepageExample";
 
 type MapView = "house" | "senate" | "governor";
 
-export default function Home({ showDiscoveryRail = false, previewMode = false }: { showDiscoveryRail?: boolean; previewMode?: boolean }) {
+export default function Home() {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const desktopQuery = window.matchMedia("(min-width: 1024px)");
+    const updateLayout = () => setIsDesktop(desktopQuery.matches);
+    updateLayout();
+    desktopQuery.addEventListener("change", updateLayout);
+    return () => desktopQuery.removeEventListener("change", updateLayout);
+  }, []);
+
+  return isDesktop ? <HomepageExample mode="home" /> : <MobileHome />;
+}
+
+function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDiscoveryRail?: boolean; previewMode?: boolean }) {
   const { data: newsData, isLoading: newsLoading } = trpc.news.list.useQuery({ page: 1, perPage: 6 });
   const { data: episodes, isLoading: podLoading } = trpc.podcast.getEpisodes.useQuery();
   const { data: scoreboard } = trpc.election.scoreboard.useQuery();

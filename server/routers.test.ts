@@ -113,6 +113,8 @@ describe("podcast router", () => {
       expect(ep).toHaveProperty("date");
       expect(ep).toHaveProperty("segments");
       expect(Array.isArray(ep.segments)).toBe(true);
+      expect(ep.verificationStatus).toBe("passed");
+      expect(ep.fullEpisodeCdnUrl).toMatch(/^https:\/\//);
     }
   });
 });
