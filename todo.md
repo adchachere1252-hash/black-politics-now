@@ -279,3 +279,12 @@
 - [x] Verify the refined dashboard on desktop and mobile in both dark and light modes
 - [x] Fit the desktop dashboard into a deliberate no-scroll viewport while keeping full page navigation available through dedicated routes
 - [x] Preserve the existing mobile stacked, scrollable interface while enforcing the desktop no-scroll dashboard constraint
+
+## Dashboard Composition Refinement
+- [x] Expand the desktop Latest News module into the prior Reporting Desk area and remove the dashboard John Lewis legacy module
+- [x] Keep the Daily Intelligence Brief panel in its current desktop dashboard position
+- [x] Add Senate, House, and Governor controls to the desktop homepage map with tab-correct notes-enabled state details
+- [x] Retain World Elections and Historical Atlas as dashboard previews rather than replacing the Daily Brief panel
+- [x] Transform the World Elections globe into a bright, authentic visual focal point on the dashboard
+- [x] Verify the refined desktop dashboard and preserved mobile layout before publication
+- [x] Clarify the Historical Atlas panel as a Selma, voting-rights history, representation, apportionment, and redistricting briefing with a cleaned-up visual treatment

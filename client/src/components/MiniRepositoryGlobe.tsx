@@ -22,7 +22,7 @@ function ringsForFeature(feature: any): number[][][][] {
   return [];
 }
 
-export default function MiniRepositoryGlobe({ theme = "dark" }: { theme?: "light" | "dark" }) {
+export default function MiniRepositoryGlobe({ theme = "dark", vibrant = false }: { theme?: "light" | "dark"; vibrant?: boolean }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -40,15 +40,15 @@ export default function MiniRepositoryGlobe({ theme = "dark" }: { theme?: "light
     const globe = new THREE.Group();
     globe.rotation.set(-0.18, -0.75, -0.05);
     const isLight = theme === "light";
-    const oceanMaterial = new THREE.MeshStandardMaterial({ color: isLight ? 0xdce8f4 : 0x071222, roughness: 0.68, metalness: 0.18 });
+    const oceanMaterial = new THREE.MeshStandardMaterial({ color: isLight ? (vibrant ? 0xc6ebff : 0xdce8f4) : (vibrant ? 0x06355d : 0x071222), roughness: vibrant ? 0.48 : 0.68, metalness: vibrant ? 0.3 : 0.18 });
     const ocean = new THREE.Mesh(new THREE.SphereGeometry(RADIUS, 56, 42), oceanMaterial);
-    const atmosphereMaterial = new THREE.MeshBasicMaterial({ color: isLight ? 0x78a4cf : 0x3e78b7, transparent: true, opacity: isLight ? 0.18 : 0.13, side: THREE.BackSide });
+    const atmosphereMaterial = new THREE.MeshBasicMaterial({ color: isLight ? 0x78c5ef : 0x56baff, transparent: true, opacity: vibrant ? (isLight ? 0.3 : 0.28) : (isLight ? 0.18 : 0.13), side: THREE.BackSide });
     const atmosphere = new THREE.Mesh(new THREE.SphereGeometry(RADIUS + 0.13, 56, 42), atmosphereMaterial);
     globe.add(ocean, atmosphere);
     scene.add(globe);
 
-    scene.add(new THREE.HemisphereLight(isLight ? 0xffffff : 0x9cc9ff, isLight ? 0x7b8da1 : 0x020306, 1.3));
-    const light = new THREE.DirectionalLight(isLight ? 0xfff4d8 : 0xffd88d, 1.4);
+    scene.add(new THREE.HemisphereLight(isLight ? 0xffffff : 0xbde9ff, isLight ? 0x7b8da1 : 0x020306, vibrant ? 1.75 : 1.3));
+    const light = new THREE.DirectionalLight(isLight ? 0xfff4d8 : 0xffe3a6, vibrant ? 2.15 : 1.4);
     light.position.set(3, 2, 4);
     scene.add(light);
 
@@ -97,12 +97,12 @@ export default function MiniRepositoryGlobe({ theme = "dark" }: { theme?: "light
         countryGeometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3));
         countryGeometry.setIndex(indices);
         countryGeometry.computeVertexNormals();
-        countryMaterial = new THREE.MeshBasicMaterial({ color: isLight ? 0x557fa4 : 0x254c76, transparent: true, opacity: 0.97, side: THREE.DoubleSide });
+        countryMaterial = new THREE.MeshBasicMaterial({ color: isLight ? (vibrant ? 0x3d8fc1 : 0x557fa4) : (vibrant ? 0x207daf : 0x254c76), transparent: true, opacity: 0.97, side: THREE.DoubleSide });
         globe.add(new THREE.Mesh(countryGeometry, countryMaterial));
 
         borderGeometry = new THREE.BufferGeometry();
         borderGeometry.setAttribute("position", new THREE.Float32BufferAttribute(borderPoints, 3));
-        borderMaterial = new THREE.LineBasicMaterial({ color: isLight ? 0x9a6e2f : 0xc69d58, transparent: true, opacity: isLight ? 0.62 : 0.52 });
+        borderMaterial = new THREE.LineBasicMaterial({ color: isLight ? 0x886322 : 0xf0cb78, transparent: true, opacity: vibrant ? 0.84 : (isLight ? 0.62 : 0.52) });
         globe.add(new THREE.LineSegments(borderGeometry, borderMaterial));
       })
       .catch(() => undefined);
@@ -140,7 +140,7 @@ export default function MiniRepositoryGlobe({ theme = "dark" }: { theme?: "light
       renderer.dispose();
       container.removeChild(renderer.domElement);
     };
-  }, [theme]);
+  }, [theme, vibrant]);
 
   return <div ref={containerRef} className="h-full w-full" aria-label="Slowly rotating geographic political globe with country boundaries" />;
 }
