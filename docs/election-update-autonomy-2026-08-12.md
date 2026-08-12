@@ -18,6 +18,10 @@ The cloud host now runs `run-election-guard.mjs` every five minutes. On an activ
 
 The remediation was live-tested on August 12. The guard identified the August 11 election date, launched the DDHQ process, and the durable poll log recorded a completed cycle of **65 updated mapped races, zero errors, and zero new general-election calls**.
 
+## Dashboard Publication Verification
+
+The expanded World Elections and Voting Rights Act panels were verified in the local dashboard with 48 tracked elections, 25 upcoming contests, and the live-count field. The first published-domain refresh following the dashboard release continued to serve the preceding dashboard bundle, which displayed an obsolete regional metric. After the updated bundle propagated, the published homepage confirmed the corrected **48 tracked**, **25 upcoming**, and live-count display, alongside the Voting Rights Act feature window.
+
 ## Operational Limits
 
 The guard only polls races that DDHQ has mapped. Daily discovery continues to refresh those mappings. Primary calls remain stored as primary outcomes rather than being shown as general-election calls; this protects the public map from misrepresenting the stage of a contest.

@@ -302,4 +302,4 @@
 - [x] Capture autonomous poll-cycle output in durable logs so election updates and failures remain auditable
 - [x] Expand the World Elections window into a richer featured global-intelligence view using live repository data
 - [x] Expand the Voting Rights Act / Historical Atlas window into a more creative historical-and-redistricting feature view using repository context
-- [ ] Verify and publish the expanded global and historical feature treatment in the one-screen desktop dashboard
+- [x] Verify and publish the expanded global and historical feature treatment in the one-screen desktop dashboard
