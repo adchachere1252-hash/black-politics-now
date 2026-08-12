@@ -303,3 +303,8 @@
 - [x] Expand the World Elections window into a richer featured global-intelligence view using live repository data
 - [x] Expand the Voting Rights Act / Historical Atlas window into a more creative historical-and-redistricting feature view using repository context
 - [x] Verify and publish the expanded global and historical feature treatment in the one-screen desktop dashboard
+
+## Balanced Dashboard Panels
+- [x] Move the substantial World Elections globe and global metrics beneath the Daily Intelligence Brief to eliminate the right-column empty space
+- [x] Create an image-led Voting Rights Act and Historical Atlas feature beneath Latest News using the Selma march image and historical-redistricting context
+- [x] Verify the newly balanced four-panel dashboard in dark and light desktop modes while preserving the mobile stack
