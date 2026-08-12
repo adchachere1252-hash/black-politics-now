@@ -101,6 +101,27 @@ describe("election router", () => {
     expect(afterSave).toHaveLength(records.length);
     expect(afterSave.every((record: any) => /^https:\/\//.test(record.sourceUrl))).toBe(true);
   });
+
+  it("allows an administrator to re-save manual Senate, House, and Governor fields including notes", async () => {
+    const publicCaller = appRouter.createCaller(createPublicContext());
+    const adminCaller = appRouter.createCaller(createAdminContext());
+    const [senate] = await publicCaller.election.senate();
+    const [house] = await publicCaller.election.house();
+    const [governor] = await publicCaller.election.governors();
+
+    await expect(adminCaller.election.updateSenate({
+      id: (senate as any).id,
+      data: { rating: (senate as any).rating, notes: (senate as any).notes ?? null },
+    })).resolves.toEqual({ success: true });
+    await expect(adminCaller.election.updateHouse({
+      id: (house as any).id,
+      data: { rating: (house as any).rating, notes: (house as any).notes ?? null },
+    })).resolves.toEqual({ success: true });
+    await expect(adminCaller.election.updateGovernor({
+      id: (governor as any).id,
+      data: { rating: (governor as any).rating, notes: (governor as any).notes ?? null },
+    })).resolves.toEqual({ success: true });
+  });
 });
 
 describe("podcast router", () => {

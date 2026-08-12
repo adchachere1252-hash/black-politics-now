@@ -311,7 +311,26 @@
 - [x] Add professional loading placeholders for News, Atlas, World Elections, podcast, and map data so the dashboard never appears blank while live queries settle
 
 ## Globe, Mobile Theme & AI Agent Direction
-- [ ] Enlarge the World Elections globe by reallocating a measured portion of Daily Brief panel space while keeping essential briefing controls visible
-- [ ] Reframe the Selma march image as an atmospheric Voting Rights Act background treatment in the Historical Atlas panel
+ - [x] Enlarge the World Elections globe by reallocating a measured portion of Daily Brief panel space while keeping essential briefing controls visible
+ - [x] Reframe the Selma march image as an atmospheric Voting Rights Act background treatment in the Historical Atlas panel
 - [ ] Extend and verify the black-white theme behavior across the mobile app experience
 - [ ] Design a source-grounded Black Politics Now AI research and navigation agent, including product recommendations and safety boundaries
+
+## Final Verification & Accuracy Audit
+- [ ] Establish current production baselines for the dashboard, public routes, live data feeds, and production diagnostics
+- [ ] Verify desktop and mobile layouts in black and white modes, navigation, map controls, state-note dialogs, and playback workflows
+- [ ] Verify manual admin entry for elections, Black Representation, race notes, vote totals, candidate details, and podcast pipeline controls
+- [ ] Verify election, news, World Elections, Historical Atlas, podcast, RSS, and election-automation data accuracy and freshness
+- [ ] Correct confirmed accuracy, visual, interaction, or manual-entry issues and rerun targeted checks
+- [ ] Document and deliver the final verification and accuracy report before AI-agent work resumes
+- [ ] Resolve or explicitly annotate the 21 House records with incomplete candidate fields after source review
+ - [x] Correct historical Daily Brief verification states so episodes without verified full or segment audio are not marked as fully passed
+ - [x] Add editable race notes to the Senate, House, and Governor manual Election Ops forms so public state-detail notes can be maintained without database access
+
+## Final Verification & Accuracy Audit (Historical Duplicate)
+The following earlier duplicate checklist is retained as project history. The expanded checklist immediately above is the active audit scope.
+- [ ] Establish current production baselines for the dashboard, public routes, live data feeds, and production diagnostics
+- [ ] Verify desktop and mobile layouts in black and white modes, navigation, map controls, state-note dialogs, and playback workflows
+- [ ] Verify election, news, World Elections, Historical Atlas, podcast, RSS, and election-automation data accuracy and freshness
+- [ ] Correct confirmed accuracy, visual, or interaction issues and rerun targeted checks
+- [ ] Document and deliver the final verification and accuracy report before AI-agent work resumes

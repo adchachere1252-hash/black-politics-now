@@ -258,6 +258,7 @@ function RaceEditor({ race, onSave, saving, showDistrict }: { race: any; onSave:
   const [rating, setRating] = useState(race.rating ?? "");
   const [calledWinner, setCalledWinner] = useState(race.calledWinner ?? "");
   const [calledParty, setCalledParty] = useState(race.calledParty ?? "");
+  const [notes, setNotes] = useState(race.notes ?? "");
   const [pctReporting, setPctReporting] = useState(race.pctReporting?.toString() ?? "0");
   const [votes1, setVotes1] = useState(race.candidate1Votes?.toString() ?? "0");
   const [votes2, setVotes2] = useState(race.candidate2Votes?.toString() ?? "0");
@@ -268,6 +269,7 @@ function RaceEditor({ race, onSave, saving, showDistrict }: { race: any; onSave:
       rating: rating || null,
       calledWinner: calledWinner || null,
       calledParty: calledParty || null,
+      notes: notes || null,
       pctReporting: parseFloat(pctReporting) || 0,
       candidate1Votes: parseInt(votes1) || 0,
       candidate2Votes: parseInt(votes2) || 0,
@@ -298,6 +300,12 @@ function RaceEditor({ race, onSave, saving, showDistrict }: { race: any; onSave:
           <option value="R">R</option>
           <option value="I">I</option>
         </select>
+        <input
+          value={notes}
+          onChange={e => setNotes(e.target.value)}
+          placeholder="Race notes"
+          className="bg-muted rounded px-2 py-1 text-xs w-36"
+        />
         <div className="flex items-center gap-1">
           <input
             type="number"
@@ -345,10 +353,11 @@ function RaceEditor({ race, onSave, saving, showDistrict }: { race: any; onSave:
 function GovEditor({ race, onSave, saving }: { race: any; onSave: (data: any) => void; saving: boolean }) {
   const [rating, setRating] = useState(race.rating ?? "");
   const [calledWinner, setCalledWinner] = useState(race.calledWinner ?? "");
+  const [notes, setNotes] = useState(race.notes ?? "");
   const [saved, setSaved] = useState(false);
 
   const handleSave = () => {
-    onSave({ rating: rating || null, calledWinner: calledWinner || null });
+    onSave({ rating: rating || null, calledWinner: calledWinner || null, notes: notes || null });
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
@@ -367,6 +376,12 @@ function GovEditor({ race, onSave, saving }: { race: any; onSave: (data: any) =>
           onChange={e => setCalledWinner(e.target.value)}
           placeholder="Called winner"
           className="bg-muted rounded px-2 py-1 text-xs w-28"
+        />
+        <input
+          value={notes}
+          onChange={e => setNotes(e.target.value)}
+          placeholder="Race notes"
+          className="bg-muted rounded px-2 py-1 text-xs w-40"
         />
         <button
           onClick={handleSave}
