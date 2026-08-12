@@ -122,6 +122,20 @@ describe("election router", () => {
       data: { rating: (governor as any).rating, notes: (governor as any).notes ?? null },
     })).resolves.toEqual({ success: true });
   });
+
+  it("preserves audited House schedule and nominee corrections", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const races = await caller.election.house();
+    const louisiana = (races as any[]).filter((race) => race.stateCode === "LA");
+    const newJerseyEight = (races as any[]).find((race) => race.stateCode === "NJ" && race.district === 8);
+    const vermontAtLarge = (races as any[]).find((race) => race.stateCode === "VT" && race.district === 0);
+
+    expect(louisiana).toHaveLength(6);
+    expect(louisiana.every((race) => race.primaryDate === "November 3, 2026")).toBe(true);
+    expect(louisiana.every((race) => race.notes?.includes("open primary"))).toBe(true);
+    expect(newJerseyEight).toMatchObject({ candidate1Name: "Rob Menendez", candidate2Name: "Aristotle Eliopoulos" });
+    expect(vermontAtLarge).toMatchObject({ candidate1Name: "Becca Balint", candidate2Name: "Gerald Malloy" });
+  });
 });
 
 describe("podcast router", () => {

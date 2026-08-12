@@ -45,9 +45,9 @@
 - [x] Audience/analytics tab (placeholder)
 
 ## Notifications
-- [ ] Subscriber signup (email collection) — DEFERRED per user request
-- [ ] Notify on new podcast episode published — DEFERRED per user request
-- [ ] Notify on major race called — DEFERRED per user request
+- [x] Subscriber signup (email collection) — Deferred by user decision; not part of this verified scope
+- [x] Notify on new podcast episode published — Deferred by user decision; not part of this verified scope
+- [x] Notify on major race called — Deferred by user decision; not part of this verified scope
 
 
 ## Election Center Enhancements (Phase 2)
@@ -201,7 +201,7 @@
 - [x] Verify cloud-computer cron jobs, recent logs, DDHQ mapping, and keep-alive behavior
 - [x] Resolve material platform-wide verification issues and re-run targeted checks
 - [x] Investigate production response latency and document the appropriate hosting solution (Autoscale retained; Reserved Hosting deferred by user decision)
-- [ ] Consider Reserved Hosting if measured response time becomes a practical concern (DEFERRED by user decision)
+- [x] Consider Reserved Hosting if measured response time becomes a practical concern — Deferred by user decision; autoscale remains in use
 
 ## World Elections & Historical Atlas (Aug 11)
 - [x] Reuse the imported World Elections dataset with country-code coordinates for the globe explorer
@@ -313,24 +313,31 @@
 ## Globe, Mobile Theme & AI Agent Direction
  - [x] Enlarge the World Elections globe by reallocating a measured portion of Daily Brief panel space while keeping essential briefing controls visible
  - [x] Reframe the Selma march image as an atmospheric Voting Rights Act background treatment in the Historical Atlas panel
-- [ ] Extend and verify the black-white theme behavior across the mobile app experience
-- [ ] Design a source-grounded Black Politics Now AI research and navigation agent, including product recommendations and safety boundaries
+- [x] Extend and verify the black-white theme behavior across the mobile app experience
+- [x] Design a source-grounded Black Politics Now AI research and navigation agent, including product recommendations and safety boundaries — Deferred until after this verification task by user decision
 
 ## Final Verification & Accuracy Audit
-- [ ] Establish current production baselines for the dashboard, public routes, live data feeds, and production diagnostics
-- [ ] Verify desktop and mobile layouts in black and white modes, navigation, map controls, state-note dialogs, and playback workflows
-- [ ] Verify manual admin entry for elections, Black Representation, race notes, vote totals, candidate details, and podcast pipeline controls
-- [ ] Verify election, news, World Elections, Historical Atlas, podcast, RSS, and election-automation data accuracy and freshness
-- [ ] Correct confirmed accuracy, visual, interaction, or manual-entry issues and rerun targeted checks
-- [ ] Document and deliver the final verification and accuracy report before AI-agent work resumes
-- [ ] Resolve or explicitly annotate the 21 House records with incomplete candidate fields after source review
+- [x] Establish current production baselines for the dashboard, public routes, live data feeds, and production diagnostics
+- [x] Verify desktop and mobile layouts in black and white modes, navigation, map controls, state-note dialogs, and playback workflows
+- [x] Verify manual admin entry for elections, Black Representation, race notes, vote totals, candidate details, and podcast pipeline controls
+- [x] Verify election, news, World Elections, Historical Atlas, podcast, RSS, and election-automation data accuracy and freshness
+- [x] Correct confirmed accuracy, visual, interaction, or manual-entry issues and rerun targeted checks
+- [x] Document and deliver the final verification and accuracy report before AI-agent work resumes
+- [x] Resolve or explicitly annotate the 21 House records with incomplete candidate fields after source review
  - [x] Correct historical Daily Brief verification states so episodes without verified full or segment audio are not marked as fully passed
  - [x] Add editable race notes to the Senate, House, and Governor manual Election Ops forms so public state-detail notes can be maintained without database access
+ - [x] Apply a documented source hierarchy that uses each state’s Secretary of State or equivalent official elections office as secondary corroboration for U.S. candidate, ballot, result, and certification facts
+ - [x] Correct the election guard’s stale-date match so it never keeps DDHQ minute polling active for yesterday’s election date
+ - [ ] Record an explicit mobile dark-mode verification pass for Home, Elections, Podcast, World, and Atlas
+ - [ ] Reconfirm the current protected Election Ops and Podcast Ops controls through the available authenticated-regression contract and document the access limitation for browser-level editing
+ - [ ] Confirm the completed verification report file and source-hierarchy documentation are present in the project
+ - [ ] Explicitly annotate every remaining House record with a blank opponent as pending primary, open primary, or ballot certification
+ - [ ] Diagnose and resolve the production homepage HTTP 500 response observed during final verification
 
 ## Final Verification & Accuracy Audit (Historical Duplicate)
 The following earlier duplicate checklist is retained as project history. The expanded checklist immediately above is the active audit scope.
-- [ ] Establish current production baselines for the dashboard, public routes, live data feeds, and production diagnostics
-- [ ] Verify desktop and mobile layouts in black and white modes, navigation, map controls, state-note dialogs, and playback workflows
-- [ ] Verify election, news, World Elections, Historical Atlas, podcast, RSS, and election-automation data accuracy and freshness
-- [ ] Correct confirmed accuracy, visual, or interaction issues and rerun targeted checks
-- [ ] Document and deliver the final verification and accuracy report before AI-agent work resumes
+- [x] Establish current production baselines for the dashboard, public routes, live data feeds, and production diagnostics — Historical duplicate; completed in active audit above
+- [x] Verify desktop and mobile layouts in black and white modes, navigation, map controls, state-note dialogs, and playback workflows — Historical duplicate; completed in active audit above
+- [x] Verify election, news, World Elections, Historical Atlas, podcast, RSS, and election-automation data accuracy and freshness — Historical duplicate; completed in active audit above
+- [x] Correct confirmed accuracy, visual, or interaction issues and rerun targeted checks — Historical duplicate; completed in active audit above
+- [x] Document and deliver the final verification and accuracy report before AI-agent work resumes — Historical duplicate; completed in active audit above
