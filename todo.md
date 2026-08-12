@@ -295,3 +295,11 @@
 - [x] Rebuild the World Elections globe as a complete authentic Earth with stable dark-light texture and lighting treatment
 - [x] Add selective editorial imagery to the dashboard without compromising the single-screen hierarchy
 - [x] Verify the simplified dashboard in dark and light modes while preserving the stacked mobile layout
+
+## Featured Global & Historical Intelligence
+- [x] Audit DDHQ election-engine activity, data mappings, database changes, and race-call logs for last night’s election update
+- [x] Replace the manual election-night polling requirement with a date-aware, lock-safe autonomous DDHQ polling guard and automatic recovery logging
+- [x] Capture autonomous poll-cycle output in durable logs so election updates and failures remain auditable
+- [x] Expand the World Elections window into a richer featured global-intelligence view using live repository data
+- [x] Expand the Voting Rights Act / Historical Atlas window into a more creative historical-and-redistricting feature view using repository context
+- [ ] Verify and publish the expanded global and historical feature treatment in the one-screen desktop dashboard
