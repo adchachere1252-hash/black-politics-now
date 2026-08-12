@@ -309,3 +309,9 @@
 - [x] Create an image-led Voting Rights Act and Historical Atlas feature beneath Latest News using the Selma march image and historical-redistricting context
 - [x] Verify the newly balanced four-panel dashboard in dark and light desktop modes while preserving the mobile stack
 - [x] Add professional loading placeholders for News, Atlas, World Elections, podcast, and map data so the dashboard never appears blank while live queries settle
+
+## Globe, Mobile Theme & AI Agent Direction
+- [ ] Enlarge the World Elections globe by reallocating a measured portion of Daily Brief panel space while keeping essential briefing controls visible
+- [ ] Reframe the Selma march image as an atmospheric Voting Rights Act background treatment in the Historical Atlas panel
+- [ ] Extend and verify the black-white theme behavior across the mobile app experience
+- [ ] Design a source-grounded Black Politics Now AI research and navigation agent, including product recommendations and safety boundaries
