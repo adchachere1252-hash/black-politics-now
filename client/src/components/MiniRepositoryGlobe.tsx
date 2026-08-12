@@ -4,6 +4,7 @@ import * as topojson from "topojson-client";
 import earcut from "earcut";
 
 const COUNTRY_TOPOLOGY = "/manus-storage/countries-50m_1d29640f.json";
+const EARTH_TEXTURE = "/manus-storage/earth-atmosphere-2048_bed8e884.jpg";
 const RADIUS = 1.48;
 
 function pointOnGlobe(lon: number, lat: number, radius: number) {
@@ -40,15 +41,17 @@ export default function MiniRepositoryGlobe({ theme = "dark", vibrant = false }:
     const globe = new THREE.Group();
     globe.rotation.set(-0.18, -0.75, -0.05);
     const isLight = theme === "light";
-    const oceanMaterial = new THREE.MeshStandardMaterial({ color: isLight ? (vibrant ? 0xc6ebff : 0xdce8f4) : (vibrant ? 0x06355d : 0x071222), roughness: vibrant ? 0.48 : 0.68, metalness: vibrant ? 0.3 : 0.18 });
+    const texture = new THREE.TextureLoader().load(EARTH_TEXTURE);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    const oceanMaterial = new THREE.MeshStandardMaterial({ map: texture, color: 0xffffff, roughness: 0.74, metalness: 0.04, emissive: isLight ? 0x0a1520 : 0x102a3e, emissiveIntensity: vibrant ? 0.18 : 0.1 });
     const ocean = new THREE.Mesh(new THREE.SphereGeometry(RADIUS, 56, 42), oceanMaterial);
-    const atmosphereMaterial = new THREE.MeshBasicMaterial({ color: isLight ? 0x78c5ef : 0x56baff, transparent: true, opacity: vibrant ? (isLight ? 0.3 : 0.28) : (isLight ? 0.18 : 0.13), side: THREE.BackSide });
+    const atmosphereMaterial = new THREE.MeshBasicMaterial({ color: isLight ? 0x54c6ff : 0x62d2ff, transparent: true, opacity: vibrant ? 0.26 : 0.17, side: THREE.BackSide });
     const atmosphere = new THREE.Mesh(new THREE.SphereGeometry(RADIUS + 0.13, 56, 42), atmosphereMaterial);
     globe.add(ocean, atmosphere);
     scene.add(globe);
 
-    scene.add(new THREE.HemisphereLight(isLight ? 0xffffff : 0xbde9ff, isLight ? 0x7b8da1 : 0x020306, vibrant ? 1.75 : 1.3));
-    const light = new THREE.DirectionalLight(isLight ? 0xfff4d8 : 0xffe3a6, vibrant ? 2.15 : 1.4);
+    scene.add(new THREE.HemisphereLight(0xd8f0ff, isLight ? 0x9aafbd : 0x071015, vibrant ? 1.85 : 1.4));
+    const light = new THREE.DirectionalLight(0xfff1ca, vibrant ? 2.35 : 1.55);
     light.position.set(3, 2, 4);
     scene.add(light);
 
@@ -97,12 +100,12 @@ export default function MiniRepositoryGlobe({ theme = "dark", vibrant = false }:
         countryGeometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3));
         countryGeometry.setIndex(indices);
         countryGeometry.computeVertexNormals();
-        countryMaterial = new THREE.MeshBasicMaterial({ color: isLight ? (vibrant ? 0x3d8fc1 : 0x557fa4) : (vibrant ? 0x207daf : 0x254c76), transparent: true, opacity: 0.97, side: THREE.DoubleSide });
+        countryMaterial = new THREE.MeshBasicMaterial({ color: isLight ? 0x1678ad : 0x2dbbdf, transparent: true, opacity: vibrant ? 0.34 : 0.22, side: THREE.DoubleSide });
         globe.add(new THREE.Mesh(countryGeometry, countryMaterial));
 
         borderGeometry = new THREE.BufferGeometry();
         borderGeometry.setAttribute("position", new THREE.Float32BufferAttribute(borderPoints, 3));
-        borderMaterial = new THREE.LineBasicMaterial({ color: isLight ? 0x886322 : 0xf0cb78, transparent: true, opacity: vibrant ? 0.84 : (isLight ? 0.62 : 0.52) });
+        borderMaterial = new THREE.LineBasicMaterial({ color: isLight ? 0x8a5b13 : 0xf6d982, transparent: true, opacity: vibrant ? 0.92 : (isLight ? 0.72 : 0.64) });
         globe.add(new THREE.LineSegments(borderGeometry, borderMaterial));
       })
       .catch(() => undefined);
@@ -131,6 +134,7 @@ export default function MiniRepositoryGlobe({ theme = "dark", vibrant = false }:
       observer.disconnect();
       ocean.geometry.dispose();
       oceanMaterial.dispose();
+      texture.dispose();
       atmosphere.geometry.dispose();
       atmosphereMaterial.dispose();
       countryGeometry?.dispose();

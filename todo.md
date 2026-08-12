@@ -288,3 +288,10 @@
 - [x] Transform the World Elections globe into a bright, authentic visual focal point on the dashboard
 - [x] Verify the refined desktop dashboard and preserved mobile layout before publication
 - [x] Clarify the Historical Atlas panel as a Selma, voting-rights history, representation, apportionment, and redistricting briefing with a cleaned-up visual treatment
+
+## Simplified Editorial Dashboard
+- [x] Remove duplicate lower Latest News and Podcast Archive modules, then fill the primary Latest News and Daily Intelligence Brief columns with richer real content
+- [x] Rename the Historical Atlas dashboard context from Selma to Voting Rights Act (VRA) and clarify its historical-map purpose
+- [x] Rebuild the World Elections globe as a complete authentic Earth with stable dark-light texture and lighting treatment
+- [x] Add selective editorial imagery to the dashboard without compromising the single-screen hierarchy
+- [x] Verify the simplified dashboard in dark and light modes while preserving the stacked mobile layout
