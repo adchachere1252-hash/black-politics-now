@@ -308,3 +308,4 @@
 - [x] Move the substantial World Elections globe and global metrics beneath the Daily Intelligence Brief to eliminate the right-column empty space
 - [x] Create an image-led Voting Rights Act and Historical Atlas feature beneath Latest News using the Selma march image and historical-redistricting context
 - [x] Verify the newly balanced four-panel dashboard in dark and light desktop modes while preserving the mobile stack
+- [x] Add professional loading placeholders for News, Atlas, World Elections, podcast, and map data so the dashboard never appears blank while live queries settle
