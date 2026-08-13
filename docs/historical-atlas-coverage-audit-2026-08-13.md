@@ -6,11 +6,11 @@ The standalone Historical Atlas currently exposes the **16-state redistricting i
 
 ## Original repository coverage
 
-The original `election-map-2026` repository contains a richer state-history implementation in `client/src/components/StateDetailPanel.tsx`. It includes a 50-state `KNOWN_SEATS` historical apportionment series spanning the 89th–119th Congresses, a Lewis boundary manifest that identifies historical district-boundary eras, party-control calculations by Congress, apportionment-change events, and current-representative listings. The site currently uses the active 16-state redistricting ledger and a simplified seven-decade seat series, rather than the original full historical state-detail experience.
+The original `election-map-2026` repository contains a richer state-history implementation in `client/src/components/StateDetailPanel.tsx`. Its reusable Atlas source data consists of a 50-state `KNOWN_SEATS` historical apportionment series spanning the 89th–119th Congresses and a Lewis boundary manifest that identifies historical district-boundary eras. The current site now uses both sources, while keeping the active 16-state redistricting ledger distinct from long-run historical records. The original UI can calculate some derived party and representative views, but the repository does not contain a standalone, verified party-control or historical-representative dataset suitable for direct reuse.
 
 ## Verified improvement path
 
-The safest launch enhancement is to import the original repository’s **50-state apportionment series and boundary-era metadata** into the standalone Atlas, then distinguish those long-run historical records from the 16-state live-redistricting watchlist. A later enhancement can layer party-control and historical representative timelines after their repository caches are reviewed and verified for current source provenance. This preserves factual separation between long-run historical context and current litigation or map-status reporting.
+The launch enhancement imports the original repository’s **50-state apportionment series and boundary-era metadata** into the standalone Atlas and distinguishes those long-run historical records from the 16-state live-redistricting watchlist. A later party-control or representative-history layer requires separate research and a new verified data source, rather than an unsupported inference from the repository. This preserves factual separation between long-run historical context and current litigation or map-status reporting.
 
 ## Dashboard map verification
 

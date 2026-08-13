@@ -81,6 +81,7 @@ export function AgentDeskTab({ focusRecommendationId }: { focusRecommendationId?
               The agent reviews current platform context and creates cited recommendations only. It cannot publish stories, alter election records, or send public alerts.
             </p>
             <p className="mt-2 text-xs text-muted-foreground">Routine cadence: every {settings?.researchIntervalHours ?? 4} hours. Last run: {settings?.lastRunAt ? new Date(settings.lastRunAt).toLocaleString() : "not yet run"}.</p>
+            <p className="mt-2 rounded-md border border-primary/15 bg-background/55 p-2 text-xs leading-5 text-muted-foreground"><strong className="text-foreground">Approve &amp; task:</strong> creates a private follow-up task for the assigned human owner. The agent continues to research and recommend, but it does not execute the task, publish content, change election data, or send public alerts on its own.</p>
           </div>
           <button onClick={() => runNow.mutate()} disabled={runNow.isPending} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50">
             <RefreshCw size={15} className={runNow.isPending ? "animate-spin" : ""} /> {runNow.isPending ? "Researching…" : "Run research now"}

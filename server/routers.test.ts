@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
 import { APPORTIONMENT_HISTORY, APPORTIONMENT_YEARS } from "../client/src/data/atlasHistory";
+import { LEWIS_MANIFEST } from "../client/src/data/atlasBoundaryManifest";
+import { photoWithRepositoryFallback, resolveRepositoryCandidatePhoto } from "./candidatePhotoResolver";
 
 function createPublicContext(): TrpcContext {
   return {
@@ -20,6 +22,12 @@ function createAdminContext(): TrpcContext {
 }
 
 describe("election router", () => {
+  it("uses the original repository’s verified photo map only as a safe fallback", () => {
+    expect(resolveRepositoryCandidatePhoto("Cory Booker")).toMatch(/^https:\/\/unitedstates\.github\.io\/images\/congress\/225x275\//);
+    expect(resolveRepositoryCandidatePhoto("TBD — D Primary")).toBeNull();
+    expect(photoWithRepositoryFallback("Cory Booker", "/manus-storage/editor-selected.jpg")).toBe("/manus-storage/editor-selected.jpg");
+  });
+
   it("returns scoreboard with senate and house counts", async () => {
     const caller = appRouter.createCaller(createPublicContext());
     const scoreboard = await caller.election.scoreboard();
@@ -77,6 +85,12 @@ describe("election router", () => {
     expect(APPORTIONMENT_HISTORY.Mississippi).toEqual([5, 5, 5, 5, 4, 4, 4]);
     expect(APPORTIONMENT_HISTORY.Alaska).toEqual([1, 1, 1, 1, 1, 1, 1]);
     expect(APPORTIONMENT_HISTORY.Texas.at(-1)).toBe(38);
+  });
+
+  it("preserves the original Atlas boundary-era archive for all 50 state histories", () => {
+    expect(Object.keys(LEWIS_MANIFEST)).toHaveLength(50);
+    expect(LEWIS_MANIFEST.Alabama.at(-1)).toMatchObject({ start: 119, end: 119 });
+    expect(LEWIS_MANIFEST.Alaska.length).toBeGreaterThan(0);
   });
 
   it("returns source-backed Black Representation election records", async () => {

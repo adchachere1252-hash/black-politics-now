@@ -2,6 +2,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { startLogin } from "@/const";
 import { AgentDeskTab } from "@/components/AgentDeskTab";
+import MiniRepositoryGlobe from "@/components/MiniRepositoryGlobe";
 import { useState, useMemo } from "react";
 import { Shield, Radio, MapPin, Users, Save, Check, Search, Star, Sparkles } from "lucide-react";
 
@@ -82,6 +83,7 @@ function OverviewTab({ onReview }: { onReview: (id: number) => void }) {
   const { data: priorityRecommendations = [] } = trpc.agent.recommendations.useQuery({ status: "pending", priority: "high" });
   const { data: agentSettings } = trpc.agent.settings.useQuery();
   const { data: agentTasks = [] } = trpc.agent.tasks.useQuery();
+  const { data: worldElections = [] } = trpc.world.elections.useQuery();
   const [priorityOwner, setPriorityOwner] = useState("all");
 
   // Calculate live polling status
@@ -95,6 +97,9 @@ function OverviewTab({ onReview }: { onReview: (id: number) => void }) {
   const reminderTasks = (agentTasks as any[]).filter((task) => task.status !== "completed" && task.dueDate).map((task) => ({ ...task, dueAt: new Date(task.dueDate).getTime() })).filter((task) => Number.isFinite(task.dueAt));
   const overdueTasks = reminderTasks.filter((task) => task.dueAt < now).sort((a, b) => a.dueAt - b.dueAt);
   const upcomingTasks = reminderTasks.filter((task) => task.dueAt >= now && task.dueAt <= now + 3 * 24 * 60 * 60 * 1000).sort((a, b) => a.dueAt - b.dueAt);
+  const worldRecords = worldElections as any[];
+  const worldUpcoming = worldRecords.filter((record) => record.status === "Upcoming").length;
+  const worldLive = worldRecords.filter((record) => record.status === "Voting Today").length;
 
   return (
     <div className="space-y-6">
@@ -144,6 +149,20 @@ function OverviewTab({ onReview }: { onReview: (id: number) => void }) {
         </div>
       </div>
 
+      <div className="glass-card overflow-hidden rounded-xl p-0">
+        <div className="grid min-h-[180px] md:grid-cols-[220px_1fr]">
+          <div className="relative overflow-hidden bg-[radial-gradient(circle_at_68%_30%,rgba(56,189,248,0.5),transparent_46%),linear-gradient(135deg,#061426,#0d315c)]">
+            <div className="absolute inset-0"><MiniRepositoryGlobe theme="dark" vibrant /></div>
+            <div className="pointer-events-none absolute inset-x-3 bottom-3 rounded border border-cyan-100/20 bg-slate-950/50 px-2 py-1 text-center text-[10px] font-bold uppercase tracking-[0.12em] text-cyan-50">World Elections monitor</div>
+          </div>
+          <div className="flex flex-col justify-center p-5">
+            <div className="flex flex-wrap items-center justify-between gap-2"><div><h3 className="text-sm font-bold uppercase tracking-wider">Global Elections Desk</h3><p className="mt-1 text-xs text-muted-foreground">Operational snapshot of the public World Elections calendar.</p></div><a href="/world" className="rounded-md border border-border px-2.5 py-1.5 text-xs font-semibold text-primary">Open World Elections</a></div>
+            <div className="mt-4 grid grid-cols-3 divide-x divide-border text-center"><AdminMetric value={worldRecords.length} label="Tracked" /><AdminMetric value={worldUpcoming} label="Upcoming" /><AdminMetric value={worldLive} label="Voting today" /></div>
+            <p className="mt-4 text-xs text-muted-foreground">This globe is a monitoring view only; calendar updates remain governed by the World Elections data workflow.</p>
+          </div>
+        </div>
+      </div>
+
       <div className="glass-card rounded-xl p-5">
         <div className="flex flex-wrap items-center justify-between gap-2"><div><h3 className="text-sm font-bold uppercase tracking-wider">Task reminders</h3><p className="mt-1 text-xs text-muted-foreground">Open Agent Desk follow-up tasks with due dates.</p></div><div className="flex gap-2 text-xs"><span className="rounded-full bg-red-500/10 px-2 py-1 font-semibold text-red-700 dark:text-red-300">{overdueTasks.length} overdue</span><span className="rounded-full bg-amber-500/10 px-2 py-1 font-semibold text-amber-700 dark:text-amber-300">{upcomingTasks.length} due in 3 days</span></div></div>
         {[...overdueTasks, ...upcomingTasks].slice(0, 4).map((task) => <div key={task.id} className="mt-3 flex items-center justify-between gap-3 rounded-lg border border-border/70 bg-background/50 px-3 py-2"><div><p className="text-sm font-medium">{task.title}</p><p className="mt-1 text-xs text-muted-foreground">{task.owner ?? "Unassigned"} · due {new Date(task.dueDate).toLocaleDateString()}</p></div><span className={`shrink-0 text-xs font-semibold ${task.dueAt < now ? "text-red-600 dark:text-red-300" : "text-amber-700 dark:text-amber-300"}`}>{task.dueAt < now ? "Overdue" : "Upcoming"}</span></div>)}
@@ -178,26 +197,28 @@ function OverviewTab({ onReview }: { onReview: (id: number) => void }) {
 
 function PodcastOpsTab() {
   const { data: runs = [] } = trpc.podcast.pipelineRuns.useQuery();
+  const { data: archiveEpisodes = [] } = trpc.podcast.getArchiveEpisodes.useQuery();
+  const latest = (archiveEpisodes as any[])[0];
+  const fullAudioReady = Boolean(latest?.fullEpisodeCdnUrl && latest?.verificationStatus === "passed");
+  const hasScript = Boolean(latest?.segmentCount);
+  const gateLabel = fullAudioReady ? "Published" : hasScript ? "Audio preparation / review" : "Research and script gate";
   return (
-    <div>
-      <h2 className="text-lg font-bold mb-4">Pipeline Runs</h2>
-      {(runs as any[]).length === 0 ? (
-        <p className="text-muted-foreground text-sm">No pipeline runs recorded yet.</p>
-      ) : (
-        <div className="space-y-2">
-          {(runs as any[]).map((run: any) => (
-            <div key={run.id} className="glass-card rounded-lg p-3 flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium">{run.episodeDate}</p>
-                <p className="text-xs text-muted-foreground">Status: {run.status}</p>
-              </div>
-              <span className="text-xs text-muted-foreground">{run.startedAt ? new Date(run.startedAt).toLocaleString() : ""}</span>
-            </div>
-          ))}
-        </div>
-      )}
+    <div className="space-y-5">
+      <section className="glass-card rounded-xl p-5">
+        <div className="flex flex-wrap items-start justify-between gap-3"><div><h2 className="text-lg font-bold">Daily Brief Operations</h2><p className="mt-1 text-sm text-muted-foreground">This view explains whether the latest episode has cleared each safe publication gate.</p></div><a href="/podcast" className="rounded-md border border-border px-3 py-2 text-xs font-semibold text-primary">Open public brief</a></div>
+        {!latest ? <p className="mt-5 text-sm text-muted-foreground">No Daily Brief record is available yet.</p> : <><div className="mt-5 grid gap-3 sm:grid-cols-3"><PodcastGate label="Script & segments" detail={`${latest.segmentCount ?? 0} segments`} passed={hasScript} /><PodcastGate label="Full episode audio" detail={latest.totalDurationLabel || "Awaiting verification"} passed={fullAudioReady} /><PodcastGate label="Publication state" detail={gateLabel} passed={fullAudioReady} /></div><div className="mt-4 rounded-lg border border-border/70 bg-background/50 p-3 text-xs text-muted-foreground"><p><strong className="text-foreground">Latest date:</strong> {latest.friendlyDate || latest.date} · {latest.verificationStatus}</p><p className="mt-1"><strong className="text-foreground">Autonomous schedule:</strong> primary run at 6:00 AM ET; lock-safe recovery checks at 7:30 AM and 8:30 AM ET. Incomplete audio is held from the public player.</p></div></>}
+      </section>
+      <section><h2 className="text-lg font-bold mb-4">Recent Pipeline Runs</h2>{(runs as any[]).length === 0 ? <p className="text-muted-foreground text-sm">No local pipeline-run rows are recorded. The latest episode gate status above remains the current operational source of truth.</p> : <div className="space-y-2">{(runs as any[]).map((run: any) => <div key={run.id} className="glass-card rounded-lg p-3 flex items-center justify-between"><div><p className="text-sm font-medium">{run.episodeDate}</p><p className="text-xs text-muted-foreground">Status: {run.status}</p></div><span className="text-xs text-muted-foreground">{run.startedAt ? new Date(run.startedAt).toLocaleString() : ""}</span></div>)}</div>}</section>
     </div>
   );
+}
+
+function AdminMetric({ value, label }: { value: string | number; label: string }) {
+  return <div className="px-3"><p className="text-xl font-bold text-foreground">{value}</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">{label}</p></div>;
+}
+
+function PodcastGate({ label, detail, passed }: { label: string; detail: string; passed: boolean }) {
+  return <div className={`rounded-lg border p-3 ${passed ? "border-emerald-500/25 bg-emerald-500/5" : "border-amber-500/25 bg-amber-500/5"}`}><p className="text-xs font-semibold text-foreground">{label}</p><p className="mt-1 text-xs text-muted-foreground">{detail}</p><p className={`mt-2 text-[10px] font-bold uppercase tracking-[0.1em] ${passed ? "text-emerald-700 dark:text-emerald-300" : "text-amber-700 dark:text-amber-300"}`}>{passed ? "Passed" : "Held safely"}</p></div>;
 }
 
 const RATINGS = ["Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R"];

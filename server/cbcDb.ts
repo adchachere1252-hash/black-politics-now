@@ -1,11 +1,13 @@
 import { getDb } from "./db";
 import { blackRepresentationElections, cbcMembers, redistrictingStates } from "../drizzle/schema";
 import { asc, desc, eq } from "drizzle-orm";
+import { photoWithRepositoryFallback } from "./candidatePhotoResolver";
 
 export async function getAllCbcMembers() {
   const db = await getDb();
   if (!db) return [];
-  return db.select().from(cbcMembers).orderBy(asc(cbcMembers.state), asc(cbcMembers.district));
+  const rows = await db.select().from(cbcMembers).orderBy(asc(cbcMembers.state), asc(cbcMembers.district));
+  return rows.map((member) => ({ ...member, photo: photoWithRepositoryFallback(member.member, member.photo) }));
 }
 
 export async function getAllRedistrictingStates() {

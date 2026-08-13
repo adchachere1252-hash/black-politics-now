@@ -1,29 +1,54 @@
 import { eq, desc, like, or, sql } from "drizzle-orm";
 import { getDb } from "./db";
 import { senateRaces, houseRaces, governorRaces, referendums } from "../drizzle/schema";
+import { photoWithRepositoryFallback } from "./candidatePhotoResolver";
+
+function withSenatePhotoFallback(race: any) {
+  return {
+    ...race,
+    candidate1Photo: photoWithRepositoryFallback(race.candidate1Name, race.candidate1Photo),
+    candidate2Photo: photoWithRepositoryFallback(race.candidate2Name, race.candidate2Photo),
+  };
+}
+
+function withHousePhotoFallback(race: any) {
+  return {
+    ...race,
+    candidate1Photo: photoWithRepositoryFallback(race.candidate1Name, race.candidate1Photo),
+    candidate2Photo: photoWithRepositoryFallback(race.candidate2Name, race.candidate2Photo),
+  };
+}
+
+function withGovernorPhotoFallback(race: any) {
+  return {
+    ...race,
+    demPhoto: photoWithRepositoryFallback(race.demCandidate, race.demPhoto),
+    repPhoto: photoWithRepositoryFallback(race.repCandidate, race.repPhoto),
+  };
+}
 
 export async function getAllSenateRaces() {
   const db = await getDb();
   if (!db) return [];
-  return db.select().from(senateRaces);
+  return (await db.select().from(senateRaces)).map(withSenatePhotoFallback);
 }
 
 export async function getAllHouseRaces() {
   const db = await getDb();
   if (!db) return [];
-  return db.select().from(houseRaces);
+  return (await db.select().from(houseRaces)).map(withHousePhotoFallback);
 }
 
 export async function getHouseRacesByState(stateCode: string) {
   const db = await getDb();
   if (!db) return [];
-  return db.select().from(houseRaces).where(eq(houseRaces.stateCode, stateCode));
+  return (await db.select().from(houseRaces).where(eq(houseRaces.stateCode, stateCode))).map(withHousePhotoFallback);
 }
 
 export async function getAllGovernorRaces() {
   const db = await getDb();
   if (!db) return [];
-  return db.select().from(governorRaces);
+  return (await db.select().from(governorRaces)).map(withGovernorPhotoFallback);
 }
 
 export async function getAllReferendums() {
@@ -65,7 +90,11 @@ export async function searchRaces(query: string) {
   const govResults = await db.select().from(governorRaces).where(
     or(like(governorRaces.stateName, pattern), like(governorRaces.demCandidate, pattern), like(governorRaces.repCandidate, pattern))
   ).limit(10);
-  return { senate: senateResults, house: houseResults, governor: govResults };
+  return {
+    senate: senateResults.map(withSenatePhotoFallback),
+    house: houseResults.map(withHousePhotoFallback),
+    governor: govResults.map(withGovernorPhotoFallback),
+  };
 }
 
 export async function updateSenateRace(id: number, data: Record<string, unknown>) {
