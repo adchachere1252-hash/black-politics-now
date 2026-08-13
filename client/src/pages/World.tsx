@@ -54,7 +54,8 @@ export default function World() {
     </section>
     <section className="relative container pb-14 grid xl:grid-cols-[minmax(0,1fr)_360px] gap-6">
       <div className="rounded-2xl border border-border bg-card/50 overflow-hidden shadow-2xl shadow-black/10 relative">
-        <WorldGlobe elections={elections} />
+        <WorldGlobe elections={elections} onElectionSelect={setSelected} />
+        <div className="absolute left-4 top-4 max-w-[250px] rounded-xl border border-cyan-200/25 bg-slate-950/55 px-3 py-2.5 backdrop-blur-md"><p className="text-[10px] font-bold uppercase tracking-[0.16em] text-cyan-100">Democracy is moving</p><p className="mt-1 text-xs leading-relaxed text-cyan-50/80">Select a glowing election beacon to open country detail, candidates, key issues, and the current democratic calendar.</p></div>
         <div className="absolute left-4 bottom-4 rounded-lg border border-border bg-background/85 backdrop-blur px-3 py-2 text-xs text-muted-foreground"><span className="inline-block mr-1.5 w-2 h-2 rounded-full bg-primary" /> Upcoming&nbsp;&nbsp;<span className="inline-block mr-1.5 w-2 h-2 rounded-full bg-emerald-400" /> Completed&nbsp;&nbsp;<span className="inline-block mr-1.5 w-2 h-2 rounded-full bg-amber-400" /> Voting today</div>
       </div>
       <aside className="rounded-2xl border border-border bg-card/80 overflow-hidden flex flex-col max-h-[520px]">

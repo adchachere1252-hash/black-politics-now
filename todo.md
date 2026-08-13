@@ -337,6 +337,9 @@
  - [x] Verify and correct any unauthenticated Admin dashboard visibility so all operational content and mutations remain role-gated — Interactive preview showed the expected Admin Access Required gate; an earlier screenshot used an authenticated capture context
 
 ## AI Research Agent & Continuous Improvement
+- [x] Rebuild the World Elections globe as a realistic luminous global beacon that invites country-by-country exploration
+- [x] Audit World Elections clarity, visual hierarchy, data depth, and reader utility against a global political-intelligence standard
+- [x] Develop a prioritized redesign recommendation for the global experience before implementation
 - [x] Add clear country outlines to the spinning World Elections globe without compromising Earth texture or marker readability
 - [x] Replace all public uses of “Battlefield” with neutral political-journalism terminology
 - [x] Add an interactive search control to the homepage election map

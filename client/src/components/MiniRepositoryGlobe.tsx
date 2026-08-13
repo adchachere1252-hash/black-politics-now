@@ -43,9 +43,9 @@ export default function MiniRepositoryGlobe({ theme = "dark", vibrant = false }:
     const isLight = theme === "light";
     const texture = new THREE.TextureLoader().load(EARTH_TEXTURE);
     texture.colorSpace = THREE.SRGBColorSpace;
-    const oceanMaterial = new THREE.MeshStandardMaterial({ map: texture, color: 0xffffff, roughness: 0.74, metalness: 0.04, emissive: isLight ? 0x0a1520 : 0x102a3e, emissiveIntensity: vibrant ? 0.18 : 0.1 });
+    const oceanMaterial = new THREE.MeshPhysicalMaterial({ map: texture, color: 0xffffff, roughness: 0.42, metalness: 0.06, clearcoat: 0.74, clearcoatRoughness: 0.22, emissive: isLight ? 0x0b1d2c : 0x143b55, emissiveIntensity: vibrant ? 0.24 : 0.12 });
     const ocean = new THREE.Mesh(new THREE.SphereGeometry(RADIUS, 56, 42), oceanMaterial);
-    const atmosphereMaterial = new THREE.MeshBasicMaterial({ color: isLight ? 0x54c6ff : 0x62d2ff, transparent: true, opacity: vibrant ? 0.26 : 0.17, side: THREE.BackSide });
+    const atmosphereMaterial = new THREE.MeshBasicMaterial({ color: isLight ? 0x54c6ff : 0x62d2ff, transparent: true, opacity: vibrant ? 0.34 : 0.18, side: THREE.BackSide, blending: THREE.AdditiveBlending });
     const atmosphere = new THREE.Mesh(new THREE.SphereGeometry(RADIUS + 0.13, 56, 42), atmosphereMaterial);
     globe.add(ocean, atmosphere);
     scene.add(globe);
@@ -100,12 +100,12 @@ export default function MiniRepositoryGlobe({ theme = "dark", vibrant = false }:
         countryGeometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3));
         countryGeometry.setIndex(indices);
         countryGeometry.computeVertexNormals();
-        countryMaterial = new THREE.MeshBasicMaterial({ color: isLight ? 0x1678ad : 0x2dbbdf, transparent: true, opacity: vibrant ? 0.34 : 0.22, side: THREE.DoubleSide });
+        countryMaterial = new THREE.MeshBasicMaterial({ color: isLight ? 0x2f91bc : 0x66cce5, transparent: true, opacity: vibrant ? 0.2 : 0.12, side: THREE.DoubleSide, blending: THREE.AdditiveBlending });
         globe.add(new THREE.Mesh(countryGeometry, countryMaterial));
 
         borderGeometry = new THREE.BufferGeometry();
         borderGeometry.setAttribute("position", new THREE.Float32BufferAttribute(borderPoints, 3));
-        borderMaterial = new THREE.LineBasicMaterial({ color: isLight ? 0x8a5b13 : 0xf6d982, transparent: true, opacity: vibrant ? 0.92 : (isLight ? 0.72 : 0.64) });
+        borderMaterial = new THREE.LineBasicMaterial({ color: isLight ? 0x8a5b13 : 0xffefbd, transparent: true, opacity: vibrant ? 0.96 : (isLight ? 0.72 : 0.72) });
         globe.add(new THREE.LineSegments(borderGeometry, borderMaterial));
       })
       .catch(() => undefined);
