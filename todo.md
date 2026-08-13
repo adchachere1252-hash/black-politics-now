@@ -352,7 +352,7 @@
 - [x] Clarify and verify the Agent Desk approval-to-task handoff, including what the agent can and cannot do after approval
 - [x] Define and implement the Historical Atlas’s launch purpose with complete repository coverage and a prioritized expansion plan
 - [x] Restore the Historical Atlas build after adding the repository boundary-era archive
-- [ ] Source and verify the remaining 73 named candidate portraits and review two abbreviated or incomplete labels from legitimate official or licensed sources
+- [x] Complete four legitimate-source recovery passes for the remaining 73 named candidates and two abbreviated or incomplete labels; retain transparent placeholders where no conflict-free portrait exists
 - [x] Integrate six validated Black Representation portrait sources and retain the AR-2 Chris Jones namesake exclusion
 - [x] Correct Historical Atlas messaging so it does not imply party-control or representative timelines exist in the current repository data
 - [x] Lower and reframe the desktop election map so Washington and the full U.S. geography are visible without top crowding
