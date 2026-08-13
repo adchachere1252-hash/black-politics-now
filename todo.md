@@ -337,6 +337,9 @@
  - [x] Verify and correct any unauthenticated Admin dashboard visibility so all operational content and mutations remain role-gated — Interactive preview showed the expected Admin Access Required gate; an earlier screenshot used an authenticated capture context
 
 ## AI Research Agent & Continuous Improvement
+- [x] Add visible official and editorial source links to every World Elections country detail drawer
+- [x] Add next-30-days and regional filters to the World Elections explorer
+- [ ] Add the user-approved 30-minute Cook Islands Verified Watch that creates review-only Admin alerts when authoritative reporting changes
 - [x] Verify the Cook Islands August 12, 2026 election record against authoritative reporting and update its status or notes as needed
 - [x] Run a full source-backed completeness and freshness audit for every World Elections record
 - [x] Enrich World Elections country details missing candidate or key-issue context after source verification

@@ -353,12 +353,34 @@ export const worldElections = mysqlTable("world_elections", {
   totalVotes: bigint("total_votes", { mode: "number" }),
   turnoutPct: decimal("turnout_pct", { precision: 5, scale: 2 }),
   notes: text("notes"),
+  sourceUrls: text("source_urls"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
 });
 
 export type WorldElection = typeof worldElections.$inferSelect;
 export type InsertWorldElection = typeof worldElections.$inferInsert;
+
+/**
+ * A source-watch is deliberately review-only: it captures authoritative-source
+ * changes and creates an Agent Desk recommendation, but never mutates a public
+ * winner, result, or calendar record.
+ */
+export const worldElectionWatches = mysqlTable("world_election_watches", {
+  id: int("id").autoincrement().primaryKey(),
+  worldElectionId: int("world_election_id").notNull().unique(),
+  enabled: boolean("enabled").default(true).notNull(),
+  scheduleCronTaskUid: varchar("schedule_cron_task_uid", { length: 65 }),
+  lastCheckedAt: timestamp("last_checked_at"),
+  lastFingerprint: varchar("last_fingerprint", { length: 64 }),
+  lastSourceSnapshot: text("last_source_snapshot"),
+  lastReviewRecommendationId: int("last_review_recommendation_id"),
+  lastDetectedAt: timestamp("last_detected_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type WorldElectionWatch = typeof worldElectionWatches.$inferSelect;
 
 // ═══════════════════════════════════════════════════════════════════════════
 // BLACK REPRESENTATION TRACKING
