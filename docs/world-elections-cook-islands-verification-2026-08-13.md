@@ -20,6 +20,12 @@ The calendar’s **August 12, 2026** date is correct for the Cook Islands genera
 
 The calendar is substantively strong: 48 distinct records, complete country and contest coverage, and date/status evidence reviewed in parallel. The main quality gap was **freshness**, not baseline coverage. The corrections above are narrow and source-specific; future updates should retain the distinction between scheduled dates, voting-in-progress, preliminary counts, certified results, and government formation.
 
+## Verified Watch activation
+
+The platform now runs a **review-only Cook Islands Verified Watch** every 30 minutes under the platform-managed schedule `cook-islands-verified-watch`. Its initial source baseline was recorded on August 13, 2026 against the Cook Islands official election notice and Cook Islands News reporting. The watch stores a fingerprint and evidence snapshot for each check.
+
+If source evidence changes, the watcher creates a high-priority Admin review recommendation for the Data Desk. It **cannot update the public election status, candidates, or winner automatically**. A human editor must inspect the retained source evidence and make any public-record change through the protected administrative workflow.
+
 ## References
 
 [1]: https://www.cookislandsnews.com/internal/election-2026/bad-weather-delays-voting-in-nassau-as-nation-heads-to-polls/ "Cook Islands News: Bad weather delays voting in Nassau as nation heads to polls"
