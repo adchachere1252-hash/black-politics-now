@@ -51,7 +51,7 @@ function makeGlowTexture() {
   return new THREE.CanvasTexture(canvas);
 }
 
-export default function WorldGlobe({ elections, onElectionSelect }: { elections: WorldElectionPoint[]; onElectionSelect?: (election: WorldElectionPoint) => void }) {
+export default function WorldGlobe({ elections, onElectionSelect, immersive = false }: { elections: WorldElectionPoint[]; onElectionSelect?: (election: WorldElectionPoint) => void; immersive?: boolean }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -235,5 +235,5 @@ export default function WorldGlobe({ elections, onElectionSelect }: { elections:
     };
   }, [elections, onElectionSelect]);
 
-  return <div ref={containerRef} className="aspect-square h-auto w-full sm:aspect-auto sm:h-[440px]" aria-label="Animated luminous Earth globe; select an election beacon to open country details" />;
+  return <div ref={containerRef} className={immersive ? "aspect-square h-auto w-full sm:aspect-auto sm:h-[610px]" : "aspect-square h-auto w-full sm:aspect-auto sm:h-[440px]"} aria-label="Animated luminous Earth globe; select an election beacon to open country details" />;
 }

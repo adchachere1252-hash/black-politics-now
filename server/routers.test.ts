@@ -267,6 +267,25 @@ describe("world elections router", () => {
     }
   });
 
+  it("returns a source-enriched 48-record calendar with current Cook Islands voting status", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const elections = await caller.world.elections() as any[];
+    const cookIslands = elections.find((election) => election.countryCode === "CK");
+
+    expect(elections).toHaveLength(48);
+    const missingIssues = elections.filter((election) => {
+      try {
+        const issues = JSON.parse(election.keyIssues ?? "[]");
+        return !Array.isArray(issues) || issues.length === 0;
+      } catch {
+        return true;
+      }
+    }).map((election) => ({ id: election.id, country: election.country, keyIssues: election.keyIssues }));
+    expect(missingIssues).toEqual([]);
+    expect(cookIslands).toMatchObject({ status: "Voting Today", electionDate: "2026-08-12" });
+    expect(cookIslands.winner).toBeFalsy();
+  });
+
   it("filters the World Elections calendar by country", async () => {
     const caller = appRouter.createCaller(createPublicContext());
     const japan = await caller.world.byCountry({ countryCode: "JP" });
