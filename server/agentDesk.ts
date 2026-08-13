@@ -3,6 +3,7 @@ import {
   agentRecommendations,
   agentRuns,
   agentSettings,
+  agentTasks,
 } from "../drizzle/schema";
 import { getAllCbcMembers, getAllRedistrictingStates } from "./cbcDb";
 import { getDb } from "./db";
@@ -218,10 +219,12 @@ export async function answerReaderQuestion(input: { question: string; history?: 
   };
 }
 
-async function createRun(trigger: "manual" | "admin" | "scheduled", model: string, sourceSnapshot: string) {
+type ResearchMode = "routine" | "election_night";
+
+async function createRun(trigger: "manual" | "admin" | "scheduled", mode: ResearchMode, model: string, sourceSnapshot: string) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  await db.insert(agentRuns).values({ trigger, model, sourceSnapshot });
+  await db.insert(agentRuns).values({ trigger, mode, model, sourceSnapshot });
   const [run] = await db.select().from(agentRuns).orderBy(desc(agentRuns.id)).limit(1);
   if (!run) throw new Error("Unable to create agent run");
   return run;
@@ -259,11 +262,11 @@ const recommendationOutputSchema = {
   },
 };
 
-export async function runResearchDesk(trigger: "manual" | "admin" | "scheduled" = "admin") {
+export async function runResearchDesk(trigger: "manual" | "admin" | "scheduled" = "admin", mode: ResearchMode = "routine") {
   const sourceItems = await collectPlatformSources("platform data quality, election coverage, representation, podcast, news, atlas, world elections");
   const model = await resolveModel();
   const sourceSnapshot = JSON.stringify(sourceItems);
-  const run = await createRun(trigger, model, sourceSnapshot);
+  const run = await createRun(trigger, mode, model, sourceSnapshot);
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
 
@@ -274,7 +277,7 @@ export async function runResearchDesk(trigger: "manual" | "admin" | "scheduled" 
       response_format: recommendationOutputSchema,
       messages: [{
         role: "system",
-        content: "You are the Black Politics Now Autonomous Research Desk. Review only the supplied platform context. Return at most five specific, actionable recommendations that improve data quality, editorial coverage, source monitoring, or product clarity. Evidence must use only supplied source IDs. Do not suggest automatic publishing, election-record changes, public alerts, or any action that bypasses an editor. Do not restate facts as recommendations without an actionable improvement.\n\nPLATFORM CONTEXT:\n" + asPromptSources(sourceItems),
+        content: `You are the Black Politics Now Autonomous Research Desk. Review only the supplied platform context. Return at most ${mode === "election_night" ? "three urgent, high-priority" : "five specific, actionable"} recommendations that improve data quality, editorial coverage, source monitoring, or product clarity. Evidence must use only supplied source IDs. Do not suggest automatic publishing, election-record changes, public alerts, or any action that bypasses an editor. Do not restate facts as recommendations without an actionable improvement.${mode === "election_night" ? " Focus only on verified race-data clarity, source coverage, reporting gaps, and public-facing election-night accuracy." : ""}\n\nPLATFORM CONTEXT:\n` + asPromptSources(sourceItems),
       }],
     });
     const responseContent = response.choices[0]?.message?.content;
@@ -317,10 +320,24 @@ export async function runResearchDesk(trigger: "manual" | "admin" | "scheduled" 
   }
 }
 
-export async function getAgentRecommendations() {
+export type AgentRecommendationFilters = {
+  status?: "pending" | "approved" | "dismissed" | "deferred";
+  category?: "data_quality" | "editorial" | "coverage_gap" | "source_watch" | "product";
+  priority?: "high" | "medium" | "low";
+  owner?: string;
+};
+
+export async function getAgentRecommendations(filters?: AgentRecommendationFilters) {
   const db = await getDb();
   if (!db) return [];
-  return db.select().from(agentRecommendations).orderBy(desc(agentRecommendations.createdAt)).limit(50);
+  const rows = await db.select().from(agentRecommendations).orderBy(desc(agentRecommendations.createdAt)).limit(100);
+  return rows.filter((item) => {
+    if (filters?.status && item.status !== filters.status) return false;
+    if (filters?.category && item.category !== filters.category) return false;
+    if (filters?.priority && item.priority !== filters.priority) return false;
+    if (filters?.owner && (item.assignedTo ?? "") !== filters.owner) return false;
+    return true;
+  });
 }
 
 export async function getAgentRuns() {
@@ -333,6 +350,61 @@ export async function reviewAgentRecommendation(id: number, status: "approved" |
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
   await db.update(agentRecommendations).set({ status, reviewedBy, reviewedAt: new Date() }).where(eq(agentRecommendations.id, id));
+}
+
+export async function assignAgentRecommendation(id: number, owner: string, assignedBy: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(agentRecommendations).set({ assignedTo: owner, assignedBy, assignedAt: new Date() }).where(eq(agentRecommendations.id, id));
+}
+
+export async function approveRecommendationToTask(id: number, owner: string | undefined, reviewedBy: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const [recommendation] = await db.select().from(agentRecommendations).where(eq(agentRecommendations.id, id)).limit(1);
+  if (!recommendation) throw new Error("Recommendation not found");
+  const [existingTask] = await db.select().from(agentTasks).where(eq(agentTasks.recommendationId, id)).limit(1);
+  if (existingTask) return existingTask;
+
+  const taskOwner = owner?.trim() || recommendation.assignedTo || null;
+  await db.update(agentRecommendations).set({
+    status: "approved",
+    reviewedBy,
+    reviewedAt: new Date(),
+    assignedTo: taskOwner,
+    assignedBy: taskOwner ? reviewedBy : recommendation.assignedBy,
+    assignedAt: taskOwner ? new Date() : recommendation.assignedAt,
+  }).where(eq(agentRecommendations.id, id));
+  await db.insert(agentTasks).values({
+    recommendationId: id,
+    title: recommendation.title,
+    description: `${recommendation.proposedAction}\n\nEvidence: ${recommendation.evidence}`,
+    owner: taskOwner,
+    createdBy: reviewedBy,
+  });
+  const [task] = await db.select().from(agentTasks).where(eq(agentTasks.recommendationId, id)).limit(1);
+  if (!task) throw new Error("Task creation failed");
+  return task;
+}
+
+export async function getAgentTasks() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(agentTasks).orderBy(desc(agentTasks.createdAt)).limit(50);
+}
+
+export async function updateAgentTaskStatus(id: number, status: "open" | "in_progress" | "blocked" | "completed") {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(agentTasks).set({ status, completedAt: status === "completed" ? new Date() : null }).where(eq(agentTasks.id, id));
+}
+
+export async function setAgentPriorityMode(enabled: boolean, durationHours: number | undefined) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const expiresAt = enabled ? new Date(Date.now() + (durationHours ?? 8) * 60 * 60 * 1000) : null;
+  await db.update(agentSettings).set({ priorityModeEnabled: enabled, priorityModeExpiresAt: expiresAt }).where(eq(agentSettings.id, 1));
+  return getAgentSettings();
 }
 
 export async function getAgentSettings() {

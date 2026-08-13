@@ -8,7 +8,7 @@ import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferen
 import { fetchWithCache } from "./newsCache";
 import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
 import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
-import { answerReaderQuestion, getAgentRecommendations, getAgentRuns, getAgentSettings, reviewAgentRecommendation, runResearchDesk } from "./agentDesk";
+import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, reviewAgentRecommendation, runResearchDesk, setAgentPriorityMode, updateAgentTaskStatus } from "./agentDesk";
 
 export const appRouter = router({
   system: systemRouter,
@@ -154,9 +154,17 @@ export const appRouter = router({
         history: z.array(z.object({ role: z.enum(["user", "assistant"]), content: z.string().min(1).max(1200) })).max(6).optional(),
       }))
       .mutation(async ({ input }) => answerReaderQuestion(input)),
-    recommendations: adminProcedure.query(async () => getAgentRecommendations()),
+    recommendations: adminProcedure
+      .input(z.object({
+        status: z.enum(["pending", "approved", "dismissed", "deferred"]).optional(),
+        category: z.enum(["data_quality", "editorial", "coverage_gap", "source_watch", "product"]).optional(),
+        priority: z.enum(["high", "medium", "low"]).optional(),
+        owner: z.string().min(1).max(128).optional(),
+      }).optional())
+      .query(async ({ input }) => getAgentRecommendations(input)),
     runs: adminProcedure.query(async () => getAgentRuns()),
     settings: adminProcedure.query(async () => getAgentSettings()),
+    tasks: adminProcedure.query(async () => getAgentTasks()),
     runNow: adminProcedure.mutation(async () => runResearchDesk("admin")),
     reviewRecommendation: adminProcedure
       .input(z.object({ id: z.number(), status: z.enum(["approved", "dismissed", "deferred"]) }))
@@ -164,6 +172,21 @@ export const appRouter = router({
         await reviewAgentRecommendation(input.id, input.status, ctx.user.name ?? "Administrator");
         return { success: true };
       }),
+    assignRecommendation: adminProcedure
+      .input(z.object({ id: z.number(), owner: z.string().min(2).max(128) }))
+      .mutation(async ({ input, ctx }) => {
+        await assignAgentRecommendation(input.id, input.owner, ctx.user.name ?? "Administrator");
+        return { success: true };
+      }),
+    approveToTask: adminProcedure
+      .input(z.object({ id: z.number(), owner: z.string().min(2).max(128).optional() }))
+      .mutation(async ({ input, ctx }) => approveRecommendationToTask(input.id, input.owner, ctx.user.name ?? "Administrator")),
+    updateTaskStatus: adminProcedure
+      .input(z.object({ id: z.number(), status: z.enum(["open", "in_progress", "blocked", "completed"]) }))
+      .mutation(async ({ input }) => { await updateAgentTaskStatus(input.id, input.status); return { success: true }; }),
+    setPriorityMode: adminProcedure
+      .input(z.object({ enabled: z.boolean(), durationHours: z.number().int().min(1).max(24).optional() }))
+      .mutation(async ({ input }) => setAgentPriorityMode(input.enabled, input.durationHours)),
   }),
 });
 

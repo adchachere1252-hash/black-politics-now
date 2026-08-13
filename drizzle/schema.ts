@@ -463,6 +463,9 @@ export const agentSettings = mysqlTable("agent_settings", {
   enabled: boolean("enabled").default(true).notNull(),
   researchIntervalHours: int("research_interval_hours").default(4).notNull(),
   scheduleCronTaskUid: varchar("schedule_cron_task_uid", { length: 65 }),
+  priorityModeEnabled: boolean("priority_mode_enabled").default(false).notNull(),
+  priorityModeExpiresAt: timestamp("priority_mode_expires_at"),
+  priorityScheduleCronTaskUid: varchar("priority_schedule_cron_task_uid", { length: 65 }),
   lastRunAt: timestamp("last_run_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
@@ -478,6 +481,7 @@ export type AgentSettings = typeof agentSettings.$inferSelect;
 export const agentRuns = mysqlTable("agent_runs", {
   id: int("id").autoincrement().primaryKey(),
   trigger: mysqlEnum("trigger", ["manual", "admin", "scheduled"]).notNull(),
+  mode: mysqlEnum("mode", ["routine", "election_night"]).notNull().default("routine"),
   status: mysqlEnum("status", ["running", "success", "failed", "skipped"]).notNull().default("running"),
   model: varchar("model", { length: 64 }).notNull(),
   sourceSnapshot: text("source_snapshot"),
@@ -505,6 +509,9 @@ export const agentRecommendations = mysqlTable("agent_recommendations", {
   proposedAction: text("proposed_action").notNull(),
   evidence: text("evidence").notNull(),
   status: mysqlEnum("status", ["pending", "approved", "dismissed", "deferred"]).notNull().default("pending"),
+  assignedTo: varchar("assigned_to", { length: 128 }),
+  assignedBy: varchar("assigned_by", { length: 128 }),
+  assignedAt: timestamp("assigned_at"),
   reviewedBy: varchar("reviewed_by", { length: 128 }),
   reviewedAt: timestamp("reviewed_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -512,3 +519,23 @@ export const agentRecommendations = mysqlTable("agent_recommendations", {
 });
 
 export type AgentRecommendation = typeof agentRecommendations.$inferSelect;
+
+/**
+ * Human-approved work items created from an Agent Desk recommendation. The
+ * agent cannot create these rows: an administrator must approve the underlying
+ * recommendation first, preserving editorial and election-data control.
+ */
+export const agentTasks = mysqlTable("agent_tasks", {
+  id: int("id").autoincrement().primaryKey(),
+  recommendationId: int("recommendation_id").notNull().unique(),
+  title: varchar("title", { length: 256 }).notNull(),
+  description: text("description").notNull(),
+  owner: varchar("owner", { length: 128 }),
+  status: mysqlEnum("status", ["open", "in_progress", "blocked", "completed"]).notNull().default("open"),
+  createdBy: varchar("created_by", { length: 128 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  completedAt: timestamp("completed_at"),
+});
+
+export type AgentTask = typeof agentTasks.$inferSelect;

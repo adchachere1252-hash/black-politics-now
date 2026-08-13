@@ -1,5 +1,5 @@
 import type { Express, Request, Response } from "express";
-import { eq } from "drizzle-orm";
+import { eq, or } from "drizzle-orm";
 import { agentSettings } from "../drizzle/schema";
 import { getDb } from "./db";
 import { runResearchDesk } from "./agentDesk";
@@ -21,13 +21,27 @@ export function registerAgentScheduleRoute(app: Express) {
       const db = await getDb();
       if (!db) return res.status(503).json({ error: "database-unavailable" });
       const [settings] = await db.select().from(agentSettings)
-        .where(eq(agentSettings.scheduleCronTaskUid, user.taskUid)).limit(1);
+        .where(or(
+          eq(agentSettings.scheduleCronTaskUid, user.taskUid),
+          eq(agentSettings.priorityScheduleCronTaskUid, user.taskUid),
+        )).limit(1);
 
       // A deleted or replaced task may retry after its owning row changes.
       if (!settings) return res.json({ ok: true, skipped: "orphan" });
       if (!settings.enabled) return res.json({ ok: true, skipped: "disabled" });
 
-      const result = await runResearchDesk("scheduled");
+      const isPriorityTask = settings.priorityScheduleCronTaskUid === user.taskUid;
+      if (isPriorityTask) {
+        const expired = !settings.priorityModeExpiresAt || settings.priorityModeExpiresAt.getTime() <= Date.now();
+        if (!settings.priorityModeEnabled || expired) {
+          if (settings.priorityModeEnabled && expired) {
+            await db.update(agentSettings).set({ priorityModeEnabled: false }).where(eq(agentSettings.id, settings.id));
+          }
+          return res.json({ ok: true, skipped: expired ? "priority-expired" : "priority-disabled" });
+        }
+      }
+
+      const result = await runResearchDesk("scheduled", isPriorityTask ? "election_night" : "routine");
       return res.json({ ok: true, ...result });
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unknown Research Desk schedule failure";

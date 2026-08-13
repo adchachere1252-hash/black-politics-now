@@ -1,5 +1,5 @@
-import * as THREE from "three";
 import { useEffect, useRef } from "react";
+import * as THREE from "three";
 
 type WorldElectionPoint = { countryCode: string; status: string };
 
@@ -14,6 +14,8 @@ const COORDINATES: Record<string, [number, number]> = {
   TH: [15, 101], NP: [28, 84], CH: [47, 8], ST: [0, 6], RU: [61, 105], NI: [13, -85],
   PS: [32, 35], GM: [13, -16], SS: [7, 30], GB: [55, -3],
 };
+
+const EARTH_TEXTURE = "/manus-storage/earth-atmosphere-2048_bed8e884.jpg";
 
 const statusColor = (status: string) => {
   if (status === "Voting Today") return 0xf8c95c;
@@ -42,19 +44,22 @@ export default function WorldGlobe({ elections }: { elections: WorldElectionPoin
     camera.position.set(0, 0, 6.2);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
     container.appendChild(renderer.domElement);
 
+    const texture = new THREE.TextureLoader().load(EARTH_TEXTURE);
+    texture.colorSpace = THREE.SRGBColorSpace;
     const earth = new THREE.Mesh(
       new THREE.SphereGeometry(2.15, 48, 48),
-      new THREE.MeshStandardMaterial({ color: 0x12213b, roughness: 0.7, metalness: 0.12, transparent: true, opacity: 0.96 }),
+      new THREE.MeshStandardMaterial({ map: texture, color: 0xffffff, roughness: 0.84, metalness: 0.02, emissive: 0x0a2132, emissiveIntensity: 0.16 }),
     );
     const wire = new THREE.Mesh(
       new THREE.SphereGeometry(2.17, 30, 18),
-      new THREE.MeshBasicMaterial({ color: 0x4a6b9c, wireframe: true, transparent: true, opacity: 0.18 }),
+      new THREE.MeshBasicMaterial({ color: 0xd7f5ff, wireframe: true, transparent: true, opacity: 0.06 }),
     );
     const atmosphere = new THREE.Mesh(
       new THREE.SphereGeometry(2.32, 48, 48),
-      new THREE.MeshBasicMaterial({ color: 0x507bb7, transparent: true, opacity: 0.07, side: THREE.BackSide }),
+      new THREE.MeshBasicMaterial({ color: 0x6fddff, transparent: true, opacity: 0.18, side: THREE.BackSide }),
     );
     const globe = new THREE.Group();
     globe.add(earth, wire, atmosphere);
@@ -79,10 +84,13 @@ export default function WorldGlobe({ elections }: { elections: WorldElectionPoin
     }
     stars.setAttribute("position", new THREE.BufferAttribute(points, 3));
     scene.add(new THREE.Points(stars, new THREE.PointsMaterial({ color: 0xe8eefc, size: 0.025, transparent: true, opacity: 0.7 })));
-    scene.add(new THREE.AmbientLight(0x9fb8df, 1.1));
-    const keyLight = new THREE.DirectionalLight(0xffd58a, 2.4);
+    scene.add(new THREE.HemisphereLight(0xd6f2ff, 0x13233a, 2.1));
+    const keyLight = new THREE.DirectionalLight(0xfff2cf, 3.6);
     keyLight.position.set(4, 3, 5);
     scene.add(keyLight);
+    const rimLight = new THREE.DirectionalLight(0x45bfff, 1.7);
+    rimLight.position.set(-4, 0, -3);
+    scene.add(rimLight);
 
     const resize = () => {
       const { width, height } = container.getBoundingClientRect();
@@ -104,6 +112,13 @@ export default function WorldGlobe({ elections }: { elections: WorldElectionPoin
     return () => {
       cancelAnimationFrame(frame);
       observer.disconnect();
+      texture.dispose();
+      earth.geometry.dispose();
+      (earth.material as THREE.Material).dispose();
+      wire.geometry.dispose();
+      (wire.material as THREE.Material).dispose();
+      atmosphere.geometry.dispose();
+      (atmosphere.material as THREE.Material).dispose();
       renderer.dispose();
       container.removeChild(renderer.domElement);
     };

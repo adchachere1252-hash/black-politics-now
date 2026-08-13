@@ -160,9 +160,21 @@ describe("Autonomous Research Desk router", () => {
     const adminCaller = appRouter.createCaller(createAdminContext());
 
     await expect(publicCaller.agent.recommendations()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(publicCaller.agent.tasks()).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(publicCaller.agent.chat({ question: "hi" })).rejects.toBeDefined();
     await expect(adminCaller.agent.settings()).resolves.toMatchObject({ id: 1, researchIntervalHours: 4 });
-    await expect(adminCaller.agent.recommendations()).resolves.toEqual(expect.any(Array));
+    await expect(adminCaller.agent.recommendations({ status: "pending", priority: "high" })).resolves.toEqual(expect.any(Array));
+    await expect(adminCaller.agent.tasks()).resolves.toEqual(expect.any(Array));
+  });
+
+  it("lets an administrator safely toggle the bounded election-night priority mode", async () => {
+    const adminCaller = appRouter.createCaller(createAdminContext());
+    const active = await adminCaller.agent.setPriorityMode({ enabled: true, durationHours: 1 });
+    expect(active).toMatchObject({ priorityModeEnabled: true });
+    expect(active?.priorityModeExpiresAt).toBeTruthy();
+
+    const disabled = await adminCaller.agent.setPriorityMode({ enabled: false });
+    expect(disabled).toMatchObject({ priorityModeEnabled: false, priorityModeExpiresAt: null });
   });
 });
 
