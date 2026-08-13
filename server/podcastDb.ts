@@ -66,7 +66,7 @@ export async function getEpisodesFormatted() {
     });
     const totalSec = ep.totalDurationSec ?? builtSegments.reduce((acc, s) => acc + (s.durationSec ?? 0), 0);
     return {
-      date: ep.date, day: ep.day ?? "",
+      date: ep.date, day: ep.day ?? "", friendlyDate: ep.friendlyDate ?? "",
       fullEpisodeCdnUrl: ep.fullEpisodeCdnUrl ?? "",
       segmentCount: ep.segmentCount ?? builtSegments.length,
       totalDurationSec: totalSec,

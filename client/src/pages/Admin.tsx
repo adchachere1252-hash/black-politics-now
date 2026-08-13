@@ -13,6 +13,7 @@ export default function AdminPage() {
     const requested = typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("tab");
     return requested === "podcast" || requested === "elections" || requested === "cbc" || requested === "agent" || requested === "audience" ? requested : "overview";
   });
+  const [focusRecommendationId, setFocusRecommendationId] = useState<number | undefined>();
 
   if (loading) return <div className="container py-8"><div className="h-40 bg-muted rounded animate-pulse" /></div>;
 
@@ -62,17 +63,17 @@ export default function AdminPage() {
         ))}
       </div>
 
-      {tab === "overview" && <OverviewTab />}
+      {tab === "overview" && <OverviewTab onReview={(id) => { setFocusRecommendationId(id); setTab("agent"); }} />}
       {tab === "podcast" && <PodcastOpsTab />}
       {tab === "elections" && <ElectionOpsTab />}
       {tab === "cbc" && <CbcOpsTab />}
-      {tab === "agent" && <AgentDeskTab />}
+      {tab === "agent" && <AgentDeskTab focusRecommendationId={focusRecommendationId} />}
       {tab === "audience" && <AudienceTab />}
     </div>
   );
 }
 
-function OverviewTab() {
+function OverviewTab({ onReview }: { onReview: (id: number) => void }) {
   const { data: scoreboard } = trpc.election.scoreboard.useQuery();
   const { data: episodes } = trpc.podcast.getEpisodes.useQuery();
   const { data: senateRaces } = trpc.election.senate.useQuery();
@@ -80,12 +81,20 @@ function OverviewTab() {
   const { data: governors } = trpc.election.governors.useQuery();
   const { data: priorityRecommendations = [] } = trpc.agent.recommendations.useQuery({ status: "pending", priority: "high" });
   const { data: agentSettings } = trpc.agent.settings.useQuery();
+  const { data: agentTasks = [] } = trpc.agent.tasks.useQuery();
+  const [priorityOwner, setPriorityOwner] = useState("all");
 
   // Calculate live polling status
   const liveRaces = (senateRaces as any[] ?? []).filter((r: any) => r.pctReporting > 0).length
     + (houseRaces as any[] ?? []).filter((r: any) => r.pctReporting > 0).length
     + (governors as any[] ?? []).filter((r: any) => r.pctReporting > 0).length;
   const isLive = liveRaces > 0;
+  const ownerOptions = Array.from(new Set((priorityRecommendations as any[]).map((item) => item.assignedTo).filter(Boolean))) as string[];
+  const visiblePriorityRecommendations = (priorityRecommendations as any[]).filter((item) => priorityOwner === "all" || (priorityOwner === "unassigned" ? !item.assignedTo : item.assignedTo === priorityOwner));
+  const now = Date.now();
+  const reminderTasks = (agentTasks as any[]).filter((task) => task.status !== "completed" && task.dueDate).map((task) => ({ ...task, dueAt: new Date(task.dueDate).getTime() })).filter((task) => Number.isFinite(task.dueAt));
+  const overdueTasks = reminderTasks.filter((task) => task.dueAt < now).sort((a, b) => a.dueAt - b.dueAt);
+  const upcomingTasks = reminderTasks.filter((task) => task.dueAt >= now && task.dueAt <= now + 3 * 24 * 60 * 60 * 1000).sort((a, b) => a.dueAt - b.dueAt);
 
   return (
     <div className="space-y-6">
@@ -136,21 +145,28 @@ function OverviewTab() {
       </div>
 
       <div className="glass-card rounded-xl p-5">
+        <div className="flex flex-wrap items-center justify-between gap-2"><div><h3 className="text-sm font-bold uppercase tracking-wider">Task reminders</h3><p className="mt-1 text-xs text-muted-foreground">Open Agent Desk follow-up tasks with due dates.</p></div><div className="flex gap-2 text-xs"><span className="rounded-full bg-red-500/10 px-2 py-1 font-semibold text-red-700 dark:text-red-300">{overdueTasks.length} overdue</span><span className="rounded-full bg-amber-500/10 px-2 py-1 font-semibold text-amber-700 dark:text-amber-300">{upcomingTasks.length} due in 3 days</span></div></div>
+        {[...overdueTasks, ...upcomingTasks].slice(0, 4).map((task) => <div key={task.id} className="mt-3 flex items-center justify-between gap-3 rounded-lg border border-border/70 bg-background/50 px-3 py-2"><div><p className="text-sm font-medium">{task.title}</p><p className="mt-1 text-xs text-muted-foreground">{task.owner ?? "Unassigned"} · due {new Date(task.dueDate).toLocaleDateString()}</p></div><span className={`shrink-0 text-xs font-semibold ${task.dueAt < now ? "text-red-600 dark:text-red-300" : "text-amber-700 dark:text-amber-300"}`}>{task.dueAt < now ? "Overdue" : "Upcoming"}</span></div>)}
+        {reminderTasks.length === 0 && <p className="mt-4 text-sm text-muted-foreground">No open tasks have a due date yet.</p>}
+      </div>
+
+      <div className="glass-card rounded-xl p-5">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div>
             <h3 className="text-sm font-bold uppercase tracking-wider">Election-Night Priority Queue</h3>
             <p className="mt-1 text-xs text-muted-foreground">High-priority, review-only Research Desk recommendations.</p>
           </div>
-          <span className={`rounded-full px-2 py-1 text-xs font-semibold ${agentSettings?.priorityModeEnabled ? "bg-amber-500/15 text-amber-700 dark:text-amber-300" : "bg-muted text-muted-foreground"}`}>{agentSettings?.priorityModeEnabled ? "Priority mode active" : "Routine mode"}</span>
+          <div className="flex items-center gap-2"><select aria-label="Filter priority queue by owner" value={priorityOwner} onChange={(event) => setPriorityOwner(event.target.value)} className="rounded-md border border-border bg-background px-2 py-1.5 text-xs"><option value="all">All owners</option><option value="unassigned">Unassigned</option>{ownerOptions.map((owner) => <option key={owner} value={owner}>{owner}</option>)}</select><span className={`rounded-full px-2 py-1 text-xs font-semibold ${agentSettings?.priorityModeEnabled ? "bg-amber-500/15 text-amber-700 dark:text-amber-300" : "bg-muted text-muted-foreground"}`}>{agentSettings?.priorityModeEnabled ? "Priority mode active" : "Routine mode"}</span></div>
         </div>
-        {(priorityRecommendations as any[]).length === 0 ? (
-          <p className="mt-4 text-sm text-muted-foreground">No high-priority recommendations are awaiting review.</p>
+        {visiblePriorityRecommendations.length === 0 ? (
+          <p className="mt-4 text-sm text-muted-foreground">No high-priority recommendations match this owner filter.</p>
         ) : (
           <div className="mt-4 space-y-2">
-            {(priorityRecommendations as any[]).slice(0, 4).map((item) => (
+            {visiblePriorityRecommendations.slice(0, 4).map((item) => (
               <div key={item.id} className="rounded-lg border border-border/70 bg-background/50 px-3 py-2">
                 <div className="flex items-center justify-between gap-3"><p className="text-sm font-medium">{item.title}</p><span className="shrink-0 text-xs text-muted-foreground">{item.assignedTo ?? "Unassigned"}</span></div>
                 <p className="mt-1 line-clamp-1 text-xs text-muted-foreground">{item.proposedAction}</p>
+                <button onClick={() => onReview(item.id)} className="mt-2 rounded-md bg-primary/10 px-2.5 py-1.5 text-xs font-semibold text-primary">Review now</button>
               </div>
             ))}
           </div>

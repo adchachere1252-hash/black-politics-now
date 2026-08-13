@@ -61,10 +61,10 @@ export default function ArchivePage() {
           {(episodes as any[]).map((ep: any) => (
             <div key={ep.date} className="glass-card rounded-lg p-4 flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium">{ep.day || ep.date}</p>
+                <p className="text-sm font-medium">{ep.friendlyDate || `${ep.day || "Daily Brief"} · ${ep.date}`}</p>
                 <p className="text-xs text-muted-foreground">{ep.segmentCount} topics &middot; {ep.totalDurationLabel}</p>
               </div>
-              <span className="text-xs text-muted-foreground">{ep.date}</span>
+              <span className="text-xs text-muted-foreground">{ep.verificationStatus === "passed" ? "Full audio verified" : "Audio preparation"}</span>
             </div>
           ))}
         </div>

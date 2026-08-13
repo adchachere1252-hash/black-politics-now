@@ -85,6 +85,26 @@ describe("election router", () => {
     }
   });
 
+  it("returns the article-backed Alabama and Michigan representation corrections with usable public statuses", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const profiles = await caller.election.cbc() as any[];
+    const mercer = profiles.find((profile) => profile.member === "Maurice Mercer" && profile.district === "AL-6");
+    const james = profiles.find((profile) => profile.member === "John James" && profile.stateCode === "MI");
+
+    expect(mercer).toMatchObject({
+      status: "advanced_to_general",
+      primaryVotes: 5398,
+      primaryVotePct: "64.20",
+      generalOpponent: "Gary Palmer",
+    });
+    expect(mercer.sourceUrl).toMatch(/^https:\/\//);
+    expect(james).toMatchObject({
+      district: "MI-Gov",
+      status: "advanced_to_general",
+      generalOpponent: "Jocelyn Benson",
+    });
+  });
+
   it("allows an administrator to safely re-save every article-backed election record", async () => {
     const publicCaller = appRouter.createCaller(createPublicContext());
     const adminCaller = appRouter.createCaller(createAdminContext());

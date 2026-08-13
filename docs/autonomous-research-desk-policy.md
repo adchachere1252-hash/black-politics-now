@@ -24,6 +24,10 @@ Only an authenticated administrator can approve, dismiss, or defer a recommendat
 
 ## Recurring research policy
 
-Routine platform reviews use the available `gpt-5-mini` model to summarize current platform data and detect explicit gaps, contradictions, staleness, or coverage opportunities. Runs are planned on a four-hour interval to align with the existing news-refresh rhythm. A stronger model is reserved for a manually requested complex editorial synthesis, not for every recurring run.
+Routine platform reviews use the available `gpt-5-mini` model to summarize current platform data and detect explicit gaps, contradictions, staleness, or coverage opportunities. A four-hour review schedule is active to align with the existing news-refresh rhythm. A stronger model is reserved for a manually requested complex editorial synthesis, not for every recurring run.
 
-The recurring callback is staged as a safe, idempotent operation and will not be activated until the public production route is healthy. Each run records its source snapshot, model, count of recommendations, outcome, and any error for administrative review. The callback accepts only a platform-authenticated scheduled identity and looks up its configuration by the immutable task identifier, never by request-body data.
+The recurring callback is a safe, idempotent operation. Each run records its source snapshot, model, count of recommendations, outcome, and any error for administrative review. The callback accepts only a platform-authenticated scheduled identity and looks up its configuration by the immutable task identifier, never by request-body data. A separate 30-minute callback runs only while Election-Night Priority Mode is enabled; it remains review-only and expires automatically.
+
+## August 13 operational verification
+
+The routine Research Desk run produced five review-only recommendations successfully after its structured-response recovery improvement. The public reader interface also returned a completed, cited Senate-tracker answer using the platform’s 35-race summary. The response included an absolute link to the Election Center and did not make any public mutation.

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CheckCircle2, Clock3, ListTodo, RefreshCw, Sparkles, UserRound, XCircle, Zap } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 
@@ -27,7 +27,7 @@ function label(value: string) {
   return value.replace(/_/g, " ");
 }
 
-export function AgentDeskTab() {
+export function AgentDeskTab({ focusRecommendationId }: { focusRecommendationId?: number }) {
   const utils = trpc.useUtils();
   const [status, setStatus] = useState<(typeof recommendationStatuses)[number]>("pending");
   const [category, setCategory] = useState<(typeof recommendationCategories)[number]>("all");
@@ -63,6 +63,13 @@ export function AgentDeskTab() {
   const priorityMode = trpc.agent.setPriorityMode.useMutation({ onSuccess: invalidateDesk });
   const pending = (recommendations as any[]).filter((item) => item.status === "pending");
   const priorityActive = Boolean(settings?.priorityModeEnabled && settings?.priorityModeExpiresAt && new Date(settings.priorityModeExpiresAt).getTime() > Date.now());
+
+  useEffect(() => {
+    if (!focusRecommendationId) return;
+    setStatus("pending");
+    const timer = window.setTimeout(() => document.getElementById(`agent-recommendation-${focusRecommendationId}`)?.scrollIntoView({ behavior: "smooth", block: "center" }), 160);
+    return () => window.clearTimeout(timer);
+  }, [focusRecommendationId]);
 
   return (
     <div className="space-y-6">
@@ -106,7 +113,7 @@ export function AgentDeskTab() {
               const evidence = parseEvidence(item.evidence);
               const draftOwner = ownerDrafts[item.id] ?? item.assignedTo ?? "";
               const draftDueDate = dueDateDrafts[item.id] ?? "";
-              return <article key={item.id} className="rounded-xl border border-border bg-card p-4">
+              return <article id={`agent-recommendation-${item.id}`} key={item.id} className={`rounded-xl border bg-card p-4 transition-colors ${focusRecommendationId === item.id ? "border-primary ring-2 ring-primary/20" : "border-border"}`}>
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2 text-xs"><span className="rounded bg-primary/10 px-2 py-1 font-semibold text-primary">{label(item.category)}</span><span className="rounded bg-muted px-2 py-1 text-muted-foreground">{item.priority} priority</span><span className="inline-flex items-center gap-1 text-muted-foreground"><Icon size={13} />{item.status}</span>{item.assignedTo && <span className="inline-flex items-center gap-1 text-muted-foreground"><UserRound size={13} />{item.assignedTo}</span>}</div>

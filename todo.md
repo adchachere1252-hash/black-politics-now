@@ -337,6 +337,22 @@
  - [x] Verify and correct any unauthenticated Admin dashboard visibility so all operational content and mutations remain role-gated — Interactive preview showed the expected Admin Access Required gate; an earlier screenshot used an authenticated capture context
 
 ## AI Research Agent & Continuous Improvement
+- [x] Blend the John Lewis/Selma image into the Voting Rights Act background treatment without competing with panel content
+- [x] Expand the homepage election map to fill the middle dashboard column while retaining its controls and state dialogs
+- [x] Audit and confirm autonomous election-day polling, race-call, and recovery behavior
+- [x] Repair the failed Research Desk run and verify a successful review-only recommendation cycle
+- [x] Reconcile Daily Intelligence Brief day-by-day dates and public status presentation with verified audio availability
+- [x] Correct the Michigan Black Representation profile that incorrectly identifies John James as the gubernatorial candidate
+- [x] Remove the redundant Black Representation advanced, runoff/pending, and retiring summary cards from the public tab
+- [x] Perform focused image verification on the Black Representation and U.S. Election Center views
+- [x] Extract and map the supplied Black Politics Now primary-results article to Black Representation platform records
+- [x] Compare article-backed primary outcomes and representation notes against the current Black Representation ledger
+- [x] Apply verified Black Representation corrections with article provenance and rerun data and regression checks
+- [x] Correct Black Representation summary metrics so advanced, runoff, and retiring counts reflect the updated profile ledger
+- [x] Add due-date reminder states to the Admin dashboard for overdue and upcoming Agent Desk tasks
+- [x] Add owner-specific filters to the compact Election-Night Priority queue
+- [x] Add a one-click Review now action from the Overview priority queue to the matching Agent Desk recommendation
+- [x] Diagnose and correct the failed Admin-triggered Agent Desk research run shown in the dashboard
 - [x] Set role-based default owners for editorial and data-quality recommendations
 - [x] Add optional due dates to approved Agent Desk follow-up tasks
 - [x] Add a compact Election-Night Priority queue to the Admin Overview tab

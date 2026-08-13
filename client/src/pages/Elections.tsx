@@ -488,8 +488,8 @@ export default function Elections() {
                           <span className="text-xs text-muted-foreground">{item.district}</span>
                         </div>
                         <div className="flex items-center gap-2 text-xs">
-                          <span className={`px-2 py-0.5 rounded-full font-medium ${item.cbcStatus === "advanced_to_general" ? "bg-green-500/20 text-green-400" : item.cbcStatus === "in_runoff" || item.cbcStatus === "too_close_to_call" ? "bg-amber-500/20 text-amber-400" : item.cbcStatus === "retiring" ? "bg-yellow-500/20 text-yellow-400" : item.cbcStatus === "lost_primary" ? "bg-red-500/20 text-red-400" : "bg-gray-500/20 text-gray-400"}`}>
-                            {formatBlackRepStatus(item.cbcStatus)}
+                          <span className={`px-2 py-0.5 rounded-full font-medium ${item.status === "advanced_to_general" ? "bg-green-500/20 text-green-400" : item.status === "in_runoff" || item.status === "too_close_to_call" ? "bg-amber-500/20 text-amber-400" : item.status === "retiring" ? "bg-yellow-500/20 text-yellow-400" : item.status === "lost_primary" ? "bg-red-500/20 text-red-400" : "bg-gray-500/20 text-gray-400"}`}>
+                            {formatBlackRepStatus(item.status)}
                           </span>
                           {item.primaryResult && <span className="text-muted-foreground">{item.primaryResult}</span>}
                         </div>
@@ -607,14 +607,9 @@ function TabScoreboard({ tab, senateRaces, houseRaces, governors, cbcMembers, bl
     );
   }
   if (tab === "cbc") {
-    const advanced = cbcMembers.filter(m => m.cbcStatus === "advanced_to_general").length;
-    const pending = cbcMembers.filter(m => m.cbcStatus === "in_runoff" || m.cbcStatus === "too_close_to_call").length;
-    const retiring = cbcMembers.filter(m => m.cbcStatus === "retiring").length;
     return (
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
-        <ScoreCard label="Advanced" value={advanced} color="#22c55e" />
-        <ScoreCard label="Runoff / Pending" value={pending} color="#a855f7" />
-        <ScoreCard label="Retiring" value={retiring} color="#f59e0b" />
+      <div className="grid grid-cols-2 gap-2 mb-6">
+        <ScoreCard label="Tracked People" value={cbcMembers.length} color="#a855f7" />
         <ScoreCard label="Article-Backed Races" value={blackRepresentationElections.length} color="#38bdf8" />
       </div>
     );
@@ -792,33 +787,8 @@ function CbcGrid({ members, elections }: { members: any[]; elections: any[] }) {
     too_close_to_call: "Too Close to Call",
   };
 
-  // Summary stats
-  const advanced = members.filter(m => m.cbcStatus === "advanced_to_general").length;
-  const retiring = members.filter(m => m.cbcStatus === "retiring").length;
-  const pending = members.filter(m => m.cbcStatus === "in_runoff" || m.cbcStatus === "too_close_to_call").length;
-
   return (
     <div>
-      {/* Summary bar */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-        <div className="glass-card rounded-lg p-3 text-center">
-          <p className="text-xs text-muted-foreground">Tracked People</p>
-          <p className="text-2xl font-bold text-primary">{members.length}</p>
-        </div>
-        <div className="glass-card rounded-lg p-3 text-center">
-          <p className="text-xs text-muted-foreground">Advanced</p>
-          <p className="text-2xl font-bold text-green-400">{advanced}</p>
-        </div>
-        <div className="glass-card rounded-lg p-3 text-center">
-          <p className="text-xs text-muted-foreground">Retiring</p>
-          <p className="text-2xl font-bold text-amber-400">{retiring}</p>
-        </div>
-        <div className="glass-card rounded-lg p-3 text-center">
-          <p className="text-xs text-muted-foreground">Runoff / Pending</p>
-          <p className="text-2xl font-bold text-purple-400">{pending}</p>
-        </div>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
         {members.map((m) => (
           <div
@@ -832,8 +802,8 @@ function CbcGrid({ members, elections }: { members: any[]; elections: any[] }) {
                 <h3 className="text-sm font-bold">{m.member}</h3>
               </div>
               <div className="flex items-center gap-2">
-                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColors[m.cbcStatus] ?? "bg-muted text-muted-foreground"}`}>
-                  {statusLabels[m.cbcStatus] ?? formatBlackRepStatus(m.cbcStatus)}
+                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColors[m.status] ?? "bg-muted text-muted-foreground"}`}>
+                  {statusLabels[m.status] ?? formatBlackRepStatus(m.status)}
                 </span>
                 <span className="text-xs text-muted-foreground">{expandedId === m.id ? "▲" : "▼"}</span>
               </div>

@@ -85,8 +85,8 @@ export default function Podcast() {
                   {isCurrentEp && isPlaying ? <Pause size={18} /> : <Play size={18} />}
                 </button>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold">{ep.day || ep.date}</p>
-                  <p className="text-xs text-muted-foreground">{ep.date} &middot; {ep.segmentCount} topics &middot; {ep.totalDurationLabel}</p>
+                  <p className="text-sm font-bold">{ep.friendlyDate || `${ep.day || "Daily Brief"} · ${ep.date}`}</p>
+                  <p className="text-xs text-muted-foreground">{ep.segmentCount} topics &middot; {ep.totalDurationLabel}</p>
                   {!hasFullAudio && <p className="mt-1 text-[11px] text-muted-foreground">Audio preparation in progress</p>}
                 </div>
                 <button
