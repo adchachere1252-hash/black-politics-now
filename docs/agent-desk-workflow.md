@@ -10,8 +10,9 @@ The **Autonomous Research Desk** continuously reviews Black Politics Now’s exi
 |---|---|---|
 | Recommendation | Research Desk | Creates a cited, review-only recommendation with a category and priority. |
 | Assignment | Administrator | Assigns a named owner for follow-up without changing any public record. |
+| Default routing | Platform configuration | New editorial recommendations route to the Editorial Desk and data-quality recommendations route to the Data Desk. An administrator may revise either default at any time. |
 | Approval | Administrator | Approves, defers, or dismisses the recommendation. |
-| Task creation | Administrator | Approval creates one private Agent Desk task, carrying the recommendation’s title, proposed action, evidence, and owner. |
+| Task creation | Administrator | Approval creates one private Agent Desk task, carrying the recommendation’s title, proposed action, evidence, owner, and optional due date. |
 | Completion | Assigned owner or administrator | Updates the task status; no publication or election-data mutation occurs automatically. |
 
 ## Election-night priority mode

@@ -230,6 +230,12 @@ async function createRun(trigger: "manual" | "admin" | "scheduled", mode: Resear
   return run;
 }
 
+function defaultOwnerForCategory(category: string, settings: { defaultEditorialOwner?: string | null; defaultDataQualityOwner?: string | null } | undefined) {
+  if (category === "editorial") return settings?.defaultEditorialOwner?.trim() || "Editorial Desk";
+  if (category === "data_quality") return settings?.defaultDataQualityOwner?.trim() || "Data Desk";
+  return null;
+}
+
 const recommendationOutputSchema = {
   type: "json_schema" as const,
   json_schema: {
@@ -269,6 +275,7 @@ export async function runResearchDesk(trigger: "manual" | "admin" | "scheduled" 
   const run = await createRun(trigger, mode, model, sourceSnapshot);
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
+  const [settings] = await db.select().from(agentSettings).where(eq(agentSettings.id, 1)).limit(1);
 
   try {
     const response = await invokeLLM({
@@ -293,17 +300,23 @@ export async function runResearchDesk(trigger: "manual" | "admin" | "scheduled" 
         sourceIds: string[];
       }>;
     };
-    const recommendations = parsed.recommendations.slice(0, 5).map((recommendation) => ({
-      runId: run.id,
-      category: recommendation.category,
-      priority: recommendation.priority,
-      title: recommendation.title.slice(0, 256),
-      summary: recommendation.summary,
-      proposedAction: recommendation.proposedAction,
-      evidence: JSON.stringify(recommendation.sourceIds
-        .map((sourceId) => sourceItems.find((source) => source.id === sourceId))
-        .filter(Boolean)),
-    }));
+    const recommendations = parsed.recommendations.slice(0, 5).map((recommendation) => {
+      const assignedTo = defaultOwnerForCategory(recommendation.category, settings);
+      return {
+        runId: run.id,
+        category: recommendation.category,
+        priority: recommendation.priority,
+        title: recommendation.title.slice(0, 256),
+        summary: recommendation.summary,
+        proposedAction: recommendation.proposedAction,
+        evidence: JSON.stringify(recommendation.sourceIds
+          .map((sourceId) => sourceItems.find((source) => source.id === sourceId))
+          .filter(Boolean)),
+        assignedTo,
+        assignedBy: assignedTo ? "Default routing" : null,
+        assignedAt: assignedTo ? new Date() : null,
+      };
+    });
     if (recommendations.length > 0) await db.insert(agentRecommendations).values(recommendations);
     await db.update(agentRuns).set({
       status: "success",
@@ -358,7 +371,7 @@ export async function assignAgentRecommendation(id: number, owner: string, assig
   await db.update(agentRecommendations).set({ assignedTo: owner, assignedBy, assignedAt: new Date() }).where(eq(agentRecommendations.id, id));
 }
 
-export async function approveRecommendationToTask(id: number, owner: string | undefined, reviewedBy: string) {
+export async function approveRecommendationToTask(id: number, owner: string | undefined, dueDate: string | undefined, reviewedBy: string) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
   const [recommendation] = await db.select().from(agentRecommendations).where(eq(agentRecommendations.id, id)).limit(1);
@@ -367,6 +380,7 @@ export async function approveRecommendationToTask(id: number, owner: string | un
   if (existingTask) return existingTask;
 
   const taskOwner = owner?.trim() || recommendation.assignedTo || null;
+  const taskDueDate = dueDate ? new Date(`${dueDate}T12:00:00Z`) : null;
   await db.update(agentRecommendations).set({
     status: "approved",
     reviewedBy,
@@ -380,6 +394,7 @@ export async function approveRecommendationToTask(id: number, owner: string | un
     title: recommendation.title,
     description: `${recommendation.proposedAction}\n\nEvidence: ${recommendation.evidence}`,
     owner: taskOwner,
+    dueDate: taskDueDate,
     createdBy: reviewedBy,
   });
   const [task] = await db.select().from(agentTasks).where(eq(agentTasks.recommendationId, id)).limit(1);
@@ -393,10 +408,24 @@ export async function getAgentTasks() {
   return db.select().from(agentTasks).orderBy(desc(agentTasks.createdAt)).limit(50);
 }
 
-export async function updateAgentTaskStatus(id: number, status: "open" | "in_progress" | "blocked" | "completed") {
+export async function updateAgentTask(id: number, status: "open" | "in_progress" | "blocked" | "completed", dueDate: string | undefined) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  await db.update(agentTasks).set({ status, completedAt: status === "completed" ? new Date() : null }).where(eq(agentTasks.id, id));
+  await db.update(agentTasks).set({
+    status,
+    dueDate: dueDate ? new Date(`${dueDate}T12:00:00Z`) : null,
+    completedAt: status === "completed" ? new Date() : null,
+  }).where(eq(agentTasks.id, id));
+}
+
+export async function setAgentDefaultOwners(editorialOwner: string, dataQualityOwner: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(agentSettings).set({
+    defaultEditorialOwner: editorialOwner.trim() || "Editorial Desk",
+    defaultDataQualityOwner: dataQualityOwner.trim() || "Data Desk",
+  }).where(eq(agentSettings.id, 1));
+  return getAgentSettings();
 }
 
 export async function setAgentPriorityMode(enabled: boolean, durationHours: number | undefined) {

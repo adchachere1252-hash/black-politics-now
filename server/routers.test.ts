@@ -161,8 +161,10 @@ describe("Autonomous Research Desk router", () => {
 
     await expect(publicCaller.agent.recommendations()).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(publicCaller.agent.tasks()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(publicCaller.agent.setDefaultOwners({ editorialOwner: "Editorial Desk", dataQualityOwner: "Data Desk" })).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(publicCaller.agent.updateTask({ id: 1, status: "open" })).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(publicCaller.agent.chat({ question: "hi" })).rejects.toBeDefined();
-    await expect(adminCaller.agent.settings()).resolves.toMatchObject({ id: 1, researchIntervalHours: 4 });
+    await expect(adminCaller.agent.settings()).resolves.toMatchObject({ id: 1, researchIntervalHours: 4, defaultEditorialOwner: "Editorial Desk", defaultDataQualityOwner: "Data Desk" });
     await expect(adminCaller.agent.recommendations({ status: "pending", priority: "high" })).resolves.toEqual(expect.any(Array));
     await expect(adminCaller.agent.tasks()).resolves.toEqual(expect.any(Array));
   });

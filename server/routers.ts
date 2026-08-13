@@ -8,7 +8,7 @@ import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferen
 import { fetchWithCache } from "./newsCache";
 import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
 import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
-import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, reviewAgentRecommendation, runResearchDesk, setAgentPriorityMode, updateAgentTaskStatus } from "./agentDesk";
+import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, reviewAgentRecommendation, runResearchDesk, setAgentDefaultOwners, setAgentPriorityMode, updateAgentTask } from "./agentDesk";
 
 export const appRouter = router({
   system: systemRouter,
@@ -179,11 +179,14 @@ export const appRouter = router({
         return { success: true };
       }),
     approveToTask: adminProcedure
-      .input(z.object({ id: z.number(), owner: z.string().min(2).max(128).optional() }))
-      .mutation(async ({ input, ctx }) => approveRecommendationToTask(input.id, input.owner, ctx.user.name ?? "Administrator")),
-    updateTaskStatus: adminProcedure
-      .input(z.object({ id: z.number(), status: z.enum(["open", "in_progress", "blocked", "completed"]) }))
-      .mutation(async ({ input }) => { await updateAgentTaskStatus(input.id, input.status); return { success: true }; }),
+      .input(z.object({ id: z.number(), owner: z.string().min(2).max(128).optional(), dueDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional() }))
+      .mutation(async ({ input, ctx }) => approveRecommendationToTask(input.id, input.owner, input.dueDate, ctx.user.name ?? "Administrator")),
+    updateTask: adminProcedure
+      .input(z.object({ id: z.number(), status: z.enum(["open", "in_progress", "blocked", "completed"]), dueDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional() }))
+      .mutation(async ({ input }) => { await updateAgentTask(input.id, input.status, input.dueDate); return { success: true }; }),
+    setDefaultOwners: adminProcedure
+      .input(z.object({ editorialOwner: z.string().min(2).max(128), dataQualityOwner: z.string().min(2).max(128) }))
+      .mutation(async ({ input }) => setAgentDefaultOwners(input.editorialOwner, input.dataQualityOwner)),
     setPriorityMode: adminProcedure
       .input(z.object({ enabled: z.boolean(), durationHours: z.number().int().min(1).max(24).optional() }))
       .mutation(async ({ input }) => setAgentPriorityMode(input.enabled, input.durationHours)),

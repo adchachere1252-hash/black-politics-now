@@ -78,6 +78,8 @@ function OverviewTab() {
   const { data: senateRaces } = trpc.election.senate.useQuery();
   const { data: houseRaces } = trpc.election.house.useQuery();
   const { data: governors } = trpc.election.governors.useQuery();
+  const { data: priorityRecommendations = [] } = trpc.agent.recommendations.useQuery({ status: "pending", priority: "high" });
+  const { data: agentSettings } = trpc.agent.settings.useQuery();
 
   // Calculate live polling status
   const liveRaces = (senateRaces as any[] ?? []).filter((r: any) => r.pctReporting > 0).length
@@ -131,6 +133,28 @@ function OverviewTab() {
           <p><strong>Data Source:</strong> DDHQ Public API (same feed as Fox News/Newsweek)</p>
           <p><strong>To start live polling:</strong> SSH → <code className="bg-muted px-1 rounded">cd /home/ubuntu/bpn-automation && node scripts/election-engine.mjs poll</code></p>
         </div>
+      </div>
+
+      <div className="glass-card rounded-xl p-5">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h3 className="text-sm font-bold uppercase tracking-wider">Election-Night Priority Queue</h3>
+            <p className="mt-1 text-xs text-muted-foreground">High-priority, review-only Research Desk recommendations.</p>
+          </div>
+          <span className={`rounded-full px-2 py-1 text-xs font-semibold ${agentSettings?.priorityModeEnabled ? "bg-amber-500/15 text-amber-700 dark:text-amber-300" : "bg-muted text-muted-foreground"}`}>{agentSettings?.priorityModeEnabled ? "Priority mode active" : "Routine mode"}</span>
+        </div>
+        {(priorityRecommendations as any[]).length === 0 ? (
+          <p className="mt-4 text-sm text-muted-foreground">No high-priority recommendations are awaiting review.</p>
+        ) : (
+          <div className="mt-4 space-y-2">
+            {(priorityRecommendations as any[]).slice(0, 4).map((item) => (
+              <div key={item.id} className="rounded-lg border border-border/70 bg-background/50 px-3 py-2">
+                <div className="flex items-center justify-between gap-3"><p className="text-sm font-medium">{item.title}</p><span className="shrink-0 text-xs text-muted-foreground">{item.assignedTo ?? "Unassigned"}</span></div>
+                <p className="mt-1 line-clamp-1 text-xs text-muted-foreground">{item.proposedAction}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

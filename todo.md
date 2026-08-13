@@ -337,6 +337,10 @@
  - [x] Verify and correct any unauthenticated Admin dashboard visibility so all operational content and mutations remain role-gated — Interactive preview showed the expected Admin Access Required gate; an earlier screenshot used an authenticated capture context
 
 ## AI Research Agent & Continuous Improvement
+- [x] Set role-based default owners for editorial and data-quality recommendations
+- [x] Add optional due dates to approved Agent Desk follow-up tasks
+- [x] Add a compact Election-Night Priority queue to the Admin Overview tab
+- [x] Remove visible globe grid lines while retaining detailed Earth geography and election markers
 - [x] Brighten and correct the mobile World Elections globe so it is recognizable as Earth in both themes
 - [x] Make the mobile World Elections Earth screen-filling with clearer geographic detail while preserving readable election markers
 - [x] Add Agent Desk recommendation filters for status, category, priority, and owner

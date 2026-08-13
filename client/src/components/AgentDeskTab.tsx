@@ -34,6 +34,9 @@ export function AgentDeskTab() {
   const [priority, setPriority] = useState<(typeof recommendationPriorities)[number]>("all");
   const [owner, setOwner] = useState("");
   const [ownerDrafts, setOwnerDrafts] = useState<Record<number, string>>({});
+  const [dueDateDrafts, setDueDateDrafts] = useState<Record<number, string>>({});
+  const [editorialOwner, setEditorialOwner] = useState("");
+  const [dataQualityOwner, setDataQualityOwner] = useState("");
   const [priorityHours, setPriorityHours] = useState("8");
   const filters = useMemo(() => ({
     ...(status !== "all" ? { status } : {}),
@@ -55,7 +58,8 @@ export function AgentDeskTab() {
   const review = trpc.agent.reviewRecommendation.useMutation({ onSuccess: invalidateDesk });
   const assign = trpc.agent.assignRecommendation.useMutation({ onSuccess: invalidateDesk });
   const approveToTask = trpc.agent.approveToTask.useMutation({ onSuccess: invalidateDesk });
-  const updateTaskStatus = trpc.agent.updateTaskStatus.useMutation({ onSuccess: invalidateDesk });
+  const updateTask = trpc.agent.updateTask.useMutation({ onSuccess: invalidateDesk });
+  const setDefaultOwners = trpc.agent.setDefaultOwners.useMutation({ onSuccess: invalidateDesk });
   const priorityMode = trpc.agent.setPriorityMode.useMutation({ onSuccess: invalidateDesk });
   const pending = (recommendations as any[]).filter((item) => item.status === "pending");
   const priorityActive = Boolean(settings?.priorityModeEnabled && settings?.priorityModeExpiresAt && new Date(settings.priorityModeExpiresAt).getTime() > Date.now());
@@ -76,6 +80,11 @@ export function AgentDeskTab() {
           </button>
         </div>
         {runNow.error && <p className="mt-3 text-sm text-destructive">The run did not complete. No public content or election data was changed.</p>}
+        <div className="mt-4 grid gap-2 border-t border-primary/15 pt-4 sm:grid-cols-[1fr_1fr_auto]">
+          <input value={editorialOwner || settings?.defaultEditorialOwner || ""} onChange={(event) => setEditorialOwner(event.target.value)} placeholder="Editorial default owner" className="rounded-md border border-border bg-background px-3 py-2 text-xs" />
+          <input value={dataQualityOwner || settings?.defaultDataQualityOwner || ""} onChange={(event) => setDataQualityOwner(event.target.value)} placeholder="Data-quality default owner" className="rounded-md border border-border bg-background px-3 py-2 text-xs" />
+          <button onClick={() => setDefaultOwners.mutate({ editorialOwner: editorialOwner || settings?.defaultEditorialOwner || "Editorial Desk", dataQualityOwner: dataQualityOwner || settings?.defaultDataQualityOwner || "Data Desk" })} disabled={setDefaultOwners.isPending} className="rounded-md bg-muted px-3 py-2 text-xs font-semibold text-muted-foreground">{setDefaultOwners.isPending ? "Saving…" : "Save defaults"}</button>
+        </div>
       </section>
 
       <section className={`rounded-xl border p-5 ${priorityActive ? "border-amber-500/45 bg-amber-500/10" : "border-border bg-card"}`}>
@@ -96,6 +105,7 @@ export function AgentDeskTab() {
               const Icon = statusIcon[item.status as keyof typeof statusIcon] ?? Clock3;
               const evidence = parseEvidence(item.evidence);
               const draftOwner = ownerDrafts[item.id] ?? item.assignedTo ?? "";
+              const draftDueDate = dueDateDrafts[item.id] ?? "";
               return <article key={item.id} className="rounded-xl border border-border bg-card p-4">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div className="min-w-0">
@@ -103,7 +113,7 @@ export function AgentDeskTab() {
                     <h4 className="mt-2 font-semibold">{item.title}</h4><p className="mt-1 text-sm leading-6 text-muted-foreground">{item.summary}</p><p className="mt-2 rounded-lg bg-muted/60 p-3 text-sm"><strong>Suggested next step:</strong> {item.proposedAction}</p>
                     {evidence.length > 0 && <div className="mt-2 text-xs text-muted-foreground">Evidence: {evidence.slice(0, 4).map((source: any, index: number) => <a key={source.id ?? index} href={source.url} target="_blank" rel="noreferrer" className="mr-2 text-primary underline underline-offset-2">{source.title}</a>)}</div>}
                   </div>
-                  {item.status === "pending" && <div className="flex w-full shrink-0 flex-col gap-2 sm:w-52"><div className="flex gap-1"><input value={draftOwner} onChange={(event) => setOwnerDrafts((current) => ({ ...current, [item.id]: event.target.value }))} placeholder="Assign owner" className="min-w-0 flex-1 rounded-md border border-border bg-background px-2 py-1.5 text-xs" /><button onClick={() => draftOwner.trim() && assign.mutate({ id: item.id, owner: draftOwner.trim() })} disabled={!draftOwner.trim() || assign.isPending} className="rounded-md bg-muted px-2 py-1.5 text-xs font-medium text-muted-foreground">Assign</button></div><button onClick={() => approveToTask.mutate({ id: item.id, ...(draftOwner.trim() ? { owner: draftOwner.trim() } : {}) })} disabled={approveToTask.isPending} className="inline-flex items-center justify-center gap-1 rounded-md bg-emerald-500/15 px-3 py-1.5 text-xs font-semibold text-emerald-700 dark:text-emerald-300"><ListTodo size={13} />Approve & task</button><div className="flex gap-2"><button onClick={() => review.mutate({ id: item.id, status: "deferred" })} className="flex-1 rounded-md bg-muted px-2 py-1.5 text-xs font-semibold text-muted-foreground">Defer</button><button onClick={() => review.mutate({ id: item.id, status: "dismissed" })} className="flex-1 rounded-md bg-red-500/10 px-2 py-1.5 text-xs font-semibold text-red-700 dark:text-red-300">Dismiss</button></div></div>}
+                  {item.status === "pending" && <div className="flex w-full shrink-0 flex-col gap-2 sm:w-52"><div className="flex gap-1"><input value={draftOwner} onChange={(event) => setOwnerDrafts((current) => ({ ...current, [item.id]: event.target.value }))} placeholder="Assign owner" className="min-w-0 flex-1 rounded-md border border-border bg-background px-2 py-1.5 text-xs" /><button onClick={() => draftOwner.trim() && assign.mutate({ id: item.id, owner: draftOwner.trim() })} disabled={!draftOwner.trim() || assign.isPending} className="rounded-md bg-muted px-2 py-1.5 text-xs font-medium text-muted-foreground">Assign</button></div><input type="date" aria-label="Task due date" value={draftDueDate} onChange={(event) => setDueDateDrafts((current) => ({ ...current, [item.id]: event.target.value }))} className="rounded-md border border-border bg-background px-2 py-1.5 text-xs" /><button onClick={() => approveToTask.mutate({ id: item.id, ...(draftOwner.trim() ? { owner: draftOwner.trim() } : {}), ...(draftDueDate ? { dueDate: draftDueDate } : {}) })} disabled={approveToTask.isPending} className="inline-flex items-center justify-center gap-1 rounded-md bg-emerald-500/15 px-3 py-1.5 text-xs font-semibold text-emerald-700 dark:text-emerald-300"><ListTodo size={13} />Approve & task</button><div className="flex gap-2"><button onClick={() => review.mutate({ id: item.id, status: "deferred" })} className="flex-1 rounded-md bg-muted px-2 py-1.5 text-xs font-semibold text-muted-foreground">Defer</button><button onClick={() => review.mutate({ id: item.id, status: "dismissed" })} className="flex-1 rounded-md bg-red-500/10 px-2 py-1.5 text-xs font-semibold text-red-700 dark:text-red-300">Dismiss</button></div></div>}
                 </div>
               </article>;
             })}
@@ -111,7 +121,7 @@ export function AgentDeskTab() {
         )}
       </section>
 
-      <section><h3 className="mb-3 font-bold">Approved follow-up tasks</h3><div className="space-y-2">{(tasks as any[]).slice(0, 8).map((task) => <div key={task.id} className="flex flex-col gap-3 rounded-lg border border-border px-4 py-3 text-sm sm:flex-row sm:items-center sm:justify-between"><div><div className="flex flex-wrap gap-2"><span className="font-medium">{task.title}</span>{task.owner && <span className="text-muted-foreground">· {task.owner}</span>}</div><p className="mt-1 line-clamp-1 text-xs text-muted-foreground">{task.description}</p></div><select value={task.status} onChange={(event) => updateTaskStatus.mutate({ id: task.id, status: event.target.value as typeof taskStatuses[number] })} className="rounded-md border border-border bg-background px-2 py-1 text-xs">{taskStatuses.map((item) => <option key={item} value={item}>{label(item)}</option>)}</select></div>)}{(tasks as any[]).length === 0 && <p className="text-sm text-muted-foreground">Approved recommendations will appear here as private follow-up tasks.</p>}</div></section>
+      <section><h3 className="mb-3 font-bold">Approved follow-up tasks</h3><div className="space-y-2">{(tasks as any[]).slice(0, 8).map((task) => { const taskDueDate = task.dueDate ? new Date(task.dueDate).toISOString().slice(0, 10) : ""; return <div key={task.id} className="flex flex-col gap-3 rounded-lg border border-border px-4 py-3 text-sm sm:flex-row sm:items-center sm:justify-between"><div><div className="flex flex-wrap gap-2"><span className="font-medium">{task.title}</span>{task.owner && <span className="text-muted-foreground">· {task.owner}</span>}</div><p className="mt-1 line-clamp-1 text-xs text-muted-foreground">{task.description}</p></div><div className="flex gap-2"><input type="date" aria-label="Update task due date" defaultValue={taskDueDate} onBlur={(event) => { if (event.target.value !== taskDueDate) updateTask.mutate({ id: task.id, status: task.status as typeof taskStatuses[number], ...(event.target.value ? { dueDate: event.target.value } : {}) }); }} className="rounded-md border border-border bg-background px-2 py-1 text-xs" /><select value={task.status} onChange={(event) => updateTask.mutate({ id: task.id, status: event.target.value as typeof taskStatuses[number], ...(taskDueDate ? { dueDate: taskDueDate } : {}) })} className="rounded-md border border-border bg-background px-2 py-1 text-xs">{taskStatuses.map((item) => <option key={item} value={item}>{label(item)}</option>)}</select></div></div>; })}{(tasks as any[]).length === 0 && <p className="text-sm text-muted-foreground">Approved recommendations will appear here as private follow-up tasks.</p>}</div></section>
 
       <section><h3 className="mb-3 font-bold">Recent research runs</h3><div className="space-y-2">{(runs as any[]).slice(0, 6).map((run) => <div key={run.id} className="flex items-center justify-between rounded-lg border border-border px-4 py-3 text-sm"><div><span className="font-medium capitalize">{run.trigger}</span><span className="ml-2 text-muted-foreground">{label(run.mode ?? "routine")} · {run.status} · {run.recommendationCount} recommendations</span></div><span className="text-xs text-muted-foreground">{run.startedAt ? new Date(run.startedAt).toLocaleString() : ""}</span></div>)}{(runs as any[]).length === 0 && <p className="text-sm text-muted-foreground">No research run is recorded yet.</p>}</div></section>
     </div>

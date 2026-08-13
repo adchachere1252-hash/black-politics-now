@@ -57,16 +57,12 @@ export default function WorldGlobe({ elections }: { elections: WorldElectionPoin
       new THREE.SphereGeometry(2.15, 64, 64),
       new THREE.MeshStandardMaterial({ map: texture, color: 0xffffff, roughness: 0.8, metalness: 0.01, emissive: 0x143248, emissiveIntensity: 0.28 }),
     );
-    const wire = new THREE.Mesh(
-      new THREE.SphereGeometry(2.17, 30, 18),
-      new THREE.MeshBasicMaterial({ color: 0xd7f5ff, wireframe: true, transparent: true, opacity: 0.028 }),
-    );
     const atmosphere = new THREE.Mesh(
       new THREE.SphereGeometry(2.32, 48, 48),
       new THREE.MeshBasicMaterial({ color: 0x73dcff, transparent: true, opacity: 0.24, side: THREE.BackSide }),
     );
     const globe = new THREE.Group();
-    globe.add(earth, wire, atmosphere);
+    globe.add(earth, atmosphere);
     scene.add(globe);
 
     let borders: THREE.LineSegments | null = null;
@@ -151,8 +147,6 @@ export default function WorldGlobe({ elections }: { elections: WorldElectionPoin
       texture.dispose();
       earth.geometry.dispose();
       (earth.material as THREE.Material).dispose();
-      wire.geometry.dispose();
-      (wire.material as THREE.Material).dispose();
       atmosphere.geometry.dispose();
       (atmosphere.material as THREE.Material).dispose();
       borders?.geometry.dispose();
