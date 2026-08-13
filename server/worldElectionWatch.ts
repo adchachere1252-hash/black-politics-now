@@ -31,7 +31,7 @@ export async function getCookIslandsWatch() {
   if (!db) return null;
   const [watch] = await db.select().from(worldElectionWatches)
     .innerJoin(worldElections, eq(worldElectionWatches.worldElectionId, worldElections.id))
-    .where(eq(worldElections.countryCode, "COK"))
+    .where(eq(worldElections.countryCode, "CK"))
     .orderBy(desc(worldElectionWatches.id))
     .limit(1);
   return watch ?? null;
