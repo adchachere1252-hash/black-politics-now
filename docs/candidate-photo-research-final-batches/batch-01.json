@@ -1,0 +1,222 @@
+[
+  {
+    "collection": "House",
+    "name": "Chris Jones",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "C. Gegen",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "P. Delancy",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Shawn Harris",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Ellie Gilbreath",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Kelly Thompson",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Joshua Cox",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Mary Allen",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "John Williams",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Dan Schwartz",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "John Olszewski",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Christian Vukasovich",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "William Lawrence",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Michael Chiaradio",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Jeffrey Hulum",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Chris Backemeyer",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Allison Ziogas",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Diana Kastenbaum",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://dianaforny24.com/",
+    "priorDirectImageUrl": "https://dianaforny24.com/",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "fetch failed"
+  },
+  {
+    "collection": "House",
+    "name": "Jerrad Christian",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.localcandidates.org/politicians/jerrad-christian/about/c5721381-e1c2-4bd0-9ba4-c7a1175c7f6d",
+    "priorDirectImageUrl": "https://www.localcandidates.org/politicians/jerrad-christian/about/c5721381-e1c2-4bd0-9ba4-c7a1175c7f6d",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "http_429"
+  },
+  {
+    "collection": "House",
+    "name": "Nicole Gronli",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.nikkigforsd.com/",
+    "priorDirectImageUrl": "https://www.nikkigforsd.com/images/nikki.jpg",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Robert Wittman",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.congress.gov/member/robert-wittman/W000804",
+    "priorDirectImageUrl": "https://bioguide.congress.gov/bioguide/photo/W/W000804.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "source_page_or_image_unavailable"
+  },
+  {
+    "collection": "House",
+    "name": "Ace Parsi",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.aceforcongress.com/",
+    "priorDirectImageUrl": "https://www.aceforcongress.com/images/ace.jpg",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Rebecca Cooke",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://cookeforwisconsin.com/",
+    "priorDirectImageUrl": "https://cookeforwisconsin.com/images/rebecca.jpg",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Andrew Beck",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://pbswisconsin.org/candidate/andrew-beck/",
+    "priorDirectImageUrl": "https://pbswisconsin.org/wp-content/uploads/andrew-beck.jpg",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "http_403"
+  },
+  {
+    "collection": "House",
+    "name": "Eric Jones",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Shane Lewis",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Bob Smith",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Christy Peterson",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://christyforamerica.us/",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Jillian Gilchrest",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://voteforjillian.com/",
+    "priorDirectImageUrl": "https://content.app-sources.com/s/330771068128922441/uploads/JILLIAN/jillian-gilchrest-01-6044381.jpg?format=webp",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "source_page_or_image_unavailable"
+  },
+  {
+    "collection": "House",
+    "name": "Jim Kingston",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/James_Kingston_(Georgia)",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  }
+]

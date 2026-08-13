@@ -1,0 +1,274 @@
+[
+  {
+    "collection": "House",
+    "name": "Mike Kirchner",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Barbara Kahl",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Barbara_Kahl",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Patti Adair",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Patti_Adair",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Jessica Arriaga",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Jessica_Arriaga",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Aurora Stuski",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Aurora_Stuski",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Nick Manganaro",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Nick_Manganaro",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Marty Young",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Marty_Young",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "James Hayes",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/James_Hayes_(Pennsylvania)",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Tony Guy",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Tony_Guy",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Vincent Dixie",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://wapp.capitol.tn.gov/apps/LegislatorInfo/Member?district=H54&ga=114",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Robert Murray",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Philip Harding",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Philip_Harding",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Julie Perry",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Julie_Perry",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Arthur Purves",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.votepurves.org/",
+    "priorDirectImageUrl": "https://www.votepurves.org/images/logo.png",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Bryce Nickel",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Devin Hermanson",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Leon Lawson",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Kshama Sawant",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Kshama_Sawant",
+    "priorDirectImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Kshama_Sawant_%28cropped%29.jpg/800px-Kshama_Sawant_%28cropped%29.jpg",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "http_400"
+  },
+  {
+    "collection": "House",
+    "name": "Kurtis Engle",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Scott Fitzgerald",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "http://fitzgerald.house.gov/about",
+    "priorDirectImageUrl": "https://fitzgerald.house.gov/sites/evo-subsites/fitzgerald.house.gov/files/evo-image-placeholder.png",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Governor",
+    "name": "Cindy Holscher",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Cindy_Holscher",
+    "priorDirectImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Cindy_Holscher_official_portrait.jpg/800px-Cindy_Holscher_official_portrait.jpg",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "http_400"
+  },
+  {
+    "collection": "Governor",
+    "name": "Jermaine Johnson",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.scstatehouse.gov/member.php?code=0943181705",
+    "priorDirectImageUrl": "https://www.scstatehouse.gov/member_photos/0943181705.jpg",
+    "priorSourceType": "official_legislative",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Governor",
+    "name": "Sarah Godlewski",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://sos.wi.gov/Pages/About.aspx",
+    "priorDirectImageUrl": "https://sos.wi.gov/PublishingImages/SarahGodlewski.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Governor",
+    "name": "Kenneth Casner",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Ken_Casner",
+    "priorDirectImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Ken_Casner.jpg/800px-Ken_Casner.jpg",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "http_400"
+  },
+  {
+    "collection": "Governor",
+    "name": "Ryan Fazio",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ryanfazio.com/",
+    "priorDirectImageUrl": "https://ryanfazio.com/favicon.ico",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Governor",
+    "name": "Ty Masterson",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.kslegislature.gov/b2025_26/legislators/sen_masterson_ty_1/",
+    "priorDirectImageUrl": "https://www.kslegislature.gov/b2025_26/images/legislators/sen_masterson_ty_1.jpg",
+    "priorSourceType": "official_legislative",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Governor",
+    "name": "Lisa Demuth",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.house.mn.gov/members/profile/15473",
+    "priorDirectImageUrl": "https://www.house.mn.gov/hinfo/memberimg93/15473.jpg",
+    "priorSourceType": "official_legislative",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Governor",
+    "name": "Alan Wilson",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.scag.gov/about-the-office/attorney-general-alan-wilson/",
+    "priorDirectImageUrl": "https://www.scag.gov/wp-content/uploads/2019/12/Alan-Wilson-Official-Photo.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Governor",
+    "name": "David Varnam",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Governor",
+    "name": "Eric Barlow",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://wyoleg.gov/Legislators/2023/Senate/Barlow",
+    "priorDirectImageUrl": "https://wyoleg.gov/Legislators/2023/Senate/Barlow.jpg",
+    "priorSourceType": "official_legislative",
+    "validationFailure": "http_404"
+  }
+]

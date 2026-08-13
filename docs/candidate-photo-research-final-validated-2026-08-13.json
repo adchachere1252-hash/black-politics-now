@@ -1,0 +1,2025 @@
+{
+  "totalRows": 138,
+  "researchVerified": 53,
+  "validatedPortraits": 43,
+  "conflictFreePortraits": 41,
+  "validationFailures": [
+    {
+      "collection": "House",
+      "candidate_name": "Adriel Lam",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Adriel_Lam",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Profile-2026_20260704_222540_30891_1.jpg",
+      "source_type": "reputable_organization",
+      "source_title": "Adriel Lam - Ballotpedia",
+      "verification_note": "Verified via Ballotpedia profile and official candidate portrait image.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": false,
+        "reason": "fetch failed"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Profile-2026_20260704_222540_30891_1.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": false
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Ceretta Smith",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Ceretta_Smith",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Ceretta_Smith.jpeg",
+      "source_type": "reputable_organization",
+      "source_title": "Ceretta Smith - Ballotpedia",
+      "verification_note": "Verified via Ballotpedia profile and official candidate portrait image.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": false,
+        "reason": "fetch failed"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Ceretta_Smith.jpeg",
+      "image_origin": "research_direct_url",
+      "integrationReady": false
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Maura Keller",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Maura_Keller",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Maura_Keller.jpg",
+      "source_type": "reputable_organization",
+      "source_title": "Maura Keller - Ballotpedia",
+      "verification_note": "Verified via Ballotpedia profile and official candidate portrait image.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": false,
+        "reason": "fetch failed"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Maura_Keller.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": false
+    },
+    {
+      "collection": "House",
+      "candidate_name": "George Austin",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/George_Austin",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/George_austin_26_2026-07-06_155555.png",
+      "source_type": "reputable_organization",
+      "source_title": "George Austin - Ballotpedia",
+      "verification_note": "Verified via Ballotpedia profile and official candidate portrait image.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/png"
+      },
+      "page": {
+        "valid": false,
+        "reason": "fetch failed"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/George_austin_26_2026-07-06_155555.png",
+      "image_origin": "research_direct_url",
+      "integrationReady": false
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Tony Kozycki",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Tony_Kozycki",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Tony-Kozycki-Approved-Headshot_20260701_190831_30771_1.jpeg",
+      "source_type": "reputable_organization",
+      "source_title": "Tony Kozycki - Ballotpedia",
+      "verification_note": "Verified via Ballotpedia profile and official candidate portrait image.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": false,
+        "reason": "fetch failed"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Tony-Kozycki-Approved-Headshot_20260701_190831_30771_1.jpeg",
+      "image_origin": "research_direct_url",
+      "integrationReady": false
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Patti Adair",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Patti_Adair",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/Patti_Adair_20260513_205324_1.jpg",
+      "source_type": "licensed_editorial",
+      "source_title": "Ballotpedia - Patti Adair",
+      "verification_note": "Verified official candidate portrait from Ballotpedia infobox.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": false,
+        "reason": "fetch failed"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/Patti_Adair_20260513_205324_1.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": false
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Barbara Kahl",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Barbara_Kahl",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/1024x1024_20260427_050324_16255.png",
+      "source_type": "licensed_editorial",
+      "source_title": "Ballotpedia - Barbara Kahl",
+      "verification_note": "Verified official candidate portrait from Ballotpedia infobox.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/png"
+      },
+      "page": {
+        "valid": false,
+        "reason": "fetch failed"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/1024x1024_20260427_050324_16255.png",
+      "image_origin": "research_direct_url",
+      "integrationReady": false
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Jessica Arriaga",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Jessica_Arriaga",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/Jessica_Arriaga_20260321_022803.png",
+      "source_type": "licensed_editorial",
+      "source_title": "Ballotpedia - Jessica Arriaga",
+      "verification_note": "Verified official candidate portrait from Ballotpedia infobox.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/png"
+      },
+      "page": {
+        "valid": false,
+        "reason": "fetch failed"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/Jessica_Arriaga_20260321_022803.png",
+      "image_origin": "research_direct_url",
+      "integrationReady": false
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Robert Wittman",
+      "status": "verified",
+      "portrait_page_url": "https://www.congress.gov/member/robert-wittman/W000804",
+      "direct_image_url": "https://bioguide.congress.gov/bioguide/photo/W/W000804.jpg",
+      "source_type": "government_elected_office",
+      "source_title": "Congress.gov Bioguide - Official Congressional Portrait",
+      "verification_note": "Verified via official Congress.gov bioguide image URL with 200 OK status.",
+      "image": {
+        "valid": true,
+        "status": 206,
+        "contentType": "image/jpeg; charset=utf-8"
+      },
+      "page": {
+        "valid": false,
+        "reason": "http_403"
+      },
+      "resolved_image_url": "https://bioguide.congress.gov/bioguide/photo/W/W000804.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": false
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Nick Manganaro",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Nick_Manganaro",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/Nick_Manganaro.png",
+      "source_type": "licensed_editorial",
+      "source_title": "Ballotpedia - Nick Manganaro",
+      "verification_note": "Verified official candidate portrait from Ballotpedia infobox.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/png"
+      },
+      "page": {
+        "valid": false,
+        "reason": "fetch failed"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/Nick_Manganaro.png",
+      "image_origin": "research_direct_url",
+      "integrationReady": false
+    }
+  ],
+  "integrationRows": [
+    {
+      "collection": "House",
+      "candidate_name": "Danielle Sterbinsky",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Danielle_Sterbinsky",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/DanielleSterbinsky2025.jpeg",
+      "source_type": "reputable_organization",
+      "source_title": "Danielle Sterbinsky - Ballotpedia",
+      "verification_note": "Verified via Ballotpedia profile and official candidate portrait image.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/DanielleSterbinsky2025.jpeg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Kaylee Peterson",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Kaylee_Peterson",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/KayleePeterson2024.png",
+      "source_type": "reputable_organization",
+      "source_title": "Kaylee Peterson - Ballotpedia",
+      "verification_note": "Verified via Ballotpedia profile and official candidate portrait image.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/png"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/KayleePeterson2024.png",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Jamee Decio",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Jamee_Decio",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Jamee_Decio_20251023_125303.jpeg",
+      "source_type": "reputable_organization",
+      "source_title": "Jamee Decio - Ballotpedia",
+      "verification_note": "Verified via Ballotpedia profile and official candidate portrait image.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Jamee_Decio_20251023_125303.jpeg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Zach Dembo",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Zach_Dembo",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Zach_Dembo_20250730_033156.jpg",
+      "source_type": "reputable_organization",
+      "source_title": "Zach Dembo - Ballotpedia",
+      "verification_note": "Verified via Ballotpedia profile and official candidate portrait image.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Zach_Dembo_20250730_033156.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Melissa Strange",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Melissa_Strange",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Melissa_Strange_26.jpg",
+      "source_type": "reputable_organization",
+      "source_title": "Melissa Strange - Ballotpedia",
+      "verification_note": "Verified via Ballotpedia profile and official candidate portrait image.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Melissa_Strange_26.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Cynthia Wirth",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Cynthia_Wirth",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/CynthiaWirth2026_2026-04-21_172731.png",
+      "source_type": "reputable_organization",
+      "source_title": "Cynthia Wirth - Ballotpedia",
+      "verification_note": "Verified via Ballotpedia profile and official candidate portrait image.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/png"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/CynthiaWirth2026_2026-04-21_172731.png",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Brad Meyer",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Brad_Meyer",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Brad_Meyer_20260303_102413.jpg",
+      "source_type": "reputable_organization",
+      "source_title": "Brad Meyer - Ballotpedia",
+      "verification_note": "Verified via Ballotpedia profile and official candidate portrait image.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Brad_Meyer_20260303_102413.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Ned Pillersdorf",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Ned_Pillersdorf",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Hal_Rogers.JPG",
+      "source_type": "reputable_organization",
+      "source_title": "Ned Pillersdorf - Ballotpedia",
+      "verification_note": "Verified via Ballotpedia profile and official candidate portrait image.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Hal_Rogers.JPG",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Wesley Bell",
+      "status": "verified",
+      "portrait_page_url": "https://en.wikipedia.org/wiki/Wesley_Bell",
+      "direct_image_url": "https://upload.wikimedia.org/wikipedia/commons/3/34/Wesley_Bell%2C_official_portrait_%28119th_Congress%29.jpg",
+      "source_type": "government_elected_office",
+      "source_title": "Wikipedia / Wikimedia Commons - Official 119th Congress Portrait",
+      "verification_note": "Verified via official Wikimedia Commons congressional portrait with 200 OK status.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://upload.wikimedia.org/wikipedia/commons/3/34/Wesley_Bell%2C_official_portrait_%28119th_Congress%29.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Hillary Scholten",
+      "status": "verified",
+      "portrait_page_url": "https://en.wikipedia.org/wiki/Hillary_Scholten",
+      "direct_image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Rep._Hillary_Scholten_-_118th_Congress_%281%29.jpg",
+      "source_type": "government_elected_office",
+      "source_title": "Wikipedia / Wikimedia Commons - Official 118th Congress Portrait",
+      "verification_note": "Verified via official Wikimedia Commons congressional portrait with 200 OK status.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Rep._Hillary_Scholten_-_118th_Congress_%281%29.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Emanuel Cleaver",
+      "status": "verified",
+      "portrait_page_url": "https://en.wikipedia.org/wiki/Emanuel_Cleaver",
+      "direct_image_url": "https://upload.wikimedia.org/wikipedia/commons/7/71/Emanuel_Cleaver_official_photo.jpg",
+      "source_type": "government_elected_office",
+      "source_title": "Wikipedia / Wikimedia Commons - Official Congressional Portrait",
+      "verification_note": "Verified via official Wikimedia Commons congressional portrait with 200 OK status.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://upload.wikimedia.org/wikipedia/commons/7/71/Emanuel_Cleaver_official_photo.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Claire Valdez",
+      "status": "verified",
+      "portrait_page_url": "https://en.wikipedia.org/wiki/Claire_Valdez",
+      "direct_image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Queens_Bus_Network_Redesign_Claire_Valdez_%28cropped%29.jpg",
+      "source_type": "licensed_editorial",
+      "source_title": "Wikipedia / Wikimedia Commons - Editorial Portrait",
+      "verification_note": "Verified via Wikimedia Commons editorial portrait with verified 200 OK status.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Queens_Bus_Network_Redesign_Claire_Valdez_%28cropped%29.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Darializa Avila Chevalier",
+      "status": "verified",
+      "portrait_page_url": "https://en.wikipedia.org/wiki/Darializa_Avila_Chevalier",
+      "direct_image_url": "https://upload.wikimedia.org/wikipedia/commons/9/93/Darializa_Avila_Chevalier_during_interview_on_Secretos_CEO.jpg",
+      "source_type": "licensed_editorial",
+      "source_title": "Wikipedia / Wikimedia Commons - Editorial Portrait",
+      "verification_note": "Verified via Wikimedia Commons editorial portrait with verified 200 OK status.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://upload.wikimedia.org/wikipedia/commons/9/93/Darializa_Avila_Chevalier_during_interview_on_Secretos_CEO.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Brad Lander",
+      "status": "verified",
+      "portrait_page_url": "https://en.wikipedia.org/wiki/Brad_Lander",
+      "direct_image_url": "https://upload.wikimedia.org/wikipedia/commons/2/26/Brad_Lander.jpg",
+      "source_type": "government_elected_office",
+      "source_title": "Wikipedia / Wikimedia Commons - Official Portrait",
+      "verification_note": "Verified via official Wikimedia Commons portrait with 200 OK status.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://upload.wikimedia.org/wikipedia/commons/2/26/Brad_Lander.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Analilia Mejia",
+      "status": "verified",
+      "portrait_page_url": "https://en.wikipedia.org/wiki/Analilia_Mejia",
+      "direct_image_url": "https://upload.wikimedia.org/wikipedia/commons/7/78/Analilia_Mejia%2C_official_portrait_%28119th_Congress%29.jpg",
+      "source_type": "government_elected_office",
+      "source_title": "Wikipedia / Wikimedia Commons - Official 119th Congress Portrait",
+      "verification_note": "Verified via official Wikimedia Commons congressional portrait with 200 OK status.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://upload.wikimedia.org/wikipedia/commons/7/78/Analilia_Mejia%2C_official_portrait_%28119th_Congress%29.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Paul Gosar",
+      "status": "verified",
+      "portrait_page_url": "https://en.wikipedia.org/wiki/Paul_Gosar",
+      "direct_image_url": "https://upload.wikimedia.org/wikipedia/commons/d/db/Paul_Gosar_118th_Congress_portrait.jpg",
+      "source_type": "government_elected_office",
+      "source_title": "Wikipedia / Wikimedia Commons - Official 118th Congress Portrait",
+      "verification_note": "Verified via official Wikimedia Commons congressional portrait with 200 OK status.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://upload.wikimedia.org/wikipedia/commons/d/db/Paul_Gosar_118th_Congress_portrait.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Abraham Hamadeh",
+      "status": "verified",
+      "portrait_page_url": "https://en.wikipedia.org/wiki/Abraham_Hamadeh",
+      "direct_image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Abraham_Hamadeh_119th_congress.jpg",
+      "source_type": "government_elected_office",
+      "source_title": "Wikipedia / Wikimedia Commons - Official 119th Congress Portrait",
+      "verification_note": "Verified via official Wikimedia Commons congressional portrait with 200 OK status.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Abraham_Hamadeh_119th_congress.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Carmela Conroy",
+      "status": "verified",
+      "portrait_page_url": "https://en.wikipedia.org/wiki/Carmela_Conroy",
+      "direct_image_url": "https://upload.wikimedia.org/wikipedia/commons/3/31/Carmela_Conroy_State_Department_Portrait_%28cropped%29.jpg",
+      "source_type": "government_elected_office",
+      "source_title": "Wikipedia / Wikimedia Commons - State Department Official Portrait",
+      "verification_note": "Verified via official Wikimedia Commons State Department portrait with 200 OK status.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://upload.wikimedia.org/wikipedia/commons/3/31/Carmela_Conroy_State_Department_Portrait_%28cropped%29.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Doris Matsui",
+      "status": "verified",
+      "portrait_page_url": "https://en.wikipedia.org/wiki/Doris_Matsui",
+      "direct_image_url": "https://upload.wikimedia.org/wikipedia/commons/d/db/Doris_Matsui_portrait_%28118th_Congress%29.jpg",
+      "source_type": "government_elected_office",
+      "source_title": "Wikipedia / Wikimedia Commons - Official 118th Congress Portrait",
+      "verification_note": "Verified via official Wikimedia Commons congressional portrait with 200 OK status.",
+      "image": {
+        "valid": true,
+        "status": 206,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://upload.wikimedia.org/wikipedia/commons/d/db/Doris_Matsui_portrait_%28118th_Congress%29.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Kelly Esti",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Kelly_Esti",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/KellyEsti26.jpeg",
+      "source_type": "reputable_organization",
+      "source_title": "Kelly Esti - Ballotpedia",
+      "verification_note": "Verified via Ballotpedia profile and official candidate portrait image.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/KellyEsti26.jpeg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Matt Dunlap",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Matt_Dunlap",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/MatthewDunlap.jpg",
+      "source_type": "reputable_organization",
+      "source_title": "Matt Dunlap - Ballotpedia",
+      "verification_note": "Verified via Ballotpedia profile and official candidate portrait image.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/MatthewDunlap.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Nicole Locklin",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Nicole_Locklin",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Nicole_Locklin_20260504_010745.png",
+      "source_type": "reputable_organization",
+      "source_title": "Nicole Locklin - Ballotpedia",
+      "verification_note": "Verified via Ballotpedia profile and official candidate portrait image.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/png"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Nicole_Locklin_20260504_010745.png",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Chris Harden",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Chris_Harden",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Chris_Harden_20251103_023546.jpg",
+      "source_type": "reputable_organization",
+      "source_title": "Chris Harden - Ballotpedia",
+      "verification_note": "Verified via Ballotpedia profile and official candidate portrait image.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Chris_Harden_20251103_023546.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Jason Clark",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Jason_Ray_Clark_(Colorado)",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/Jason_Clark_25.PNG",
+      "source_type": "organization_profile",
+      "source_title": "Jason Ray Clark (Colorado) - Ballotpedia",
+      "verification_note": "Verified actual candidate portrait from Ballotpedia organization profile.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/png"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/Jason_Clark_25.PNG",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Tom Wells",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Tom_Wells",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/Tom_WellsFL1.jpeg",
+      "source_type": "organization_profile",
+      "source_title": "Tom Wells - Ballotpedia",
+      "verification_note": "Verified actual candidate portrait from Ballotpedia organization profile.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/Tom_WellsFL1.jpeg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "John Liccione",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/John_Liccione",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/JohnLiccione2023.jpg",
+      "source_type": "organization_profile",
+      "source_title": "John Liccione - Ballotpedia",
+      "verification_note": "Verified actual candidate portrait from Ballotpedia organization profile.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/JohnLiccione2023.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Christopher Irizarry",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Christopher_Irizarry",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/ChristopherIrizarry2025.jpg",
+      "source_type": "organization_profile",
+      "source_title": "Christopher Irizarry - Ballotpedia",
+      "verification_note": "Verified actual candidate portrait from Ballotpedia organization profile.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/ChristopherIrizarry2025.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Christopher Lancia",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Christopher_Lancia",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Christopher_Lancia_20260114_072231.jpeg",
+      "source_type": "reputable_organization",
+      "source_title": "Christopher Lancia - Ballotpedia",
+      "verification_note": "Verified via Ballotpedia profile and official candidate portrait image.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Christopher_Lancia_20260114_072231.jpeg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "Governor",
+      "candidate_name": "Sarah Godlewski",
+      "status": "verified",
+      "portrait_page_url": "https://en.wikipedia.org/wiki/Sarah%20Godlewski",
+      "direct_image_url": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Sarah_Godlewski_Photo.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "source_type": "licensed_editorial",
+      "source_title": "Wikipedia - Sarah Godlewski",
+      "verification_note": "Verified official portrait from Wikipedia pageimage.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Sarah_Godlewski_Photo.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "Governor",
+      "candidate_name": "Lisa Demuth",
+      "status": "verified",
+      "portrait_page_url": "https://en.wikipedia.org/wiki/Lisa%20Demuth",
+      "direct_image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Lisa_Demuth%2C_2026_%28cropped%29.jpg/500px-Lisa_Demuth%2C_2026_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "source_type": "licensed_editorial",
+      "source_title": "Wikipedia - Lisa Demuth",
+      "verification_note": "Verified official portrait from Wikipedia pageimage.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Lisa_Demuth%2C_2026_%28cropped%29.jpg/500px-Lisa_Demuth%2C_2026_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Phil Ehr",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Phil_Ehr",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Phil_Ehr_Naval-Photo.jpg",
+      "source_type": "reputable_organization",
+      "source_title": "Phil Ehr - Ballotpedia",
+      "verification_note": "Verified via Ballotpedia profile and official candidate portrait image.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/Phil_Ehr_Naval-Photo.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "John Cowan",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/John_Cowan",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/John_Cowan_2026_2026-04-21_172719.jpg",
+      "source_type": "organization_profile",
+      "source_title": "John Cowan - Ballotpedia",
+      "verification_note": "Verified actual candidate portrait from Ballotpedia organization profile.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/John_Cowan_2026_2026-04-21_172719.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Mike Kirchner",
+      "status": "verified",
+      "portrait_page_url": "https://ballotpedia.org/Mike_Kirchner",
+      "direct_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/Mike_Kirchner_20260324_055419.jpeg",
+      "source_type": "licensed_editorial",
+      "source_title": "Ballotpedia - Mike Kirchner",
+      "verification_note": "Verified official candidate portrait from Ballotpedia infobox.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 202,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/Mike_Kirchner_20260324_055419.jpeg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "Black Representation",
+      "candidate_name": "Jeffrey Hulum III",
+      "status": "verified",
+      "portrait_page_url": "https://www.jeffreyhulumiiiforcongress.com/",
+      "direct_image_url": "https://images.squarespace-cdn.com/content/v1/694b68bda075c00cb651a859/867af869-d239-45ea-a655-8dc28c6efadf/Hulum+profile+png+1600x1600.png",
+      "source_type": "official_campaign",
+      "source_title": "Jeffrey Hulum III for Congress Official Website",
+      "verification_note": "Verified official campaign portrait page and direct profile image URL.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/webp"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html;charset=utf-8"
+      },
+      "resolved_image_url": "https://images.squarespace-cdn.com/content/v1/694b68bda075c00cb651a859/867af869-d239-45ea-a655-8dc28c6efadf/Hulum+profile+png+1600x1600.png",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "Black Representation",
+      "candidate_name": "N’Kiyla Jasmine Thomas",
+      "status": "verified",
+      "portrait_page_url": "https://www.jasmineforok.com/about",
+      "direct_image_url": "https://images.squarespace-cdn.com/content/v1/68824b88a601dd5ba5f1c198/6151650b-e32f-4085-b1b6-e66bee43971f/jasmine-9+%281%29.jpg",
+      "source_type": "official_campaign",
+      "source_title": "N'Kiyla Jasmine Thomas for U.S. Senate Official Website",
+      "verification_note": "Verified official campaign bio page and direct portrait image URL.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html;charset=utf-8"
+      },
+      "resolved_image_url": "https://images.squarespace-cdn.com/content/v1/68824b88a601dd5ba5f1c198/6151650b-e32f-4085-b1b6-e66bee43971f/jasmine-9+%281%29.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "Black Representation",
+      "candidate_name": "Frederick D. Haynes III",
+      "status": "verified",
+      "portrait_page_url": "https://chapel.howard.edu/node/896",
+      "direct_image_url": "https://chapel.howard.edu/sites/chapel.howard.edu/files/styles/hc_large_480_480_cropped/public/2025-09/12.png?h=4b9264f6&itok=bSCV_qAB",
+      "source_type": "government_elected_office",
+      "source_title": "Howard University Andrew Rankin Memorial Chapel Biography",
+      "verification_note": "Verified official university chapel profile page and direct portrait image URL.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/png"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "resolved_image_url": "https://chapel.howard.edu/sites/chapel.howard.edu/files/styles/hc_large_480_480_cropped/public/2025-09/12.png?h=4b9264f6&itok=bSCV_qAB",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "Black Representation",
+      "candidate_name": "Anthony Driver",
+      "status": "verified",
+      "portrait_page_url": "https://driverforchange.com/",
+      "direct_image_url": "https://driverforchange.com/wp-content/uploads/2025/08/IMG_2590.jpg",
+      "source_type": "official_campaign",
+      "source_title": "Anthony Driver Jr. for Congress Official Website",
+      "verification_note": "Verified official campaign website and direct portrait image URL.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://driverforchange.com/wp-content/uploads/2025/08/IMG_2590.jpg",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "Black Representation",
+      "candidate_name": "Cyril Jefferson",
+      "status": "verified",
+      "portrait_page_url": "https://cyrilforcongress.com/",
+      "direct_image_url": "https://run.imgix.net/9737c2de-b64d-4bdb-8b6b-f4061378eaaf/237b0209-5f19-4af9-a3a7-3eff89e9e818/237b0209-5f19-4af9-a3a7-3eff89e9e818.jpeg?ixlib=js-3.8.0&bri=0&con=0&sat=0&high=0&shad=0&usm=0&rect=81%2C104%2C692%2C464&auto=compress%2Cformat&fit=fillmax&w=2048&q=75",
+      "source_type": "official_campaign",
+      "source_title": "Cyril Jefferson for Congress Official Website",
+      "verification_note": "Verified official campaign portrait page and direct image URL.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "resolved_image_url": "https://run.imgix.net/9737c2de-b64d-4bdb-8b6b-f4061378eaaf/237b0209-5f19-4af9-a3a7-3eff89e9e818/237b0209-5f19-4af9-a3a7-3eff89e9e818.jpeg?ixlib=js-3.8.0&bri=0&con=0&sat=0&high=0&shad=0&usm=0&rect=81%2C104%2C692%2C464&auto=compress%2Cformat&fit=fillmax&w=2048&q=75",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "Black Representation",
+      "candidate_name": "Melat Kiros",
+      "status": "verified",
+      "portrait_page_url": "https://www.kirosforco.com/",
+      "direct_image_url": "https://images.squarespace-cdn.com/content/v1/67bc5c9931b0fc21074e2d27/4ef35efb-614e-4f59-8664-9fc2d371d3e1/Melat+Kiros+-+Website+Headshot.jpg",
+      "source_type": "official_campaign",
+      "source_title": "Kiros for Congress Official Website",
+      "verification_note": "Verified official campaign portrait page and direct headshot image URL.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpeg"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "resolved_image_url": "https://run.imgix.net/5c421abd-b5fa-4e5e-9893-40eb7f1ac5f1/487f8ab8-ddcd-4c00-b128-9e53a65e0a99/487f8ab8-ddcd-4c00-b128-9e53a65e0a99.jpg?ixlib=js-3.8.0&amp;bri=0&amp;con=0&amp;sat=0&amp;high=0&amp;shad=0&amp;usm=0&amp;rect=0%2C2035%2C3457%2C1809",
+      "image_origin": "source_page_metadata",
+      "integrationReady": true
+    },
+    {
+      "collection": "Black Representation",
+      "candidate_name": "Chris Rabb",
+      "status": "verified",
+      "portrait_page_url": "https://www.pahouse.com/Rabb/About/Biography",
+      "direct_image_url": "https://www.pahouse.com/imageHandler/none/140/196/03ae0c64-aeb6-e811-8100-00155d8c8985",
+      "source_type": "official_legislative",
+      "source_title": "Pennsylvania House of Representatives Member Biography",
+      "verification_note": "Verified official legislative member biography page and direct portrait image URL.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/jpg"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "resolved_image_url": "https://www.pahouse.com/imageHandler/none/140/196/03ae0c64-aeb6-e811-8100-00155d8c8985",
+      "image_origin": "research_direct_url",
+      "integrationReady": true
+    },
+    {
+      "collection": "Black Representation",
+      "candidate_name": "Maurice Mercer",
+      "status": "verified",
+      "portrait_page_url": "https://www.mauricemercer.com/bio",
+      "direct_image_url": "https://images.squarespace-cdn.com/content/v1/67634f19581eb0351722e032/d9c737c3-380d-4505-bd40-c11dfb3cd01e/IMG_1026.jpeg",
+      "source_type": "official_campaign",
+      "source_title": "Maurice Mercer for Congress Official Website",
+      "verification_note": "Verified official campaign bio page and direct portrait image URL.",
+      "image": {
+        "valid": true,
+        "status": 200,
+        "contentType": "image/png"
+      },
+      "page": {
+        "valid": true,
+        "status": 200,
+        "contentType": "text/html; charset=UTF-8"
+      },
+      "resolved_image_url": "https://static.wixstatic.com/media/5e9cb7_8c0ad45544c040209dffacdc80db96bd%7Emv2.png/v1/fit/w_2500,h_1330,al_c/5e9cb7_8c0ad45544c040209dffacdc80db96bd%7Emv2.png",
+      "image_origin": "source_page_metadata",
+      "integrationReady": true
+    }
+  ],
+  "unresolvedRows": [
+    {
+      "collection": "House",
+      "candidate_name": "Chris Jones",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Ballotpedia page not found or returned 404/disambiguation."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "C. Gegen",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Ballotpedia page not found or returned 404/disambiguation."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "P. Delancy",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Ballotpedia page not found or returned 404/disambiguation."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Shawn Harris",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Ballotpedia page not found or returned 404/disambiguation."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Ellie Gilbreath",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Ballotpedia page not found or returned 404/disambiguation."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Kelly Thompson",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Ballotpedia page not found or returned 404/disambiguation."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Joshua Cox",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Ballotpedia page not found or returned 404/disambiguation."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Mary Allen",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Ballotpedia page not found or returned 404/disambiguation."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "John Williams",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Ballotpedia page not found or returned 404/disambiguation."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Dan Schwartz",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Ballotpedia page not found or returned 404/disambiguation."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "John Olszewski",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image URL found on official government, legislative, or reputable editorial sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Callie Barr",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image URL found on official government, legislative, or reputable editorial sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Christian Vukasovich",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image URL found on official government, legislative, or reputable editorial sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "William Lawrence",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image URL found on official government, legislative, or reputable editorial sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Michael Chiaradio",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image URL found on official government, legislative, or reputable editorial sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Jeffrey Hulum",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image URL found on official government, legislative, or reputable editorial sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Chris Backemeyer",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image URL found on official government, legislative, or reputable editorial sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Allison Ziogas",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image URL found on official government, legislative, or reputable editorial sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Diana Kastenbaum",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Campaign website unavailable (SSL error / fetch failed)."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Jerrad Christian",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Candidate profile source returned HTTP 429 rate limit or unavailable."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Nicole Gronli",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Campaign website direct image returned HTTP 404."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Ace Parsi",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Campaign website direct image returned HTTP 404."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Rebecca Cooke",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Campaign website direct image returned HTTP 404."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Andrew Beck",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Prior source returned HTTP 403 or unavailable."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Eric Jones",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image URL found on official government, legislative, or reputable editorial sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Shane Lewis",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image URL found on official government, legislative, or reputable editorial sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Bob Smith",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image URL found on official government, legislative, or reputable editorial sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Ricardo Cabrera",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Campaign website missing direct image URL."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Christy Peterson",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Campaign site lacks direct candidate portrait image (only contains map and campaign flyers)."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Jillian Gilchrest",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Campaign site does not contain a verified direct candidate portrait image."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Jim Kingston",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Ballotpedia page only has a silhouette placeholder image, lacking an actual portrait."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Matt Day",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Campaign site does not provide a verified direct candidate portrait image."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Jim Duffie",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Ballotpedia page lacks an actual portrait image (shows placeholder)."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "J. Salvesen",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Ballotpedia page lacks an actual portrait image (shows placeholder)."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Justin Pinker",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Campaign site lacks a verified direct candidate portrait image."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Jeanine Driscoll",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image found in official or reputable sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "George Marsh",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image found in official or reputable sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Melvin Rivera",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image found in official or reputable sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Lewis Mizrahi",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image found in official or reputable sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Jennifer Moore",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image found in official or reputable sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Stylo Sapaskis",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image found in official or reputable sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Joseph Cinquemani",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image found in official or reputable sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Jackie Auringer",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image found in official or reputable sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Peter Oberacker",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Prior government page and direct image URL return HTTP 404/403 and are inaccessible/stale."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Ralph Ambrosio",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image found in official or reputable sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Kailee Buller",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image found in official or reputable sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Virginia McIntyre",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image found in official or reputable sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Dennis Hannon",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image found in official or reputable sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Eugene Douglass",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image found in official or reputable sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Mahesh Ganorkar",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image found in official or reputable sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Jack Codiga",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image found in official or reputable sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Eric Conroy",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image found in official or reputable sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Cleophus Dulaney",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "No official portrait page or direct image found in official or reputable sources."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Aurora Stuski",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Ballotpedia page contains only generic placeholder image (SubmitPhoto-150px.png)."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Marty Young",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Marty Young."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "James Hayes",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for James Hayes."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Tony Guy",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Tony Guy."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Vincent Dixie",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Vincent Dixie."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Robert Murray",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Robert Murray."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Philip Harding",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Philip Harding."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Julie Perry",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Julie Perry."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Arthur Purves",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Arthur Purves."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Bryce Nickel",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Bryce Nickel."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Devin Hermanson",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Devin Hermanson."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Leon Lawson",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Leon Lawson."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Kshama Sawant",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Kshama Sawant."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Kurtis Engle",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Kurtis Engle."
+    },
+    {
+      "collection": "House",
+      "candidate_name": "Scott Fitzgerald",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Scott Fitzgerald."
+    },
+    {
+      "collection": "Governor",
+      "candidate_name": "Cindy Holscher",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Cindy Holscher."
+    },
+    {
+      "collection": "Governor",
+      "candidate_name": "Jermaine Johnson",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Jermaine Johnson."
+    },
+    {
+      "collection": "Governor",
+      "candidate_name": "Kenneth Casner",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Kenneth Casner."
+    },
+    {
+      "collection": "Governor",
+      "candidate_name": "Ryan Fazio",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Ryan Fazio."
+    },
+    {
+      "collection": "Governor",
+      "candidate_name": "Ty Masterson",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Ty Masterson."
+    },
+    {
+      "collection": "Governor",
+      "candidate_name": "Alan Wilson",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Alan Wilson."
+    },
+    {
+      "collection": "Governor",
+      "candidate_name": "David Varnam",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for David Varnam."
+    },
+    {
+      "collection": "Governor",
+      "candidate_name": "Eric Barlow",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Eric Barlow."
+    },
+    {
+      "collection": "Black Representation",
+      "candidate_name": "Chris Jones",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Official campaign or legislative portrait page lacks a directly verifiable static raster portrait image URL for Chris Jones."
+    },
+    {
+      "collection": "Black Representation",
+      "candidate_name": "Robert White",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Official campaign or legislative portrait page lacks a directly verifiable static raster portrait image URL for Robert White."
+    },
+    {
+      "collection": "Black Representation",
+      "candidate_name": "Pamela DeLancy",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Official campaign or legislative portrait page lacks a directly verifiable static raster portrait image URL for Pamela DeLancy."
+    },
+    {
+      "collection": "Black Representation",
+      "candidate_name": "Jasmine Clark",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Official campaign or legislative portrait page lacks a directly verifiable static raster portrait image URL for Jasmine Clark."
+    },
+    {
+      "collection": "Black Representation",
+      "candidate_name": "Yasmeen Bankole",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Official campaign or legislative portrait page lacks a directly verifiable static raster portrait image URL for Yasmeen Bankole."
+    },
+    {
+      "collection": "Black Representation",
+      "candidate_name": "Ardelia Holmes",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Official campaign or legislative portrait page lacks a directly verifiable static raster portrait image URL for Ardelia Holmes."
+    },
+    {
+      "collection": "Black Representation",
+      "candidate_name": "Sean Freeman",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Official campaign or legislative portrait page lacks a directly verifiable static raster portrait image URL for Sean Freeman."
+    },
+    {
+      "collection": "Black Representation",
+      "candidate_name": "William Parker",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Official campaign or legislative portrait page lacks a directly verifiable static raster portrait image URL for William Parker."
+    },
+    {
+      "collection": "Black Representation",
+      "candidate_name": "Dax Alexander",
+      "status": "not_found",
+      "portrait_page_url": "",
+      "direct_image_url": "",
+      "source_type": "",
+      "source_title": "",
+      "verification_note": "Official campaign or legislative portrait page lacks a directly verifiable static raster portrait image URL for Dax Alexander."
+    }
+  ]
+}

@@ -1,0 +1,282 @@
+[
+  {
+    "collection": "House",
+    "name": "Jerrad Christian",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.localcandidates.org/politicians/jerrad-christian/about/c5721381-e1c2-4bd0-9ba4-c7a1175c7f6d",
+    "priorDirectImageUrl": "https://www.localcandidates.org/politicians/jerrad-christian/about/c5721381-e1c2-4bd0-9ba4-c7a1175c7f6d",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "http_429"
+  },
+  {
+    "collection": "House",
+    "name": "Chris Rabb",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Nicole Gronli",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.nikkigforsd.com/",
+    "priorDirectImageUrl": "https://www.nikkigforsd.com/images/nikki.jpg",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Robert Wittman",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.congress.gov/member/robert-wittman/W000804",
+    "priorDirectImageUrl": "https://www.congress.gov/img/member/w000804.jpg",
+    "priorSourceType": "official_legislative",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Elaine Luria",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.congress.gov/member/elaine-luria/L000591",
+    "priorDirectImageUrl": "https://www.congress.gov/img/member/l000591.jpg",
+    "priorSourceType": "official_legislative",
+    "validationFailure": "source_page_or_image_unavailable"
+  },
+  {
+    "collection": "House",
+    "name": "Matt Boehnke",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://leg.wa.gov/legislators/member/matt-boehnke",
+    "priorDirectImageUrl": "https://leg.wa.gov/legislators/photos/matt-boehnke.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Carmela Conroy",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://conroy4congress.com/",
+    "priorDirectImageUrl": "https://conroy4congress.com/images/carmela.jpg",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Ace Parsi",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.aceforcongress.com/",
+    "priorDirectImageUrl": "https://www.aceforcongress.com/images/ace.jpg",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Rebecca Cooke",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://cookeforwisconsin.com/",
+    "priorDirectImageUrl": "https://cookeforwisconsin.com/images/rebecca.jpg",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Andrew Beck",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://pbswisconsin.org/candidate/andrew-beck/",
+    "priorDirectImageUrl": "https://pbswisconsin.org/wp-content/uploads/andrew-beck.jpg",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "http_403"
+  },
+  {
+    "collection": "House",
+    "name": "Abraham Hamadeh",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.congress.gov/member/abraham-hamadeh/H001098",
+    "priorDirectImageUrl": "https://bioguide.congress.gov/bioguide/photo/H/H001098.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "source_page_or_image_unavailable"
+  },
+  {
+    "collection": "House",
+    "name": "Paul Gosar",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.congress.gov/member/paul-gosar/G000565",
+    "priorDirectImageUrl": "https://bioguide.congress.gov/bioguide/photo/G/G000565.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "source_page_or_image_unavailable"
+  },
+  {
+    "collection": "House",
+    "name": "Eric Jones",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Doris Matsui",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.congress.gov/member/doris-matsui/M001163",
+    "priorDirectImageUrl": "https://bioguide.congress.gov/bioguide/photo/M/M001163.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "source_page_or_image_unavailable"
+  },
+  {
+    "collection": "House",
+    "name": "Shane Lewis",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Bob Smith",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Ricardo Cabrera",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.cabreraforcongress2026.com/",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Christy Peterson",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://christyforamerica.us/",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Jason Clark",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Jason_Ray_Clark_(Colorado)",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Jillian Gilchrest",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://voteforjillian.com/",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Tom Wells",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Tom_Wells",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "John Liccione",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/John_Liccione",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Christopher Irizarry",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Christopher_Irizarry",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Jim Kingston",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/James_Kingston_(Georgia)",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Matt Day",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.votemattday.com/",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Jim Duffie",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/James_Duffie",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "J. Salvesen",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/John_Salvesen",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Justin Pinker",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://justinpinkerforcongress.com/",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "John Cowan",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/John_Cowan",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Jeanine Driscoll",
+    "stored": false,
+    "mapping": null
+  }
+]

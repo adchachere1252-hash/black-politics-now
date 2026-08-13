@@ -1,0 +1,230 @@
+[
+  {
+    "collection": "House",
+    "name": "Jim Kingston",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/James_Kingston_(Georgia)",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Jim Duffie",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/James_Duffie",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "J. Salvesen",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/John_Salvesen",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Justin Pinker",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://justinpinkerforcongress.com/",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Jeanine Driscoll",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "George Marsh",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Melvin Rivera",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Lewis Mizrahi",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Jennifer Moore",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Stylo Sapaskis",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Joseph Cinquemani",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Jackie Auringer",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Peter Oberacker",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.nysenate.gov/senators/peter-a-oberacker",
+    "priorDirectImageUrl": "https://www.nysenate.gov/sites/default/files/styles/16_9_large/public/sensor/image/peter_oberacker_crop.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Ralph Ambrosio",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Kailee Buller",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Virginia McIntyre",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Dennis Hannon",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Eugene Douglass",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Mahesh Ganorkar",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Jack Codiga",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Eric Conroy",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Cleophus Dulaney",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Aurora Stuski",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Aurora_Stuski",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Marty Young",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Marty_Young",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "James Hayes",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/James_Hayes_(Pennsylvania)",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Tony Guy",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Tony_Guy",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Vincent Dixie",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://wapp.capitol.tn.gov/apps/LegislatorInfo/Member?district=H54&ga=114",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Robert Murray",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Philip Harding",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Philip_Harding",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Julie Perry",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Julie_Perry",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  }
+]

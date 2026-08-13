@@ -36,6 +36,10 @@ export default function World() {
     live: elections.filter((e: any) => e.status === "Voting Today").length,
     complete: elections.filter((e: any) => e.status === "Completed").length,
   }), [elections]);
+  const lastUpdated = useMemo(() => {
+    const latest = elections.reduce<string | null>((current: string | null, election: any) => !current || `${election.updatedAt ?? ""}` > current ? `${election.updatedAt ?? ""}` : current, null);
+    return latest ? new Date(latest).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : null;
+  }, [elections]);
 
   if (isLoading) return <div className="min-h-[70vh] grid place-items-center"><div className="w-9 h-9 rounded-full border-2 border-primary border-t-transparent animate-spin" /></div>;
 
@@ -44,7 +48,7 @@ export default function World() {
     <section className="relative container pt-10 pb-6">
       <p className="text-primary text-xs font-semibold tracking-[0.28em] uppercase">Global democratic calendar</p>
       <div className="mt-3 flex flex-col lg:flex-row lg:items-end gap-5 justify-between">
-        <div><h1 className="font-display text-4xl sm:text-5xl font-bold">World Elections</h1><p className="text-muted-foreground mt-2 max-w-2xl">Track the elections shaping governments, parliaments, and referendums around the world.</p></div>
+        <div><h1 className="font-display text-4xl sm:text-5xl font-bold">World Elections</h1><p className="text-muted-foreground mt-2 max-w-2xl">Track the elections shaping governments, parliaments, and referendums around the world.</p>{lastUpdated && <p className="mt-2 text-xs font-medium text-primary/85">Calendar data last reviewed {lastUpdated}</p>}</div>
         <div className="flex gap-2"><Stat value={counts.upcoming} label="Upcoming" /><Stat value={counts.live} label="Voting now" /><Stat value={counts.complete} label="Completed" /></div>
       </div>
     </section>

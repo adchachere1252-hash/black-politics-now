@@ -1,0 +1,54 @@
+{
+  "results": [
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-final-batches/batch-01.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/90sH1lxcnPLip85k35aIRZ/sandbox/xDri7SYdGL0Z5MquPgx4kG_1786634282675_na1fn_L2hvbWUvdWJ1bnR1L2JsYWNrLXBvbGl0aWNzLW5vdy9kb2NzL2NhbmRpZGF0ZS1waG90by1yZXNlYXJjaC1maW5hbC1iYXRjaGVzL2JhdGNoLTAxLXJlc3VsdHM.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvOTBzSDFseGNuUExpcDg1azM1YUlSWi9zYW5kYm94L3hEcmk3U1lkR0wwWjVNcXVQZ3g0a0dfMTc4NjYzNDI4MjY3NV9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJKc1lXTnJMWEJ2YkdsMGFXTnpMVzV2ZHk5a2IyTnpMMk5oYm1ScFpHRjBaUzF3YUc5MGJ5MXlaWE5sWVhKamFDMW1hVzVoYkMxaVlYUmphR1Z6TDJKaGRHTm9MVEF4TFhKbGMzVnNkSE0uY3N2IiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzg4MjIwODAwfX19XX0_&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEQCIEwNRRZxr0RUtoy3FKsg3PUg-xn7GI~x5u2Hv3UhO86XAiABVkM05AD3ux0siX0zW7RK2lSnW9~bucf~TuSf1CcGhQ__",
+        "resolved_count": 20,
+        "summary": "Official-source portrait research was conducted for all 30 candidates listed in batch-01.json. A total of 20 candidates were successfully verified using official electoral and organizational profiles from Ballotpedia along with direct S3 portrait image URLs. The remaining 10 candidates were marked as not_found due to absent profiles, ambiguous disambiguation pages, or lack of verifiable direct portrait imagery.",
+        "unresolved_count": 10
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-final-batches/batch-02.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/xf5OquXU4XuJ1yUjwmMxGg/sandbox/6S44h7vzSA8MKaPl76yBKC_1786633676216_na1fn_L2hvbWUvdWJ1bnR1L2JhdGNoLTAyLXJlc3VsdHM.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUveGY1T3F1WFU0WHVKMXlVandtTXhHZy9zYW5kYm94LzZTNDRoN3Z6U0E4TUthUGw3NnlCS0NfMTc4NjYzMzY3NjIxNl9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJKaGRHTm9MVEF5TFhKbGMzVnNkSE0uY3N2IiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzg4MjIwODAwfX19XX0_&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEYCIQDuJthWjAVHmg1lCgz1epRgQN2HG5c9QPIL4qYJpIDWwAIhALnavcsCWq3RXABily9LFSW8UPrLmqMFuwlGHKF5PSRt",
+        "resolved_count": 12,
+        "summary": "In this final portrait research pass for batch-02, 12 candidates were successfully verified using official government, legislative, and reputable editorial/encyclopedic sources (such as Wikimedia Commons official congressional portraits and Congress.gov bioguides), confirming active direct image URLs with 200 OK status. The remaining 18 candidates were marked as not_found due to unavailable campaign sites, broken image links (HTTP 404/403), rate limits (HTTP 429), or a lack of verifiable official portrait sources.",
+        "unresolved_count": 18
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-final-batches/batch-03.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/VVP4w5jlp7TPv568aVHRGU/sandbox/GdxHw5ERDnVo4udLyCZjFk_1786633709403_na1fn_L2hvbWUvdWJ1bnR1L2JsYWNrLXBvbGl0aWNzLW5vdy9kb2NzL2NhbmRpZGF0ZS1waG90by1yZXNlYXJjaC1maW5hbC1iYXRjaGVzL2JhdGNoLTAzLXJlc2VhcmNo.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvVlZQNHc1amxwN1RQdjU2OGFWSFJHVS9zYW5kYm94L0dkeEh3NUVSRG5WbzR1ZEx5Q1pqRmtfMTc4NjYzMzcwOTQwM19uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJKc1lXTnJMWEJ2YkdsMGFXTnpMVzV2ZHk5a2IyTnpMMk5oYm1ScFpHRjBaUzF3YUc5MGJ5MXlaWE5sWVhKamFDMW1hVzVoYkMxaVlYUmphR1Z6TDJKaGRHTm9MVEF6TFhKbGMyVmhjbU5vLmNzdiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc4ODIyMDgwMH19fV19&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEUCIDHq299JdtOhmsfkYykzARDYgG6Gt9uLfq7xGJIroizVAiEAtq02pUfmKpUJaBiwA0O5-WXo8-ZXXkSbg7amhk4z6tQ_",
+        "resolved_count": 5,
+        "summary": "In this final portrait research pass for batch 03, 5 candidates (Jason Clark, Tom Wells, John Liccione, Christopher Irizarry, and John Cowan) were successfully verified with direct portrait image URLs sourced from Ballotpedia organization profiles. The remaining 25 candidates were marked as not_found due to stale prior data, missing official portrait imagery on campaign or organization sites, placeholder silhouette images, or inaccessible government pages.",
+        "unresolved_count": 25
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-final-batches/batch-04.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/EVrCoKjk3CO9oPeiU2GfqQ/sandbox/elppN8eHcXUYw6Y72iLfXz_1786633710341_na1fn_L2hvbWUvdWJ1bnR1L2JhdGNoLTA0LXJlc2VhcmNo.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvRVZyQ29LamszQ085b1BlaVUyR2ZxUS9zYW5kYm94L2VscHBOOGVIY1hVWXc2WTcyaUxmWHpfMTc4NjYzMzcxMDM0MV9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJKaGRHTm9MVEEwTFhKbGMyVmhjbU5vLmNzdiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc4ODIyMDgwMH19fV19&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEUCIQDS4hZKxN7aW8hkEdd5N4t9u0cU8-TWE0XkkgurLGVGhQIgOcWPd3Aew7BUw-wgX6yRtBmH24Sjrdn1o4AGB8yq8~M_",
+        "resolved_count": 7,
+        "summary": "In this final portrait research pass for batch-04 (comprising 30 candidates), 7 candidate portraits were successfully verified using official licensed editorial sources (Ballotpedia and Wikimedia Commons) with confirmed direct image URLs. The remaining 23 candidates were marked as not found due to lack of valid infobox portraits, broken links, or presence of generic placeholder imagery, with explicit verification notes provided for each record.",
+        "unresolved_count": 23
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-final-batches/batch-05.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/oSKDAC6AxcGGkQcVsAZ46Z/sandbox/koNjoWq9Yyxfc5iEgnA28l_1786633686592_na1fn_L2hvbWUvdWJ1bnR1L2NhbmRpZGF0ZS1waG90by1yZXNlYXJjaC1iYXRjaC0wNQ.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvb1NLREFDNkF4Y0dHa1FjVnNBWjQ2Wi9zYW5kYm94L2tvTmpvV3E5WXl4ZmM1aUVnbkEyOGxfMTc4NjYzMzY4NjU5Ml9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJOaGJtUnBaR0YwWlMxd2FHOTBieTF5WlhObFlYSmphQzFpWVhSamFDMHdOUS5jc3YiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3ODgyMjA4MDB9fX1dfQ__&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEYCIQC1W4l4g~H5iucYj5NyYDvFLUbOL8Gsgbes0Bp850ZeJQIhAL8YzmmVZqoZudSEKmSCqU76n0XXqYs9G9b-NQr2fkdm",
+        "resolved_count": 9,
+        "summary": "Conducted a rigorous portrait research pass for all 18 candidates listed in batch-05.json using official campaign, legislative, and government sources. Successfully verified 9 candidates with authenticated direct portrait image URLs and official portrait pages (including Melat Kiros, Amanda Hollowell, Jeffrey Hulum III, Cyril Jefferson, N’Kiyla Jasmine Thomas, Frederick D. Haynes III, Anthony Driver, Chris Rabb, and Maurice Mercer), while marking 9 candidates as not_found with concise non-verification reasons due to lack of directly accessible static raster portrait image URLs.",
+        "unresolved_count": 9
+      },
+      "error": ""
+    }
+  ]
+}

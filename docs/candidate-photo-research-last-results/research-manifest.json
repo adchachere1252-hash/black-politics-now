@@ -1,0 +1,44 @@
+{
+  "results": [
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-last-batches/batch-01.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/iXX5YSplUtJicYB96RwGoB/sandbox/ffiscNNg5QHklBDOnMUJOj_1786645484910_na1fn_L2hvbWUvdWJ1bnR1L2JsYWNrLXBvbGl0aWNzLW5vdy9kb2NzL2NhbmRpZGF0ZS1waG90by1yZXNlYXJjaC1sYXN0LWJhdGNoZXMvcmVzZWFyY2gtcmVzdWx0cy1iYXRjaC0wMQ.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvaVhYNVlTcGxVdEppY1lCOTZSd0dvQi9zYW5kYm94L2ZmaXNjTk5nNVFIa2xCRE9uTVVKT2pfMTc4NjY0NTQ4NDkxMF9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJKc1lXTnJMWEJ2YkdsMGFXTnpMVzV2ZHk5a2IyTnpMMk5oYm1ScFpHRjBaUzF3YUc5MGJ5MXlaWE5sWVhKamFDMXNZWE4wTFdKaGRHTm9aWE12Y21WelpXRnlZMmd0Y21WemRXeDBjeTFpWVhSamFDMHdNUS5jc3YiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3ODgyMjA4MDB9fX1dfQ__&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEUCIAbE~JdrX2-Jqx7ttcAbyOQi1GFD7Lg5gCw-HLWLgKG4AiEAqmP2z9qqIjcvb5V1TetxgX9eBjttAxFmLerrW9yCe1g_",
+        "resolved_count": 6,
+        "summary": "Out of 30 candidates evaluated in the final recovery batch, 6 candidates (George Austin, Maura Keller, Tony Kozycki, Ceretta Smith, Adriel Lam, and Callie Barr) were successfully verified with confirmed official portrait pages on Ballotpedia and active, direct image URLs returning HTTP 200. The remaining 24 candidates were marked as not found due to persistent absence or unavailability of verified official campaign, government, legislative, or reputable organization portrait sources.",
+        "unresolved_count": 24
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-last-batches/batch-02.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/YW9U3YHQ5JTWvUqkfvHT38/sandbox/Enq6Xc8WzfVW0wuxEakUPP_1786645344502_na1fn_L2hvbWUvdWJ1bnR1L2JsYWNrLXBvbGl0aWNzLW5vdy9kb2NzL2NhbmRpZGF0ZS1waG90by1yZXNlYXJjaC1sYXN0LWJhdGNoZXMvYmF0Y2gtMDItcmVzb2x2ZWQ.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvWVc5VTNZSFE1SlRXdlVxa2Z2SFQzOC9zYW5kYm94L0VucTZYYzhXemZWVzB3dXhFYWtVUFBfMTc4NjY0NTM0NDUwMl9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJKc1lXTnJMWEJ2YkdsMGFXTnpMVzV2ZHk5a2IyTnpMMk5oYm1ScFpHRjBaUzF3YUc5MGJ5MXlaWE5sWVhKamFDMXNZWE4wTFdKaGRHTm9aWE12WW1GMFkyZ3RNREl0Y21WemIyeDJaV1EuY3N2IiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzg4MjIwODAwfX19XX0_&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEYCIQDtRp39eV2mge26MQlQSyzrSVboVT410F-SWBNlVWC0ggIhALRpjIKW1Pcuqg3~xZGJj3JJAoq3TnDYwHg95rLF3bB2",
+        "resolved_count": 3,
+        "summary": "Across the final strict official-source portrait search for the 30 remaining candidates in batch-02, 3 candidates (Ricardo Cabrera, Jillian Gilchrest, and Matt Day) were successfully verified via active official campaign website profiles and successfully loading direct portrait image URLs (HTTP 200). The remaining 27 candidates were marked as not_found due to HTTP access restrictions (403/404 errors on official profiles such as PBS Wisconsin and New York Senate), placeholder silhouette images on aggregators like Ballotpedia, or the complete absence of official campaign and government portrait pages.",
+        "unresolved_count": 27
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-last-batches/batch-03.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/nfz4vmqLNrOMLdzaK2PBx4/sandbox/h1Xu4gCloeZurVoPupUAAp_1786645398713_na1fn_L2hvbWUvdWJ1bnR1L2NhbmRpZGF0ZV9waG90b19yZXNlYXJjaF9iYXRjaF8wM19maW5hbA.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvbmZ6NHZtcUxOck9NTGR6YUsyUEJ4NC9zYW5kYm94L2gxWHU0Z0Nsb2VadXJWb1B1cFVBQXBfMTc4NjY0NTM5ODcxM19uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJOaGJtUnBaR0YwWlY5d2FHOTBiMTl5WlhObFlYSmphRjlpWVhSamFGOHdNMTltYVc1aGJBLmNzdiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc4ODIyMDgwMH19fV19&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEYCIQCOGUvo8wa8v8nMzKCt2vJQbWl2MwB~LQ0rA8uoCQ4pVAIhAPCmBLjtFnE7Rv3m3jfvUimxRJdVo5V-Q0DA09K2F7Va",
+        "resolved_count": 4,
+        "summary": "Following a strict final official-source portrait search and verification pass across all 30 candidate records in batch-03.json, 4 candidates (Barbara Kahl, Patti Adair, Jessica Arriaga, and Nick Manganaro) were successfully verified with confirmed Ballotpedia profiles and fully loading direct portrait image URLs from official licensed editorial sources. The remaining 26 candidates were marked as unresolved (not_found) due to persistent HTTP errors (such as 404 Not Found or access restrictions on external government, legislative, campaign, and media platforms), missing direct image URLs, or unconfirmed source pages.",
+        "unresolved_count": 26
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-last-batches/batch-04.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/w1H564h6P4ZRoIIfg6bpHk/sandbox/xYKUGFvCNOlx2cdQEsdQha_1786645354021_na1fn_L2hvbWUvdWJ1bnR1L2NhbmRpZGF0ZV9wb3J0cmFpdF9yZXNlYXJjaF9iYXRjaDA0X3Jlc3VsdHM.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvdzFINTY0aDZQNFpSb0lJZmc2YnBIay9zYW5kYm94L3hZS1VHRnZDTk9seDJjZFFFc2RRaGFfMTc4NjY0NTM1NDAyMV9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJOaGJtUnBaR0YwWlY5d2IzSjBjbUZwZEY5eVpYTmxZWEpqYUY5aVlYUmphREEwWDNKbGMzVnNkSE0uY3N2IiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzg4MjIwODAwfX19XX0_&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEYCIQC9TkLzr3IHh0PZ2pyBn1tVB1hWXBDVFfV70XmJaiLpwgIhALGnUVzruw6fFf0oTmkEWhrnYcz4ECkHecYfxb7pW0Kb",
+        "resolved_count": 2,
+        "summary": "Across the final batch of 7 candidates, official portraits were successfully verified for 2 candidates (Pamela DeLancy via her official campaign website and Yasmeen Bankole via Higher Heights for America PAC), with both direct image URLs confirmed via HTTP 200. The remaining 5 candidates (Jasmine Clark, Ardelia Holmes, Sean Freeman, William Parker, and Dax Alexander) were marked as not_found due to broken legislative photo links, lack of public direct static image URLs on campaign sites, or reliance on asset folders/social profiles without verified official standalone image sources.",
+        "unresolved_count": 5
+      },
+      "error": ""
+    }
+  ]
+}

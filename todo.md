@@ -337,8 +337,14 @@
  - [x] Verify and correct any unauthenticated Admin dashboard visibility so all operational content and mutations remain role-gated — Interactive preview showed the expected Admin Access Required gate; an earlier screenshot used an authenticated capture context
 
 ## AI Research Agent & Continuous Improvement
+- [x] Add clear country outlines to the spinning World Elections globe without compromising Earth texture or marker readability
+- [x] Replace all public uses of “Battlefield” with neutral political-journalism terminology
+- [x] Add an interactive search control to the homepage election map
+- [x] Verify and document World Elections data freshness and update state
+- [x] Run and document a complete strengths-and-gaps verification of World Elections and Historical Atlas
 - [x] Run a complete candidate-image and roster coverage audit for Senate, House, Governor, and Black Representation records
 - [x] Validate every stored or repository-fallback candidate portrait URL before finalizing the image audit
+- [x] Align the portrait audit with the live Black Representation override map so final coverage counts are exact
 - [x] Add a concise World Elections globe status panel to the protected Admin Overview if it improves operational monitoring
 - [x] Make Podcast Ops operational by surfacing today’s publication gate, current episode, recent runs, and actionable recovery state
 - [x] Make the Daily Intelligence Brief dashboard segment list independently scrollable
@@ -346,7 +352,8 @@
 - [x] Clarify and verify the Agent Desk approval-to-task handoff, including what the agent can and cannot do after approval
 - [x] Define and implement the Historical Atlas’s launch purpose with complete repository coverage and a prioritized expansion plan
 - [x] Restore the Historical Atlas build after adding the repository boundary-era archive
-- [ ] Source and verify the remaining 363 named candidate and Black Representation portraits from legitimate official or licensed sources
+- [ ] Source and verify the remaining 73 named candidate portraits and review two abbreviated or incomplete labels from legitimate official or licensed sources
+- [x] Integrate six validated Black Representation portrait sources and retain the AR-2 Chris Jones namesake exclusion
 - [x] Correct Historical Atlas messaging so it does not imply party-control or representative timelines exist in the current repository data
 - [x] Lower and reframe the desktop election map so Washington and the full U.S. geography are visible without top crowding
 - [x] Make Latest News independently scrollable within its dashboard panel

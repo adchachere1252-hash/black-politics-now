@@ -24,6 +24,9 @@ function createAdminContext(): TrpcContext {
 describe("election router", () => {
   it("uses the original repository’s verified photo map only as a safe fallback", () => {
     expect(resolveRepositoryCandidatePhoto("Cory Booker")).toMatch(/^https:\/\/unitedstates\.github\.io\/images\/congress\/225x275\//);
+    expect(resolveRepositoryCandidatePhoto("Everett Wess")).toMatch(/^https:\/\/ballotpedia\.org\/wiki\/images\//);
+    expect(resolveRepositoryCandidatePhoto("Robert White")).toBe("https://dccouncil.gov/wp-content/uploads/2025/02/CM-Robert-White-Headshot.jpg");
+    expect(resolveRepositoryCandidatePhoto("Chris Jones")).not.toEqual(expect.stringContaining("Arkansas_gubernatorial_candidate"));
     expect(resolveRepositoryCandidatePhoto("TBD — D Primary")).toBeNull();
     expect(photoWithRepositoryFallback("Cory Booker", "/manus-storage/editor-selected.jpg")).toBe("/manus-storage/editor-selected.jpg");
   });

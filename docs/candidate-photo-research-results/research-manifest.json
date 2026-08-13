@@ -1,0 +1,124 @@
+{
+  "results": [
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-batches/batch-01.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/rzEVLaWvA5yqXXRApfTgBc/sandbox/7WULGNmG9pv1m1FKCXssV7_1786628871446_na1fn_L2hvbWUvdWJ1bnR1L3BvcnRyYWl0X3Jlc2VhcmNoX2JhdGNoXzAx.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvcnpFVkxhV3ZBNXlxWFhSQXBmVGdCYy9zYW5kYm94LzdXVUxHTm1HOXB2MW0xRktDWHNzVjdfMTc4NjYyODg3MTQ0Nl9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDNCdmNuUnlZV2wwWDNKbGMyVmhjbU5vWDJKaGRHTm9YekF4LmNzdiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc4ODIyMDgwMH19fV19&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEUCIEmgb3f-ake0sU1POfaotvMV1mkgD4Ow0W65kk5WnnD5AiEAlzbVMmuV~~gfdeC2pvq6aOwUEsumoLCKb1oLseIm7s8_",
+        "resolved_count": 30,
+        "summary": "All thirty candidates in batch 01 (comprising Senate and House candidates across multiple states) were successfully researched and verified using authoritative sources including official candidate campaign websites, state party platforms, legislative and government directories (LegiStorm), and verified organizational reference profiles on Ballotpedia, with zero unresolved candidates.",
+        "unresolved_count": ""
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-batches/batch-02.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/Gf9cR2HvP5ZKjew8gpThme/sandbox/3KLMX3P5ZbeMj9Da1Rzq5B_1786628868275_na1fn_L2hvbWUvdWJ1bnR1L2JhdGNoLTAyLXJlc2VhcmNo.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvR2Y5Y1IySHZQNVpLamV3OGdwVGhtZS9zYW5kYm94LzNLTE1YM1A1WmJlTWo5RGExUnpxNUJfMTc4NjYyODg2ODI3NV9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJKaGRHTm9MVEF5TFhKbGMyVmhjbU5vLmNzdiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc4ODIyMDgwMH19fV19&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEUCIQC~v9n9cp9i17-nlt~EoM0oRGEvSjZX4tyk8kLnOt7u5wIgK-59y2eLH2X8VyzecOwObQCG836J9qHuKMnVcN9d2r4_",
+        "resolved_count": 8,
+        "summary": "Research for batch-02 successfully verified 8 candidate portraits from official legislative and government elected office sources (including official U.S. House and State Senate portraits via Wikimedia Commons for Jim Himes, Gus Bilirakis, Anna Luna, Frederica Wilson, Jasmine Clark, Brenton Awa, Jonathan Jackson, and J.D. Ford). The remaining 22 candidates could not be verified with direct licensed portraits from official or authorized editorial profiles, resulting in a status of not_found with blank URLs and explanatory verification notes.",
+        "unresolved_count": 22
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-batches/batch-03.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/eeYIrwGrblXLl9JsrFala7/sandbox/A0VWAgEmkyp9zZ6cGbSYqU_1786629029826_na1fn_L2hvbWUvdWJ1bnR1L2JhdGNoLTAzLXJlc2VhcmNo.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvZWVZSXJ3R3JibFhMbDlKc3JGYWxhNy9zYW5kYm94L0EwVldBZ0Vta3lwOXpaNmNHYlNZcVVfMTc4NjYyOTAyOTgyNl9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJKaGRHTm9MVEF6TFhKbGMyVmhjbU5vLmNzdiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc4ODIyMDgwMH19fV19&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEQCIDWrru4qdTm1AqR9KP7c~9KvN2SNG5HWCs13PfStjId3AiAQ9cqT8oYcLfRtPJ~~2Q5mHDwWCRWHkA5fMVVzJgyP9w__",
+        "resolved_count": 13,
+        "summary": "Portrait research for batch-03 candidates was conducted using official legislative, government, and licensed editorial profile sources such as Wikipedia and Ballotpedia. Out of 30 candidates, 13 were successfully verified with official or licensed portrait pages, while 17 remained unresolved due to the absence of accessible official campaign or licensed editorial profiles.",
+        "unresolved_count": 17
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-batches/batch-04.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/fgSNWZhp40bSfMM5OdFDCn/sandbox/C1FuRwuPhDKohFMQ7gqQku_1786628984410_na1fn_L2hvbWUvdWJ1bnR1L2NhbmRpZGF0ZS1waG90by1yZXNlYXJjaC1iYXRjaC0wNA.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvZmdTTldaaHA0MGJTZk1NNU9kRkRDbi9zYW5kYm94L0MxRnVSd3VQaERLb2hGTVE3Z3FRa3VfMTc4NjYyODk4NDQxMF9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJOaGJtUnBaR0YwWlMxd2FHOTBieTF5WlhObFlYSmphQzFpWVhSamFDMHdOQS5jc3YiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3ODgyMjA4MDB9fX1dfQ__&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEUCIGyFx1PtqSZWPkTfwZV0OD-mDimgX1w58Go5As~O89R5AiEAvbecBcGH2HmaReou6OD-L1NDNiuop7nOqNCnrUVmJCc_",
+        "resolved_count": 30,
+        "summary": "Portrait research for batch 04 successfully identified and verified official portrait sources for all 30 candidates. Sources utilized include official congressional and state legislative websites (such as House.gov and PA House), official candidate campaign websites, and verified candidate profile directories like Ballotpedia and Local Candidates, ensuring clear identity verification with zero unresolved entries.",
+        "unresolved_count": ""
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-batches/batch-05.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/DiuvnB96suPhgTj7xGbji0/sandbox/bGFD6WpKfB9Xo1TOSVvJNx_1786628814902_na1fn_L2hvbWUvdWJ1bnR1L3BvcnRyYWl0X3Jlc2VhcmNoX2JhdGNoXzA1.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvRGl1dm5COTZzdVBoZ1RqN3hHYmppMC9zYW5kYm94L2JHRkQ2V3BLZkI5WG8xVE9TVnZKTnhfMTc4NjYyODgxNDkwMl9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDNCdmNuUnlZV2wwWDNKbGMyVmhjbU5vWDJKaGRHTm9YekExLmNzdiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc4ODIyMDgwMH19fV19&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEUCIBm4uQuxX5eAXoZyjY~tSP3BKp4BtJFJXOlhKg32R9w7AiEA~dzFaGGYS-N-wD8TbBVUWIBRAOnc4K~qIO6icOnTk1Y_",
+        "resolved_count": 30,
+        "summary": "Portrait research for all 30 candidates in batch 05 was successfully conducted using official campaign websites, U.S. House history and legislative records, Washington State Legislature profiles, PBS Wisconsin profiles, and Ballotpedia organization profiles. All 30 candidates were successfully verified with clear portrait sources, resulting in 30 resolved entries and 0 unresolved entries.",
+        "unresolved_count": ""
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-batches/batch-06.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/7gCI3nL9tDex8CmvZZcKtB/sandbox/FSFC3YowiBGbUWWZrx6maz_1786628798481_na1fn_L2hvbWUvdWJ1bnR1L3BvcnRyYWl0X3Jlc2VhcmNoX2JhdGNoXzA2.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvN2dDSTNuTDl0RGV4OENtdlpaY0t0Qi9zYW5kYm94L0ZTRkMzWW93aUJHYlVXV1pyeDZtYXpfMTc4NjYyODc5ODQ4MV9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDNCdmNuUnlZV2wwWDNKbGMyVmhjbU5vWDJKaGRHTm9YekEyLmNzdiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc4ODIyMDgwMH19fV19&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEYCIQC4IPA9-qVI3BBJvLdSm00zjijjf0UJjZF4X9Z28idmKAIhAKg0m8g03HPd3EK29AgRMNivYZBSai-pgF~QHtZB1c6A",
+        "resolved_count": 27,
+        "summary": "Official and licensed portrait sources for the 30 candidates in batch-06 were rigorously researched using official congressional government profiles, official campaign websites, and verified organization profiles such as Ballotpedia. Out of 30 candidates, 27 were successfully resolved with verified portrait pages, direct image URLs, and source metadata, while 3 candidates (Eric Jones, Shane Lewis, and Bob Smith) were marked as not_found due to the lack of verifiable official campaign sites or licensed portrait records.",
+        "unresolved_count": 3
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-batches/batch-07.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/WTbMbX7JqJH9YATnUVmgcV/sandbox/t2SdiAoB1e2soxGk4UFzLd_1786628756941_na1fn_L2hvbWUvdWJ1bnR1L3BvcnRyYWl0X3Jlc2VhcmNoX2JhdGNoXzA3.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvV1RiTWJYN0pxSkg5WUFUblVWbWdjVi9zYW5kYm94L3QyU2RpQW9CMWUyc294R2s0VUZ6TGRfMTc4NjYyODc1Njk0MV9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDNCdmNuUnlZV2wwWDNKbGMyVmhjbU5vWDJKaGRHTm9YekEzLmNzdiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc4ODIyMDgwMH19fV19&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEUCIQD3WxV0xHxLlOwvMaxY7C5cgA~6lekZltS6Asu0868C6gIgGxDfqeCPYB-VSK-unc35ydUPr6RRDyoHOqAZTUYmGWE_",
+        "resolved_count": 30,
+        "summary": "All 30 candidates in batch 07 were successfully researched and verified using official campaign websites, official government and congressional office pages, and verified organizational profiles such as Ballotpedia. Each candidate's identity and portrait source were confirmed with zero unresolved entries.",
+        "unresolved_count": ""
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-batches/batch-08.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/gTxHJWncF3Uj6YnC1JGnBm/sandbox/2iv27AnNwBJ5MmnFCytnwO_1786628754639_na1fn_L2hvbWUvdWJ1bnR1L2NhbmRpZGF0ZS1wb3J0cmFpdC1yZXNlYXJjaC1iYXRjaC0wOA.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvZ1R4SEpXbmNGM1VqNlluQzFKR25CbS9zYW5kYm94LzJpdjI3QW5Od0JKNU1tbkZDeXRud09fMTc4NjYyODc1NDYzOV9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJOaGJtUnBaR0YwWlMxd2IzSjBjbUZwZEMxeVpYTmxZWEpqYUMxaVlYUmphQzB3T0EuY3N2IiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzg4MjIwODAwfX19XX0_&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEYCIQCXLZW-twitZdbtejbriCEFdZgaBTw~ka8oPds~MGfmHwIhANj6SituZA7GCTBh7-VH-h8Z0p09wT0kQRdAYYHBdixi",
+        "resolved_count": 30,
+        "summary": "Portrait research for all 30 candidates in batch 08 was successfully completed utilizing authoritative official government websites, state legislative profiles, and licensed editorial databases such as Ballotpedia and Wikipedia. Every candidate was verified with clear portrait sources, resulting in 30 resolved entries and 0 unresolved entries.",
+        "unresolved_count": ""
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-batches/batch-09.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/YdYH1FhuVCDVlqRdmQjBie/sandbox/TQRnQ8dFMdHrvoVtegBm1A_1786628844676_na1fn_L2hvbWUvdWJ1bnR1L2JhdGNoLTA5LXJlc2VhcmNo.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvWWRZSDFGaHVWQ0RWbHFSZG1RakJpZS9zYW5kYm94L1RRUm5ROGRGTWRIcnZvVnRlZ0JtMUFfMTc4NjYyODg0NDY3Nl9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJKaGRHTm9MVEE1TFhKbGMyVmhjbU5vLmNzdiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc4ODIyMDgwMH19fV19&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEUCIQDukNK3fj5jnFV8eaoyNb6C~PErlbM8KrXVBrpwhW--ZQIgLU14lqakQ90Xef~mbgTxi6avt53blHDUHwnTcMRVFO8_",
+        "resolved_count": 7,
+        "summary": "This portrait research batch successfully identified and verified official legislative, government elected office, and licensed editorial portrait sources for 7 candidates (including U.S. Representatives Nick LaLota, Andrew Garbarino, Nick Langworthy, state legislators Peter Oberacker and Mark Tedford, former assemblyman Mike LiPetri, and public figure Anthony Constantino) using official government websites and Wikimedia Commons/Wikipedia records. For the remaining 23 candidates, no verifiable official campaign, government, legislative, or licensed editorial portrait sources meeting strict identity criteria were found, resulting in status being marked as not_found with appropriate verification notes.",
+        "unresolved_count": 23
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-batches/batch-10.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/G918dHo4rlPnqPTs9wbDFn/sandbox/8EZr789SzNwlXZ5ZFhUF1Z_1786629295389_na1fn_L2hvbWUvdWJ1bnR1L2JhdGNoXzEwX3BvcnRyYWl0X3Jlc2VhcmNo.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvRzkxOGRIbzRybFBucVBUczl3YkRGbi9zYW5kYm94LzhFWnI3ODlTek53bFhaNVpGaFVGMVpfMTc4NjYyOTI5NTM4OV9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJKaGRHTm9YekV3WDNCdmNuUnlZV2wwWDNKbGMyVmhjbU5vLmNzdiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc4ODIyMDgwMH19fV19&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEUCIQCSf-ndkXan3yC2DTdeBdNMg7hGXf5pVaMuC8eyDuT60QIgXB77i1TBagylRkFOlBu2T1Ta8~nEsudaoNJy~97v3vg_",
+        "resolved_count": 29,
+        "summary": "Portrait research for batch-10 candidates was conducted utilizing authoritative licensed editorial profiles (Ballotpedia), official campaign websites, and government/legislative office sites (such as the Tennessee General Assembly and U.S. House member pages). Out of the 30 candidates, 29 were successfully verified with legitimate official or licensed portrait sources (licensed_editorial, official_campaign, and government_elected_office), while 1 candidate (Robert Murray) remained unresolved due to the lack of an available official campaign, government, or verified editorial profile.",
+        "unresolved_count": 1
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-batches/batch-11.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/GzA5RWDlAKNZaWUz14oz9p/sandbox/xe6NCVI5AbfukgoDTwTxio_1786628762197_na1fn_L2hvbWUvdWJ1bnR1L2NhbmRpZGF0ZV9yZXNlYXJjaF9iYXRjaF8xMQ.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvR3pBNVJXRGxBS05aYVdVejE0b3o5cC9zYW5kYm94L3hlNk5DVkk1QWJmdWtnb0RUd1R4aW9fMTc4NjYyODc2MjE5N19uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJOaGJtUnBaR0YwWlY5eVpYTmxZWEpqYUY5aVlYUmphRjh4TVEuY3N2IiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzg4MjIwODAwfX19XX0_&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEYCIQChQGz36ItawLnk3ukQZcUAL8u6dXwJxF-V9QsTh-XGAwIhAOJpALjvaTGmAAZsH~H5zE4FpsSEUI-1quHxfh~-8SRh",
+        "resolved_count": 26,
+        "summary": "For Batch 11 portrait research, official and licensed portrait sources were successfully identified and verified for 26 of the 30 candidates using official campaign websites, legislative member profiles, government elected-office directories, and licensed editorial profile sources. For the remaining 4 candidates (Bryce Nickel, Devin Hermanson, Leon Lawson, and Kurtis Engle), no active official campaign websites or verified primary portrait sources could be located, and they were accordingly marked as unresolved (not_found).",
+        "unresolved_count": 4
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-batches/batch-12.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/xxWrAZbA8XTA19BMuBMyQK/sandbox/QyDP4sonqyoVkxjbGkh5Rg_1786628980002_na1fn_L2hvbWUvdWJ1bnR1L2JsYWNrLXBvbGl0aWNzLW5vdy9kb2NzL2NhbmRpZGF0ZS1waG90by1yZXNlYXJjaC1iYXRjaGVzL2JhdGNoLTEyLXJlc2VhcmNo.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUveHhXckFaYkE4WFRBMTlCTXVCTXlRSy9zYW5kYm94L1F5RFA0c29ucXlvVmt4amJHa2g1UmdfMTc4NjYyODk4MDAwMl9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJKc1lXTnJMWEJ2YkdsMGFXTnpMVzV2ZHk5a2IyTnpMMk5oYm1ScFpHRjBaUzF3YUc5MGJ5MXlaWE5sWVhKamFDMWlZWFJqYUdWekwySmhkR05vTFRFeUxYSmxjMlZoY21Oby5jc3YiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3ODgyMjA4MDB9fX1dfQ__&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEUCIQCbwfztnhUtVMkSEbQc1BfedHTUFvqao2~4pPebIwLnCAIgAjrmNYRmk3L63xG031V5JWAPJm2z7hB~bsfvBH8ceuU_",
+        "resolved_count": 16,
+        "summary": "This portrait research batch successfully investigated 30 candidates from batch 12, yielding 16 verified portraits and 14 unresolved entries. Verified sources include official legislative profiles (Minnesota House of Representatives, Tennessee General Assembly, Wyoming Legislature, Georgia House of Representatives, Michigan House Democrats, and Nevada Legislature), official executive/government office pages (Nassau County Executive and South Carolina Attorney General), and licensed editorial profiles from Wikimedia Commons. Candidates without clear official or licensed portraits in primary government or editorial repositories were correctly marked as unresolved (not_found) with empty URL fields.",
+        "unresolved_count": 14
+      },
+      "error": ""
+    }
+  ]
+}

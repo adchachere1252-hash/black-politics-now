@@ -2,6 +2,8 @@ import mysql from "mysql2/promise";
 import { readFile, writeFile } from "node:fs/promises";
 
 const photos = JSON.parse(await readFile("/home/ubuntu/election-map-2026/server/allCandidatePhotos.json", "utf8"));
+const researchedPhotos = JSON.parse(await readFile("server/researchedCandidatePhotos.json", "utf8"));
+const blackRepresentationPhotos = JSON.parse(await readFile("server/blackRepresentationVerifiedPhotos.json", "utf8"));
 const connection = await mysql.createConnection(process.env.DATABASE_URL);
 
 const normalize = (name) => (name || "")
@@ -28,8 +30,9 @@ for (const [collection, table, nameField, photoField] of candidateFields) {
   for (const row of rows) {
     const exact = `${row.name}`.toLowerCase().trim();
     const normalized = normalize(row.name);
-    const mapping = photos[exact] || photos[normalized] || null;
-    people.push({ collection, name: row.name, stored: Boolean(row.storedPhoto), mapping });
+    const mapping = blackRepresentationPhotos[exact] || blackRepresentationPhotos[normalized] || researchedPhotos[exact] || researchedPhotos[normalized] || photos[exact] || photos[normalized] || null;
+    const stored = Boolean(row.storedPhoto && row.storedPhoto !== "None" && row.storedPhoto !== "null");
+    people.push({ collection, name: row.name, stored, mapping });
   }
 }
 
@@ -49,6 +52,8 @@ const sourceableUnresolved = unresolved.filter((person) => !person.name.toLowerC
 await writeFile("docs/candidate-photo-unresolved-2026-08-13.json", JSON.stringify(sourceableUnresolved, null, 2));
 console.log(JSON.stringify({
   originalRepoMapEntries: Object.keys(photos).length,
+  validatedResearchMapEntries: Object.keys(researchedPhotos).length,
+  blackRepresentationOverrideEntries: Object.keys(blackRepresentationPhotos).length,
   totals: {
     named: people.length,
     storedPhoto: people.filter((person) => person.stored).length,

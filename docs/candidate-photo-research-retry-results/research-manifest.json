@@ -1,0 +1,64 @@
+{
+  "results": [
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-retry-batches/batch-01.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/xYcpaRM4WIolYdfmJ0LskB/sandbox/1eWUj23GE0aG2ZKTft8HFD_1786630203159_na1fn_L2hvbWUvdWJ1bnR1L3Jlc29sdmVkX3BvcnRyYWl0cw.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUveFljcGFSTTRXSW9sWWRmbUowTHNrQi9zYW5kYm94LzFlV1VqMjNHRTBhRzJaS1RmdDhIRkRfMTc4NjYzMDIwMzE1OV9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDNKbGMyOXNkbVZrWDNCdmNuUnlZV2wwY3cuY3N2IiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzg4MjIwODAwfX19XX0_&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEYCIQDtgR2L0I7TeJ8nDF5WK-RxDWxwjQ~SBf7RvNZx1c2FIgIhAJVFmekdBHqURt3114eftuE92zC0tQpFggThEcE9scq8",
+        "resolved_count": 5,
+        "summary": "A comprehensive second-pass portrait audit was conducted for all 30 candidates listed in batch-01.json. By examining official legislative records, government profiles, and active campaign platforms, 5 candidate portraits were successfully recovered and validated with direct loading image URLs returning status 200 (Mark Baisley via the Colorado General Assembly, Adelita Grijalva via her official U.S. House profile, Melat Kiros via her official campaign site, Brenton Awa via the Digital Democracy legislative database, and J.D. Ford via the Indiana Senate Democratic caucus profile). The remaining 25 candidates were marked as not_found because their prior direct image URLs resulted in HTTP 404 errors and no verified, loading official or licensed portrait image URLs could be established from official sources.",
+        "unresolved_count": 25
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-retry-batches/batch-02.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/dLCa1kzHDZD1haFlBWctHt/sandbox/yK6cxgmVvkEZ2bTenUhUnr_1786630231547_na1fn_L2hvbWUvdWJ1bnR1L2JsYWNrLXBvbGl0aWNzLW5vdy9kb2NzL2NhbmRpZGF0ZS1waG90by1yZXNlYXJjaC1yZXRyeS1iYXRjaGVzL2JhdGNoLTAyLXJlc2VhcmNo.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvZExDYTFrekhEWkQxaGFGbEJXY3RIdC9zYW5kYm94L3lLNmN4Z21WdmtFWjJiVGVuVWhVbnJfMTc4NjYzMDIzMTU0N19uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJKc1lXTnJMWEJ2YkdsMGFXTnpMVzV2ZHk5a2IyTnpMMk5oYm1ScFpHRjBaUzF3YUc5MGJ5MXlaWE5sWVhKamFDMXlaWFJ5ZVMxaVlYUmphR1Z6TDJKaGRHTm9MVEF5TFhKbGMyVmhjbU5vLmNzdiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc4ODIyMDgwMH19fV19&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEYCIQDYRnyadY9WMU1bwb~s-sUoHNaxpB4GGazx371EJxXH9gIhAKfmSisJUk6bC~ulyFmOi4I42sMtmCddquZ1jpVL3XSP",
+        "resolved_count": 9,
+        "summary": "Out of 30 candidates audited in batch-02, 9 official portraits were successfully recovered and verified from official campaign and legislative source pages, with direct image URLs tested and confirmed loading. The remaining 21 candidates were marked as unresolved (status not_found) because their official source pages either lacked accessible high-resolution candidate portraits or only featured seals, logos, or generic placeholders rather than verifiable direct portrait image URLs.",
+        "unresolved_count": 21
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-retry-batches/batch-03.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/cbup4IGmzd3zN5K5STOP5s/sandbox/olPiEUXrc0GevKi9coY4GT_1786630484630_na1fn_L2hvbWUvdWJ1bnR1L2NhbmRpZGF0ZS1waG90by1yZXNlYXJjaC1iYXRjaC0wMw.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvY2J1cDRJR216ZDN6TjVLNVNUT1A1cy9zYW5kYm94L29sUGlFVVhyYzBHZXZLaTljb1k0R1RfMTc4NjYzMDQ4NDYzMF9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJOaGJtUnBaR0YwWlMxd2FHOTBieTF5WlhObFlYSmphQzFpWVhSamFDMHdNdy5jc3YiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3ODgyMjA4MDB9fX1dfQ__&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEQCIF9lsKJVoCzkiyPSo6qqayaHvCxqdPgR-Bvp8PAHfEDiAiBSctioAamB9a4urLcAL2Qdx2nUGJ0jwfP5-StJx-9Q9A__",
+        "resolved_count": 7,
+        "summary": "In this second-pass portrait audit of batch-03.json containing 30 candidates, we successfully recovered and verified direct portrait image URLs for 7 candidates (Chris Rabb, Robert Wittman, Elaine Luria, Matt Boehnke, Abraham Hamadeh, Paul Gosar, and Doris Matsui) across official legislative, government elected office, and licensed editorial sources with loading URL validation. The remaining 23 candidates were marked as not_found due to broken links, HTTP errors, missing profile pages, or unverified campaign URLs without valid direct image assets.",
+        "unresolved_count": 23
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-retry-batches/batch-04.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/NJE3Nhp0IhhslZpUSkGhpi/sandbox/AZtqIBjFMZh3yrXII8Jbg3_1786630288000_na1fn_L2hvbWUvdWJ1bnR1L2JsYWNrLXBvbGl0aWNzLW5vdy9kb2NzL2NhbmRpZGF0ZS1waG90by1yZXNlYXJjaC1yZXRyeS1iYXRjaGVzL2JhdGNoLTA0LXJlc29sdmVk.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvTkpFM05ocDBJaGhzbFpwVVNrR2hwaS9zYW5kYm94L0FadHFJQmpGTVpoM3lyWElJOEpiZzNfMTc4NjYzMDI4ODAwMF9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJKc1lXTnJMWEJ2YkdsMGFXTnpMVzV2ZHk5a2IyTnpMMk5oYm1ScFpHRjBaUzF3YUc5MGJ5MXlaWE5sWVhKamFDMXlaWFJ5ZVMxaVlYUmphR1Z6TDJKaGRHTm9MVEEwTFhKbGMyOXNkbVZrLmNzdiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc4ODIyMDgwMH19fV19&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEUCIFtuTCUfY19qOkihg9710KD0b9P9fLi17qYbet0VRlqPAiEA-AypaWCkNmsFRksSS7Ne5WGLGk7WJTBCHcBpOxDHoTI_",
+        "resolved_count": 5,
+        "summary": "In this second-pass portrait audit of batch-04.json comprising 30 candidates, 5 candidate portraits were successfully recovered and verified from licensed editorial profiles on Ballotpedia with directly loading S3 image URLs (Joseph Chou, Joel Azumah, Caroline Shinkle, Jomo Williams, and Diamant Hysenaj). The remaining 25 candidates were marked as not_found because source pages lacked verified portrait photographs or contained only generic placeholders/icons without loading candidate headshots.",
+        "unresolved_count": 25
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-retry-batches/batch-05.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/H9aXT3Tn904XThiXzGJmc2/sandbox/CmQzimqqd4pTbpt2HcGSIp_1786630340905_na1fn_L2hvbWUvdWJ1bnR1L2NhbmRpZGF0ZV9waG90b19yZXNlYXJjaF9iYXRjaDA1.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvSDlhWFQzVG45MDRYVGhpWHpHSm1jMi9zYW5kYm94L0NtUXppbXFxZDRwVGJwdDJIY0dTSXBfMTc4NjYzMDM0MDkwNV9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJOaGJtUnBaR0YwWlY5d2FHOTBiMTl5WlhObFlYSmphRjlpWVhSamFEQTEuY3N2IiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzg4MjIwODAwfX19XX0_&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEUCIFU-LsaBTCP0oTJAlYRh0bTvY-jWxXtyUD2yrCHobUGkAiEAyepPvDqMpZEqwfbN9SyHoZluNs1NF5Qh3Iu~Sun0KZY_",
+        "resolved_count": 18,
+        "summary": "In this second-pass portrait audit of batch-05, 18 candidate portraits were successfully recovered and verified from official Ballotpedia and legislative source pages with confirmed direct image URLs. The remaining 12 candidates were marked as unresolved (not_found) due to missing source pages, placeholder initials, incorrect asset matches, or non-portrait site elements, with all URLs left blank in accordance with audit guidelines.",
+        "unresolved_count": 12
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/black-politics-now/docs/candidate-photo-research-retry-batches/batch-06.json",
+      "output": {
+        "research_file": "https://private-us-east-1.manuscdn.com/sessionFile/GmBY4r7i9ns621BCYa6rmX/sandbox/ZMRx37KP5gh1WZE8s0QS5z_1786630124459_na1fn_L2hvbWUvdWJ1bnR1L2JsYWNrLXBvbGl0aWNzLW5vdy9kb2NzL2NhbmRpZGF0ZS1waG90by1yZXNlYXJjaC1yZXRyeS1iYXRjaGVzL2JhdGNoLTA2LXJlc3VsdHM.csv?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvR21CWTRyN2k5bnM2MjFCQ1lhNnJtWC9zYW5kYm94L1pNUngzN0tQNWdoMVdaRThzMFFTNXpfMTc4NjYzMDEyNDQ1OV9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDJKc1lXTnJMWEJ2YkdsMGFXTnpMVzV2ZHk5a2IyTnpMMk5oYm1ScFpHRjBaUzF3YUc5MGJ5MXlaWE5sWVhKamFDMXlaWFJ5ZVMxaVlYUmphR1Z6TDJKaGRHTm9MVEEyTFhKbGMzVnNkSE0uY3N2IiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzg4MjIwODAwfX19XX0_&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEYCIQChwLZrcY-F~7MCI1V8EcNB3Oppz4XPH3sgulExKNUiAAIhAN419F4TyLz93imJwtRd6D2v5BaPVyF-dFm-NKPJN2AX",
+        "resolved_count": "",
+        "summary": "In this second-pass portrait audit of batch-06 comprising 28 candidates across the Governor and Black Representation collections, all prior direct image URLs failed HTTP validation (returning 400, 403, or 404 errors) or lacked verifiable direct loading portrait URLs from official or licensed sources. Consequently, all 28 candidate records have been marked as not_found with blank URLs and documented verification notes explaining the validation failure, resulting in 0 verified portraits and 28 unresolved candidates.",
+        "unresolved_count": 28
+      },
+      "error": ""
+    }
+  ]
+}

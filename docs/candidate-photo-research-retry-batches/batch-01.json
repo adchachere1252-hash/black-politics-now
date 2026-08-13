@@ -1,0 +1,202 @@
+[
+  {
+    "collection": "Senate",
+    "name": "Mark Baisley",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://baisleyforsenate.com/",
+    "priorDirectImageUrl": "https://baisleyforsenate.com/wp-content/uploads/mark-baisley.jpg",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Adelita Grijalva",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://legistorm.com/person/bio/513356/Adelita_S_Grijalva.html",
+    "priorDirectImageUrl": "https://www.legistorm.com/img/person/513356.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Danielle Sterbinsky",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.sterbinskyforcongress.com/",
+    "priorDirectImageUrl": "https://www.sterbinskyforcongress.com/wp-content/uploads/dani-sterbinsky.jpg",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Chris Jones",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Melat Kiros",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "George Austin",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Christopher Lancia",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Nicole Locklin",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Phil Ehr",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Amanda Hollowell",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Maura Keller",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Tony Kozycki",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Kelly Esti",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "C. Gegen",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "P. Delancy",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Chris Harden",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Ceretta Smith",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Shawn Harris",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Adriel Lam",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Brenton Awa",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://en.wikipedia.org/wiki/Brenton_Awa",
+    "priorDirectImageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/36/Brenton_Awa_official_portrait.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Kaylee Peterson",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Ellie Gilbreath",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Jamee Decio",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Kelly Thompson",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Joshua Cox",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "J.D. Ford",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://en.wikipedia.org/wiki/J._D._Ford",
+    "priorDirectImageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/39/J._D._Ford_2023_portrait.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Cynthia Wirth",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Mary Allen",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Brad Meyer",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "John Williams",
+    "stored": false,
+    "mapping": null
+  }
+]

@@ -1,10 +1,16 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 
-type PhotoMap = Record<string, string>;
+type PhotoMap = Record<string, unknown>;
 
 const photoMap: PhotoMap = JSON.parse(
   readFileSync(path.join(process.cwd(), "server", "repositoryCandidatePhotos.json"), "utf8")
+) as PhotoMap;
+const researchedPhotoMap: PhotoMap = JSON.parse(
+  readFileSync(path.join(process.cwd(), "server", "researchedCandidatePhotos.json"), "utf8")
+) as PhotoMap;
+const blackRepresentationPhotoMap: PhotoMap = JSON.parse(
+  readFileSync(path.join(process.cwd(), "server", "blackRepresentationVerifiedPhotos.json"), "utf8")
 ) as PhotoMap;
 
 const BIOGUIDE_BASE = "https://unitedstates.github.io/images/congress/225x275";
@@ -24,6 +30,10 @@ function hasUsableStoredPhoto(url: string | null | undefined): url is string {
   return Boolean(url && url.trim() && url !== "None" && url !== "null");
 }
 
+function getStringToken(value: unknown): string | null {
+  return typeof value === "string" && value.trim() ? value : null;
+}
+
 /**
  * Resolves only repository-verified photo tokens. The returned URL is a display
  * fallback; it never overwrites an editor-managed database photo field.
@@ -31,7 +41,9 @@ function hasUsableStoredPhoto(url: string | null | undefined): url is string {
 export function resolveRepositoryCandidatePhoto(name: string | null | undefined): string | null {
   if (!name || name.trim().toLowerCase().startsWith("tbd")) return null;
   const exact = name.toLowerCase().trim();
-  const token = photoMap[exact] ?? photoMap[normalizeName(name)];
+  const researched = getStringToken(blackRepresentationPhotoMap[exact]) ?? getStringToken(blackRepresentationPhotoMap[normalizeName(name)]) ?? getStringToken(researchedPhotoMap[exact]) ?? getStringToken(researchedPhotoMap[normalizeName(name)]);
+  if (researched) return researched;
+  const token = getStringToken(photoMap[exact]) ?? getStringToken(photoMap[normalizeName(name)]);
   if (!token) return null;
   if (token.startsWith("bioguide:")) return `${BIOGUIDE_BASE}/${token.slice("bioguide:".length)}.jpg`;
   if (token.startsWith("manus:")) {

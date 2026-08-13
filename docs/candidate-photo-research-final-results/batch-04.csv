@@ -1,0 +1,31 @@
+collection,candidate_name,status,portrait_page_url,direct_image_url,source_type,source_title,verification_note
+House,Mike Kirchner,verified,https://ballotpedia.org/Mike_Kirchner,https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/Mike_Kirchner_20260324_055419.jpeg,licensed_editorial,Ballotpedia - Mike Kirchner,Verified official candidate portrait from Ballotpedia infobox.
+House,Barbara Kahl,verified,https://ballotpedia.org/Barbara_Kahl,https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/1024x1024_20260427_050324_16255.png,licensed_editorial,Ballotpedia - Barbara Kahl,Verified official candidate portrait from Ballotpedia infobox.
+House,Patti Adair,verified,https://ballotpedia.org/Patti_Adair,https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/Patti_Adair_20260513_205324_1.jpg,licensed_editorial,Ballotpedia - Patti Adair,Verified official candidate portrait from Ballotpedia infobox.
+House,Jessica Arriaga,verified,https://ballotpedia.org/Jessica_Arriaga,https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/Jessica_Arriaga_20260321_022803.png,licensed_editorial,Ballotpedia - Jessica Arriaga,Verified official candidate portrait from Ballotpedia infobox.
+House,Aurora Stuski,not_found,,,,,Ballotpedia page contains only generic placeholder image (SubmitPhoto-150px.png).
+House,Nick Manganaro,verified,https://ballotpedia.org/Nick_Manganaro,https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/Nick_Manganaro.png,licensed_editorial,Ballotpedia - Nick Manganaro,Verified official candidate portrait from Ballotpedia infobox.
+House,Marty Young,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Marty Young."
+House,James Hayes,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for James Hayes."
+House,Tony Guy,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Tony Guy."
+House,Vincent Dixie,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Vincent Dixie."
+House,Robert Murray,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Robert Murray."
+House,Philip Harding,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Philip Harding."
+House,Julie Perry,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Julie Perry."
+House,Arthur Purves,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Arthur Purves."
+House,Bryce Nickel,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Bryce Nickel."
+House,Devin Hermanson,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Devin Hermanson."
+House,Leon Lawson,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Leon Lawson."
+House,Kshama Sawant,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Kshama Sawant."
+House,Kurtis Engle,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Kurtis Engle."
+House,Scott Fitzgerald,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Scott Fitzgerald."
+Governor,Cindy Holscher,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Cindy Holscher."
+Governor,Jermaine Johnson,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Jermaine Johnson."
+Governor,Sarah Godlewski,verified,https://en.wikipedia.org/wiki/Sarah%20Godlewski,https://upload.wikimedia.org/wikipedia/commons/e/ee/Sarah_Godlewski_Photo.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled,licensed_editorial,Wikipedia - Sarah Godlewski,Verified official portrait from Wikipedia pageimage.
+Governor,Kenneth Casner,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Kenneth Casner."
+Governor,Ryan Fazio,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Ryan Fazio."
+Governor,Ty Masterson,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Ty Masterson."
+Governor,Lisa Demuth,verified,https://en.wikipedia.org/wiki/Lisa%20Demuth,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Lisa_Demuth%2C_2026_%28cropped%29.jpg/500px-Lisa_Demuth%2C_2026_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail,licensed_editorial,Wikipedia - Lisa Demuth,Verified official portrait from Wikipedia pageimage.
+Governor,Alan Wilson,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Alan Wilson."
+Governor,David Varnam,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for David Varnam."
+Governor,Eric Barlow,not_found,,,,,"Could not verify a valid direct portrait URL from official campaign, legislative, or editorial sources for Eric Barlow."

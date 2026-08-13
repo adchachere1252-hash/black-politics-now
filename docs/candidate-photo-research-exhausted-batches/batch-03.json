@@ -1,0 +1,184 @@
+[
+  {
+    "collection": "House",
+    "name": "Arthur Purves",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.votepurves.org/",
+    "priorDirectImageUrl": "https://www.votepurves.org/images/logo.png",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Bryce Nickel",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Devin Hermanson",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Leon Lawson",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Kshama Sawant",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Kshama_Sawant",
+    "priorDirectImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Kshama_Sawant_%28cropped%29.jpg/800px-Kshama_Sawant_%28cropped%29.jpg",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "http_400"
+  },
+  {
+    "collection": "House",
+    "name": "Kurtis Engle",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Scott Fitzgerald",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "http://fitzgerald.house.gov/about",
+    "priorDirectImageUrl": "https://fitzgerald.house.gov/sites/evo-subsites/fitzgerald.house.gov/files/evo-image-placeholder.png",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Governor",
+    "name": "Cindy Holscher",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Cindy_Holscher",
+    "priorDirectImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Cindy_Holscher_official_portrait.jpg/800px-Cindy_Holscher_official_portrait.jpg",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "http_400"
+  },
+  {
+    "collection": "Governor",
+    "name": "Jermaine Johnson",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.scstatehouse.gov/member.php?code=0943181705",
+    "priorDirectImageUrl": "https://www.scstatehouse.gov/member_photos/0943181705.jpg",
+    "priorSourceType": "official_legislative",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Governor",
+    "name": "Kenneth Casner",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Ken_Casner",
+    "priorDirectImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Ken_Casner.jpg/800px-Ken_Casner.jpg",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "http_400"
+  },
+  {
+    "collection": "Governor",
+    "name": "Ryan Fazio",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ryanfazio.com/",
+    "priorDirectImageUrl": "https://ryanfazio.com/favicon.ico",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Governor",
+    "name": "Ty Masterson",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.kslegislature.gov/b2025_26/legislators/sen_masterson_ty_1/",
+    "priorDirectImageUrl": "https://www.kslegislature.gov/b2025_26/images/legislators/sen_masterson_ty_1.jpg",
+    "priorSourceType": "official_legislative",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Governor",
+    "name": "Alan Wilson",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.scag.gov/about-the-office/attorney-general-alan-wilson/",
+    "priorDirectImageUrl": "https://www.scag.gov/wp-content/uploads/2019/12/Alan-Wilson-Official-Photo.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Governor",
+    "name": "David Varnam",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Governor",
+    "name": "Eric Barlow",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://wyoleg.gov/Legislators/2023/Senate/Barlow",
+    "priorDirectImageUrl": "https://wyoleg.gov/Legislators/2023/Senate/Barlow.jpg",
+    "priorSourceType": "official_legislative",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Chris Jones",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Robert White",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Amanda Hollowell",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Jasmine Clark",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.house.ga.gov/Representatives/en-US/member/1085/Jasmine-Clark",
+    "priorDirectImageUrl": "https://www.house.ga.gov/Documents/RepresentativePhotos/1085/clarkJasmine.jpg",
+    "priorSourceType": "official_legislative",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Ardelia Holmes",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Sean Freeman",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "William Parker",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Dax Alexander",
+    "stored": false,
+    "mapping": null
+  }
+]

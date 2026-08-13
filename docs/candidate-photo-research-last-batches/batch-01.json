@@ -1,0 +1,226 @@
+[
+  {
+    "collection": "House",
+    "name": "Chris Jones",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "George Austin",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/George_Austin",
+    "priorDirectImageUrl": "https://s3.amazonaws.com/ballotpedia-api4/files/George_austin_26_2026-07-06_155555.png",
+    "priorSourceType": "reputable_organization",
+    "validationFailure": "source_page_or_image_unavailable"
+  },
+  {
+    "collection": "House",
+    "name": "Amanda Hollowell",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Maura Keller",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Maura_Keller",
+    "priorDirectImageUrl": "https://s3.amazonaws.com/ballotpedia-api4/files/Maura_Keller.jpg",
+    "priorSourceType": "reputable_organization",
+    "validationFailure": "source_page_or_image_unavailable"
+  },
+  {
+    "collection": "House",
+    "name": "Tony Kozycki",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Tony_Kozycki",
+    "priorDirectImageUrl": "https://s3.amazonaws.com/ballotpedia-api4/files/Tony-Kozycki-Approved-Headshot_20260701_190831_30771_1.jpeg",
+    "priorSourceType": "reputable_organization",
+    "validationFailure": "source_page_or_image_unavailable"
+  },
+  {
+    "collection": "House",
+    "name": "C. Gegen",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "P. Delancy",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Ceretta Smith",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Ceretta_Smith",
+    "priorDirectImageUrl": "https://s3.amazonaws.com/ballotpedia-api4/files/Ceretta_Smith.jpeg",
+    "priorSourceType": "reputable_organization",
+    "validationFailure": "source_page_or_image_unavailable"
+  },
+  {
+    "collection": "House",
+    "name": "Shawn Harris",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Adriel Lam",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Adriel_Lam",
+    "priorDirectImageUrl": "https://s3.amazonaws.com/ballotpedia-api4/files/Profile-2026_20260704_222540_30891_1.jpg",
+    "priorSourceType": "reputable_organization",
+    "validationFailure": "source_page_or_image_unavailable"
+  },
+  {
+    "collection": "House",
+    "name": "Ellie Gilbreath",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Kelly Thompson",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Joshua Cox",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Mary Allen",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "John Williams",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Dan Schwartz",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "John Olszewski",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Callie Barr",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Christian Vukasovich",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "William Lawrence",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Michael Chiaradio",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Jeffrey Hulum",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Chris Backemeyer",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Allison Ziogas",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Diana Kastenbaum",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://dianaforny24.com/",
+    "priorDirectImageUrl": "https://dianaforny24.com/",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "fetch failed"
+  },
+  {
+    "collection": "House",
+    "name": "Jerrad Christian",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.localcandidates.org/politicians/jerrad-christian/about/c5721381-e1c2-4bd0-9ba4-c7a1175c7f6d",
+    "priorDirectImageUrl": "https://www.localcandidates.org/politicians/jerrad-christian/about/c5721381-e1c2-4bd0-9ba4-c7a1175c7f6d",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "http_429"
+  },
+  {
+    "collection": "House",
+    "name": "Nicole Gronli",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.nikkigforsd.com/",
+    "priorDirectImageUrl": "https://www.nikkigforsd.com/images/nikki.jpg",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Robert Wittman",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.congress.gov/member/robert-wittman/W000804",
+    "priorDirectImageUrl": "https://bioguide.congress.gov/bioguide/photo/W/W000804.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "source_page_or_image_unavailable"
+  },
+  {
+    "collection": "House",
+    "name": "Ace Parsi",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.aceforcongress.com/",
+    "priorDirectImageUrl": "https://www.aceforcongress.com/images/ace.jpg",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Rebecca Cooke",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://cookeforwisconsin.com/",
+    "priorDirectImageUrl": "https://cookeforwisconsin.com/images/rebecca.jpg",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  }
+]

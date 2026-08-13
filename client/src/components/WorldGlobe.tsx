@@ -55,7 +55,7 @@ export default function WorldGlobe({ elections }: { elections: WorldElectionPoin
     texture.colorSpace = THREE.SRGBColorSpace;
     const earth = new THREE.Mesh(
       new THREE.SphereGeometry(2.15, 64, 64),
-      new THREE.MeshStandardMaterial({ map: texture, color: 0xffffff, roughness: 0.8, metalness: 0.01, emissive: 0x143248, emissiveIntensity: 0.28 }),
+      new THREE.MeshStandardMaterial({ map: texture, color: 0xffffff, roughness: 0.8, metalness: 0.01, emissive: 0x102b40, emissiveIntensity: 0.16 }),
     );
     const atmosphere = new THREE.Mesh(
       new THREE.SphereGeometry(2.32, 48, 48),
@@ -90,7 +90,7 @@ export default function WorldGlobe({ elections }: { elections: WorldElectionPoin
         });
         const geometry = new THREE.BufferGeometry();
         geometry.setAttribute("position", new THREE.Float32BufferAttribute(points, 3));
-        borders = new THREE.LineSegments(geometry, new THREE.LineBasicMaterial({ color: 0x89e7ff, transparent: true, opacity: 0.36 }));
+        borders = new THREE.LineSegments(geometry, new THREE.LineBasicMaterial({ color: 0xf4ddb0, transparent: true, opacity: 0.76 }));
         globe.add(borders);
       })
       .catch(() => undefined);

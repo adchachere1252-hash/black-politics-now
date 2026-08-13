@@ -1,0 +1,31 @@
+collection,candidate_name,status,portrait_page_url,direct_image_url,source_type,source_title,verification_note
+House,Christy Peterson,not_found,,,,,Campaign site lacks direct candidate portrait image (only contains map and campaign flyers).
+House,Jason Clark,verified,https://ballotpedia.org/Jason_Ray_Clark_(Colorado),https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/Jason_Clark_25.PNG,organization_profile,Jason Ray Clark (Colorado) - Ballotpedia,Verified actual candidate portrait from Ballotpedia organization profile.
+House,Jillian Gilchrest,not_found,,,,,Campaign site does not contain a verified direct candidate portrait image.
+House,Tom Wells,verified,https://ballotpedia.org/Tom_Wells,https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/Tom_WellsFL1.jpeg,organization_profile,Tom Wells - Ballotpedia,Verified actual candidate portrait from Ballotpedia organization profile.
+House,John Liccione,verified,https://ballotpedia.org/John_Liccione,https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/JohnLiccione2023.jpg,organization_profile,John Liccione - Ballotpedia,Verified actual candidate portrait from Ballotpedia organization profile.
+House,Christopher Irizarry,verified,https://ballotpedia.org/Christopher_Irizarry,https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/ChristopherIrizarry2025.jpg,organization_profile,Christopher Irizarry - Ballotpedia,Verified actual candidate portrait from Ballotpedia organization profile.
+House,Jim Kingston,not_found,,,,,"Ballotpedia page only has a silhouette placeholder image, lacking an actual portrait."
+House,Matt Day,not_found,,,,,Campaign site does not provide a verified direct candidate portrait image.
+House,Jim Duffie,not_found,,,,,Ballotpedia page lacks an actual portrait image (shows placeholder).
+House,J. Salvesen,not_found,,,,,Ballotpedia page lacks an actual portrait image (shows placeholder).
+House,Justin Pinker,not_found,,,,,Campaign site lacks a verified direct candidate portrait image.
+House,John Cowan,verified,https://ballotpedia.org/John_Cowan,https://s3.amazonaws.com/ballotpedia-api4/files/thumbs/200/300/John_Cowan_2026_2026-04-21_172719.jpg,organization_profile,John Cowan - Ballotpedia,Verified actual candidate portrait from Ballotpedia organization profile.
+House,Jeanine Driscoll,not_found,,,,,No official portrait page or direct image found in official or reputable sources.
+House,George Marsh,not_found,,,,,No official portrait page or direct image found in official or reputable sources.
+House,Melvin Rivera,not_found,,,,,No official portrait page or direct image found in official or reputable sources.
+House,Lewis Mizrahi,not_found,,,,,No official portrait page or direct image found in official or reputable sources.
+House,Jennifer Moore,not_found,,,,,No official portrait page or direct image found in official or reputable sources.
+House,Stylo Sapaskis,not_found,,,,,No official portrait page or direct image found in official or reputable sources.
+House,Joseph Cinquemani,not_found,,,,,No official portrait page or direct image found in official or reputable sources.
+House,Jackie Auringer,not_found,,,,,No official portrait page or direct image found in official or reputable sources.
+House,Peter Oberacker,not_found,,,,,Prior government page and direct image URL return HTTP 404/403 and are inaccessible/stale.
+House,Ralph Ambrosio,not_found,,,,,No official portrait page or direct image found in official or reputable sources.
+House,Kailee Buller,not_found,,,,,No official portrait page or direct image found in official or reputable sources.
+House,Virginia McIntyre,not_found,,,,,No official portrait page or direct image found in official or reputable sources.
+House,Dennis Hannon,not_found,,,,,No official portrait page or direct image found in official or reputable sources.
+House,Eugene Douglass,not_found,,,,,No official portrait page or direct image found in official or reputable sources.
+House,Mahesh Ganorkar,not_found,,,,,No official portrait page or direct image found in official or reputable sources.
+House,Jack Codiga,not_found,,,,,No official portrait page or direct image found in official or reputable sources.
+House,Eric Conroy,not_found,,,,,No official portrait page or direct image found in official or reputable sources.
+House,Cleophus Dulaney,not_found,,,,,No official portrait page or direct image found in official or reputable sources.

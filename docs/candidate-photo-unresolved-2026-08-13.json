@@ -1,253 +1,7 @@
 [
   {
-    "collection": "Senate",
-    "name": "Everett Wess",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Senate",
-    "name": "Adam Hamilton",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Senate",
-    "name": "Troy Jackson",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Senate",
-    "name": "Abdul El-Sayed",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Senate",
-    "name": "Dan Osborn",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Senate",
-    "name": "Annie Andrews",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Senate",
-    "name": "Brian Bengs",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Senate",
-    "name": "Marquita Bradshaw",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Senate",
-    "name": "Mark Baisley",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Senate",
-    "name": "Larry E. Marker",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Senate",
-    "name": "Bert Mizusawa",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Clyde Jones",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Lee McInnis",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Amanda Pusczek",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Andrew Sneed",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Amish Shah",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Jonathan Nez",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Elizabeth Lee",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "JoAnna Mendoza",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Adelita Grijalva",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Bernadette Greene-Placentia",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Danielle Sterbinsky",
-    "stored": false,
-    "mapping": null
-  },
-  {
     "collection": "House",
     "name": "Chris Jones",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Robb Ryerse",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Melat Kiros",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Dwayne Romero",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Eileen Laubacher",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Jessica Killin",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Manny Rutinel",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Amy Chai",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "George Austin",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Christopher Lancia",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Jim Himes",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Gus Bilirakis",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Anna Luna",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Frederica Wilson",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Nicole Locklin",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Phil Ehr",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Amanda Hollowell",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Maura Keller",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Tony Kozycki",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Kelly Esti",
     "stored": false,
     "mapping": null
   },
@@ -265,61 +19,13 @@
   },
   {
     "collection": "House",
-    "name": "Chris Harden",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Ceretta Smith",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Jasmine Clark",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "Shawn Harris",
     "stored": false,
     "mapping": null
   },
   {
     "collection": "House",
-    "name": "Adriel Lam",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Brenton Awa",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Kaylee Peterson",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "Ellie Gilbreath",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Jonathan Jackson",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Jamee Decio",
     "stored": false,
     "mapping": null
   },
@@ -337,61 +43,13 @@
   },
   {
     "collection": "House",
-    "name": "J.D. Ford",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Cynthia Wirth",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "Mary Allen",
     "stored": false,
     "mapping": null
   },
   {
     "collection": "House",
-    "name": "Brad Meyer",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "John Williams",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "M. Wingfield",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Melissa Strange",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Ned Pillersdorf",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Zach Dembo",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Matt Dunlap",
     "stored": false,
     "mapping": null
   },
@@ -409,18 +67,6 @@
   },
   {
     "collection": "House",
-    "name": "Hillary Scholten",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Callie Barr",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "Christian Vukasovich",
     "stored": false,
     "mapping": null
@@ -428,30 +74,6 @@
   {
     "collection": "House",
     "name": "William Lawrence",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Ray Pooley",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Ben Ambrose",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Donavan McKinney",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Doug Chapin",
     "stored": false,
     "mapping": null
   },
@@ -469,49 +91,7 @@
   },
   {
     "collection": "House",
-    "name": "Wesley Bell",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Emanuel Cleaver",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "Chris Backemeyer",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Becky Stille",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Analilia Mejia",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Patrick Halpin",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Claire Valdez",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Brad Lander",
     "stored": false,
     "mapping": null
   },
@@ -523,97 +103,7 @@
   },
   {
     "collection": "House",
-    "name": "Micah Lasher",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Darializa Avila Chevalier",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Cait Conley",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Blake Gendebien",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "John Mannion",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "Diana Kastenbaum",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "R. Smith",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Chuck Hubbard",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Cyril Jefferson",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Colby Watson",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Alma Adams",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Paul Barringer",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Joshua Kolasinski",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Brian Poindexter",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Vanessa Enoch",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Kristina Knickerbocker",
     "stored": false,
     "mapping": null
   },
@@ -625,223 +115,13 @@
   },
   {
     "collection": "House",
-    "name": "John Croisant",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Jena Nelson",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "C. Beck",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Chris Rabb",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Paige Cognetti",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Rachel Wallace",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Janelle Stelson",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Nancy Mannion",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Justin Wagner",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Nancy Lacore",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Zyon Khalifa",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Eunice Lehmacher",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Courtney McClain",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Mallory Dittmer",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "James Clyburn",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "John Vincent",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "Nicole Gronli",
     "stored": false,
     "mapping": null
   },
   {
     "collection": "House",
-    "name": "Kyle Rable",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Kristin Hook",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Katy Padilla Stout",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Frederick Haynes III",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Ben McAdams",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Peter Crosby",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Kent Udell",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Jonny Larsen",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "Robert Wittman",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Elaine Luria",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Robert Scott",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Donald Beyer",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "James Walkinshaw",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Mary Silva",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Matt Boehnke",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Carmela Conroy",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Nirav Sheth",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Bob Hagglund",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Derek Maynes",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Vince George",
     "stored": false,
     "mapping": null
   },
@@ -865,109 +145,7 @@
   },
   {
     "collection": "House",
-    "name": "John Mills",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "David Perry",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Jay Feely",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Zuhdi Jasser",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Mark Lamb",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Daniel Butierez",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Abraham Hamadeh",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Paul Gosar",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Robin Littau",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "Eric Jones",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Michael Masuda",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Doris Matsui",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Rudy Recile",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "John McBride",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Jeff Frese",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Charles Hoelter",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Peter Soulé",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Ritesh Tandon",
     "stored": false,
     "mapping": null
   },
@@ -979,133 +157,7 @@
   },
   {
     "collection": "House",
-    "name": "Peter Verbica",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Sandra Van Scotter",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Tessa Lynn Hodge",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "Bob Smith",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Joe Males",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "April Verlato",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Angélica Dueñas",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Scott Meyers",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Eric Ching",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Stephanie Vargas",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Mike Cargile",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Houston Brignano",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Samantha Mota",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Steve Manos",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Brian Burley",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Cristian Morales",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Genevieve Angel",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "David Pan",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Jenny Rae Le Roux",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Armen Kurdian",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Ricardo Cabrera",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Jeff Belle",
     "stored": false,
     "mapping": null
   },
@@ -1117,115 +169,13 @@
   },
   {
     "collection": "House",
-    "name": "Kelley Dennison",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Jason Clark",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Tim Bennett",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "Jillian Gilchrest",
     "stored": false,
     "mapping": null
   },
   {
     "collection": "House",
-    "name": "Michele Botelho",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Tom Wells",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "LaShonda Holloway",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "John Rutherford",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Jennifer Jenkins",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Darren McAuley",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "John Liccione",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Christopher Irizarry",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Matthew Montavon",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Curtis Gibson",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "James Martin",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "George Moraitis",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Carlos Gimenez",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "Jim Kingston",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Matt Day",
     "stored": false,
     "mapping": null
   },
@@ -1249,216 +199,6 @@
   },
   {
     "collection": "House",
-    "name": "John Cowan",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Rick Allen",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Jonathan Chavez",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Clay Fuller",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Jarrett Keohokalole",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Patrick McAuley",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Derek Schmidt",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "M. Rodriguez",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Ed Gallrein",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Ralph Alvarado",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Paul LePage",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Dave Wallace",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Berney Flowers",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "George McDermott",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Michelle Talkington",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Robin Ficker",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Scott Collier",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Cheryl Riley",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Ryan Cushman",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Heather Smiley",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Thomas Smith",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Tyler Bass",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Chris Corey",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Ron Eller",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Mark Alford",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Marty O'Donnell",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Cody Whipple",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Aristotle Eliopoulos",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Joe Hathaway",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Ndidiamaka Okpareke",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Greg Cunningham",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Martin Ruben Zamora",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Nicholas LaLota",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Andrew Garbarino",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Michael LiPetri",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "Jeanine Driscoll",
     "stored": false,
     "mapping": null
@@ -1466,12 +206,6 @@
   {
     "collection": "House",
     "name": "George Marsh",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Joseph Chou",
     "stored": false,
     "mapping": null
   },
@@ -1489,31 +223,7 @@
   },
   {
     "collection": "House",
-    "name": "Joel Azumah",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "Jennifer Moore",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Caroline Shinkle",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Jomo Williams",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Diamant Hysenaj",
     "stored": false,
     "mapping": null
   },
@@ -1549,19 +259,7 @@
   },
   {
     "collection": "House",
-    "name": "Anthony Constantino",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "Kailee Buller",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Nicholas Langworthy",
     "stored": false,
     "mapping": null
   },
@@ -1609,43 +307,7 @@
   },
   {
     "collection": "House",
-    "name": "Mike Kirchner",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Mark Tedford",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Barbara Kahl",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Patti Adair",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Jessica Arriaga",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "Aurora Stuski",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Nick Manganaro",
     "stored": false,
     "mapping": null
   },
@@ -1669,121 +331,13 @@
   },
   {
     "collection": "House",
-    "name": "Jenny Costa Honeycutt",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "John Peterson",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Kristi Burke",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Michaela Barnett",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Anna Golladay",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "Vincent Dixie",
     "stored": false,
     "mapping": null
   },
   {
     "collection": "House",
-    "name": "Steve Toth",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Adam Bauman",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Edgardo Baez",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Mark Teixeira",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Steven Shook",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Everett Jackson",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Jace Yarbrough",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Riley Owen",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Blake Moore",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Gerald Malloy",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Shannon Taylor",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Edwin Rivera",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "Robert Murray",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Beth Macy",
     "stored": false,
     "mapping": null
   },
@@ -1819,25 +373,7 @@
   },
   {
     "collection": "House",
-    "name": "John Braun",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Amanda McKinney",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
     "name": "Leon Lawson",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "House",
-    "name": "Trinh Ha",
     "stored": false,
     "mapping": null
   },
@@ -1861,43 +397,7 @@
   },
   {
     "collection": "Governor",
-    "name": "Jonathan Kreiss-Tomkins",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Governor",
-    "name": "Phil Weiser",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Governor",
-    "name": "Dotie Joseph",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Governor",
     "name": "Cindy Holscher",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Governor",
-    "name": "Hannah Pingree",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Governor",
-    "name": "Jocelyn Benson",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Governor",
-    "name": "Cyndi Munson",
     "stored": false,
     "mapping": null
   },
@@ -1909,37 +409,7 @@
   },
   {
     "collection": "Governor",
-    "name": "Jerri Green",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Governor",
-    "name": "Amanda Janoo",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Governor",
-    "name": "Sarah Godlewski",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Governor",
     "name": "Kenneth Casner",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Governor",
-    "name": "Click Bishop",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Governor",
-    "name": "Victor Marx",
     "stored": false,
     "mapping": null
   },
@@ -1951,55 +421,13 @@
   },
   {
     "collection": "Governor",
-    "name": "Paul Renner",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Governor",
-    "name": "Gary Cordery",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Governor",
     "name": "Ty Masterson",
     "stored": false,
     "mapping": null
   },
   {
     "collection": "Governor",
-    "name": "Robert Charles",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Governor",
-    "name": "Dan Cox",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Governor",
-    "name": "Lisa Demuth",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Governor",
-    "name": "Bruce Blakeman",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Governor",
     "name": "Alan Wilson",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Governor",
-    "name": "Monty Fritts",
     "stored": false,
     "mapping": null
   },
@@ -2017,145 +445,7 @@
   },
   {
     "collection": "Black Representation",
-    "name": "Herbert C. Conaway",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Melat Kiros",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
     "name": "Chris Jones",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Robert White",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Amanda Hollowell",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Pamela DeLancy",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Jasmine Clark",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Donavan McKinney",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Jeffrey Hulum III",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Cyril Jefferson",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "N’Kiyla Jasmine Thomas",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Frederick D. Haynes III",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Melissa Conyears-Ervin",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Anthony Driver",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Yasmeen Bankole",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Ardelia Holmes",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Sean Freeman",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Chris Rabb",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Sharif Street",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "William Parker",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Darializa Avila Chevalier",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Michael Blake",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Dax Alexander",
-    "stored": false,
-    "mapping": null
-  },
-  {
-    "collection": "Black Representation",
-    "name": "Maurice Mercer",
     "stored": false,
     "mapping": null
   }

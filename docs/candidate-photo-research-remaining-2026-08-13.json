@@ -1,0 +1,1370 @@
+[
+  {
+    "collection": "Senate",
+    "name": "Mark Baisley",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://baisleyforsenate.com/",
+    "priorDirectImageUrl": "https://baisleyforsenate.com/wp-content/uploads/mark-baisley.jpg",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Adelita Grijalva",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://legistorm.com/person/bio/513356/Adelita_S_Grijalva.html",
+    "priorDirectImageUrl": "https://www.legistorm.com/img/person/513356.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Danielle Sterbinsky",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.sterbinskyforcongress.com/",
+    "priorDirectImageUrl": "https://www.sterbinskyforcongress.com/wp-content/uploads/dani-sterbinsky.jpg",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Chris Jones",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Melat Kiros",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "George Austin",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Christopher Lancia",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Nicole Locklin",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Phil Ehr",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Amanda Hollowell",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Maura Keller",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Tony Kozycki",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Kelly Esti",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "C. Gegen",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "P. Delancy",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Chris Harden",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Ceretta Smith",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Shawn Harris",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Adriel Lam",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Brenton Awa",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://en.wikipedia.org/wiki/Brenton_Awa",
+    "priorDirectImageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/36/Brenton_Awa_official_portrait.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Kaylee Peterson",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Ellie Gilbreath",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Jamee Decio",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Kelly Thompson",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Joshua Cox",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "J.D. Ford",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://en.wikipedia.org/wiki/J._D._Ford",
+    "priorDirectImageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/39/J._D._Ford_2023_portrait.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Cynthia Wirth",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Mary Allen",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Brad Meyer",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "John Williams",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "M. Wingfield",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Melissa Strange",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Ned Pillersdorf",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Zach Dembo",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Matt Dunlap",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Dan Schwartz",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "John Olszewski",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Hillary Scholten",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Callie Barr",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Christian Vukasovich",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "William Lawrence",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Ray Pooley",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Ben Ambrose",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Donavan McKinney",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Doug Chapin",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Michael Chiaradio",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Jeffrey Hulum",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Wesley Bell",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Emanuel Cleaver",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Chris Backemeyer",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Becky Stille",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Analilia Mejia",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Patrick Halpin",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Claire Valdez",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Brad Lander",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Allison Ziogas",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Micah Lasher",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Darializa Avila Chevalier",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Cait Conley",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Diana Kastenbaum",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://dianaforny24.com/",
+    "priorDirectImageUrl": "https://dianaforny24.com/",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "fetch failed"
+  },
+  {
+    "collection": "House",
+    "name": "Jerrad Christian",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.localcandidates.org/politicians/jerrad-christian/about/c5721381-e1c2-4bd0-9ba4-c7a1175c7f6d",
+    "priorDirectImageUrl": "https://www.localcandidates.org/politicians/jerrad-christian/about/c5721381-e1c2-4bd0-9ba4-c7a1175c7f6d",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "http_429"
+  },
+  {
+    "collection": "House",
+    "name": "Chris Rabb",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Nicole Gronli",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.nikkigforsd.com/",
+    "priorDirectImageUrl": "https://www.nikkigforsd.com/images/nikki.jpg",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Robert Wittman",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.congress.gov/member/robert-wittman/W000804",
+    "priorDirectImageUrl": "https://www.congress.gov/img/member/w000804.jpg",
+    "priorSourceType": "official_legislative",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Elaine Luria",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.congress.gov/member/elaine-luria/L000591",
+    "priorDirectImageUrl": "https://www.congress.gov/img/member/l000591.jpg",
+    "priorSourceType": "official_legislative",
+    "validationFailure": "source_page_or_image_unavailable"
+  },
+  {
+    "collection": "House",
+    "name": "Matt Boehnke",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://leg.wa.gov/legislators/member/matt-boehnke",
+    "priorDirectImageUrl": "https://leg.wa.gov/legislators/photos/matt-boehnke.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Carmela Conroy",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://conroy4congress.com/",
+    "priorDirectImageUrl": "https://conroy4congress.com/images/carmela.jpg",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Ace Parsi",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.aceforcongress.com/",
+    "priorDirectImageUrl": "https://www.aceforcongress.com/images/ace.jpg",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Rebecca Cooke",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://cookeforwisconsin.com/",
+    "priorDirectImageUrl": "https://cookeforwisconsin.com/images/rebecca.jpg",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Andrew Beck",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://pbswisconsin.org/candidate/andrew-beck/",
+    "priorDirectImageUrl": "https://pbswisconsin.org/wp-content/uploads/andrew-beck.jpg",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "http_403"
+  },
+  {
+    "collection": "House",
+    "name": "Abraham Hamadeh",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.congress.gov/member/abraham-hamadeh/H001098",
+    "priorDirectImageUrl": "https://bioguide.congress.gov/bioguide/photo/H/H001098.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "source_page_or_image_unavailable"
+  },
+  {
+    "collection": "House",
+    "name": "Paul Gosar",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.congress.gov/member/paul-gosar/G000565",
+    "priorDirectImageUrl": "https://bioguide.congress.gov/bioguide/photo/G/G000565.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "source_page_or_image_unavailable"
+  },
+  {
+    "collection": "House",
+    "name": "Eric Jones",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Doris Matsui",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.congress.gov/member/doris-matsui/M001163",
+    "priorDirectImageUrl": "https://bioguide.congress.gov/bioguide/photo/M/M001163.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "source_page_or_image_unavailable"
+  },
+  {
+    "collection": "House",
+    "name": "Shane Lewis",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Bob Smith",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Ricardo Cabrera",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.cabreraforcongress2026.com/",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Christy Peterson",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://christyforamerica.us/",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Jason Clark",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Jason_Ray_Clark_(Colorado)",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Jillian Gilchrest",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://voteforjillian.com/",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Tom Wells",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Tom_Wells",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "John Liccione",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/John_Liccione",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Christopher Irizarry",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Christopher_Irizarry",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Jim Kingston",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/James_Kingston_(Georgia)",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Matt Day",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.votemattday.com/",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Jim Duffie",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/James_Duffie",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "J. Salvesen",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/John_Salvesen",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Justin Pinker",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://justinpinkerforcongress.com/",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "John Cowan",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/John_Cowan",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "organization_profile",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Jeanine Driscoll",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "George Marsh",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Joseph Chou",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Melvin Rivera",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Lewis Mizrahi",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Joel Azumah",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Jennifer Moore",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Caroline Shinkle",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Jomo Williams",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Diamant Hysenaj",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Stylo Sapaskis",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Joseph Cinquemani",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Jackie Auringer",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Peter Oberacker",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.nysenate.gov/senators/peter-a-oberacker",
+    "priorDirectImageUrl": "https://www.nysenate.gov/sites/default/files/styles/16_9_large/public/sensor/image/peter_oberacker_crop.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Ralph Ambrosio",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Kailee Buller",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Virginia McIntyre",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Dennis Hannon",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Eugene Douglass",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Mahesh Ganorkar",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Jack Codiga",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Eric Conroy",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Cleophus Dulaney",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Mike Kirchner",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Barbara Kahl",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Barbara_Kahl",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Patti Adair",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Patti_Adair",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Jessica Arriaga",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Jessica_Arriaga",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Aurora Stuski",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Aurora_Stuski",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Nick Manganaro",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Nick_Manganaro",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Marty Young",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Marty_Young",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "James Hayes",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/James_Hayes_(Pennsylvania)",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Tony Guy",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Tony_Guy",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "John Peterson",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/John_Peterson_(South_Carolina)",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Kristi Burke",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Kristi_Burke",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Michaela Barnett",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Michaela_Barnett",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Anna Golladay",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Anna_Golladay",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Vincent Dixie",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://wapp.capitol.tn.gov/apps/LegislatorInfo/Member?district=H54&ga=114",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Steve Toth",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Steve_Toth",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Adam Bauman",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Adam_Bauman",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Edgardo Baez",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Edgardo_Baez",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Mark Teixeira",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Mark_Teixeira",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Steven Shook",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Steven_Shook",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Everett Jackson",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Everett_Jackson",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Jace Yarbrough",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Jace_Yarbrough",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Riley Owen",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Riley_Owen",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Gerald Malloy",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Gerald_Malloy_(Vermont)",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Shannon Taylor",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Shannon_Taylor_(Virginia)",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Edwin Rivera",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Edwin_Rivera",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Robert Murray",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Beth Macy",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Beth_Macy",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Philip Harding",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Philip_Harding",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Julie Perry",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Julie_Perry",
+    "priorDirectImageUrl": "",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "missing_url"
+  },
+  {
+    "collection": "House",
+    "name": "Arthur Purves",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.votepurves.org/",
+    "priorDirectImageUrl": "https://www.votepurves.org/images/logo.png",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Bryce Nickel",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Devin Hermanson",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "John Braun",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://leg.wa.gov/legislators/member/john-braun",
+    "priorDirectImageUrl": "https://leg.wa.gov/legislators/PublishingImages/Braun%2C%20John.jpg",
+    "priorSourceType": "official_legislative",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "House",
+    "name": "Leon Lawson",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Kshama Sawant",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Kshama_Sawant",
+    "priorDirectImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Kshama_Sawant_%28cropped%29.jpg/800px-Kshama_Sawant_%28cropped%29.jpg",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "http_400"
+  },
+  {
+    "collection": "House",
+    "name": "Kurtis Engle",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "House",
+    "name": "Scott Fitzgerald",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "http://fitzgerald.house.gov/about",
+    "priorDirectImageUrl": "https://fitzgerald.house.gov/sites/evo-subsites/fitzgerald.house.gov/files/evo-image-placeholder.png",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Governor",
+    "name": "Dotie Joseph",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Dotie_Joseph",
+    "priorDirectImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Dotie_Joseph_official_portrait.jpg/800px-Dotie_Joseph_official_portrait.jpg",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "http_400"
+  },
+  {
+    "collection": "Governor",
+    "name": "Cindy Holscher",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Cindy_Holscher",
+    "priorDirectImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Cindy_Holscher_official_portrait.jpg/800px-Cindy_Holscher_official_portrait.jpg",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "http_400"
+  },
+  {
+    "collection": "Governor",
+    "name": "Jermaine Johnson",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.scstatehouse.gov/member.php?code=0943181705",
+    "priorDirectImageUrl": "https://www.scstatehouse.gov/member_photos/0943181705.jpg",
+    "priorSourceType": "official_legislative",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Governor",
+    "name": "Sarah Godlewski",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://sos.wi.gov/Pages/About.aspx",
+    "priorDirectImageUrl": "https://sos.wi.gov/PublishingImages/SarahGodlewski.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Governor",
+    "name": "Kenneth Casner",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ballotpedia.org/Ken_Casner",
+    "priorDirectImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Ken_Casner.jpg/800px-Ken_Casner.jpg",
+    "priorSourceType": "licensed_editorial",
+    "validationFailure": "http_400"
+  },
+  {
+    "collection": "Governor",
+    "name": "Ryan Fazio",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://ryanfazio.com/",
+    "priorDirectImageUrl": "https://ryanfazio.com/favicon.ico",
+    "priorSourceType": "official_campaign",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Governor",
+    "name": "Ty Masterson",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.kslegislature.gov/b2025_26/legislators/sen_masterson_ty_1/",
+    "priorDirectImageUrl": "https://www.kslegislature.gov/b2025_26/images/legislators/sen_masterson_ty_1.jpg",
+    "priorSourceType": "official_legislative",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Governor",
+    "name": "Lisa Demuth",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.house.mn.gov/members/profile/15473",
+    "priorDirectImageUrl": "https://www.house.mn.gov/hinfo/memberimg93/15473.jpg",
+    "priorSourceType": "official_legislative",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Governor",
+    "name": "Alan Wilson",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.scag.gov/about-the-office/attorney-general-alan-wilson/",
+    "priorDirectImageUrl": "https://www.scag.gov/wp-content/uploads/2019/12/Alan-Wilson-Official-Photo.jpg",
+    "priorSourceType": "government_elected_office",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Governor",
+    "name": "David Varnam",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Governor",
+    "name": "Eric Barlow",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://wyoleg.gov/Legislators/2023/Senate/Barlow",
+    "priorDirectImageUrl": "https://wyoleg.gov/Legislators/2023/Senate/Barlow.jpg",
+    "priorSourceType": "official_legislative",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Melat Kiros",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Chris Jones",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Robert White",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Amanda Hollowell",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Pamela DeLancy",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Jasmine Clark",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.house.ga.gov/Representatives/en-US/member/1085/Jasmine-Clark",
+    "priorDirectImageUrl": "https://www.house.ga.gov/Documents/RepresentativePhotos/1085/clarkJasmine.jpg",
+    "priorSourceType": "official_legislative",
+    "validationFailure": "http_404"
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Jeffrey Hulum III",
+    "stored": false,
+    "mapping": null,
+    "priorPortraitPageUrl": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/14",
+    "priorDirectImageUrl": "https://www.leg.state.nv.us/Session/82nd2023/Legislators/Assembly/Photos/HulumIII14.jpg",
+    "priorSourceType": "official_legislative",
+    "validationFailure": "http_403"
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Cyril Jefferson",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "N’Kiyla Jasmine Thomas",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Frederick D. Haynes III",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Anthony Driver",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Yasmeen Bankole",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Ardelia Holmes",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Sean Freeman",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Chris Rabb",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "William Parker",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Dax Alexander",
+    "stored": false,
+    "mapping": null
+  },
+  {
+    "collection": "Black Representation",
+    "name": "Maurice Mercer",
+    "stored": false,
+    "mapping": null
+  }
+]

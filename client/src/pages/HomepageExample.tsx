@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { useMemo, useState } from "react";
-import { ArrowUpRight, Globe2, Landmark, Mic2, Play } from "lucide-react";
+import { ArrowUpRight, Globe2, Landmark, Mic2, Play, Search } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { USMapFull } from "@/components/USMapFull";
 import MiniRepositoryGlobe from "@/components/MiniRepositoryGlobe";
@@ -68,6 +68,7 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
   const [mapMode, setMapMode] = useState<MapMode>("senate");
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [stateDetailOpen, setStateDetailOpen] = useState(false);
+  const [mapSearch, setMapSearch] = useState("");
 
   const posts: any[] = (news as any)?.posts ?? [];
   const leadPosts = posts.slice(0, 8);
@@ -115,7 +116,7 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
     const tossUps = ratings.filter((rating) => rating === "Toss-up").length;
     const leans = ratings.filter((rating) => rating === "Lean D" || rating === "Lean R").length;
     const calls = races.filter((race) => Boolean(race.calledWinner)).length;
-    const title = mapMode === "senate" ? "Senate battlefield" : mapMode === "house" ? "House battlefield" : "Governor battlefield";
+    const title = mapMode === "senate" ? "Senate outlook" : mapMode === "house" ? "House outlook" : "Governor outlook";
     const coverage = mapMode === "senate" ? "statewide contests" : mapMode === "house" ? "district contests" : "statewide contests";
     return {
       title,
@@ -134,7 +135,8 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
     const records = worldElections as any[];
     const upcoming = records.filter((item) => item.status === "Upcoming" || item.status === "Voting Today").sort((a, b) => `${a.electionDate}`.localeCompare(`${b.electionDate}`))[0];
     const upcomingCount = records.filter((item) => item.status === "Upcoming").length;
-    return { upcoming, upcomingCount, live: records.filter((item) => item.status === "Voting Today").length, total: records.length };
+    const updated = records.reduce<string | null>((latest, item) => !latest || `${item.updatedAt ?? ""}` > latest ? `${item.updatedAt ?? ""}` : latest, null);
+    return { upcoming, upcomingCount, live: records.filter((item) => item.status === "Voting Today").length, total: records.length, updated };
   }, [worldElections]);
 
   const atlasBrief = useMemo(() => {
@@ -144,6 +146,21 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
 
   const mapLabel = mapMode === "senate" ? "2026 U.S. Senate Outlook" : mapMode === "house" ? "2026 U.S. House Outlook" : "2026 Governor Outlook";
   const stateTitle = selectedState ? `${STATE_NAMES[selectedState] ?? selectedState} · ${mapMode === "house" ? "House races" : mapMode === "governor" ? "Governor race" : "Senate race"}` : "State race details";
+  const mapSearchMatches = useMemo(() => {
+    const query = mapSearch.trim().toLowerCase();
+    if (query.length < 2) return [];
+    const races = (mapMode === "senate" ? senateRaces : mapMode === "house" ? houseRaces : governors) as any[] ?? [];
+    const seen = new Set<string>();
+    return races.flatMap((race) => {
+      const stateCode = race.stateCode;
+      const stateName = race.stateName ?? STATE_NAMES[stateCode] ?? stateCode;
+      const candidates = mapMode === "governor" ? [race.demCandidate, race.repCandidate] : [race.candidate1Name, race.candidate2Name];
+      const matches = `${stateName} ${stateCode} ${candidates.filter(Boolean).join(" ")}`.toLowerCase().includes(query);
+      if (!matches || !stateCode || seen.has(stateCode)) return [];
+      seen.add(stateCode);
+      return [{ stateCode, label: `${stateName} · ${mapMode === "house" ? `${(houseRaces as any[] ?? []).filter((item) => item.stateCode === stateCode).length} districts` : candidates.filter(Boolean).join(" vs ")}` }];
+    }).slice(0, 6);
+  }, [mapSearch, mapMode, senateRaces, houseRaces, governors]);
 
   return (
     <div className="hidden h-[calc(100dvh-64px)] overflow-hidden bg-background p-2 lg:block">
@@ -161,7 +178,7 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
 
           <section className="relative min-h-0 overflow-hidden rounded-lg border border-border bg-background/55">
             <div className="absolute inset-x-4 bottom-[94px] top-[136px] flex items-center justify-center overflow-hidden rounded-md"><div className="w-full translate-y-2"><USMapFull showLegend={false} raceData={mapData} selectedState={selectedState} onStateClick={(state) => { setSelectedState(state); setStateDetailOpen(true); }} /></div>{mapLoading && <div className="absolute inset-0 grid place-items-center bg-background/45 backdrop-blur-[1px]"><div className="rounded-full border border-primary/25 bg-card/90 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-primary shadow-sm">Loading election intelligence</div></div>}</div>
-            <div className="pointer-events-none absolute inset-x-3 top-3 z-10 rounded-lg border border-border bg-card/94 p-3 shadow-sm"><div className="pointer-events-auto flex flex-wrap items-start justify-between gap-2"><div><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">Interactive Election Map</p><h1 className="mt-0.5 text-[clamp(1rem,1.55vw,1.3rem)] font-bold tracking-tight text-foreground">{mapLabel}</h1><p className="mt-0.5 text-[11px] text-muted-foreground">Choose a chamber, then select a state for contest notes and detail.</p></div><div className="flex rounded border border-border bg-background/85 p-0.5 shadow-sm">{(["governor", "house", "senate"] as MapMode[]).map((item) => <button key={item} type="button" onClick={() => { setMapMode(item); setSelectedState(null); }} className={`rounded px-2 py-1 text-[8px] font-bold uppercase tracking-[0.09em] transition-colors ${mapMode === item ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>{item}</button>)}</div></div><div className="mt-2 flex flex-wrap gap-x-2.5 gap-y-1">{LEGEND.map(([label, color]) => <span key={label} className="inline-flex items-center gap-1 text-[8px] text-muted-foreground"><i className={`h-2 w-2 rounded-full ${color}`} />{label}</span>)}</div></div>
+            <div className="pointer-events-none absolute inset-x-3 top-3 z-10 rounded-lg border border-border bg-card/94 p-3 shadow-sm"><div className="pointer-events-auto flex flex-wrap items-start justify-between gap-2"><div><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">Interactive Election Map</p><h1 className="mt-0.5 text-[clamp(1rem,1.55vw,1.3rem)] font-bold tracking-tight text-foreground">{mapLabel}</h1><p className="mt-0.5 text-[11px] text-muted-foreground">Choose a chamber, then select a state for contest notes and detail.</p></div><div className="flex rounded border border-border bg-background/85 p-0.5 shadow-sm">{(["governor", "house", "senate"] as MapMode[]).map((item) => <button key={item} type="button" onClick={() => { setMapMode(item); setSelectedState(null); setMapSearch(""); }} className={`rounded px-2 py-1 text-[8px] font-bold uppercase tracking-[0.09em] transition-colors ${mapMode === item ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>{item}</button>)}</div></div><div className="pointer-events-auto relative mt-2 max-w-sm"><Search className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground" size={12} /><input value={mapSearch} onChange={(event) => setMapSearch(event.target.value)} placeholder={`Search ${mapMode === "house" ? "a state or candidate" : "a state or candidate"}`} className="h-7 w-full rounded border border-border bg-background/85 pl-7 pr-2 text-[10px] text-foreground outline-none placeholder:text-muted-foreground focus:border-primary/60" aria-label="Search election map" />{mapSearchMatches.length > 0 && <div className="absolute inset-x-0 top-8 overflow-hidden rounded border border-border bg-card shadow-lg">{mapSearchMatches.map((match) => <button key={match.stateCode} type="button" onClick={() => { setSelectedState(match.stateCode); setStateDetailOpen(true); setMapSearch(""); }} className="block w-full border-b border-border px-2 py-1.5 text-left text-[9px] text-foreground last:border-b-0 hover:bg-muted">{match.label}</button>)}</div>}</div><div className="mt-2 flex flex-wrap gap-x-2.5 gap-y-1">{LEGEND.map(([label, color]) => <span key={label} className="inline-flex items-center gap-1 text-[8px] text-muted-foreground"><i className={`h-2 w-2 rounded-full ${color}`} />{label}</span>)}</div></div>
             <div className="absolute inset-x-3 bottom-3 z-10 rounded-md border border-border bg-card/94 px-3 py-2 shadow-sm"><div className="flex items-center gap-2"><span className="font-bold uppercase tracking-[0.09em] text-primary">{chamberInsight.title}</span><span className="text-muted-foreground">•</span><span className="truncate text-[9px] text-muted-foreground">{chamberInsight.summary}</span><Link href="/elections" className="ml-auto inline-flex shrink-0 items-center gap-1 text-[9px] font-semibold text-primary">More <ArrowUpRight size={10} /></Link></div><div className="mt-1.5 grid grid-cols-4 divide-x divide-border/70 text-center"><MapIntel value={chamberInsight.total} label={mapMode === "house" ? "Districts" : "Races"} /><MapIntel value={chamberInsight.tossUps} label="Toss-up" /><MapIntel value={chamberInsight.leans} label="Lean" /><MapIntel value={chamberInsight.calls} label="Called" /></div></div>
           </section>
 
