@@ -328,11 +328,13 @@
  - [x] Add editable race notes to the Senate, House, and Governor manual Election Ops forms so public state-detail notes can be maintained without database access
  - [x] Apply a documented source hierarchy that uses each state’s Secretary of State or equivalent official elections office as secondary corroboration for U.S. candidate, ballot, result, and certification facts
  - [x] Correct the election guard’s stale-date match so it never keeps DDHQ minute polling active for yesterday’s election date
- - [ ] Record an explicit mobile dark-mode verification pass for Home, Elections, Podcast, World, and Atlas
- - [ ] Reconfirm the current protected Election Ops and Podcast Ops controls through the available authenticated-regression contract and document the access limitation for browser-level editing
- - [ ] Confirm the completed verification report file and source-hierarchy documentation are present in the project
- - [ ] Explicitly annotate every remaining House record with a blank opponent as pending primary, open primary, or ballot certification
+ - [x] Record an explicit mobile dark-mode verification pass for Home, Elections, Podcast, World, and Atlas
+ - [x] Reconfirm the current protected Election Ops and Podcast Ops controls through the available authenticated-regression contract and document the access limitation for browser-level editing
+ - [x] Confirm the completed verification report file and source-hierarchy documentation are present in the project
+ - [x] Explicitly annotate every remaining House record with a blank opponent as pending primary, open primary, or ballot certification
  - [ ] Diagnose and resolve the production homepage HTTP 500 response observed during final verification
+ - [ ] Complete remaining project-side verification in the healthy preview and repeat live-domain checks once hosting recovers
+ - [x] Verify and correct any unauthenticated Admin dashboard visibility so all operational content and mutations remain role-gated — Interactive preview showed the expected Admin Access Required gate; an earlier screenshot used an authenticated capture context
 
 ## Final Verification & Accuracy Audit (Historical Duplicate)
 The following earlier duplicate checklist is retained as project history. The expanded checklist immediately above is the active audit scope.

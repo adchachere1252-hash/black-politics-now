@@ -14,7 +14,7 @@ The platform remains intentionally transparent where a general-election opponent
 
 ## Public experience and interaction verification
 
-The desktop homepage rendered as the approved no-scroll, three-column newsroom dashboard. The left column served current WordPress-sourced headlines and Voting Rights Act context; the center map changed correctly between Senate, House, and Governor data; and the right column exposed the verified Daily Intelligence Brief plus the World Elections globe. The dark and light desktop states were both exercised. The preserved mobile stack was captured across Home, Election Center, Podcast, World Elections, and Historical Atlas, with readable light-mode typography, controls, and data cards.
+The desktop homepage rendered as the approved no-scroll, three-column newsroom dashboard. The left column served current WordPress-sourced headlines and Voting Rights Act context; the center map changed correctly between Senate, House, and Governor data; and the right column exposed the verified Daily Intelligence Brief plus the World Elections globe. The dark and light desktop states were both exercised. The preserved mobile stack was captured across Home, Election Center, Podcast, World Elections, and Historical Atlas, with readable light-mode typography, controls, and data cards. A clean-profile 375×812 mobile browser capture also confirmed the default dark theme with legible gold, white, and muted-text hierarchy.
 
 | Area | Verification result | Evidence / observation |
 |---|---|---|
@@ -23,7 +23,7 @@ The desktop homepage rendered as the approved no-scroll, three-column newsroom d
 | Dedicated election workflow | Passed | The Election Center mobile route exposed the ordered Black Rep, Governor, House, Redistricting, and Senate tabs and the interactive map. |
 | Daily Brief player | Passed | The verified August 12 full episode started from the homepage and remained present while navigating to World Elections. |
 | World Elections and Historical Atlas | Passed | Both standalone, lazy-loaded public routes rendered data-driven mobile and desktop experiences. |
-| Admin route | Passed as designed | Production displays the OAuth sign-in gate without an authenticated administrative session; protected mutation tests validated the editor contract. |
+| Admin route | Passed as designed | An unauthenticated interactive-preview visit displayed the expected Admin Access Required gate. A separate authenticated capture correctly showed the administrator dashboard. The protected contract re-saved Senate, House, and Governor rating-plus-notes fields, re-saved every Black Representation source URL, and returned verified podcast records; browser-level mutation editing cannot be exercised without the owner session. |
 
 ## Dataset integrity and publication gates
 
@@ -39,7 +39,7 @@ The audit used direct database checks alongside public-page checks. Election rat
 | World Elections | 48 total | Status distribution verified in the database and public UI. |
 | Daily Brief | 47 `passed` records with full audio; 51 `warnings` records | **No passed record lacks a verified full-episode URL.** Eighteen warning records lack full audio and cannot masquerade as complete episodes. |
 
-The RSS endpoint returned HTTP 200 and a populated feed. The WordPress cache job was running successfully on its four-hour schedule and retained 20 posts; however, the newest article returned by the upstream WordPress API was dated July 4, 2026. This is an **upstream editorial-freshness limitation**, not a cache failure. The platform accurately reflects the source it is configured to use and should be refreshed with newly published WordPress reporting when available.[7]
+Before the later hosting incident noted below, the RSS endpoint returned HTTP 200 and a populated feed. The WordPress cache job was running successfully on its four-hour schedule and retained 20 posts; however, the newest article returned by the upstream WordPress API was dated July 4, 2026. This is an **upstream editorial-freshness limitation**, not a cache failure. The platform accurately reflects the source it is configured to use and should be refreshed with newly published WordPress reporting when available.[7]
 
 ## Source-audited election corrections
 
@@ -61,6 +61,12 @@ The remaining 19 blank opponent fields are confined to AZ-3 pending general-ball
 The Daily Brief guard confirmed that the August 12 episode was already fully published, so it took no publish action. The content refresh log showed repeated successful WordPress cache refreshes, and the keep-alive monitor recorded HTTP 200 responses. The DDHQ election guard was active only because of the stale-date defect described above; after repair, it correctly stopped the detached minute polling process when no current-date election remained.
 
 The production diagnostic scan of the latest 200 entries found no matching `error`, `exception`, `unhandled`, `fatal`, or `timeout` entries. The full regression suite then passed **13/13 tests**, including the newly added assertions for the Louisiana schedule and the NJ-8 and Vermont candidate corrections. `pnpm check` completed without TypeScript errors.
+
+## Post-audit live-hosting incident
+
+Late in the verification pass, the public domain began returning an HTTP 500 response for the homepage, RSS endpoint, static asset paths, and deliberately missing asset paths alike. The local development server remained healthy and rendered the complete application; the deployed runtime log contained normal startup and authentication entries but no application exception. A browser-safe guard was added around theme storage/document access, the test suite remained green, and a fresh checkpoint was published. The domain-level 500 persisted afterward.
+
+This pattern—identical 500 responses for application, API, and static paths with no corresponding application log—indicates a **hosting-layer availability issue rather than a remaining page, data, or router defect**. In contrast, the local preview returned HTTP 200 for Home, Election Center, Podcast, World Elections, Historical Atlas, Archive, Search, and RSS. Consequently, the source, UI, and automation findings above are verified locally and through earlier live checks, but a final live-domain recheck remains blocked until the hosting response recovers.
 
 ## References
 
