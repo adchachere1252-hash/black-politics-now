@@ -337,10 +337,11 @@
  - [x] Verify and correct any unauthenticated Admin dashboard visibility so all operational content and mutations remain role-gated — Interactive preview showed the expected Admin Access Required gate; an earlier screenshot used an authenticated capture context
 
 ## AI Research Agent & Continuous Improvement
-- [ ] Brighten and correct the mobile World Elections globe so it is recognizable as Earth in both themes
-- [ ] Add Agent Desk recommendation filters for status, category, priority, and owner
-- [ ] Add recommendation ownership and a human-approved approval-to-task workflow
-- [ ] Add a safe election-night priority mode for faster, review-only Agent Desk recommendations
+- [x] Brighten and correct the mobile World Elections globe so it is recognizable as Earth in both themes
+- [x] Make the mobile World Elections Earth screen-filling with clearer geographic detail while preserving readable election markers
+- [x] Add Agent Desk recommendation filters for status, category, priority, and owner
+- [x] Add recommendation ownership and a human-approved approval-to-task workflow
+- [x] Add a safe election-night priority mode for faster, review-only Agent Desk recommendations
 - [x] Implement the approved Autonomous Research Desk model: continuous research and cited recommendations, with no automatic publishing, election-record mutation, or public alerting
 - [x] Define reader-facing AI research scope, approved source context, citation rules, and answers that must be declined or escalated
 - [x] Build a source-grounded reader chat experience using verified Black Politics Now news, election, podcast, historical-atlas, and World Elections data
