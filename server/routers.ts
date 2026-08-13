@@ -3,7 +3,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, adminProcedure, router } from "./_core/trpc";
 import { z } from "zod";
-import { getEpisodesFormatted, subscribeEmail, unsubscribeEmail, getPipelineRuns } from "./podcastDb";
+import { getArchiveEpisodesFormatted, getEpisodesFormatted, subscribeEmail, unsubscribeEmail, getPipelineRuns } from "./podcastDb";
 import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateReferendum } from "./electionDb";
 import { fetchWithCache } from "./newsCache";
 import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
@@ -26,6 +26,7 @@ export const appRouter = router({
   // ─── Podcast ─────────────────────────────────────────────────────────────────
   podcast: router({
     getEpisodes: publicProcedure.query(async () => getEpisodesFormatted()),
+    getArchiveEpisodes: publicProcedure.query(async () => getArchiveEpisodesFormatted()),
     subscribe: publicProcedure
       .input(z.object({ email: z.string().email(), name: z.string().max(128).optional() }))
       .mutation(async ({ input }) => { await subscribeEmail(input); return { success: true }; }),

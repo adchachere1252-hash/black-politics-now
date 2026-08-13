@@ -337,6 +337,15 @@
  - [x] Verify and correct any unauthenticated Admin dashboard visibility so all operational content and mutations remain role-gated — Interactive preview showed the expected Admin Access Required gate; an earlier screenshot used an authenticated capture context
 
 ## AI Research Agent & Continuous Improvement
+- [x] Correct the Daily Brief generator’s invalid processing verification status so today’s autonomous episode can resume safely
+- [x] Correct today’s saved Daily Brief segment-duration mismatch so the verified 41-minute episode can complete audio publication safely
+- [x] Give the desktop homepage election map sufficient top spacing and visual hierarchy without crowding map controls
+- [x] Separate the Historical Atlas/Voting Rights Act panel from the Latest News panel to prevent visual collision
+- [x] Increase the John Lewis/Selma background image visibility in the light theme while preserving legible panel copy
+- [x] Add a Black Representation profile-detail drawer with article-backed election context
+- [x] Add a visible last-updated timestamp to the Election Center map
+- [x] Add verified, in-progress, or review-needed completion badges to every Daily Brief archive date
+- [x] Include incomplete Daily Brief records in the public archive so every stored date can show its completion badge
 - [x] Blend the John Lewis/Selma image into the Voting Rights Act background treatment without competing with panel content
 - [x] Expand the homepage election map to fill the middle dashboard column while retaining its controls and state dialogs
 - [x] Audit and confirm autonomous election-day polling, race-call, and recovery behavior

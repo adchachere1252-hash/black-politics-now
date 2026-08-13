@@ -1,0 +1,7 @@
+# Dashboard and Daily Brief Refinement Verification — August 13, 2026
+
+The desktop homepage was checked in light theme after the Election Map and Voting Rights Act refinements. The map now has a dedicated framed header and footer, leaving its geographic canvas clear of controls. Latest News and the Voting Rights Act / Historical Atlas panel are independent stacked cards with a visible gap, eliminating the prior visual collision. The Selma image is intentionally more visible in light mode while a gradient preserves readable panel copy.
+
+The Black Representation view was checked after the drawer implementation. Selecting Shomari Figures opened a right-side profile drawer containing the article-backed status, chamber, primary result, general-election opponent, redistricting context, platform notes, and source link. The Election Center also displayed a tab-aware “Last updated” timestamp.
+
+The Daily Brief archive now assigns a per-episode completion badge from the verified full-audio URL and verification state: **Verified full brief**, **Audio preparation**, or **Review needed**. The archive data endpoint includes stored incomplete records, while the reader-facing podcast page and RSS feed remain limited to verified full episodes. The August 13 episode initially held itself because citation metadata had inflated the generator’s word count; after the audible-word gate was aligned and the short saved segment was corrected, it completed as a **15-segment, 47:32 verified full brief**.

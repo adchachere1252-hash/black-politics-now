@@ -6,6 +6,7 @@ import { USMap } from "@/components/USMap";
 import { USMapFull } from "@/components/USMapFull";
 import { ResultsTicker } from "@/components/ResultsTicker";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 
 const RATINGS = ["All", "Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R"] as const;
 type ViewTab = "house" | "senate" | "governors" | "cbc" | "redistricting";
@@ -235,6 +236,20 @@ export default function Elections() {
     return data;
   }, [senateRaces, houseRaces, governors, cbcMembers, redistrictingStates, tab]);
 
+  const mapLastUpdated = useMemo(() => {
+    const activeRecords = tab === "senate" ? senateRaces as any[]
+      : tab === "house" ? houseRaces as any[]
+      : tab === "governors" ? governors as any[]
+      : tab === "cbc" ? cbcMembers as any[]
+      : redistrictingStates as any[];
+    const timestamps = activeRecords
+      .map((record: any) => record.updatedAt ?? record.updated_at)
+      .map((value: any) => value ? new Date(value).getTime() : NaN)
+      .filter(Number.isFinite);
+    if (!timestamps.length) return "Last updated unavailable";
+    return `Last updated ${new Date(Math.max(...timestamps)).toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" })}`;
+  }, [tab, senateRaces, houseRaces, governors, cbcMembers, redistrictingStates]);
+
   // Get data for a specific state based on active tab (for popup)
   const popupData = useMemo(() => {
     if (!popupState) return [];
@@ -382,8 +397,8 @@ export default function Elections() {
 
         {/* Interactive Map */}
         <div className="glass-card rounded-xl p-4 mb-6">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Interactive Election Map</h2>
+          <div className="flex items-center justify-between gap-3 mb-3">
+            <div><h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Interactive Election Map</h2><p className="mt-0.5 text-[11px] text-muted-foreground">{mapLastUpdated}</p></div>
             {selectedState && (
               <button onClick={() => setSelectedState(null)} className="text-xs text-primary hover:underline">
                 Clear filter ({selectedState})
@@ -755,7 +770,7 @@ function GovernorGrid({ races }: { races: any[] }) {
 
 function CbcGrid({ members, elections }: { members: any[]; elections: any[] }) {
   if (members.length === 0) return <p className="text-center text-muted-foreground py-8">No members match your search.</p>;
-  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [selectedMember, setSelectedMember] = useState<any | null>(null);
 
   const statusColors: Record<string, string> = {
     running: "bg-green-500/20 text-green-400",
@@ -791,10 +806,11 @@ function CbcGrid({ members, elections }: { members: any[]; elections: any[] }) {
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
         {members.map((m) => (
-          <div
+          <button
+            type="button"
             key={m.id}
-            className="glass-card rounded-lg p-4 hover:border-primary/30 transition-colors cursor-pointer"
-            onClick={() => setExpandedId(expandedId === m.id ? null : m.id)}
+            className="glass-card rounded-lg p-4 text-left hover:border-primary/30 transition-colors"
+            onClick={() => setSelectedMember(m)}
           >
             <div className="flex items-center justify-between mb-2 gap-2">
               <div className="flex items-center gap-2">
@@ -805,7 +821,7 @@ function CbcGrid({ members, elections }: { members: any[]; elections: any[] }) {
                 <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColors[m.status] ?? "bg-muted text-muted-foreground"}`}>
                   {statusLabels[m.status] ?? formatBlackRepStatus(m.status)}
                 </span>
-                <span className="text-xs text-muted-foreground">{expandedId === m.id ? "▲" : "▼"}</span>
+                <span className="text-xs font-semibold text-primary">Details</span>
               </div>
             </div>
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -816,35 +832,14 @@ function CbcGrid({ members, elections }: { members: any[]; elections: any[] }) {
               <span>•</span>
               <span>{m.state}</span>
             </div>
-            {/* Expanded detail section */}
-            {expandedId === m.id && (
-              <div className="mt-3 pt-3 border-t border-border/50 space-y-2 animate-in fade-in duration-200">
-                <div className="text-xs"><span className="text-muted-foreground font-medium">Chamber:</span> <span className="text-foreground capitalize">{m.chamber}</span></div>
-                <div className="text-xs"><span className="text-muted-foreground font-medium">Up in 2026:</span> <span className="text-foreground">{m.upIn2026 ? "Yes" : "No"}</span></div>
-                {m.generalOpponent && (
-                  <div className="text-xs"><span className="text-muted-foreground font-medium">General Election Opponent:</span> <span className="text-foreground">{m.generalOpponent}</span></div>
-                )}
-                {m.primaryResult && (
-                  <div className="text-xs"><span className="text-muted-foreground font-medium">Primary Result:</span> <span className="text-green-400">{m.primaryResult}</span></div>
-                )}
-                {(m.primaryVotes || m.primaryVotePct != null) && (
-                  <div className="text-xs"><span className="text-muted-foreground font-medium">Primary Total:</span> <span className="text-foreground">{m.primaryVotes ? `${Number(m.primaryVotes).toLocaleString()} votes` : ""}{m.primaryVotes && m.primaryVotePct != null ? " · " : ""}{m.primaryVotePct != null ? `${Number(m.primaryVotePct).toFixed(1)}%` : ""}</span></div>
-                )}
-                {m.primaryOpponent && <div className="text-xs"><span className="text-muted-foreground font-medium">Primary Opponent:</span> <span className="text-foreground">{m.primaryOpponent}</span></div>}
-                {m.redistrictingContext && <div className="text-xs p-2 bg-purple-500/10 border border-purple-500/20 rounded"><span className="font-medium text-purple-300">Redistricting:</span> <span className="text-foreground">{m.redistrictingContext}</span></div>}
-                {m.aipacFunding && <div className="text-xs p-2 bg-amber-500/10 border border-amber-500/20 rounded"><span className="font-medium text-amber-300">Funding context:</span> <span className="text-foreground">{m.aipacFunding}</span></div>}
-                {m.sourceUrl && <a href={m.sourceUrl} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="inline-flex items-center gap-1 text-xs text-primary hover:underline">View source <ExternalLink size={11} /></a>}
-                {m.notes && (
-                  <div className="text-xs p-2 bg-muted/50 rounded mt-1"><span className="text-muted-foreground font-medium">Notes:</span> <span className="text-foreground">{m.notes}</span></div>
-                )}
-                {!m.primaryResult && !m.notes && !m.generalOpponent && (
-                  <p className="text-xs text-muted-foreground italic">No additional details available.</p>
-                )}
-              </div>
-            )}
-          </div>
+          </button>
         ))}
       </div>
+      <Sheet open={Boolean(selectedMember)} onOpenChange={(open) => !open && setSelectedMember(null)}>
+        <SheetContent side="right" className="w-full overflow-y-auto sm:max-w-md">
+          {selectedMember && <CbcProfileDrawer member={selectedMember} statusLabel={statusLabels[selectedMember.status] ?? formatBlackRepStatus(selectedMember.status)} />}
+        </SheetContent>
+      </Sheet>
       <div className="mt-8">
         <div className="flex items-center gap-2 mb-3">
           <Trophy size={16} className="text-primary" />
@@ -880,6 +875,38 @@ function CbcGrid({ members, elections }: { members: any[]; elections: any[] }) {
       </div>
     </div>
   );
+}
+
+function CbcProfileDrawer({ member, statusLabel }: { member: any; statusLabel: string }) {
+  const primaryTotal = member.primaryVotes || member.primaryVotePct != null
+    ? `${member.primaryVotes ? `${Number(member.primaryVotes).toLocaleString()} votes` : ""}${member.primaryVotes && member.primaryVotePct != null ? " · " : ""}${member.primaryVotePct != null ? `${Number(member.primaryVotePct).toFixed(1)}%` : ""}`
+    : null;
+  return <>
+    <SheetHeader className="border-b border-border pr-10"><div className="flex items-center gap-3">{member.photo && <img src={member.photo} alt="" className="h-12 w-12 rounded-full object-cover border border-border" />}<div><SheetTitle>{member.member}</SheetTitle><SheetDescription>{member.district} · {member.state} · {member.party}</SheetDescription></div></div></SheetHeader>
+    <div className="space-y-4 p-4 text-sm">
+      <div className="rounded-lg border border-primary/25 bg-primary/5 p-3"><p className="text-[10px] font-bold uppercase tracking-[0.13em] text-primary">2026 status</p><p className="mt-1 font-semibold text-foreground">{statusLabel}</p></div>
+      <DrawerField label="Chamber" value={member.chamber ? `${member.chamber.charAt(0).toUpperCase()}${member.chamber.slice(1)}` : null} />
+      <DrawerField label="Up in 2026" value={member.upIn2026 ? "Yes" : "No"} />
+      <DrawerField label="Primary result" value={member.primaryResult} accent />
+      <DrawerField label="Primary total" value={primaryTotal} />
+      <DrawerField label="Primary opponent" value={member.primaryOpponent} />
+      <DrawerField label="General-election opponent" value={member.generalOpponent} />
+      {member.redistrictingContext && <DrawerContext label="Redistricting context" value={member.redistrictingContext} tone="purple" />}
+      {member.aipacFunding && <DrawerContext label="Funding context" value={member.aipacFunding} tone="amber" />}
+      {member.notes && <DrawerContext label="Platform notes" value={member.notes} tone="neutral" />}
+      {member.sourceUrl && <a href={member.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">View source reporting <ExternalLink size={13} /></a>}
+    </div>
+  </>;
+}
+
+function DrawerField({ label, value, accent = false }: { label: string; value: string | null | undefined; accent?: boolean }) {
+  if (!value) return null;
+  return <div><p className="text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">{label}</p><p className={`mt-1 ${accent ? "text-green-600 dark:text-green-400" : "text-foreground"}`}>{value}</p></div>;
+}
+
+function DrawerContext({ label, value, tone }: { label: string; value: string; tone: "purple" | "amber" | "neutral" }) {
+  const classes = tone === "purple" ? "border-purple-500/25 bg-purple-500/10" : tone === "amber" ? "border-amber-500/25 bg-amber-500/10" : "border-border bg-muted/50";
+  return <div className={`rounded-lg border p-3 ${classes}`}><p className="text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">{label}</p><p className="mt-1 text-sm leading-relaxed text-foreground">{value}</p></div>;
 }
 
 function formatBlackRepStatus(status?: string | null) {

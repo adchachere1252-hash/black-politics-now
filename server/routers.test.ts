@@ -40,6 +40,18 @@ describe("election router", () => {
     }
   });
 
+  it("returns public election-map records with freshness metadata", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const [senate, house, governors] = await Promise.all([
+      caller.election.senate(),
+      caller.election.house(),
+      caller.election.governors(),
+    ]);
+    const allRaces = [...senate, ...house, ...governors] as any[];
+    expect(allRaces.length).toBeGreaterThan(0);
+    expect(allRaces.some((race) => Boolean(race.updatedAt))).toBe(true);
+  });
+
   it("returns house races as an array", async () => {
     const caller = appRouter.createCaller(createPublicContext());
     const races = await caller.election.house();
@@ -103,6 +115,7 @@ describe("election router", () => {
       status: "advanced_to_general",
       generalOpponent: "Jocelyn Benson",
     });
+    expect(james.sourceUrl).toMatch(/^https:\/\//);
   });
 
   it("allows an administrator to safely re-save every article-backed election record", async () => {
@@ -170,6 +183,20 @@ describe("podcast router", () => {
       expect(Array.isArray(ep.segments)).toBe(true);
       expect(ep.verificationStatus).toBe("passed");
       expect(ep.fullEpisodeCdnUrl).toMatch(/^https:\/\//);
+    }
+  });
+
+  it("returns every stored Daily Brief date to the archive with an honest completion state", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const [published, archive] = await Promise.all([
+      caller.podcast.getEpisodes(),
+      caller.podcast.getArchiveEpisodes(),
+    ]);
+    expect(archive.length).toBeGreaterThanOrEqual(published.length);
+    for (const episode of archive as any[]) {
+      expect(episode.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(episode.verificationStatus).toEqual(expect.any(String));
+      expect(episode).toHaveProperty("fullEpisodeCdnUrl");
     }
   });
 });

@@ -8,7 +8,7 @@ export default function ArchivePage() {
   const [tab, setTab] = useState<ArchiveTab>("news");
   const [newsPage, setNewsPage] = useState(1);
   const { data: newsData, isLoading: newsLoading } = trpc.news.list.useQuery({ page: newsPage, perPage: 15 });
-  const { data: episodes = [] } = trpc.podcast.getEpisodes.useQuery();
+  const { data: episodes = [] } = trpc.podcast.getArchiveEpisodes.useQuery();
 
   return (
     <div className="container py-8">
@@ -64,7 +64,7 @@ export default function ArchivePage() {
                 <p className="text-sm font-medium">{ep.friendlyDate || `${ep.day || "Daily Brief"} · ${ep.date}`}</p>
                 <p className="text-xs text-muted-foreground">{ep.segmentCount} topics &middot; {ep.totalDurationLabel}</p>
               </div>
-              <span className="text-xs text-muted-foreground">{ep.verificationStatus === "passed" ? "Full audio verified" : "Audio preparation"}</span>
+              <span className={`rounded-full px-2 py-1 text-[11px] font-semibold ${ep.fullEpisodeCdnUrl ? "bg-green-500/15 text-green-600 dark:text-green-400" : ep.verificationStatus === "warnings" ? "bg-amber-500/15 text-amber-700 dark:text-amber-300" : "bg-muted text-muted-foreground"}`}>{ep.fullEpisodeCdnUrl ? "Verified full brief" : ep.verificationStatus === "warnings" ? "Audio preparation" : "Review needed"}</span>
             </div>
           ))}
         </div>

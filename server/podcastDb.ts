@@ -77,6 +77,24 @@ export async function getEpisodesFormatted() {
   });
 }
 
+/** Archive-only listing: deliberately includes incomplete records so each stored
+ * Daily Brief date can disclose whether audio is verified, preparing, or needs review. */
+export async function getArchiveEpisodesFormatted() {
+  const db = await getDb();
+  if (!db) return [];
+  const allEpisodes = await db.select().from(episodes).orderBy(desc(episodes.date));
+  return allEpisodes.map((ep) => ({
+    date: ep.date,
+    day: ep.day ?? "",
+    friendlyDate: ep.friendlyDate ?? "",
+    fullEpisodeCdnUrl: ep.fullEpisodeCdnUrl ?? "",
+    segmentCount: ep.segmentCount ?? 0,
+    totalDurationSec: ep.totalDurationSec ?? 0,
+    totalDurationLabel: ep.totalDurationLabel ?? (ep.totalDurationSec ? secsToLabel(ep.totalDurationSec) : ""),
+    verificationStatus: ep.verificationStatus ?? "pending",
+  }));
+}
+
 export async function subscribeEmail(input: { email: string; name?: string }) {
   const db = await getDb();
   if (!db) return;
