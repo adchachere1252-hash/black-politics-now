@@ -336,6 +336,16 @@
  - [ ] Complete remaining project-side verification in the healthy preview and repeat live-domain checks once hosting recovers
  - [x] Verify and correct any unauthenticated Admin dashboard visibility so all operational content and mutations remain role-gated — Interactive preview showed the expected Admin Access Required gate; an earlier screenshot used an authenticated capture context
 
+## AI Research Agent & Continuous Improvement
+- [ ] Implement the approved Autonomous Research Desk model: continuous research and cited recommendations, with no automatic publishing, election-record mutation, or public alerting
+- [x] Define reader-facing AI research scope, approved source context, citation rules, and answers that must be declined or escalated
+- [x] Build a source-grounded reader chat experience using verified Black Politics Now news, election, podcast, historical-atlas, and World Elections data
+- [x] Ensure chamber-wide Research Desk questions retrieve the requested Senate, House, or Governor platform summary rather than unrelated keyword matches
+- [x] Convert internal Research Desk citations to safe absolute URLs so rendered source links are usable
+- [x] Add a protected improvement queue that stores AI-generated data-quality and editorial recommendations for human approval
+- [ ] Add safe recurring research runs that produce reviewable recommendations without directly publishing content or altering election records
+- [ ] Test, document, and visually verify the AI agent and its protected operations controls
+
 ## Final Verification & Accuracy Audit (Historical Duplicate)
 The following earlier duplicate checklist is retained as project history. The expanded checklist immediately above is the active audit scope.
 - [x] Establish current production baselines for the dashboard, public routes, live data feeds, and production diagnostics — Historical duplicate; completed in active audit above

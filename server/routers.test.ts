@@ -154,6 +154,18 @@ describe("podcast router", () => {
   });
 });
 
+describe("Autonomous Research Desk router", () => {
+  it("keeps the approval queue administrator-only and rejects underspecified public questions", async () => {
+    const publicCaller = appRouter.createCaller(createPublicContext());
+    const adminCaller = appRouter.createCaller(createAdminContext());
+
+    await expect(publicCaller.agent.recommendations()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(publicCaller.agent.chat({ question: "hi" })).rejects.toBeDefined();
+    await expect(adminCaller.agent.settings()).resolves.toMatchObject({ id: 1, researchIntervalHours: 4 });
+    await expect(adminCaller.agent.recommendations()).resolves.toEqual(expect.any(Array));
+  });
+});
+
 describe("world elections router", () => {
   it("returns the imported World Elections calendar with display fields", async () => {
     const caller = appRouter.createCaller(createPublicContext());

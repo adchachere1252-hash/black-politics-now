@@ -1,16 +1,17 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { startLogin } from "@/const";
+import { AgentDeskTab } from "@/components/AgentDeskTab";
 import { useState, useMemo } from "react";
-import { Shield, Radio, MapPin, Users, Save, Check, Search, Star } from "lucide-react";
+import { Shield, Radio, MapPin, Users, Save, Check, Search, Star, Sparkles } from "lucide-react";
 
-type AdminTab = "overview" | "podcast" | "elections" | "cbc" | "audience";
+type AdminTab = "overview" | "podcast" | "elections" | "cbc" | "agent" | "audience";
 
 export default function AdminPage() {
   const { user, isAuthenticated, loading } = useAuth();
   const [tab, setTab] = useState<AdminTab>(() => {
     const requested = typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("tab");
-    return requested === "podcast" || requested === "elections" || requested === "cbc" || requested === "audience" ? requested : "overview";
+    return requested === "podcast" || requested === "elections" || requested === "cbc" || requested === "agent" || requested === "audience" ? requested : "overview";
   });
 
   if (loading) return <div className="container py-8"><div className="h-40 bg-muted rounded animate-pulse" /></div>;
@@ -48,6 +49,7 @@ export default function AdminPage() {
           { key: "podcast", label: "Podcast Ops", icon: Radio },
           { key: "elections", label: "Election Ops", icon: MapPin },
           { key: "cbc", label: "Black Representation", icon: Star },
+          { key: "agent", label: "Agent Desk", icon: Sparkles },
           { key: "audience", label: "Audience", icon: Users },
         ] as const).map(({ key, label, icon: Icon }) => (
           <button
@@ -64,6 +66,7 @@ export default function AdminPage() {
       {tab === "podcast" && <PodcastOpsTab />}
       {tab === "elections" && <ElectionOpsTab />}
       {tab === "cbc" && <CbcOpsTab />}
+      {tab === "agent" && <AgentDeskTab />}
       {tab === "audience" && <AudienceTab />}
     </div>
   );

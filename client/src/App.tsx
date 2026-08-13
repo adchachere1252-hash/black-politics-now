@@ -17,6 +17,7 @@ const AdminPage = lazy(() => import("./pages/Admin"));
 const SearchPage = lazy(() => import("./pages/Search"));
 const WorldPage = lazy(() => import("./pages/World"));
 const AtlasPage = lazy(() => import("./pages/Atlas"));
+const ResearchDesk = lazy(() => import("./pages/ResearchDesk"));
 const NewsConceptPreview = lazy(() => import("./pages/NewsConceptPreview"));
 const HomepageExample = lazy(() => import("./pages/HomepageExample"));
 
@@ -44,6 +45,9 @@ function Router() {
       </Route>
       <Route path={"/atlas"}>
         <Suspense fallback={<PageLoader />}><AtlasPage /></Suspense>
+      </Route>
+      <Route path={"/research"}>
+        <Suspense fallback={<PageLoader />}><ResearchDesk /></Suspense>
       </Route>
       <Route path={"/news-mockup"}>
         <Suspense fallback={<PageLoader />}><NewsConceptPreview /></Suspense>

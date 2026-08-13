@@ -448,3 +448,67 @@ export const blackRepresentationElections = mysqlTable("black_representation_ele
 
 export type BlackRepresentationElection = typeof blackRepresentationElections.$inferSelect;
 export type InsertBlackRepresentationElection = typeof blackRepresentationElections.$inferInsert;
+
+// ═══════════════════════════════════════════════════════════════════════════
+// AUTONOMOUS RESEARCH DESK
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Singleton configuration for the reviewed, non-publishing research workflow.
+ * The scheduled task UID is persisted so the job can be inspected, paused, or
+ * changed without relying on an in-memory process.
+ */
+export const agentSettings = mysqlTable("agent_settings", {
+  id: int("id").primaryKey(),
+  enabled: boolean("enabled").default(true).notNull(),
+  researchIntervalHours: int("research_interval_hours").default(4).notNull(),
+  scheduleCronTaskUid: varchar("schedule_cron_task_uid", { length: 65 }),
+  lastRunAt: timestamp("last_run_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type AgentSettings = typeof agentSettings.$inferSelect;
+
+/**
+ * Auditable records of manual, administrative, and scheduled research runs.
+ * Source snapshots are stored as JSON text so every recommendation can be
+ * traced back to the platform context reviewed at that time.
+ */
+export const agentRuns = mysqlTable("agent_runs", {
+  id: int("id").autoincrement().primaryKey(),
+  trigger: mysqlEnum("trigger", ["manual", "admin", "scheduled"]).notNull(),
+  status: mysqlEnum("status", ["running", "success", "failed", "skipped"]).notNull().default("running"),
+  model: varchar("model", { length: 64 }).notNull(),
+  sourceSnapshot: text("source_snapshot"),
+  summary: text("summary"),
+  recommendationCount: int("recommendation_count").default(0).notNull(),
+  errorMessage: text("error_message"),
+  startedAt: timestamp("started_at").defaultNow().notNull(),
+  completedAt: timestamp("completed_at"),
+});
+
+export type AgentRun = typeof agentRuns.$inferSelect;
+
+/**
+ * Recommendations are deliberately review-only. They have no link to an
+ * election or publishing mutation, so an AI run cannot silently alter public
+ * facts, send alerts, or publish newsroom content.
+ */
+export const agentRecommendations = mysqlTable("agent_recommendations", {
+  id: int("id").autoincrement().primaryKey(),
+  runId: int("run_id").notNull(),
+  category: mysqlEnum("category", ["data_quality", "editorial", "coverage_gap", "source_watch", "product"]).notNull(),
+  priority: mysqlEnum("priority", ["high", "medium", "low"]).notNull().default("medium"),
+  title: varchar("title", { length: 256 }).notNull(),
+  summary: text("summary").notNull(),
+  proposedAction: text("proposed_action").notNull(),
+  evidence: text("evidence").notNull(),
+  status: mysqlEnum("status", ["pending", "approved", "dismissed", "deferred"]).notNull().default("pending"),
+  reviewedBy: varchar("reviewed_by", { length: 128 }),
+  reviewedAt: timestamp("reviewed_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type AgentRecommendation = typeof agentRecommendations.$inferSelect;

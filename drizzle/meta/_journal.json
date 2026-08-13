@@ -64,6 +64,13 @@
       "when": 1786457331780,
       "tag": "0008_solid_the_executioner",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1786579808157,
+      "tag": "0009_bent_warpath",
+      "breakpoints": true
     }
   ]
 }

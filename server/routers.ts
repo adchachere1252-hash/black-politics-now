@@ -8,6 +8,7 @@ import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferen
 import { fetchWithCache } from "./newsCache";
 import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
 import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
+import { answerReaderQuestion, getAgentRecommendations, getAgentRuns, getAgentSettings, reviewAgentRecommendation, runResearchDesk } from "./agentDesk";
 
 export const appRouter = router({
   system: systemRouter,
@@ -142,6 +143,26 @@ export const appRouter = router({
           })),
         }));
         return { elections: electionResults, news: newsResults, podcast: podcastResults };
+      }),
+  }),
+
+  // ─── Autonomous Research Desk ──────────────────────────────────────────────
+  agent: router({
+    chat: publicProcedure
+      .input(z.object({
+        question: z.string().min(3).max(1200),
+        history: z.array(z.object({ role: z.enum(["user", "assistant"]), content: z.string().min(1).max(1200) })).max(6).optional(),
+      }))
+      .mutation(async ({ input }) => answerReaderQuestion(input)),
+    recommendations: adminProcedure.query(async () => getAgentRecommendations()),
+    runs: adminProcedure.query(async () => getAgentRuns()),
+    settings: adminProcedure.query(async () => getAgentSettings()),
+    runNow: adminProcedure.mutation(async () => runResearchDesk("admin")),
+    reviewRecommendation: adminProcedure
+      .input(z.object({ id: z.number(), status: z.enum(["approved", "dismissed", "deferred"]) }))
+      .mutation(async ({ input, ctx }) => {
+        await reviewAgentRecommendation(input.id, input.status, ctx.user.name ?? "Administrator");
+        return { success: true };
       }),
   }),
 });
