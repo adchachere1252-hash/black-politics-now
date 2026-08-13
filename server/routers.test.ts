@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
+import { APPORTIONMENT_HISTORY, APPORTIONMENT_YEARS } from "../client/src/data/atlasHistory";
 
 function createPublicContext(): TrpcContext {
   return {
@@ -68,6 +69,14 @@ describe("election router", () => {
       expect(state.stateCode).toMatch(/^[A-Z]{2}$/);
       expect(state.status).toEqual(expect.any(String));
     }
+  });
+
+  it("restores the original Atlas 50-state apportionment series without conflating it with the active watchlist", () => {
+    expect(Object.keys(APPORTIONMENT_HISTORY)).toHaveLength(50);
+    expect(APPORTIONMENT_YEARS).toEqual([1963, 1973, 1983, 1993, 2003, 2013, 2023]);
+    expect(APPORTIONMENT_HISTORY.Mississippi).toEqual([5, 5, 5, 5, 4, 4, 4]);
+    expect(APPORTIONMENT_HISTORY.Alaska).toEqual([1, 1, 1, 1, 1, 1, 1]);
+    expect(APPORTIONMENT_HISTORY.Texas.at(-1)).toBe(38);
   });
 
   it("returns source-backed Black Representation election records", async () => {

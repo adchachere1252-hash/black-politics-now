@@ -337,6 +337,12 @@
  - [x] Verify and correct any unauthenticated Admin dashboard visibility so all operational content and mutations remain role-gated — Interactive preview showed the expected Admin Access Required gate; an earlier screenshot used an authenticated capture context
 
 ## AI Research Agent & Continuous Improvement
+- [x] Lower and reframe the desktop election map so Washington and the full U.S. geography are visible without top crowding
+- [x] Make Latest News independently scrollable within its dashboard panel
+- [x] Add useful chamber-specific election intelligence beneath the map that changes for Senate, House, and Governor views
+- [x] Restore the homepage map-control order to Governor, House, and Senate
+- [x] Audit Historical Atlas repository coverage, document what is represented on the website, and close verified content gaps
+- [x] Complete final launch-readiness visual, data, automation, and interaction verification
 - [x] Correct the Daily Brief generator’s invalid processing verification status so today’s autonomous episode can resume safely
 - [x] Correct today’s saved Daily Brief segment-duration mismatch so the verified 41-minute episode can complete audio publication safely
 - [x] Give the desktop homepage election map sufficient top spacing and visual hierarchy without crowding map controls

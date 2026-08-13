@@ -113,9 +113,10 @@ interface USMapFullProps {
   raceData: Record<string, { rating: string | null; candidate1: string; candidate2: string; calledWinner?: string | null }>;
   onStateClick?: (stateId: string) => void;
   selectedState?: string | null;
+  showLegend?: boolean;
 }
 
-export function USMapFull({ raceData, onStateClick, selectedState }: USMapFullProps) {
+export function USMapFull({ raceData, onStateClick, selectedState, showLegend = true }: USMapFullProps) {
   const [hoveredState, setHoveredState] = useState<string | null>(null);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
 
@@ -189,7 +190,7 @@ export function USMapFull({ raceData, onStateClick, selectedState }: USMapFullPr
       )}
 
       {/* Legend */}
-      <div className="flex flex-wrap justify-center gap-3 mt-4">
+      {showLegend && <div className="flex flex-wrap justify-center gap-3 mt-4">
         {[
           { label: "Solid D", color: "var(--color-solid-d)" },
           { label: "Likely D", color: "var(--color-likely-d)" },
@@ -205,7 +206,7 @@ export function USMapFull({ raceData, onStateClick, selectedState }: USMapFullPr
             <span className="text-xs text-muted-foreground">{label}</span>
           </div>
         ))}
-      </div>
+      </div>}
     </div>
   );
 }

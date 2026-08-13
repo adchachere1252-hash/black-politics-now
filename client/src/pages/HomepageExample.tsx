@@ -109,6 +109,27 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
     return (houseRaces as any[] ?? []).filter((race) => race.stateCode === selectedState);
   }, [selectedState, mapMode, senateRaces, houseRaces, governors]);
 
+  const chamberInsight = useMemo(() => {
+    const races = (mapMode === "senate" ? senateRaces : mapMode === "house" ? houseRaces : governors) as any[] ?? [];
+    const ratings = races.map((race) => race.rating).filter(Boolean);
+    const tossUps = ratings.filter((rating) => rating === "Toss-up").length;
+    const leans = ratings.filter((rating) => rating === "Lean D" || rating === "Lean R").length;
+    const calls = races.filter((race) => Boolean(race.calledWinner)).length;
+    const title = mapMode === "senate" ? "Senate battlefield" : mapMode === "house" ? "House battlefield" : "Governor battlefield";
+    const coverage = mapMode === "senate" ? "statewide contests" : mapMode === "house" ? "district contests" : "statewide contests";
+    return {
+      title,
+      coverage,
+      total: races.length,
+      tossUps,
+      leans,
+      calls,
+      summary: tossUps || leans
+        ? `${tossUps} toss-up and ${leans} lean race${tossUps + leans === 1 ? "" : "s"} shape the current outlook.`
+        : `Every tracked ${coverage.slice(0, -1)} currently has a defined rating outlook.`,
+    };
+  }, [mapMode, senateRaces, houseRaces, governors]);
+
   const worldBrief = useMemo(() => {
     const records = worldElections as any[];
     const upcoming = records.filter((item) => item.status === "Upcoming" || item.status === "Voting Today").sort((a, b) => `${a.electionDate}`.localeCompare(`${b.electionDate}`))[0];
@@ -133,15 +154,15 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
           <aside className="grid min-h-0 grid-rows-[minmax(0,1fr)_clamp(174px,25vh,226px)] gap-3 overflow-hidden">
             <section className="flex min-h-0 flex-col overflow-hidden rounded-lg border border-border bg-background/55 p-3">
             <div className="mb-2 flex items-center justify-between"><h2 className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">Latest News</h2><a href="https://blkpoliticsnow.com" className="text-[10px] font-semibold text-primary hover:underline" target="_blank" rel="noopener noreferrer">View all</a></div>
-            <div className="min-h-0 flex-1 divide-y divide-border overflow-hidden">{newsLoading && !leadPosts.length ? <NewsLoadingRows /> : leadPosts.map((post, index) => <NewsRow key={post.id ?? index} post={post} />)}</div>
+            <div className="min-h-0 flex-1 divide-y divide-border overflow-y-auto pr-1 [scrollbar-color:var(--primary)_transparent] [scrollbar-width:thin]">{newsLoading && !leadPosts.length ? <NewsLoadingRows /> : leadPosts.map((post, index) => <NewsRow key={post.id ?? index} post={post} />)}</div>
             </section>
             <Link href="/atlas" className="group relative overflow-hidden rounded-lg border border-primary/35 bg-card transition-colors hover:bg-muted/50"><img src="/manus-storage/selma-marchers-homepage_4dbcaa12.jpg" alt="Civil rights marchers crossing the Edmund Pettus Bridge in Selma" className="absolute inset-0 h-full w-full object-cover opacity-70 contrast-125 saturate-125 transition-transform duration-500 group-hover:scale-105 dark:opacity-50 dark:mix-blend-luminosity" /><div className="absolute inset-0 bg-gradient-to-t from-card/95 via-card/60 to-transparent dark:from-card dark:via-card/70 dark:to-background/15" /><div className="relative z-10 flex h-full flex-col justify-end p-3"><div className="flex items-start justify-between gap-2"><p className="text-[8px] font-bold uppercase tracking-[0.15em] text-primary"><Landmark className="mr-1 inline" size={10} />Voting Rights Act</p><ArrowUpRight className="text-primary" size={11} /></div><p className="mt-1 text-[8px] font-semibold uppercase tracking-[0.11em] text-muted-foreground">Selma · 1965</p><h3 className="mt-1 text-[15px] font-bold leading-[1.05] text-foreground">The map has a memory.</h3><p className="mt-1 max-w-[90%] text-[8px] leading-snug text-muted-foreground">A living atlas of the VRA, representation, apportionment, and today’s redistricting fights.</p><div className="mt-2 grid grid-cols-3 divide-x divide-border rounded border border-border bg-background/85 text-center backdrop-blur-[1px]"><AtlasStat value="1965" label="VRA" /><AtlasStat value={atlasBrief.tracked} label="States" /><AtlasStat value={atlasBrief.litigated} label="Cases" /></div></div></Link>
           </aside>
 
           <section className="relative min-h-0 overflow-hidden rounded-lg border border-border bg-background/55">
-            <div className="absolute inset-x-3 bottom-11 top-[116px] rounded-md"><USMapFull raceData={mapData} selectedState={selectedState} onStateClick={(state) => { setSelectedState(state); setStateDetailOpen(true); }} />{mapLoading && <div className="absolute inset-0 grid place-items-center bg-background/45 backdrop-blur-[1px]"><div className="rounded-full border border-primary/25 bg-card/90 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-primary shadow-sm">Loading election intelligence</div></div>}</div>
-            <div className="pointer-events-none absolute inset-x-3 top-3 z-10 rounded-lg border border-border bg-card/94 p-3 shadow-sm"><div className="pointer-events-auto flex flex-wrap items-start justify-between gap-2"><div><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">Interactive Election Map</p><h1 className="mt-0.5 text-[clamp(1rem,1.55vw,1.3rem)] font-bold tracking-tight text-foreground">{mapLabel}</h1><p className="mt-0.5 text-[11px] text-muted-foreground">Choose a chamber, then select a state for contest notes and detail.</p></div><div className="flex rounded border border-border bg-background/85 p-0.5 shadow-sm">{(["senate", "house", "governor"] as MapMode[]).map((item) => <button key={item} type="button" onClick={() => { setMapMode(item); setSelectedState(null); }} className={`rounded px-2 py-1 text-[8px] font-bold uppercase tracking-[0.09em] transition-colors ${mapMode === item ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>{item}</button>)}</div></div><div className="mt-2 flex flex-wrap gap-x-2.5 gap-y-1">{LEGEND.map(([label, color]) => <span key={label} className="inline-flex items-center gap-1 text-[8px] text-muted-foreground"><i className={`h-2 w-2 rounded-full ${color}`} />{label}</span>)}</div></div>
-            <div className="absolute inset-x-3 bottom-3 z-10 flex items-center gap-2 rounded-md border border-border bg-card/94 px-3 py-2 text-[9px] shadow-sm"><span className="font-bold uppercase tracking-[0.09em] text-primary">Live Results</span><span className="text-muted-foreground">•</span><span className="text-muted-foreground">Race calls, reporting, and new polling</span><Link href="/elections" className="ml-auto inline-flex items-center gap-1 font-semibold text-primary">More <ArrowUpRight size={10} /></Link></div>
+            <div className="absolute inset-x-4 bottom-[94px] top-[136px] flex items-center justify-center overflow-hidden rounded-md"><div className="w-full translate-y-2"><USMapFull showLegend={false} raceData={mapData} selectedState={selectedState} onStateClick={(state) => { setSelectedState(state); setStateDetailOpen(true); }} /></div>{mapLoading && <div className="absolute inset-0 grid place-items-center bg-background/45 backdrop-blur-[1px]"><div className="rounded-full border border-primary/25 bg-card/90 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-primary shadow-sm">Loading election intelligence</div></div>}</div>
+            <div className="pointer-events-none absolute inset-x-3 top-3 z-10 rounded-lg border border-border bg-card/94 p-3 shadow-sm"><div className="pointer-events-auto flex flex-wrap items-start justify-between gap-2"><div><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">Interactive Election Map</p><h1 className="mt-0.5 text-[clamp(1rem,1.55vw,1.3rem)] font-bold tracking-tight text-foreground">{mapLabel}</h1><p className="mt-0.5 text-[11px] text-muted-foreground">Choose a chamber, then select a state for contest notes and detail.</p></div><div className="flex rounded border border-border bg-background/85 p-0.5 shadow-sm">{(["governor", "house", "senate"] as MapMode[]).map((item) => <button key={item} type="button" onClick={() => { setMapMode(item); setSelectedState(null); }} className={`rounded px-2 py-1 text-[8px] font-bold uppercase tracking-[0.09em] transition-colors ${mapMode === item ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>{item}</button>)}</div></div><div className="mt-2 flex flex-wrap gap-x-2.5 gap-y-1">{LEGEND.map(([label, color]) => <span key={label} className="inline-flex items-center gap-1 text-[8px] text-muted-foreground"><i className={`h-2 w-2 rounded-full ${color}`} />{label}</span>)}</div></div>
+            <div className="absolute inset-x-3 bottom-3 z-10 rounded-md border border-border bg-card/94 px-3 py-2 shadow-sm"><div className="flex items-center gap-2"><span className="font-bold uppercase tracking-[0.09em] text-primary">{chamberInsight.title}</span><span className="text-muted-foreground">•</span><span className="truncate text-[9px] text-muted-foreground">{chamberInsight.summary}</span><Link href="/elections" className="ml-auto inline-flex shrink-0 items-center gap-1 text-[9px] font-semibold text-primary">More <ArrowUpRight size={10} /></Link></div><div className="mt-1.5 grid grid-cols-4 divide-x divide-border/70 text-center"><MapIntel value={chamberInsight.total} label={mapMode === "house" ? "Districts" : "Races"} /><MapIntel value={chamberInsight.tossUps} label="Toss-up" /><MapIntel value={chamberInsight.leans} label="Lean" /><MapIntel value={chamberInsight.calls} label="Called" /></div></div>
           </section>
 
           <aside className="flex min-h-0 flex-col overflow-hidden rounded-lg border border-border bg-background/55 p-3"><h2 className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">Daily Intelligence Brief</h2>
@@ -179,4 +200,8 @@ function AtlasStat({ value, label }: { value: string | number; label: string }) 
 
 function WorldStat({ value, label }: { value: string | number; label: string }) {
   return <span className="py-1"><strong className="block text-[10px] text-cyan-50">{value}</strong><small className="text-[7px] uppercase tracking-wide text-cyan-100/65">{label}</small></span>;
+}
+
+function MapIntel({ value, label }: { value: string | number; label: string }) {
+  return <span className="px-1 py-0.5"><strong className="block text-[10px] text-foreground">{value}</strong><small className="text-[7px] uppercase tracking-wide text-muted-foreground">{label}</small></span>;
 }
