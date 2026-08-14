@@ -564,3 +564,9 @@ The following earlier duplicate checklist is retained as project history. The ex
 ## Homepage Black Representation Map (Aug 14)
 - [x] Add a Black Representation view to the homepage Election Map using the existing trusted profile and election-record data
 - [x] Preserve chamber views and state/map interactions while making the Black Representation view readable on mobile
+
+## Historical Atlas Full-Map Time Travel (Aug 14)
+- [x] Compare the current Historical Atlas with the repository’s full-map boundary explorer and identify reusable data and interaction patterns
+- [x] Add a full historical U.S. map with clear forward/backward era navigation and state-level historical boundary changes
+- [x] Add accessible context and responsive controls without removing the Atlas’s Voting Rights Act and apportionment interpretation
+- [x] Verify Historical Atlas accuracy, time navigation, desktop/mobile layout, and regression coverage
