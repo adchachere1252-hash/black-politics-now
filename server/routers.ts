@@ -24,7 +24,7 @@ import { fetchWithCache, getPersistedWordPressNews } from "./newsCache";
 import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
 import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
 import { getWorldElectionRefreshOperations, runDatedWorldElectionRefresh } from "./worldElectionRefresh";
-import { getElectionDayCommandCenter } from "./electionDayCommandCenter";
+import { advanceElectionDayRehearsal, getElectionDayCommandCenter, startElectionDayRehearsal } from "./electionDayCommandCenter";
 import { getPortraitSubmissionTargets, getPortraitSubmissions, portraitPhotoFields, portraitProvenanceTypes, portraitTargetTypes, reviewPortraitSubmission, submitPortraitSubmission } from "./portraitReview";
 import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, executeAgentTaskWithChangeSet, getAgentChangeProposals, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, reviewAgentChangeProposal, reviewAgentRecommendation, runAgentTaskResearchNow, runElectionDayCommandResearch, runPortraitResearchTask, runResearchDesk, setAgentDefaultOwners, setAgentPriorityMode, updateAgentTask } from "./agentDesk";
 
@@ -100,6 +100,10 @@ export const appRouter = router({
     runAgentResearch: adminProcedure
       .input(z.object({ triageIndex: z.number().int().min(0).max(11).optional() }).optional())
       .mutation(async ({ input, ctx }) => runElectionDayCommandResearch(input?.triageIndex, ctx.user.name ?? "Administrator")),
+    startRehearsal: adminProcedure.mutation(async ({ ctx }) => startElectionDayRehearsal(ctx.user.name ?? "Administrator")),
+    advanceRehearsal: adminProcedure
+      .input(z.object({ id: z.number().int(), step: z.enum(["heartbeat", "triage", "research", "review"]), notes: z.string().max(500).optional() }))
+      .mutation(async ({ input }) => advanceElectionDayRehearsal(input.id, input.step, input.notes)),
   }),
 
   // ─── World Elections ─────────────────────────────────────────────────────────

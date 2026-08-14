@@ -1,6 +1,58 @@
 import { and, desc, eq } from "drizzle-orm";
-import { agentChangeProposals, agentRecommendations, electionDayStatus, governorRaces, houseRaces, senateRaces } from "../drizzle/schema";
+import { agentChangeProposals, agentRecommendations, electionDayRehearsals, electionDayStatus, governorRaces, houseRaces, senateRaces } from "../drizzle/schema";
 import { getDb } from "./db";
+
+const REHEARSAL_STEPS = ["heartbeat", "triage", "research", "review"] as const;
+type RehearsalStep = typeof REHEARSAL_STEPS[number];
+type RehearsalProgress = Record<RehearsalStep, boolean>;
+
+function emptyRehearsalSteps(): RehearsalProgress {
+  return { heartbeat: false, triage: false, research: false, review: false };
+}
+
+function parseRehearsalSteps(raw: string | null | undefined): RehearsalProgress {
+  try {
+    const parsed = JSON.parse(raw ?? "{}") as Partial<RehearsalProgress>;
+    return REHEARSAL_STEPS.reduce((steps, key) => ({ ...steps, [key]: Boolean(parsed[key]) }), emptyRehearsalSteps());
+  } catch {
+    return emptyRehearsalSteps();
+  }
+}
+
+export async function startElectionDayRehearsal(startedBy: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const [running] = await db.select().from(electionDayRehearsals).where(eq(electionDayRehearsals.status, "running")).orderBy(desc(electionDayRehearsals.startedAt)).limit(1);
+  if (running) return { ...running, progress: parseRehearsalSteps(running.steps) };
+  await db.insert(electionDayRehearsals).values({
+    scenario: "Protected Election Day readiness rehearsal",
+    startedBy,
+    steps: JSON.stringify(emptyRehearsalSteps()),
+    notes: "Rehearsal only. No live race, source, alert, or publishing action is connected to these steps.",
+  });
+  const [rehearsal] = await db.select().from(electionDayRehearsals).orderBy(desc(electionDayRehearsals.id)).limit(1);
+  if (!rehearsal) throw new Error("Unable to create Election Day rehearsal");
+  return { ...rehearsal, progress: parseRehearsalSteps(rehearsal.steps) };
+}
+
+export async function advanceElectionDayRehearsal(id: number, step: RehearsalStep, notes: string | undefined) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const [rehearsal] = await db.select().from(electionDayRehearsals).where(eq(electionDayRehearsals.id, id)).limit(1);
+  if (!rehearsal) throw new Error("Election Day rehearsal not found");
+  if (rehearsal.status !== "running") throw new Error("This rehearsal is no longer active");
+  const progress = { ...parseRehearsalSteps(rehearsal.steps), [step]: true };
+  const complete = REHEARSAL_STEPS.every((key) => progress[key]);
+  await db.update(electionDayRehearsals).set({
+    steps: JSON.stringify(progress),
+    notes: notes?.trim() || rehearsal.notes,
+    status: complete ? "completed" : "running",
+    completedAt: complete ? new Date() : null,
+  }).where(eq(electionDayRehearsals.id, id));
+  const [updated] = await db.select().from(electionDayRehearsals).where(eq(electionDayRehearsals.id, id)).limit(1);
+  if (!updated) throw new Error("Unable to update Election Day rehearsal");
+  return { ...updated, progress: parseRehearsalSteps(updated.steps) };
+}
 
 function isNamed(value: string | null | undefined) {
   return Boolean(value && value.trim() && !value.trim().toLowerCase().startsWith("tbd"));
@@ -13,15 +65,17 @@ function isReporting(value: unknown) {
 export async function getElectionDayCommandCenter() {
   const db = await getDb();
   if (!db) return null;
-  const [heartbeatRows, senate, house, governor, highPriority, pendingChanges] = await Promise.all([
+  const [heartbeatRows, senate, house, governor, highPriority, pendingChanges, rehearsalRows] = await Promise.all([
     db.select().from(electionDayStatus).where(eq(electionDayStatus.id, 1)).limit(1),
     db.select().from(senateRaces),
     db.select().from(houseRaces),
     db.select().from(governorRaces),
     db.select().from(agentRecommendations).where(and(eq(agentRecommendations.status, "pending"), eq(agentRecommendations.priority, "high"))).orderBy(desc(agentRecommendations.createdAt)).limit(8),
     db.select().from(agentChangeProposals).where(eq(agentChangeProposals.status, "pending_review")).orderBy(desc(agentChangeProposals.createdAt)).limit(8),
+    db.select().from(electionDayRehearsals).orderBy(desc(electionDayRehearsals.startedAt)).limit(1),
   ]);
   const heartbeat = heartbeatRows[0];
+  const rehearsal = rehearsalRows[0];
 
   const raceRows = [
     ...senate.map((race) => ({ chamber: "Senate", label: `${race.stateName} Senate`, reporting: isReporting(race.pctReporting), called: Boolean(race.calledWinner), candidateGap: !isNamed(race.candidate1Name) || !isNamed(race.candidate2Name) })),
@@ -51,6 +105,7 @@ export async function getElectionDayCommandCenter() {
       pendingChangeSets: pendingChanges.length,
     },
     triage,
+    rehearsal: rehearsal ? { ...rehearsal, progress: parseRehearsalSteps(rehearsal.steps) } : null,
     runbook: [
       { step: "Open", title: "Confirm source heartbeat", detail: "Verify DDHQ health, polling cadence, and mapped-race coverage before results begin." },
       { step: "Monitor", title: "Work the triage queue", detail: "Assign source conflicts, coverage gaps, and high-priority evidence checks to an owner." },

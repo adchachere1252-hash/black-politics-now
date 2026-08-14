@@ -512,6 +512,13 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Expose explicit agent-review controls within Command Center without race calls, public mutations, alerts, or automatic publishing
 - [x] Verify the Command Center agent is administrator-only and submits output to Proposed Changes for human review
 
+## Election Day Readiness Sequence (Aug 14)
+- [x] Run one bounded Command Center agent investigation and confirm its private proposal is ready for review
+- [x] Confirm named default Data Desk and Editorial Desk ownership for Election Day triage and agent tasks
+- [x] Add a protected rehearsal workflow that exercises triage, research, and review steps without modifying live public records
+- [x] Prevent the Admin tab bar from widening the mobile page while keeping all protected destinations reachable by local horizontal scrolling
+- [x] Validate and document the completed Election Day readiness sequence
+
 ## Homepage Typography Alignment (Aug 14)
 - [x] Replace competing homepage display typography with the same clear editorial font treatment used by Latest News
 - [x] Verify the unified homepage type hierarchy remains legible on desktop and mobile

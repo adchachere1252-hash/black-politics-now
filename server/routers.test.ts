@@ -335,8 +335,10 @@ describe("Autonomous Research Desk router", () => {
 
     await expect(publicCaller.electionDay.commandCenter()).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(publicCaller.electionDay.runAgentResearch({ triageIndex: 0 })).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(publicCaller.electionDay.startRehearsal()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(publicCaller.electionDay.advanceRehearsal({ id: 1, step: "heartbeat" })).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(publicCaller.portraits.researchNow({ targetType: "senate", targetRecordId: 1, targetPhotoField: "candidate1", candidateName: "Example Candidate" })).rejects.toMatchObject({ code: "FORBIDDEN" });
-    await expect(adminCaller.electionDay.commandCenter()).resolves.toMatchObject({ coverage: expect.any(Object), triage: expect.any(Array), runbook: expect.any(Array) });
+    await expect(adminCaller.electionDay.commandCenter()).resolves.toMatchObject({ coverage: expect.any(Object), triage: expect.any(Array), runbook: expect.any(Array), rehearsal: expect.anything() });
   });
 });
 

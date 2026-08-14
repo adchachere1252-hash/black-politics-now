@@ -103,6 +103,24 @@ export const electionDayStatus = mysqlTable("election_day_status", {
 
 export type ElectionDayStatus = typeof electionDayStatus.$inferSelect;
 
+/**
+ * Private operational rehearsal records. These are runbook exercises only and
+ * are intentionally not connected to public election results or alerts.
+ */
+export const electionDayRehearsals = mysqlTable("election_day_rehearsals", {
+  id: int("id").autoincrement().primaryKey(),
+  status: mysqlEnum("status", ["running", "completed", "cancelled"]).notNull().default("running"),
+  scenario: varchar("scenario", { length: 256 }).notNull(),
+  startedBy: varchar("started_by", { length: 128 }).notNull(),
+  steps: text("steps").notNull(),
+  notes: text("notes"),
+  startedAt: timestamp("started_at").defaultNow().notNull(),
+  completedAt: timestamp("completed_at"),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ElectionDayRehearsal = typeof electionDayRehearsals.$inferSelect;
+
 // ─── House Races ──────────────────────────────────────────────────────────────
 export const houseRaces = mysqlTable("house_races", {
   id: int("id").autoincrement().primaryKey(),

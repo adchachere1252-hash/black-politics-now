@@ -48,8 +48,9 @@ export default function AdminPage() {
     <div className="container py-8">
       <h1 className="text-3xl font-extrabold mb-6">Admin Dashboard</h1>
 
-      <div className="flex gap-1 bg-muted rounded-lg p-1 mb-6 w-fit">
-        {([
+      <div className="mb-6 max-w-full overflow-x-auto pb-1">
+        <div className="flex w-max min-w-full gap-1 rounded-lg bg-muted p-1">
+          {([
           { key: "overview", label: "Overview", icon: Shield },
           { key: "command", label: "Command Center", icon: Radar },
           { key: "podcast", label: "Podcast Ops", icon: Radio },
@@ -60,14 +61,15 @@ export default function AdminPage() {
           { key: "portraits", label: "Portrait Review", icon: ImagePlus },
           { key: "audience", label: "Audience", icon: Users },
         ] as const).map(({ key, label, icon: Icon }) => (
-          <button
-            key={key}
-            onClick={() => setTab(key)}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${tab === key ? "bg-background text-foreground shadow-sm" : "text-muted-foreground"}`}
-          >
-            <Icon size={14} /> {label}
-          </button>
-        ))}
+            <button
+              key={key}
+              onClick={() => setTab(key)}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${tab === key ? "bg-background text-foreground shadow-sm" : "text-muted-foreground"}`}
+            >
+              <Icon size={14} /> {label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {tab === "overview" && <OverviewTab onReview={(id) => { setFocusRecommendationId(id); setTab("agent"); }} />}
