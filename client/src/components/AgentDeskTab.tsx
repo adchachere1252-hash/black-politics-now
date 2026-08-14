@@ -52,11 +52,13 @@ export function AgentDeskTab({ focusRecommendationId }: { focusRecommendationId?
     utils.agent.runs.invalidate();
     utils.agent.settings.invalidate();
     utils.agent.tasks.invalidate();
+    utils.agent.changeProposals.invalidate();
   };
   const { data: recommendations = [] } = trpc.agent.recommendations.useQuery(filters);
   const { data: runs = [] } = trpc.agent.runs.useQuery();
   const { data: settings } = trpc.agent.settings.useQuery();
   const { data: tasks = [] } = trpc.agent.tasks.useQuery();
+  const { data: changeProposals = [] } = trpc.agent.changeProposals.useQuery();
   const runNow = trpc.agent.runNow.useMutation({ onSuccess: invalidateDesk });
   const review = trpc.agent.reviewRecommendation.useMutation({ onSuccess: invalidateDesk });
   const assign = trpc.agent.assignRecommendation.useMutation({ onSuccess: invalidateDesk });
@@ -67,6 +69,10 @@ export function AgentDeskTab({ focusRecommendationId }: { focusRecommendationId?
   const priorityMode = trpc.agent.setPriorityMode.useMutation({ onSuccess: invalidateDesk });
   const pending = (recommendations as any[]).filter((item) => item.status === "pending");
   const priorityActive = Boolean(settings?.priorityModeEnabled && settings?.priorityModeExpiresAt && new Date(settings.priorityModeExpiresAt).getTime() > Date.now());
+  const proposalCountByTask = useMemo(() => (changeProposals as any[]).reduce((counts: Record<number, number>, proposal: any) => {
+    counts[proposal.taskId] = (counts[proposal.taskId] ?? 0) + 1;
+    return counts;
+  }, {}), [changeProposals]);
 
   useEffect(() => {
     if (!focusRecommendationId) return;

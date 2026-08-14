@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { AudioProvider } from "./contexts/AudioContext";
@@ -83,13 +83,15 @@ function PageLoader() {
 }
 
 function App() {
+  const [location] = useLocation();
+  const usesOriginalNewsroomShell = location === "/newsroom";
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark" switchable>
         <AudioProvider>
           <TooltipProvider>
             <Toaster />
-            <SiteHeader />
+            {!usesOriginalNewsroomShell && <SiteHeader />}
             <main className="pb-20">
               <Router />
             </main>

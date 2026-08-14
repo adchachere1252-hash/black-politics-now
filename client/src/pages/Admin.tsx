@@ -2,18 +2,19 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { startLogin } from "@/const";
 import { AgentDeskTab } from "@/components/AgentDeskTab";
+import { AgentProposedChangesTab } from "@/components/AgentProposedChangesTab";
 import { PortraitReviewTab } from "@/components/PortraitReviewTab";
 import MiniRepositoryGlobe from "@/components/MiniRepositoryGlobe";
 import { useState, useMemo } from "react";
-import { Shield, Radio, MapPin, Users, Save, Check, Search, Star, Sparkles, AlertTriangle, CheckCircle2, Clock3, FileText, Headphones, ListChecks, RefreshCw, ShieldCheck, ImagePlus } from "lucide-react";
+import { Shield, Radio, MapPin, Users, Save, Check, Search, Star, Sparkles, AlertTriangle, CheckCircle2, Clock3, FileText, Headphones, ListChecks, RefreshCw, ShieldCheck, ImagePlus, FileDiff } from "lucide-react";
 
-type AdminTab = "overview" | "podcast" | "elections" | "cbc" | "agent" | "portraits" | "audience";
+type AdminTab = "overview" | "podcast" | "elections" | "cbc" | "agent" | "changes" | "portraits" | "audience";
 
 export default function AdminPage() {
   const { user, isAuthenticated, loading } = useAuth();
   const [tab, setTab] = useState<AdminTab>(() => {
     const requested = typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("tab");
-    return requested === "podcast" || requested === "elections" || requested === "cbc" || requested === "agent" || requested === "portraits" || requested === "audience" ? requested : "overview";
+    return requested === "podcast" || requested === "elections" || requested === "cbc" || requested === "agent" || requested === "changes" || requested === "portraits" || requested === "audience" ? requested : "overview";
   });
   const [focusRecommendationId, setFocusRecommendationId] = useState<number | undefined>();
 
@@ -53,6 +54,7 @@ export default function AdminPage() {
           { key: "elections", label: "Election Ops", icon: MapPin },
           { key: "cbc", label: "Black Representation", icon: Star },
           { key: "agent", label: "Agent Desk", icon: Sparkles },
+          { key: "changes", label: "Proposed Changes", icon: FileDiff },
           { key: "portraits", label: "Portrait Review", icon: ImagePlus },
           { key: "audience", label: "Audience", icon: Users },
         ] as const).map(({ key, label, icon: Icon }) => (
@@ -71,6 +73,7 @@ export default function AdminPage() {
       {tab === "elections" && <ElectionOpsTab />}
       {tab === "cbc" && <CbcOpsTab />}
       {tab === "agent" && <AgentDeskTab focusRecommendationId={focusRecommendationId} />}
+      {tab === "changes" && <AgentProposedChangesTab />}
       {tab === "portraits" && <PortraitReviewTab />}
       {tab === "audience" && <AudienceTab />}
     </div>

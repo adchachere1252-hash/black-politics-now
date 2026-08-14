@@ -3,6 +3,21 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, adminProcedure, router } from "./_core/trpc";
 import { z } from "zod";
+
+function publicNewsListPost(post: any) {
+  return {
+    id: post.id,
+    date: post.date,
+    link: post.link,
+    title: post.title,
+    excerpt: post.excerpt,
+    jetpack_featured_media_url: post.jetpack_featured_media_url,
+    _embedded: {
+      "wp:featuredmedia": (post?._embedded?.["wp:featuredmedia"] ?? []).map((item: any) => ({ source_url: item.source_url })),
+      "wp:term": (post?._embedded?.["wp:term"] ?? []).map((group: any[]) => group.map((item: any) => ({ id: item.id, name: item.name, slug: item.slug }))),
+    },
+  };
+}
 import { getArchiveEpisodesFormatted, getEpisodesFormatted, subscribeEmail, unsubscribeEmail, getPipelineRuns, getPodcastOperations } from "./podcastDb";
 import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateReferendum } from "./electionDb";
 import { fetchWithCache, getPersistedWordPressNews } from "./newsCache";
@@ -10,7 +25,7 @@ import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElec
 import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
 import { getWorldElectionRefreshOperations, runDatedWorldElectionRefresh } from "./worldElectionRefresh";
 import { getPortraitSubmissionTargets, getPortraitSubmissions, portraitPhotoFields, portraitProvenanceTypes, portraitTargetTypes, reviewPortraitSubmission, submitPortraitSubmission } from "./portraitReview";
-import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, executeAgentTask, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, reviewAgentRecommendation, runResearchDesk, setAgentDefaultOwners, setAgentPriorityMode, updateAgentTask } from "./agentDesk";
+import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, executeAgentTaskWithChangeSet, getAgentChangeProposals, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, reviewAgentChangeProposal, reviewAgentRecommendation, runResearchDesk, setAgentDefaultOwners, setAgentPriorityMode, updateAgentTask } from "./agentDesk";
 
 export const appRouter = router({
   system: systemRouter,
@@ -124,19 +139,19 @@ export const appRouter = router({
         // upstream TLS delay never holds up the public newsroom shell.
         if (!category && page === 1) {
           const snapshot = await getPersistedWordPressNews();
-          if (snapshot) return { ...snapshot, posts: snapshot.posts.slice(0, perPage) };
+          if (snapshot) return { ...snapshot, posts: snapshot.posts.slice(0, perPage).map(publicNewsListPost) };
         }
         try {
           const { data: posts, headers } = await fetchWithCache(url);
           const total = parseInt(headers.get("X-WP-Total") ?? "0") || posts.length;
           const totalPages = parseInt(headers.get("X-WP-TotalPages") ?? "0") || 1;
-          return { posts, total, totalPages };
+          return { posts: posts.map(publicNewsListPost), total, totalPages };
         } catch {
           // The daily WordPress refresh stores an authenticated source snapshot.
           // Only use it for the unfiltered landing feed when the live source is temporarily unavailable.
           if (!category) {
             const fallback = await getPersistedWordPressNews();
-            if (fallback) return fallback;
+            if (fallback) return { ...fallback, posts: fallback.posts.slice(0, perPage).map(publicNewsListPost) };
           }
           return { posts: [], total: 0, totalPages: 0 };
         }
@@ -208,6 +223,9 @@ export const appRouter = router({
     runs: adminProcedure.query(async () => getAgentRuns()),
     settings: adminProcedure.query(async () => getAgentSettings()),
     tasks: adminProcedure.query(async () => getAgentTasks()),
+    changeProposals: adminProcedure
+      .input(z.object({ status: z.enum(["pending_review", "approved", "rejected", "revision_requested"]).optional() }).optional())
+      .query(async ({ input }) => getAgentChangeProposals(input?.status)),
     runNow: adminProcedure.mutation(async () => runResearchDesk("admin")),
     reviewRecommendation: adminProcedure
       .input(z.object({ id: z.number(), status: z.enum(["approved", "dismissed", "deferred"]) }))
@@ -236,7 +254,10 @@ export const appRouter = router({
       .mutation(async ({ input }) => { await updateAgentTask(input.id, input.status, input.dueDate); return { success: true }; }),
     executeTask: adminProcedure
       .input(z.object({ id: z.number() }))
-      .mutation(async ({ input, ctx }) => executeAgentTask(input.id, ctx.user.name ?? "Administrator")),
+      .mutation(async ({ input, ctx }) => executeAgentTaskWithChangeSet(input.id, ctx.user.name ?? "Administrator")),
+    reviewChangeProposal: adminProcedure
+      .input(z.object({ id: z.number(), status: z.enum(["approved", "rejected", "revision_requested"]), reviewerNotes: z.string().max(2000).optional() }))
+      .mutation(async ({ input, ctx }) => reviewAgentChangeProposal(input.id, input.status, input.reviewerNotes, ctx.user.name ?? "Administrator")),
     setDefaultOwners: adminProcedure
       .input(z.object({ editorialOwner: z.string().min(2).max(128), dataQualityOwner: z.string().min(2).max(128) }))
       .mutation(async ({ input }) => setAgentDefaultOwners(input.editorialOwner, input.dataQualityOwner)),

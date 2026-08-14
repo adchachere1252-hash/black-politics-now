@@ -485,3 +485,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 ## Research Agent Preview Route Repair (Aug 14)
 - [x] Diagnose and correct the reported live 404 on `/intelligence-example`
 - [x] Verify the repaired published route directly and provide the working link
+
+## Original Homepage Redesign and Agent Change Proposals (Aug 14)
+- [x] Replace the rejected agent-demo direction with a faithful original-style Black Politics Now newsroom homepage design and a clear Election Map return path
+- [x] Resolve the original-style newsroom feed loading shell so authentic WordPress stories render promptly in the rebuilt layout
+- [x] Extend Agent Desk so an approved agent task returns an evidence-backed, structured proposed-change package for human review rather than only a research memo
+- [x] Support explicit proposed article-to-record links, data-correction drafts, and editorial-copy drafts that an administrator can approve or reject individually
+- [x] Add a dedicated protected Proposed Changes page with before/after views, evidence, target details, and Approve, Reject, or Request Revision controls
+- [x] Preserve no-autopublish, no-election-record-mutation, and no-WordPress-change safeguards until the administrator explicitly approves a proposed change
+- [x] Verify the corrected homepage and Agent Desk proposed-change review flow on desktop and mobile

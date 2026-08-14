@@ -654,3 +654,30 @@ export const agentTasks = mysqlTable("agent_tasks", {
 });
 
 export type AgentTask = typeof agentTasks.$inferSelect;
+
+/**
+ * Structured proposals produced only after a human has approved a task for
+ * agent execution. These records are review artifacts, not a mutation queue:
+ * approving a proposal records the editorial decision but cannot publish,
+ * alter election data, or write to WordPress.
+ */
+export const agentChangeProposals = mysqlTable("agent_change_proposals", {
+  id: int("id").autoincrement().primaryKey(),
+  taskId: int("task_id").notNull(),
+  kind: mysqlEnum("kind", ["article_link", "data_correction", "editorial_copy"]).notNull(),
+  title: varchar("title", { length: 256 }).notNull(),
+  targetType: varchar("target_type", { length: 80 }).notNull(),
+  targetReference: text("target_reference").notNull(),
+  beforeValue: text("before_value"),
+  proposedValue: text("proposed_value").notNull(),
+  rationale: text("rationale").notNull(),
+  evidence: text("evidence").notNull(),
+  status: mysqlEnum("status", ["pending_review", "approved", "rejected", "revision_requested"]).notNull().default("pending_review"),
+  reviewerNotes: text("reviewer_notes"),
+  reviewedBy: varchar("reviewed_by", { length: 128 }),
+  reviewedAt: timestamp("reviewed_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type AgentChangeProposal = typeof agentChangeProposals.$inferSelect;

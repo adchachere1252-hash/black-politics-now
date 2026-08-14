@@ -1,5 +1,6 @@
 import { desc, eq } from "drizzle-orm";
 import {
+  agentChangeProposals,
   agentRecommendations,
   agentRuns,
   agentSettings,
@@ -325,6 +326,42 @@ const taskWorkPackageOutputSchema = {
   },
 };
 
+const taskChangeSetOutputSchema = {
+  type: "json_schema" as const,
+  json_schema: {
+    name: "bpn_agent_reviewable_change_set",
+    strict: true,
+    schema: {
+      type: "object",
+      properties: {
+        completionSummary: { type: "string" },
+        workPackage: { type: "string" },
+        proposals: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              kind: { type: "string", enum: ["article_link", "data_correction", "editorial_copy"] },
+              title: { type: "string" },
+              targetType: { type: "string" },
+              targetReference: { type: "string" },
+              beforeValue: { type: "string" },
+              proposedValue: { type: "string" },
+              rationale: { type: "string" },
+              sourceIds: { type: "array", items: { type: "string" } },
+            },
+            required: ["kind", "title", "targetType", "targetReference", "beforeValue", "proposedValue", "rationale", "sourceIds"],
+            additionalProperties: false,
+          },
+        },
+        reviewChecklist: { type: "array", items: { type: "string" } },
+      },
+      required: ["completionSummary", "workPackage", "proposals", "reviewChecklist"],
+      additionalProperties: false,
+    },
+  },
+};
+
 export async function runResearchDesk(trigger: "manual" | "admin" | "scheduled" = "admin", mode: ResearchMode = "routine") {
   const sourceItems = await collectPlatformSources("platform data quality, election coverage, representation, podcast, news, atlas, world elections");
   const model = await resolveModel();
@@ -474,6 +511,34 @@ export async function getAgentTasks() {
   return db.select().from(agentTasks).orderBy(desc(agentTasks.createdAt)).limit(50);
 }
 
+export async function getAgentChangeProposals(status?: "pending_review" | "approved" | "rejected" | "revision_requested") {
+  const db = await getDb();
+  if (!db) return [];
+  const records = await db.select().from(agentChangeProposals).orderBy(desc(agentChangeProposals.createdAt)).limit(100);
+  return status ? records.filter((record) => record.status === status) : records;
+}
+
+export async function reviewAgentChangeProposal(
+  id: number,
+  status: "approved" | "rejected" | "revision_requested",
+  reviewerNotes: string | undefined,
+  reviewedBy: string,
+) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(agentChangeProposals).set({
+    status,
+    reviewerNotes: reviewerNotes?.trim() || null,
+    reviewedBy,
+    reviewedAt: new Date(),
+  }).where(eq(agentChangeProposals.id, id));
+  // This is only a review decision. No WordPress, election, alert, or public
+  // content mutation is reachable from this function.
+  const [proposal] = await db.select().from(agentChangeProposals).where(eq(agentChangeProposals.id, id)).limit(1);
+  if (!proposal) throw new Error("Change proposal not found");
+  return proposal;
+}
+
 export async function updateAgentTask(id: number, status: "open" | "in_progress" | "blocked" | "ready_for_review" | "completed", dueDate: string | undefined) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
@@ -521,6 +586,91 @@ export async function executeAgentTask(id: number, requestedBy: string) {
     const sourceIds = citedSourceIds.length > 0 ? citedSourceIds.slice(0, 6) : fallbackSourceIds;
     const citedSources = sourceIds.map((sourceId) => sourceItems.find((source) => source.id === sourceId)).filter((source): source is SourceItem => Boolean(source));
     const packageText = `${memo.trim()}${sourceMarkdown(sourceIds, sourceItems)}`;
+    await db.update(agentTasks).set({
+      status: "ready_for_review",
+      agentWorkPackage: packageText,
+      agentWorkPackageSources: JSON.stringify(citedSources),
+      executionCompletedAt: new Date(),
+      executionError: null,
+    }).where(eq(agentTasks.id, id));
+    const [completedTask] = await db.select().from(agentTasks).where(eq(agentTasks.id, id)).limit(1);
+    if (!completedTask) throw new Error("Unable to retrieve completed task");
+    return completedTask;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown task-execution failure";
+    await db.update(agentTasks).set({ status: "blocked", executionError: message, executionCompletedAt: new Date() }).where(eq(agentTasks.id, id));
+    throw error;
+  }
+}
+
+/**
+ * Executes a human-approved agent task into a private change set. It writes
+ * only review artifacts; no downstream public mutation is implemented here.
+ */
+export async function executeAgentTaskWithChangeSet(id: number, requestedBy: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const [task] = await db.select().from(agentTasks).where(eq(agentTasks.id, id)).limit(1);
+  if (!task) throw new Error("Task not found");
+  if (task.executionMode !== "agent") throw new Error("This task is assigned to a human owner, not the Research Desk agent");
+  const existingProposals = await db.select().from(agentChangeProposals).where(eq(agentChangeProposals.taskId, id)).limit(1);
+  if (task.status === "completed" || (task.status === "ready_for_review" && existingProposals.length > 0)) return task;
+
+  const query = `${task.title}\n${task.description}\n${task.executionScope ?? ""}\n${task.sourceRequirements ?? ""}`.slice(0, 5000);
+  const sourceItems = await collectPlatformSources(query);
+  const model = await resolveModel();
+  await db.update(agentTasks).set({
+    status: "in_progress",
+    executionStartedAt: new Date(),
+    executionCompletedAt: null,
+    executionError: null,
+  }).where(eq(agentTasks.id, id));
+
+  try {
+    const result = await requestStructuredJson<{
+      completionSummary: string;
+      workPackage: string;
+      proposals: Array<{
+        kind: "article_link" | "data_correction" | "editorial_copy";
+        title: string;
+        targetType: string;
+        targetReference: string;
+        beforeValue: string;
+        proposedValue: string;
+        rationale: string;
+        sourceIds: string[];
+      }>;
+      reviewChecklist: string[];
+    }>("Research Desk task change set", model, taskChangeSetOutputSchema, [
+      {
+        role: "system",
+        content: `You are completing a private Black Politics Now Research Desk change set for human review. Use only the supplied SOURCE CONTEXT. Prepare a compact work package and up to three evidence-backed proposed changes. A proposal may be an article-to-record link, a data-correction draft, or editorial-copy draft. Each proposal must name its exact target and show a before versus proposed value. If the target’s current value is not in context, write "Current value requires editor confirmation" in beforeValue. Return no proposal when evidence is insufficient. Do not publish, post, email, notify, change election records, modify a database, alter WordPress, or claim an action was completed outside this private review package. Cite factual statements only with exact bracketed source IDs.\n\nSOURCE CONTEXT:\n${asPromptSources(sourceItems)}`,
+      },
+      {
+        role: "user",
+        content: `APPROVED TASK\nTitle: ${task.title}\nDescription: ${task.description}\nExecution scope: ${task.executionScope || "Complete a bounded source-grounded research and analysis package."}\nSource requirements: ${task.sourceRequirements || "Use only the supplied platform context and source links."}\nRequested by: ${requestedBy}\n\nReturn the structured reviewable change set now.`,
+      },
+    ], 3500);
+
+    if (!result.workPackage.trim()) throw new Error("Research Desk task execution returned an empty work package");
+    const memo = `${result.completionSummary.trim()}\n\n${result.workPackage.trim()}\n\nReviewer checklist:\n${result.reviewChecklist.map((item) => `- ${item}`).join("\n")}`;
+    const citedSourceIds = sourceItems.filter((source) => memo.includes(`[${source.id}`)).map((source) => source.id);
+    const fallbackSourceIds = sourceItems.filter((source) => source.kind === "election" || source.kind === "representation").slice(0, 6).map((source) => source.id);
+    const sourceIds = citedSourceIds.length > 0 ? citedSourceIds.slice(0, 6) : fallbackSourceIds;
+    const citedSources = sourceIds.map((sourceId) => sourceItems.find((source) => source.id === sourceId)).filter((source): source is SourceItem => Boolean(source));
+    const packageText = `${memo.trim()}${sourceMarkdown(sourceIds, sourceItems)}`;
+    const proposals = result.proposals.slice(0, 3).map((proposal) => ({
+      taskId: task.id,
+      kind: proposal.kind,
+      title: proposal.title.trim().slice(0, 256),
+      targetType: proposal.targetType.trim().slice(0, 80),
+      targetReference: proposal.targetReference.trim(),
+      beforeValue: proposal.beforeValue.trim() || "Current value requires editor confirmation",
+      proposedValue: proposal.proposedValue.trim(),
+      rationale: proposal.rationale.trim(),
+      evidence: JSON.stringify(proposal.sourceIds.map((sourceId) => sourceItems.find((source) => source.id === sourceId)).filter(Boolean)),
+    })).filter((proposal) => proposal.title && proposal.targetReference && proposal.proposedValue && proposal.rationale);
+    if (proposals.length > 0) await db.insert(agentChangeProposals).values(proposals);
     await db.update(agentTasks).set({
       status: "ready_for_review",
       agentWorkPackage: packageText,

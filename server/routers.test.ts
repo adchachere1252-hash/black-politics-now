@@ -313,6 +313,20 @@ describe("Autonomous Research Desk router", () => {
       expect(task.status).toMatch(/^(open|in_progress|blocked|ready_for_review|completed)$/);
     }
   });
+
+  it("keeps proposed change sets and their review decisions administrator-only", async () => {
+    const publicCaller = appRouter.createCaller(createPublicContext());
+    const adminCaller = appRouter.createCaller(createAdminContext());
+
+    await expect(publicCaller.agent.changeProposals()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(publicCaller.agent.reviewChangeProposal({ id: 1, status: "approved" })).rejects.toMatchObject({ code: "FORBIDDEN" });
+    const proposals = await adminCaller.agent.changeProposals();
+    expect(proposals).toEqual(expect.any(Array));
+    for (const proposal of proposals as any[]) {
+      expect(proposal.kind).toMatch(/^(article_link|data_correction|editorial_copy)$/);
+      expect(proposal.status).toMatch(/^(pending_review|approved|rejected|revision_requested)$/);
+    }
+  });
 });
 
 describe("world elections router", () => {
