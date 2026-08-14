@@ -21,6 +21,19 @@ function createAdminContext(): TrpcContext {
   };
 }
 
+describe("news router", () => {
+  it("returns a source-backed public newsroom feed with article metadata", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const feed = await caller.news.list({ page: 1, perPage: 5 });
+    expect(Array.isArray(feed.posts)).toBe(true);
+    expect(feed.total).toBeGreaterThanOrEqual(feed.posts.length);
+    if (feed.posts.length > 0) {
+      expect(feed.posts[0]).toHaveProperty("title");
+      expect(feed.posts[0]).toHaveProperty("link");
+    }
+  });
+});
+
 describe("election router", () => {
   it("uses the original repository’s verified photo map only as a safe fallback", () => {
     expect(resolveRepositoryCandidatePhoto("Cory Booker")).toMatch(/^https:\/\/unitedstates\.github\.io\/images\/congress\/225x275\//);

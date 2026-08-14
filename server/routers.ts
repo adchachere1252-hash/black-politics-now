@@ -5,7 +5,7 @@ import { publicProcedure, protectedProcedure, adminProcedure, router } from "./_
 import { z } from "zod";
 import { getArchiveEpisodesFormatted, getEpisodesFormatted, subscribeEmail, unsubscribeEmail, getPipelineRuns, getPodcastOperations } from "./podcastDb";
 import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateReferendum } from "./electionDb";
-import { fetchWithCache } from "./newsCache";
+import { fetchWithCache, getPersistedWordPressNews } from "./newsCache";
 import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
 import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
 import { getWorldElectionRefreshOperations, runDatedWorldElectionRefresh } from "./worldElectionRefresh";
@@ -119,12 +119,27 @@ export const appRouter = router({
         const { page = 1, perPage = 10, category } = input ?? {};
         let url = `https://blkpoliticsnow.com/wp-json/wp/v2/posts?_embed&per_page=${perPage}&page=${page}`;
         if (category) url += `&categories=${category}`;
+        // The scheduled refresh persists the original WordPress feed every four hours.
+        // Serve that source-only snapshot first for the landing stream so a transient
+        // upstream TLS delay never holds up the public newsroom shell.
+        if (!category && page === 1) {
+          const snapshot = await getPersistedWordPressNews();
+          if (snapshot) return { ...snapshot, posts: snapshot.posts.slice(0, perPage) };
+        }
         try {
           const { data: posts, headers } = await fetchWithCache(url);
           const total = parseInt(headers.get("X-WP-Total") ?? "0") || posts.length;
           const totalPages = parseInt(headers.get("X-WP-TotalPages") ?? "0") || 1;
           return { posts, total, totalPages };
-        } catch { return { posts: [], total: 0, totalPages: 0 }; }
+        } catch {
+          // The daily WordPress refresh stores an authenticated source snapshot.
+          // Only use it for the unfiltered landing feed when the live source is temporarily unavailable.
+          if (!category) {
+            const fallback = await getPersistedWordPressNews();
+            if (fallback) return fallback;
+          }
+          return { posts: [], total: 0, totalPages: 0 };
+        }
       }),
     categories: publicProcedure.query(async () => {
       try {

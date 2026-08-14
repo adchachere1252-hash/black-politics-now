@@ -20,6 +20,7 @@ const AtlasPage = lazy(() => import("./pages/Atlas"));
 const ResearchDesk = lazy(() => import("./pages/ResearchDesk"));
 const NewsConceptPreview = lazy(() => import("./pages/NewsConceptPreview"));
 const HomepageExample = lazy(() => import("./pages/HomepageExample"));
+const Newsroom = lazy(() => import("./pages/Newsroom"));
 
 function Router() {
   return (
@@ -27,6 +28,9 @@ function Router() {
       <Route path={"/"}><Home /></Route>
       <Route path={"/elections"}>
         <Suspense fallback={<PageLoader />}><Elections /></Suspense>
+      </Route>
+      <Route path={"/newsroom"}>
+        <Suspense fallback={<PageLoader />}><Newsroom /></Suspense>
       </Route>
       <Route path={"/podcast"}>
         <Suspense fallback={<PageLoader />}><Podcast /></Suspense>

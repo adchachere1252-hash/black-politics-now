@@ -461,3 +461,13 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Re-verify all 50 apportionment histories, boundary-era archives, active redistricting context, source transparency, and responsive state interactions
 - [x] Implement prioritized Atlas improvements supported by the repository comparison
 - [x] Produce a complete Historical Atlas findings report with strengths, gaps, remediation, and remaining editorial decisions
+
+## Original Newsroom Platform Upgrade (Aug 14)
+- [x] Translate the supplied original Black Politics Now news-site reference screens into a refined editorial design system for the platform
+- [x] Build a newsroom-focused public landing page that preserves the original site’s category-led, typography-forward identity and connects to platform intelligence tools
+- [x] Preserve the current mobile stacked experience while validating the rebuilt newsroom layout on desktop and mobile
+- [x] Produce a prioritized platform-wide upgrade recommendation covering newsroom, intelligence products, trust, audience, and operations
+
+## Election Guide World Elections Verification (Aug 14)
+- [x] Compare the World Elections country calendar, dates, and statuses against the published Election Guide reference
+- [x] Document confirmed matches, source discrepancies, and any review-first corrections recommended for the public map
