@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Newspaper, Map, Headphones, Archive, Search as SearchIcon, Menu, X, Sun, Moon, Globe2, Landmark, Sparkles, Network } from "lucide-react";
+import { Newspaper, Map, Headphones, Archive, Search as SearchIcon, Menu, X, Sun, Moon, Globe2, Landmark, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -9,7 +9,6 @@ const NAV_ITEMS: { href: string; label: string; icon: any; external?: boolean }[
   { href: "/atlas", label: "Historical Atlas", icon: Landmark },
   { href: "https://blkpoliticsnow.com", label: "News", icon: Newspaper, external: true },
   { href: "/podcast", label: "Podcast", icon: Headphones },
-  { href: "/power", label: "Power Context", icon: Network },
   { href: "/research", label: "Research Desk", icon: Sparkles },
   { href: "/world", label: "World Elections", icon: Globe2 },
 ];
