@@ -6,6 +6,9 @@ const boundaryCache = new Map<string, string>();
 const boundaryFetches = new Map<string, Promise<string | null>>();
 const congressBundleCache = new Map<number, string>();
 const congressBundleFetches = new Map<number, Promise<string | null>>();
+type AtlasOverlayMember = { name: string; party: "D" | "R" | "O"; partyCode: number; stateCode: string; district: number; bioguideId: string | null };
+const voteviewOverlayCache = new Map<number, Record<string, AtlasOverlayMember>>();
+const voteviewOverlayFetches = new Map<number, Promise<Record<string, AtlasOverlayMember> | null>>();
 const MAX_BOUNDARY_CACHE_ENTRIES = 180;
 const MAX_BUNDLE_CACHE_ENTRIES = 6;
 
@@ -73,9 +76,85 @@ async function buildCongressBundle(congress: number): Promise<string | null> {
   return request;
 }
 
+function parseCsvRow(row: string) {
+  const values: string[] = [];
+  let current = "";
+  let quoted = false;
+  for (let index = 0; index < row.length; index += 1) {
+    const character = row[index];
+    if (character === '"') {
+      if (quoted && row[index + 1] === '"') { current += '"'; index += 1; }
+      else quoted = !quoted;
+    } else if (character === "," && !quoted) { values.push(current); current = ""; }
+    else current += character;
+  }
+  values.push(current);
+  return values;
+}
+
+function memberDisplayName(value: string) {
+  const trimmed = value.trim();
+  if (!trimmed.includes(",")) return trimmed;
+  const [surname, ...given] = trimmed.split(",");
+  const titleCaseSurname = surname.trim().toLowerCase().replace(/\b\w/g, (letter) => letter.toUpperCase());
+  return `${given.join(",").trim()} ${titleCaseSurname}`.trim();
+}
+
+async function loadVoteviewOverlay(congress: number): Promise<Record<string, AtlasOverlayMember> | null> {
+  const cached = voteviewOverlayCache.get(congress);
+  if (cached) return cached;
+  const pending = voteviewOverlayFetches.get(congress);
+  if (pending) return pending;
+  const request = (async () => {
+    try {
+      const file = `H${String(congress).padStart(3, "0")}_members.csv`;
+      const response = await fetch(`https://voteview.com/static/data/out/members/${file}`, { signal: AbortSignal.timeout(20_000) });
+      if (!response.ok) return null;
+      const csv = await response.text();
+      const lines = csv.trim().split(/\r?\n/);
+      if (lines.length < 2) return null;
+      const headings = parseCsvRow(lines[0]);
+      const column = (name: string) => headings.indexOf(name);
+      const chamber = column("chamber");
+      const state = column("state_abbrev");
+      const district = column("district_code");
+      const party = column("party_code");
+      const name = column("bioname");
+      const bioguideId = column("bioguide_id");
+      if ([chamber, state, district, party, name].some((value) => value < 0)) return null;
+      const members: Record<string, AtlasOverlayMember> = {};
+      for (const line of lines.slice(1)) {
+        const values = parseCsvRow(line);
+        if (values[chamber] !== "House") continue;
+        const stateCode = values[state]?.trim();
+        const districtNumber = Number(values[district]);
+        const partyCode = Number(values[party]);
+        if (!stateCode || !Number.isInteger(districtNumber) || !Number.isInteger(partyCode)) continue;
+        members[`${stateCode}-${districtNumber}`] = {
+          name: memberDisplayName(values[name] ?? ""),
+          party: partyCode === 100 ? "D" : partyCode === 200 ? "R" : "O",
+          partyCode,
+          stateCode,
+          district: districtNumber,
+          bioguideId: values[bioguideId]?.trim() || null,
+        };
+      }
+      if (!Object.keys(members).length) return null;
+      voteviewOverlayCache.set(congress, members);
+      return members;
+    } catch {
+      return null;
+    } finally {
+      voteviewOverlayFetches.delete(congress);
+    }
+  })();
+  voteviewOverlayFetches.set(congress, request);
+  return request;
+}
+
 /**
- * Serves repository-backed historical congressional boundary files. Both routes
- * are read-only references: they document historical geography, not legal-map certification.
+ * Serves repository-backed historical congressional boundary files and verified
+ * Voteview House member data. Both remain descriptive historical references.
  */
 export function registerAtlasBoundaryRoute(app: Express) {
   app.get("/api/atlas/boundary/:filename", async (req, res) => {
@@ -96,5 +175,23 @@ export function registerAtlasBoundaryRoute(app: Express) {
     res.setHeader("Content-Type", "application/json");
     res.setHeader("Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
     return res.send(bundle);
+  });
+
+  app.get("/api/atlas/overlay/:congress", async (req, res) => {
+    const congress = Number(req.params.congress);
+    if (!Number.isInteger(congress) || congress < 89 || congress > 119) return res.status(400).json({ error: "Congress must be between 89 and 119" });
+    const members = await loadVoteviewOverlay(congress);
+    if (!members) return res.status(503).json({ error: "Verified Voteview member data is temporarily unavailable" });
+    res.setHeader("Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
+    return res.json({
+      congress,
+      source: {
+        name: "Voteview: Congressional Roll-Call Votes Database",
+        url: "https://voteview.com/data",
+        memberDataUrl: `https://voteview.com/static/data/out/members/H${String(congress).padStart(3, "0")}_members.csv`,
+        citation: "Lewis, Poole, Rosenthal, Boche, Rudkin, and Sonnet (2026)",
+      },
+      members,
+    });
   });
 }

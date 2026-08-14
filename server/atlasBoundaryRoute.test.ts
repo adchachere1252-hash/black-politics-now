@@ -45,4 +45,24 @@ describe("Historical Atlas boundary bundle", () => {
     expect(response.headers["content-type"]).toBe("application/json");
     expect(Object.keys(JSON.parse(String(response.body)))).not.toHaveLength(0);
   });
+
+  it("returns verified Voteview House member and party overlay data without recoding other parties", async () => {
+    const routes = createRouteRegistry();
+    const response = createResponse();
+    const csv = [
+      "congress,chamber,icpsr,state_icpsr,district_code,state_abbrev,party_code,occupancy,last_means,bioname,bioguide_id",
+      "119,House,1,41,3,AL,200,,,\"ROGERS, Mike Dennis\",R000575",
+      "119,House,2,2,0,AK,100,,,\"PAPPAS, Sample\",P000001",
+      "119,House,3,6,5,CA,328,,,\"EXAMPLE, Independent\",E000001",
+    ].join("\n");
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, text: async () => csv }));
+
+    await routes.get("/api/atlas/overlay/:congress")!({ params: { congress: "119" } }, response);
+
+    expect(response.statusCode).toBe(200);
+    const body = response.body as { members: Record<string, { name: string; party: string; partyCode: number }> };
+    expect(body.members["AL-3"]).toMatchObject({ name: "Mike Dennis Rogers", party: "R", partyCode: 200 });
+    expect(body.members["AK-0"]).toMatchObject({ party: "D" });
+    expect(body.members["CA-5"]).toMatchObject({ party: "O", partyCode: 328 });
+  });
 });

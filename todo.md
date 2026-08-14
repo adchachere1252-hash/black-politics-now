@@ -570,3 +570,17 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add a full historical U.S. map with clear forward/backward era navigation and state-level historical boundary changes
 - [x] Add accessible context and responsive controls without removing the Atlas’s Voting Rights Act and apportionment interpretation
 - [x] Verify Historical Atlas accuracy, time navigation, desktop/mobile layout, and regression coverage
+
+## Historical Atlas Comparison and Verified Overlays (Aug 14)
+- [x] Compare two selected Congresses side by side with independently readable historical map panels
+- [x] Add repository- and Voteview-backed historical party and member overlays with explicit source attribution and unavailable-data states
+- [x] Verify boundary geometry, Congress controls, party/member data mapping, responsive presentation, and regression coverage
+
+## Reporting-to-Power Intelligence Layer (Aug 14)
+- [x] Create a source-backed public context layer that connects Black Politics Now reporting to relevant active races, governing institutions, and Historical Atlas records
+- [x] Preserve the editorial boundary: show verified links and context only, with no automated claims or publication of unreviewed relationships
+
+## World Elections Live Status Correction (Aug 14)
+- [x] Verify Zambia’s current election status and source date against the World Elections records
+- [x] Correct the public next-election ranking so a voting or results event is not displaced by a stale upcoming watch
+- [x] Verify World Elections source links, status language, and homepage globe callout after the correction
