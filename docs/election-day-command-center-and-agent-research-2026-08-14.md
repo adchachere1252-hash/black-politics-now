@@ -24,3 +24,9 @@ On **Admin Dashboard → Portrait Review**, an administrator can select a missin
 ## Verification
 
 The deployed cloud guard wrote a verified `standby` DDHQ heartbeat to the shared database. Desktop and mobile screens were checked for Command Center, Proposed Changes, and Portrait Review. The regression suite passed **29 tests**, including public-access denial for Command Center, on-demand research, and portrait research controls. TypeScript completed without errors.
+
+## Election Day Intelligence Agent
+
+The Command Center now adds an explicit **Run Election Day research** action plus a per-triage-item **Investigate with agent** control. An administrator’s selection creates a bounded Data Desk task from the current heartbeat, coverage, and selected triage context. The agent returns its work as a private evidence-backed package and up to three private proposals in **Admin → Proposed Changes**.
+
+> The Election Day Intelligence Agent cannot call a race, write vote totals, change a public election record, publish an update, send a notification, or resolve a source conflict on its own. It prepares the investigation; an administrator reviews every result.

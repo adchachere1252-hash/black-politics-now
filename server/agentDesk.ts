@@ -14,6 +14,7 @@ import { fetchWithCache } from "./newsCache";
 import { getEpisodesFormatted } from "./podcastDb";
 import { getWorldElections } from "./worldDb";
 import { getPortraitSubmissionTargets } from "./portraitReview";
+import { getElectionDayCommandCenter } from "./electionDayCommandCenter";
 
 type SourceItem = {
   id: string;
@@ -721,6 +722,69 @@ export async function runPortraitResearchTask(
   await db.insert(agentTasks).values({ recommendationId: recommendation.id, title: `Portrait source research: ${current.candidateName}`, description: `Research target: ${current.candidateName} (${current.location}). Target reference: ${current.targetType}/${current.targetRecordId}/${current.targetPhotoField}. Do not submit or apply a portrait. Return a portrait_source proposal only when supported by exact evidence in the supplied context.`, owner: "Data Desk", executionMode: "agent", executionScope: "Return a private source-cited portrait research package. Never alter a public profile.", sourceRequirements: "Use supplied context only. Do not invent image URLs, source pages, or provenance.", createdBy: requestedBy });
   const [task] = await db.select().from(agentTasks).where(eq(agentTasks.recommendationId, recommendation.id)).limit(1);
   if (!task) throw new Error("Unable to create portrait research task");
+  return executeAgentTaskWithChangeSet(task.id, requestedBy);
+}
+
+/**
+ * An administrator-selected Command Center condition becomes a bounded, private
+ * Research Desk task. The agent may only prepare evidence and proposed changes;
+ * it never calls a race, updates a result, publishes, or sends an alert.
+ */
+export async function runElectionDayCommandResearch(triageIndex: number | undefined, requestedBy: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const commandCenter = await getElectionDayCommandCenter();
+  if (!commandCenter) throw new Error("Election Day Command Center is unavailable");
+  const selected = commandCenter.triage[triageIndex ?? 0];
+  if (!selected) throw new Error("There is no current triage condition to investigate");
+
+  const model = await resolveModel();
+  const operationalSnapshot = {
+    heartbeat: commandCenter.heartbeat,
+    coverage: commandCenter.coverage,
+    triageCondition: selected,
+  };
+  const sourceSnapshot = JSON.stringify([{ id: "command-center", title: `Command Center triage: ${selected.title}`, url: `${PUBLIC_SITE_ORIGIN}/admin?tab=command`, excerpt: JSON.stringify(operationalSnapshot) }]);
+  await db.insert(agentRuns).values({
+    trigger: "admin",
+    mode: "election_night",
+    status: "success",
+    model,
+    sourceSnapshot,
+    summary: `Private Election Day agent research requested for: ${selected.title}`,
+    recommendationCount: 1,
+  });
+  const [run] = await db.select().from(agentRuns).orderBy(desc(agentRuns.id)).limit(1);
+  if (!run) throw new Error("Unable to create Election Day research run");
+  await db.insert(agentRecommendations).values({
+    runId: run.id,
+    category: "source_watch",
+    priority: selected.severity === "high" ? "high" : "medium",
+    title: `Investigate Election Day condition: ${selected.title}`,
+    summary: selected.detail,
+    proposedAction: "Prepare a private, source-cited change proposal or escalation note for administrator review.",
+    evidence: sourceSnapshot,
+    status: "approved",
+    assignedTo: "Data Desk",
+    assignedBy: requestedBy,
+    assignedAt: new Date(),
+    reviewedBy: requestedBy,
+    reviewedAt: new Date(),
+  });
+  const [recommendation] = await db.select().from(agentRecommendations).orderBy(desc(agentRecommendations.id)).limit(1);
+  if (!recommendation) throw new Error("Unable to create Election Day research recommendation");
+  await db.insert(agentTasks).values({
+    recommendationId: recommendation.id,
+    title: `Election Day investigation: ${selected.title}`,
+    description: `Command Center condition: ${selected.detail}\nOperational next step: ${selected.action}\n\nDo not call a race, change a public record, publish an update, send an alert, or claim an operational change was made. Return only a private evidence-backed proposal or escalation note for human review.`,
+    owner: "Data Desk",
+    executionMode: "agent",
+    executionScope: "Investigate the selected Election Day triage condition using only supplied platform context. Identify uncertainty and prepare no more than three private reviewable proposals.",
+    sourceRequirements: `Operational snapshot: ${JSON.stringify(operationalSnapshot)}. Use supplied platform sources only; if evidence is insufficient, return an explicit review note instead of a proposed data change.`,
+    createdBy: requestedBy,
+  });
+  const [task] = await db.select().from(agentTasks).where(eq(agentTasks.recommendationId, recommendation.id)).limit(1);
+  if (!task) throw new Error("Unable to create Election Day research task");
   return executeAgentTaskWithChangeSet(task.id, requestedBy);
 }
 

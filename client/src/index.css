@@ -41,7 +41,8 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --font-sans: 'Inter', system-ui, sans-serif;
-  --font-display: 'Syne', 'Inter', sans-serif;
+  /* Use one editorial type system across public pages, intelligence features, and Admin. */
+  --font-display: 'Inter', system-ui, sans-serif;
   /* Election rating colors */
   --color-solid-d: #1a4fa0;
   --color-likely-d: #3a6fc0;

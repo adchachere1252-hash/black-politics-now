@@ -41,7 +41,7 @@ export default function SiteHeader() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors no-underline text-muted-foreground hover:text-foreground hover:bg-muted"
                 >
-                  <Icon size={16} />
+                  <Icon size={18} strokeWidth={2.25} className="shrink-0 text-primary" />
                   {label}
                 </a>
               );
@@ -56,7 +56,7 @@ export default function SiteHeader() {
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 }`}
               >
-                <Icon size={16} />
+                <Icon size={18} strokeWidth={2.25} className="shrink-0 text-primary" />
                 {label}
               </Link>
             );
@@ -114,7 +114,7 @@ export default function SiteHeader() {
                   onClick={() => setMobileOpen(false)}
                   className="flex items-center gap-3 px-6 py-3 text-sm font-medium no-underline text-muted-foreground"
                 >
-                  <Icon size={16} />
+                  <Icon size={18} strokeWidth={2.25} className="shrink-0 text-primary" />
                   {label}
                 </a>
               );
@@ -128,7 +128,7 @@ export default function SiteHeader() {
                   active ? "text-primary bg-primary/5" : "text-muted-foreground"
                 }`}
               >
-                <Icon size={16} />
+                <Icon size={18} strokeWidth={2.25} className="shrink-0 text-primary" />
                 {label}
               </Link>
             );

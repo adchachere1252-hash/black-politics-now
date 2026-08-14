@@ -26,7 +26,7 @@ import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
 import { getWorldElectionRefreshOperations, runDatedWorldElectionRefresh } from "./worldElectionRefresh";
 import { getElectionDayCommandCenter } from "./electionDayCommandCenter";
 import { getPortraitSubmissionTargets, getPortraitSubmissions, portraitPhotoFields, portraitProvenanceTypes, portraitTargetTypes, reviewPortraitSubmission, submitPortraitSubmission } from "./portraitReview";
-import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, executeAgentTaskWithChangeSet, getAgentChangeProposals, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, reviewAgentChangeProposal, reviewAgentRecommendation, runAgentTaskResearchNow, runPortraitResearchTask, runResearchDesk, setAgentDefaultOwners, setAgentPriorityMode, updateAgentTask } from "./agentDesk";
+import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, executeAgentTaskWithChangeSet, getAgentChangeProposals, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, reviewAgentChangeProposal, reviewAgentRecommendation, runAgentTaskResearchNow, runElectionDayCommandResearch, runPortraitResearchTask, runResearchDesk, setAgentDefaultOwners, setAgentPriorityMode, updateAgentTask } from "./agentDesk";
 
 export const appRouter = router({
   system: systemRouter,
@@ -97,6 +97,9 @@ export const appRouter = router({
 
   electionDay: router({
     commandCenter: adminProcedure.query(async () => getElectionDayCommandCenter()),
+    runAgentResearch: adminProcedure
+      .input(z.object({ triageIndex: z.number().int().min(0).max(11).optional() }).optional())
+      .mutation(async ({ input, ctx }) => runElectionDayCommandResearch(input?.triageIndex, ctx.user.name ?? "Administrator")),
   }),
 
   // ─── World Elections ─────────────────────────────────────────────────────────

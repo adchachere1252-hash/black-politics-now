@@ -507,6 +507,20 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add a protected Run research now action on Proposed Changes to trigger a fresh source-cited agent research pass
 - [x] Verify every new control remains administrator-only and cannot make public changes without explicit approval
 
+## Command Center Intelligence Agent (Aug 14)
+- [x] Add a protected Election Day Intelligence Agent that investigates selected operational triage conditions and prepares evidence-backed private proposals
+- [x] Expose explicit agent-review controls within Command Center without race calls, public mutations, alerts, or automatic publishing
+- [x] Verify the Command Center agent is administrator-only and submits output to Proposed Changes for human review
+
 ## Homepage Typography Alignment (Aug 14)
 - [x] Replace competing homepage display typography with the same clear editorial font treatment used by Latest News
 - [x] Verify the unified homepage type hierarchy remains legible on desktop and mobile
+
+## Platform-Wide Typography Standardization (Aug 14)
+- [x] Replace remaining competing fonts across public intelligence features and protected Admin panels with the Latest News editorial type treatment
+- [x] Preserve the distinct Black Politics Now wordmark while unifying headings, cards, controls, tables, and operational content typography
+- [x] Verify the complete type system across public pages and Admin dashboard at desktop and mobile breakpoints
+
+## Navigation Icon Consistency (Aug 14)
+- [x] Add matching understated icons to News, Podcast, and Archive so every top-level navigation destination has a consistent visual marker
+- [x] Verify the unified navigation remains legible on desktop and mobile
