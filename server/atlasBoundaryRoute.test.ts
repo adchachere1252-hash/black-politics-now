@@ -48,6 +48,18 @@ describe("Historical Atlas boundary bundle", () => {
     expect(Object.keys(JSON.parse(gunzipSync(response.body as Buffer).toString("utf8")))).not.toHaveLength(0);
   });
 
+  it("serves compact repository-backed chunks for production-safe national map loading", async () => {
+    const routes = createRouteRegistry();
+    const response = createResponse();
+    const historicalFeatureCollection = JSON.stringify({ type: "FeatureCollection", features: [], source: "repository-backed congressional district boundary fixture retained for Atlas validation" });
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, text: async () => historicalFeatureCollection }));
+
+    await routes.get("/api/atlas/bundle/:congress/chunk/:chunk")!({ params: { congress: "118", chunk: "0" } }, response);
+
+    expect(response.statusCode).toBe(200);
+    expect(Object.keys(JSON.parse(gunzipSync(response.body as Buffer).toString("utf8")))).toHaveLength(10);
+  });
+
   it("returns verified Voteview House member and party overlay data without recoding other parties", async () => {
     const routes = createRouteRegistry();
     const response = createResponse();

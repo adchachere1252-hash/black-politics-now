@@ -21,6 +21,17 @@ describe("Historical Atlas client boundary fallback", () => {
     const loaded = await loadNationalAtlasBoundaryBundle(104, request);
     expect(loaded.source).toBe("state-fallback");
     expect(Object.keys(loaded.bundle)).toHaveLength(50);
-    expect(requested).toHaveLength(51);
+    expect(requested).toHaveLength(56);
+  });
+
+  it("uses compact ten-state chunks before relying on individual state routes", async () => {
+    const coverage = atlasManifestCoverage(104);
+    const request = async (input: string) => {
+      if (input === "/api/atlas/bundle/104") return { ok: false, json: async () => ({}), text: async () => "" };
+      const chunk = Number(input.match(/chunk\/(\d+)$/)?.[1]);
+      const entries = coverage.boundaryFiles.slice(chunk * 10, (chunk + 1) * 10).map((filename) => [filename, "{}"]);
+      return { ok: true, json: async () => Object.fromEntries(entries), text: async () => "" };
+    };
+    await expect(loadNationalAtlasBoundaryBundle(104, request)).resolves.toMatchObject({ source: "chunked-bundle" });
   });
 });

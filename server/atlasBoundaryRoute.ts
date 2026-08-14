@@ -5,13 +5,14 @@ import { LEWIS_MANIFEST } from "../client/src/data/atlasBoundaryManifest";
 const LEWIS_GEOJSON_BASE = "https://raw.githubusercontent.com/JeffreyBLewis/congressional-district-boundaries/master/GeoJson";
 const boundaryCache = new Map<string, string>();
 const boundaryFetches = new Map<string, Promise<string | null>>();
-const congressBundleCache = new Map<number, { json: string; gzip: Buffer }>();
-const congressBundleFetches = new Map<number, Promise<string | null>>();
+const congressBundleCache = new Map<string, { json: string; gzip: Buffer }>();
+const congressBundleFetches = new Map<string, Promise<string | null>>();
 type AtlasOverlayMember = { name: string; party: "D" | "R" | "O"; partyCode: number; stateCode: string; district: number; bioguideId: string | null };
 const voteviewOverlayCache = new Map<number, Record<string, AtlasOverlayMember>>();
 const voteviewOverlayFetches = new Map<number, Promise<Record<string, AtlasOverlayMember> | null>>();
 const MAX_BOUNDARY_CACHE_ENTRIES = 180;
-const MAX_BUNDLE_CACHE_ENTRIES = 6;
+const MAX_BUNDLE_CACHE_ENTRIES = 24;
+const BOUNDARY_BUNDLE_CHUNK_SIZE = 10;
 
 function safeBoundaryFilename(value: string) {
   return /^[A-Za-z][A-Za-z _-]{1,80}_[0-9]{3}_to_[0-9]{3}\.geojson$/.test(value);
@@ -23,10 +24,13 @@ function cacheBoundary(filename: string, value: string) {
   if (boundaryCache.size > MAX_BOUNDARY_CACHE_ENTRIES) boundaryCache.delete(boundaryCache.keys().next().value as string);
 }
 
-function cacheCongressBundle(congress: number, value: string) {
-  if (congressBundleCache.has(congress)) congressBundleCache.delete(congress);
-  congressBundleCache.set(congress, { json: value, gzip: gzipSync(value, { level: 9 }) });
-  if (congressBundleCache.size > MAX_BUNDLE_CACHE_ENTRIES) congressBundleCache.delete(congressBundleCache.keys().next().value as number);
+function bundleCacheKey(congress: number, chunk?: number) { return `${congress}:${chunk ?? "all"}`; }
+
+function cacheCongressBundle(congress: number, value: string, chunk?: number) {
+  const key = bundleCacheKey(congress, chunk);
+  if (congressBundleCache.has(key)) congressBundleCache.delete(key);
+  congressBundleCache.set(key, { json: value, gzip: gzipSync(value, { level: 9 }) });
+  if (congressBundleCache.size > MAX_BUNDLE_CACHE_ENTRIES) congressBundleCache.delete(congressBundleCache.keys().next().value as string);
 }
 
 async function getBoundaryFile(filename: string): Promise<string | null> {
@@ -52,29 +56,45 @@ async function getBoundaryFile(filename: string): Promise<string | null> {
   return request;
 }
 
-async function buildCongressBundle(congress: number): Promise<string | null> {
-  const cached = congressBundleCache.get(congress);
+function filenamesForCongress(congress: number) {
+  return Array.from(new Set(Object.values(LEWIS_MANIFEST)
+    .map((eras) => eras.find((era) => congress >= era.start && congress <= era.end)?.name)
+    .filter((name): name is string => Boolean(name))));
+}
+
+async function buildCongressBundle(congress: number, chunk?: number): Promise<string | null> {
+  const key = bundleCacheKey(congress, chunk);
+  const cached = congressBundleCache.get(key);
   if (cached) return cached.json;
-  const pending = congressBundleFetches.get(congress);
+  const pending = congressBundleFetches.get(key);
   if (pending) return pending;
   const request = (async () => {
     try {
-      const filenames = Array.from(new Set(Object.values(LEWIS_MANIFEST)
-        .map((eras) => eras.find((era) => congress >= era.start && congress <= era.end)?.name)
-        .filter((name): name is string => Boolean(name))));
+      const allFilenames = filenamesForCongress(congress);
+      const filenames = chunk === undefined ? allFilenames : allFilenames.slice(chunk * BOUNDARY_BUNDLE_CHUNK_SIZE, (chunk + 1) * BOUNDARY_BUNDLE_CHUNK_SIZE);
+      if (!filenames.length) return null;
       const fetched = await Promise.all(filenames.map(async (filename) => ({ filename, body: await getBoundaryFile(filename) })));
       const bundle: Record<string, string> = {};
       fetched.forEach(({ filename, body }) => { if (body) bundle[filename] = body; });
       if (!Object.keys(bundle).length) return null;
       const serialized = JSON.stringify(bundle);
-      cacheCongressBundle(congress, serialized);
+      cacheCongressBundle(congress, serialized, chunk);
       return serialized;
     } finally {
-      congressBundleFetches.delete(congress);
+      congressBundleFetches.delete(key);
     }
   })();
-  congressBundleFetches.set(congress, request);
+  congressBundleFetches.set(key, request);
   return request;
+}
+
+function sendCompressedBundle(res: import("express").Response, bundle: string, congress: number, chunk?: number) {
+  const compressed = congressBundleCache.get(bundleCacheKey(congress, chunk))?.gzip ?? gzipSync(bundle, { level: 9 });
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Content-Encoding", "gzip");
+  res.setHeader("Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
+  res.setHeader("Vary", "Accept-Encoding");
+  return res.send(compressed);
 }
 
 function parseCsvRow(row: string) {
@@ -173,12 +193,18 @@ export function registerAtlasBoundaryRoute(app: Express) {
     if (!Number.isInteger(congress) || congress < 89 || congress > 119) return res.status(400).json({ error: "Congress must be between 89 and 119" });
     const bundle = await buildCongressBundle(congress);
     if (!bundle) return res.status(502).json({ error: "Historical boundary bundle is unavailable" });
-    const compressed = congressBundleCache.get(congress)?.gzip ?? gzipSync(bundle, { level: 9 });
-    res.setHeader("Content-Type", "application/json");
-    res.setHeader("Content-Encoding", "gzip");
-    res.setHeader("Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
-    res.setHeader("Vary", "Accept-Encoding");
-    return res.send(compressed);
+    return sendCompressedBundle(res, bundle, congress);
+  });
+
+  app.get("/api/atlas/bundle/:congress/chunk/:chunk", async (req, res) => {
+    const congress = Number(req.params.congress);
+    const chunk = Number(req.params.chunk);
+    const chunkCount = Math.ceil(filenamesForCongress(congress).length / BOUNDARY_BUNDLE_CHUNK_SIZE);
+    if (!Number.isInteger(congress) || congress < 89 || congress > 119) return res.status(400).json({ error: "Congress must be between 89 and 119" });
+    if (!Number.isInteger(chunk) || chunk < 0 || chunk >= chunkCount) return res.status(400).json({ error: "Historical boundary chunk is unavailable" });
+    const bundle = await buildCongressBundle(congress, chunk);
+    if (!bundle) return res.status(502).json({ error: "Historical boundary chunk is unavailable" });
+    return sendCompressedBundle(res, bundle, congress, chunk);
   });
 
   app.get("/api/atlas/overlay/:congress", async (req, res) => {
