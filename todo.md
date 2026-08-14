@@ -531,3 +531,7 @@ The following earlier duplicate checklist is retained as project history. The ex
 ## Navigation Icon Consistency (Aug 14)
 - [x] Add matching understated icons to News, Podcast, and Archive so every top-level navigation destination has a consistent visual marker
 - [x] Verify the unified navigation remains legible on desktop and mobile
+
+## Live Portrait Research Run (Aug 14)
+- [x] Run the AI portrait-research agent for one remaining candidate photo gap and return any source-backed proposal to private review
+- [x] Verify no portrait or public profile is changed without explicit administrator approval
