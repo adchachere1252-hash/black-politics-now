@@ -502,10 +502,10 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Deliver a prioritized Election Day Admin roadmap for user approval before implementing new operations features
 
 ## Election Day Command Center and Agent Research Controls (Aug 14)
-- [ ] Build a protected Election Day Command Center with source heartbeat, race triage, reviewable correction drafts, and operational runbook
-- [ ] Add an AI-assisted portrait research workflow that produces source-backed private portrait proposals for review only
-- [ ] Add a protected Run research now action on Proposed Changes to trigger a fresh source-cited agent research pass
-- [ ] Verify every new control remains administrator-only and cannot make public changes without explicit approval
+- [x] Build a protected Election Day Command Center with source heartbeat, race triage, reviewable correction drafts, and operational runbook
+- [x] Add an AI-assisted portrait research workflow that produces source-backed private portrait proposals for review only
+- [x] Add a protected Run research now action on Proposed Changes to trigger a fresh source-cited agent research pass
+- [x] Verify every new control remains administrator-only and cannot make public changes without explicit approval
 
 ## Homepage Typography Alignment (Aug 14)
 - [x] Replace competing homepage display typography with the same clear editorial font treatment used by Latest News

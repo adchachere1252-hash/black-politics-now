@@ -4,17 +4,18 @@ import { startLogin } from "@/const";
 import { AgentDeskTab } from "@/components/AgentDeskTab";
 import { AgentProposedChangesTab } from "@/components/AgentProposedChangesTab";
 import { PortraitReviewTab } from "@/components/PortraitReviewTab";
+import { ElectionDayCommandCenterTab } from "@/components/ElectionDayCommandCenterTab";
 import MiniRepositoryGlobe from "@/components/MiniRepositoryGlobe";
 import { useState, useMemo } from "react";
-import { Shield, Radio, MapPin, Users, Save, Check, Search, Star, Sparkles, AlertTriangle, CheckCircle2, Clock3, FileText, Headphones, ListChecks, RefreshCw, ShieldCheck, ImagePlus, FileDiff } from "lucide-react";
+import { Shield, Radio, MapPin, Users, Save, Check, Search, Star, Sparkles, AlertTriangle, CheckCircle2, Clock3, FileText, Headphones, ListChecks, RefreshCw, ShieldCheck, ImagePlus, FileDiff, Radar } from "lucide-react";
 
-type AdminTab = "overview" | "podcast" | "elections" | "cbc" | "agent" | "changes" | "portraits" | "audience";
+type AdminTab = "overview" | "command" | "podcast" | "elections" | "cbc" | "agent" | "changes" | "portraits" | "audience";
 
 export default function AdminPage() {
   const { user, isAuthenticated, loading } = useAuth();
   const [tab, setTab] = useState<AdminTab>(() => {
     const requested = typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("tab");
-    return requested === "podcast" || requested === "elections" || requested === "cbc" || requested === "agent" || requested === "changes" || requested === "portraits" || requested === "audience" ? requested : "overview";
+    return requested === "command" || requested === "podcast" || requested === "elections" || requested === "cbc" || requested === "agent" || requested === "changes" || requested === "portraits" || requested === "audience" ? requested : "overview";
   });
   const [focusRecommendationId, setFocusRecommendationId] = useState<number | undefined>();
 
@@ -50,6 +51,7 @@ export default function AdminPage() {
       <div className="flex gap-1 bg-muted rounded-lg p-1 mb-6 w-fit">
         {([
           { key: "overview", label: "Overview", icon: Shield },
+          { key: "command", label: "Command Center", icon: Radar },
           { key: "podcast", label: "Podcast Ops", icon: Radio },
           { key: "elections", label: "Election Ops", icon: MapPin },
           { key: "cbc", label: "Black Representation", icon: Star },
@@ -69,6 +71,7 @@ export default function AdminPage() {
       </div>
 
       {tab === "overview" && <OverviewTab onReview={(id) => { setFocusRecommendationId(id); setTab("agent"); }} />}
+      {tab === "command" && <ElectionDayCommandCenterTab />}
       {tab === "podcast" && <PodcastOpsTab />}
       {tab === "elections" && <ElectionOpsTab />}
       {tab === "cbc" && <CbcOpsTab />}

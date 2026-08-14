@@ -127,6 +127,20 @@
       "when": 1786721033016,
       "tag": "0017_lumpy_vertigo",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "5",
+      "when": 1786723875086,
+      "tag": "0018_hot_payback",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "5",
+      "when": 1786724341081,
+      "tag": "0019_chilly_firebird",
+      "breakpoints": true
     }
   ]
 }

@@ -80,6 +80,29 @@ export const senateRaces = mysqlTable("senate_races", {
 export type SenateRace = typeof senateRaces.$inferSelect;
 export type InsertSenateRace = typeof senateRaces.$inferInsert;
 
+/**
+ * A single durable heartbeat written only by the existing election engine.
+ * It supplies operational health context to administrators and has no public
+ * race-writing or call-making role.
+ */
+export const electionDayStatus = mysqlTable("election_day_status", {
+  id: int("id").primaryKey(),
+  mode: mysqlEnum("mode", ["standby", "active", "degraded"]).notNull().default("standby"),
+  sourceName: varchar("source_name", { length: 64 }).notNull().default("DDHQ"),
+  activeDate: varchar("active_date", { length: 16 }),
+  heartbeatAt: timestamp("heartbeat_at"),
+  lastPollAt: timestamp("last_poll_at"),
+  mappedRaces: int("mapped_races").notNull().default(0),
+  updatedRaces: int("updated_races").notNull().default(0),
+  failedPolls: int("failed_polls").notNull().default(0),
+  newCalls: int("new_calls").notNull().default(0),
+  sourceHealth: mysqlEnum("source_health", ["unknown", "healthy", "degraded"]).notNull().default("unknown"),
+  lastSummary: text("last_summary"),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ElectionDayStatus = typeof electionDayStatus.$inferSelect;
+
 // ─── House Races ──────────────────────────────────────────────────────────────
 export const houseRaces = mysqlTable("house_races", {
   id: int("id").autoincrement().primaryKey(),
@@ -664,7 +687,7 @@ export type AgentTask = typeof agentTasks.$inferSelect;
 export const agentChangeProposals = mysqlTable("agent_change_proposals", {
   id: int("id").autoincrement().primaryKey(),
   taskId: int("task_id").notNull(),
-  kind: mysqlEnum("kind", ["article_link", "data_correction", "editorial_copy"]).notNull(),
+  kind: mysqlEnum("kind", ["article_link", "data_correction", "editorial_copy", "portrait_source"]).notNull(),
   title: varchar("title", { length: 256 }).notNull(),
   targetType: varchar("target_type", { length: 80 }).notNull(),
   targetReference: text("target_reference").notNull(),

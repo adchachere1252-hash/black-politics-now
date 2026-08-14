@@ -24,8 +24,9 @@ import { fetchWithCache, getPersistedWordPressNews } from "./newsCache";
 import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
 import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
 import { getWorldElectionRefreshOperations, runDatedWorldElectionRefresh } from "./worldElectionRefresh";
+import { getElectionDayCommandCenter } from "./electionDayCommandCenter";
 import { getPortraitSubmissionTargets, getPortraitSubmissions, portraitPhotoFields, portraitProvenanceTypes, portraitTargetTypes, reviewPortraitSubmission, submitPortraitSubmission } from "./portraitReview";
-import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, executeAgentTaskWithChangeSet, getAgentChangeProposals, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, reviewAgentChangeProposal, reviewAgentRecommendation, runResearchDesk, setAgentDefaultOwners, setAgentPriorityMode, updateAgentTask } from "./agentDesk";
+import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, executeAgentTaskWithChangeSet, getAgentChangeProposals, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, reviewAgentChangeProposal, reviewAgentRecommendation, runAgentTaskResearchNow, runPortraitResearchTask, runResearchDesk, setAgentDefaultOwners, setAgentPriorityMode, updateAgentTask } from "./agentDesk";
 
 export const appRouter = router({
   system: systemRouter,
@@ -94,6 +95,10 @@ export const appRouter = router({
     redistricting: publicProcedure.query(async () => getAllRedistrictingStates()),
   }),
 
+  electionDay: router({
+    commandCenter: adminProcedure.query(async () => getElectionDayCommandCenter()),
+  }),
+
   // ─── World Elections ─────────────────────────────────────────────────────────
   world: router({
     elections: publicProcedure.query(async () => getWorldElections()),
@@ -124,6 +129,9 @@ export const appRouter = router({
     review: adminProcedure
       .input(z.object({ id: z.number().int().positive(), decision: z.enum(["approved", "rejected"]), reviewNote: z.string().max(2000).optional() }))
       .mutation(async ({ input, ctx }) => reviewPortraitSubmission(input.id, input.decision, ctx.user.name || "Administrator", input.reviewNote)),
+    researchNow: adminProcedure
+      .input(z.object({ targetType: z.enum(portraitTargetTypes), targetRecordId: z.number().int().positive(), targetPhotoField: z.enum(portraitPhotoFields), candidateName: z.string().min(2).max(128) }))
+      .mutation(async ({ input, ctx }) => runPortraitResearchTask(input, ctx.user.name || "Administrator")),
   }),
 
   // ─── News (WordPress proxy) ──────────────────────────────────────────────────
@@ -255,6 +263,9 @@ export const appRouter = router({
     executeTask: adminProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input, ctx }) => executeAgentTaskWithChangeSet(input.id, ctx.user.name ?? "Administrator")),
+    runTaskResearchNow: adminProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input, ctx }) => runAgentTaskResearchNow(input.id, ctx.user.name ?? "Administrator")),
     reviewChangeProposal: adminProcedure
       .input(z.object({ id: z.number(), status: z.enum(["approved", "rejected", "revision_requested"]), reviewerNotes: z.string().max(2000).optional() }))
       .mutation(async ({ input, ctx }) => reviewAgentChangeProposal(input.id, input.status, input.reviewerNotes, ctx.user.name ?? "Administrator")),

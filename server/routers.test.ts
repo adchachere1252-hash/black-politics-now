@@ -307,6 +307,7 @@ describe("Autonomous Research Desk router", () => {
     const adminCaller = appRouter.createCaller(createAdminContext());
 
     await expect(publicCaller.agent.executeTask({ id: 1 })).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(publicCaller.agent.runTaskResearchNow({ id: 1 })).rejects.toMatchObject({ code: "FORBIDDEN" });
     const tasks = await adminCaller.agent.tasks() as any[];
     for (const task of tasks) {
       expect(task.executionMode).toMatch(/^(human|agent)$/);
@@ -323,9 +324,18 @@ describe("Autonomous Research Desk router", () => {
     const proposals = await adminCaller.agent.changeProposals();
     expect(proposals).toEqual(expect.any(Array));
     for (const proposal of proposals as any[]) {
-      expect(proposal.kind).toMatch(/^(article_link|data_correction|editorial_copy)$/);
+      expect(proposal.kind).toMatch(/^(article_link|data_correction|editorial_copy|portrait_source)$/);
       expect(proposal.status).toMatch(/^(pending_review|approved|rejected|revision_requested)$/);
     }
+  });
+
+  it("keeps the command center and portrait research action administrator-only", async () => {
+    const publicCaller = appRouter.createCaller(createPublicContext());
+    const adminCaller = appRouter.createCaller(createAdminContext());
+
+    await expect(publicCaller.electionDay.commandCenter()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(publicCaller.portraits.researchNow({ targetType: "senate", targetRecordId: 1, targetPhotoField: "candidate1", candidateName: "Example Candidate" })).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(adminCaller.electionDay.commandCenter()).resolves.toMatchObject({ coverage: expect.any(Object), triage: expect.any(Array), runbook: expect.any(Array) });
   });
 });
 

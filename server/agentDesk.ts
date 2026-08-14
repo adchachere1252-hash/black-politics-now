@@ -13,6 +13,7 @@ import { invokeLLM, listLLMModels } from "./_core/llm";
 import { fetchWithCache } from "./newsCache";
 import { getEpisodesFormatted } from "./podcastDb";
 import { getWorldElections } from "./worldDb";
+import { getPortraitSubmissionTargets } from "./portraitReview";
 
 type SourceItem = {
   id: string;
@@ -341,7 +342,7 @@ const taskChangeSetOutputSchema = {
           items: {
             type: "object",
             properties: {
-              kind: { type: "string", enum: ["article_link", "data_correction", "editorial_copy"] },
+              kind: { type: "string", enum: ["article_link", "data_correction", "editorial_copy", "portrait_source"] },
               title: { type: "string" },
               targetType: { type: "string" },
               targetReference: { type: "string" },
@@ -607,14 +608,14 @@ export async function executeAgentTask(id: number, requestedBy: string) {
  * Executes a human-approved agent task into a private change set. It writes
  * only review artifacts; no downstream public mutation is implemented here.
  */
-export async function executeAgentTaskWithChangeSet(id: number, requestedBy: string) {
+export async function executeAgentTaskWithChangeSet(id: number, requestedBy: string, forceResearch = false) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
   const [task] = await db.select().from(agentTasks).where(eq(agentTasks.id, id)).limit(1);
   if (!task) throw new Error("Task not found");
   if (task.executionMode !== "agent") throw new Error("This task is assigned to a human owner, not the Research Desk agent");
   const existingProposals = await db.select().from(agentChangeProposals).where(eq(agentChangeProposals.taskId, id)).limit(1);
-  if (task.status === "completed" || (task.status === "ready_for_review" && existingProposals.length > 0)) return task;
+  if (!forceResearch && (task.status === "completed" || (task.status === "ready_for_review" && existingProposals.length > 0))) return task;
 
   const query = `${task.title}\n${task.description}\n${task.executionScope ?? ""}\n${task.sourceRequirements ?? ""}`.slice(0, 5000);
   const sourceItems = await collectPlatformSources(query);
@@ -631,7 +632,7 @@ export async function executeAgentTaskWithChangeSet(id: number, requestedBy: str
       completionSummary: string;
       workPackage: string;
       proposals: Array<{
-        kind: "article_link" | "data_correction" | "editorial_copy";
+        kind: "article_link" | "data_correction" | "editorial_copy" | "portrait_source";
         title: string;
         targetType: string;
         targetReference: string;
@@ -686,6 +687,41 @@ export async function executeAgentTaskWithChangeSet(id: number, requestedBy: str
     await db.update(agentTasks).set({ status: "blocked", executionError: message, executionCompletedAt: new Date() }).where(eq(agentTasks.id, id));
     throw error;
   }
+}
+
+/**
+ * An administrator may explicitly request a fresh private research pass. Prior
+ * proposals remain as review history, and this path has no public apply step.
+ */
+export async function runAgentTaskResearchNow(id: number, requestedBy: string) {
+  return executeAgentTaskWithChangeSet(id, requestedBy, true);
+}
+
+/**
+ * An administrator-selected portrait gap becomes a bounded agent task. The
+ * agent may prepare private evidence only; it cannot submit or apply a photo.
+ */
+export async function runPortraitResearchTask(
+  target: { targetType: "senate" | "house" | "governor" | "black_representation"; targetRecordId: number; targetPhotoField: "candidate1" | "candidate2" | "dem" | "rep" | "profile"; candidateName: string },
+  requestedBy: string,
+) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const targets = await getPortraitSubmissionTargets();
+  const current = targets.find((item) => item.targetType === target.targetType && item.targetRecordId === target.targetRecordId && item.targetPhotoField === target.targetPhotoField && item.candidateName === target.candidateName);
+  if (!current) throw new Error("This candidate is no longer a current missing-photo target");
+  const model = await resolveModel();
+  const sourceSnapshot = JSON.stringify([{ id: "portrait-target", title: `${current.candidateName} — ${current.location}`, url: `${PUBLIC_SITE_ORIGIN}/admin?tab=portraits`, excerpt: "Administrator-selected private portrait research target. A portrait cannot be submitted or applied without verified provenance review." }]);
+  await db.insert(agentRuns).values({ trigger: "admin", mode: "routine", status: "success", model, sourceSnapshot, summary: `Private portrait research requested for ${current.candidateName}.`, recommendationCount: 1 });
+  const [run] = await db.select().from(agentRuns).orderBy(desc(agentRuns.id)).limit(1);
+  if (!run) throw new Error("Unable to create portrait research run");
+  await db.insert(agentRecommendations).values({ runId: run.id, category: "data_quality", priority: "medium", title: `Research portrait source: ${current.candidateName}`, summary: `Private source research for ${current.candidateName} (${current.location}).`, proposedAction: "Prepare a source-cited portrait-source proposal only if verified evidence is available.", evidence: sourceSnapshot, status: "approved", assignedTo: "Data Desk", assignedBy: requestedBy, assignedAt: new Date(), reviewedBy: requestedBy, reviewedAt: new Date() });
+  const [recommendation] = await db.select().from(agentRecommendations).orderBy(desc(agentRecommendations.id)).limit(1);
+  if (!recommendation) throw new Error("Unable to create portrait research recommendation");
+  await db.insert(agentTasks).values({ recommendationId: recommendation.id, title: `Portrait source research: ${current.candidateName}`, description: `Research target: ${current.candidateName} (${current.location}). Target reference: ${current.targetType}/${current.targetRecordId}/${current.targetPhotoField}. Do not submit or apply a portrait. Return a portrait_source proposal only when supported by exact evidence in the supplied context.`, owner: "Data Desk", executionMode: "agent", executionScope: "Return a private source-cited portrait research package. Never alter a public profile.", sourceRequirements: "Use supplied context only. Do not invent image URLs, source pages, or provenance.", createdBy: requestedBy });
+  const [task] = await db.select().from(agentTasks).where(eq(agentTasks.recommendationId, recommendation.id)).limit(1);
+  if (!task) throw new Error("Unable to create portrait research task");
+  return executeAgentTaskWithChangeSet(task.id, requestedBy);
 }
 
 export async function setAgentDefaultOwners(editorialOwner: string, dataQualityOwner: string) {

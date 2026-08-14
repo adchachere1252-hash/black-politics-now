@@ -1,0 +1,1 @@
+ALTER TABLE `agent_change_proposals` MODIFY COLUMN `kind` enum('article_link','data_correction','editorial_copy','portrait_source') NOT NULL;
