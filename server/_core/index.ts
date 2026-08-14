@@ -11,6 +11,7 @@ import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { registerAgentScheduleRoute } from "../agentSchedule";
 import { registerWorldWatchScheduleRoute } from "../worldWatchSchedule";
+import { registerWorldRefreshScheduleRoute } from "../worldRefreshSchedule";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -42,6 +43,7 @@ async function startServer() {
   registerRssRoute(app);
   registerAgentScheduleRoute(app);
   registerWorldWatchScheduleRoute(app);
+  registerWorldRefreshScheduleRoute(app);
   // tRPC API
   app.use(
     "/api/trpc",

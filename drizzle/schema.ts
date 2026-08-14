@@ -397,6 +397,45 @@ export const worldElectionWatches = mysqlTable("world_election_watches", {
 
 export type WorldElectionWatch = typeof worldElectionWatches.$inferSelect;
 
+/**
+ * Singleton settings for the dated World Elections refresh workflow. The
+ * workflow may create review recommendations but never alters public election
+ * dates, statuses, candidates, or results without an editor.
+ */
+export const worldElectionRefreshSettings = mysqlTable("world_election_refresh_settings", {
+  id: int("id").primaryKey(),
+  enabled: boolean("enabled").default(true).notNull(),
+  scheduleCronTaskUid: varchar("schedule_cron_task_uid", { length: 65 }),
+  lastRunAt: timestamp("last_run_at"),
+  lastSuccessAt: timestamp("last_success_at"),
+  lastSummary: text("last_summary"),
+  lastError: text("last_error"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type WorldElectionRefreshSettings = typeof worldElectionRefreshSettings.$inferSelect;
+
+/**
+ * Latest source fingerprint for each record selected by the dated refresh.
+ * This is audit metadata only: it exists to detect changes and route those
+ * changes for human review rather than mutating the public election record.
+ */
+export const worldElectionRefreshItems = mysqlTable("world_election_refresh_items", {
+  id: int("id").autoincrement().primaryKey(),
+  worldElectionId: int("world_election_id").notNull().unique(),
+  lastFingerprint: varchar("last_fingerprint", { length: 64 }),
+  lastCheckedAt: timestamp("last_checked_at"),
+  lastChangedAt: timestamp("last_changed_at"),
+  lastStatus: varchar("last_status", { length: 32 }),
+  lastSourceSnapshot: text("last_source_snapshot"),
+  lastRecommendationId: int("last_recommendation_id"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type WorldElectionRefreshItem = typeof worldElectionRefreshItems.$inferSelect;
+
 // ═══════════════════════════════════════════════════════════════════════════
 // BLACK REPRESENTATION TRACKING
 // ═══════════════════════════════════════════════════════════════════════════

@@ -341,4 +341,18 @@ describe("world elections router", () => {
     expect(japan.length).toBeGreaterThan(0);
     expect(japan.every((election: any) => election.countryCode === "JP")).toBe(true);
   });
+
+  it("keeps dated World Elections refresh operations administrator-only and review-first", async () => {
+    const publicCaller = appRouter.createCaller(createPublicContext());
+    const adminCaller = appRouter.createCaller(createAdminContext());
+
+    await expect(publicCaller.world.refreshOperations()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    const operations = await adminCaller.world.refreshOperations() as any;
+    expect(operations).toMatchObject({
+      settings: expect.objectContaining({ enabled: expect.any(Boolean) }),
+      items: expect.any(Array),
+      recentRuns: expect.any(Array),
+    });
+    expect(operations.settings.lastSummary).toMatch(/Checked \d+ dated World Elections records/);
+  });
 });

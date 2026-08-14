@@ -84,6 +84,8 @@ function OverviewTab({ onReview }: { onReview: (id: number) => void }) {
   const { data: agentSettings } = trpc.agent.settings.useQuery();
   const { data: agentTasks = [] } = trpc.agent.tasks.useQuery();
   const { data: worldElections = [] } = trpc.world.elections.useQuery();
+  const { data: worldRefresh, refetch: refetchWorldRefresh } = trpc.world.refreshOperations.useQuery();
+  const runWorldRefresh = trpc.world.runRefreshNow.useMutation({ onSuccess: () => refetchWorldRefresh() });
   const [priorityOwner, setPriorityOwner] = useState("all");
 
   // Calculate live polling status
@@ -100,6 +102,9 @@ function OverviewTab({ onReview }: { onReview: (id: number) => void }) {
   const worldRecords = worldElections as any[];
   const worldUpcoming = worldRecords.filter((record) => record.status === "Upcoming").length;
   const worldLive = worldRecords.filter((record) => record.status === "Voting Today").length;
+  const worldRefreshSettings = worldRefresh?.settings as any;
+  const worldRefreshItems = worldRefresh?.items as any[] ?? [];
+  const worldRefreshChanges = worldRefreshItems.filter((item) => item.lastStatus === "changed").length;
 
   return (
     <div className="space-y-6">
@@ -156,9 +161,9 @@ function OverviewTab({ onReview }: { onReview: (id: number) => void }) {
             <div className="pointer-events-none absolute inset-x-3 bottom-3 rounded border border-cyan-100/20 bg-slate-950/50 px-2 py-1 text-center text-[10px] font-bold uppercase tracking-[0.12em] text-cyan-50">World Elections monitor</div>
           </div>
           <div className="flex flex-col justify-center p-5">
-            <div className="flex flex-wrap items-center justify-between gap-2"><div><h3 className="text-sm font-bold uppercase tracking-wider">Global Elections Desk</h3><p className="mt-1 text-xs text-muted-foreground">Operational snapshot of the public World Elections calendar.</p></div><a href="/world" className="rounded-md border border-border px-2.5 py-1.5 text-xs font-semibold text-primary">Open World Elections</a></div>
+            <div className="flex flex-wrap items-center justify-between gap-2"><div><h3 className="text-sm font-bold uppercase tracking-wider">Global Elections Desk</h3><p className="mt-1 text-xs text-muted-foreground">Operational snapshot of the public World Elections calendar.</p></div><div className="flex gap-2"><button onClick={() => runWorldRefresh.mutate()} disabled={runWorldRefresh.isPending} className="rounded-md border border-border px-2.5 py-1.5 text-xs font-semibold text-foreground hover:bg-muted disabled:opacity-50">{runWorldRefresh.isPending ? "Refreshing…" : "Refresh sources now"}</button><a href="/world" className="rounded-md border border-border px-2.5 py-1.5 text-xs font-semibold text-primary">Open World Elections</a></div></div>
             <div className="mt-4 grid grid-cols-3 divide-x divide-border text-center"><AdminMetric value={worldRecords.length} label="Tracked" /><AdminMetric value={worldUpcoming} label="Upcoming" /><AdminMetric value={worldLive} label="Voting today" /></div>
-            <p className="mt-4 text-xs text-muted-foreground">This globe is a monitoring view only; calendar updates remain governed by the World Elections data workflow.</p>
+            <div className="mt-4 rounded-lg border border-border/70 bg-background/50 p-3 text-xs text-muted-foreground"><div className="flex flex-wrap items-center justify-between gap-2"><p><strong className="text-foreground">Dated source refresh:</strong> {worldRefreshSettings?.lastSummary ?? "Baseline pending"}</p><span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase ${worldRefreshChanges ? "bg-amber-500/10 text-amber-700 dark:text-amber-300" : "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"}`}>{worldRefreshChanges ? `${worldRefreshChanges} review items` : "No changes queued"}</span></div><p className="mt-1">The workflow fingerprints dated source evidence and routes changes to Data Desk review; it never changes the public calendar automatically.</p></div>
           </div>
         </div>
       </div>

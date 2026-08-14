@@ -445,3 +445,9 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Execute assigned research or analysis tasks into a source-cited work package that is returned as ready for human review
 - [x] Preserve the no-autopublish, no-election-record-mutation, and no-public-alert boundaries throughout agent task execution
 - [x] Add protected API and interface regression coverage for agent task execution and review handoff
+
+## Intelligence Operations Sequence (Aug 14)
+- [x] Create and complete a live bounded Research Desk task as a cited, ready-for-review work package
+- [ ] Add a dated, source-audited World Elections refresh workflow with protected review-first updates
+- [ ] Build an administrator review queue for candidate portrait submissions, provenance review, and safe approval or rejection
+- [ ] Test, document, and visually verify the completed operations sequence

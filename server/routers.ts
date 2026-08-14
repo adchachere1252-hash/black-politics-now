@@ -8,6 +8,7 @@ import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferen
 import { fetchWithCache } from "./newsCache";
 import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
 import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
+import { getWorldElectionRefreshOperations, runDatedWorldElectionRefresh } from "./worldElectionRefresh";
 import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, executeAgentTask, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, reviewAgentRecommendation, runResearchDesk, setAgentDefaultOwners, setAgentPriorityMode, updateAgentTask } from "./agentDesk";
 
 export const appRouter = router({
@@ -83,6 +84,8 @@ export const appRouter = router({
     byCountry: publicProcedure
       .input(z.object({ countryCode: z.string().length(2) }))
       .query(async ({ input }) => getWorldElectionsByCountry(input.countryCode)),
+    refreshOperations: adminProcedure.query(async () => getWorldElectionRefreshOperations()),
+    runRefreshNow: adminProcedure.mutation(async () => runDatedWorldElectionRefresh()),
   }),
 
   // ─── News (WordPress proxy) ──────────────────────────────────────────────────
