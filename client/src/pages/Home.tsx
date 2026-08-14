@@ -6,6 +6,7 @@ import { ArrowRight, Play, Maximize2, Download, RotateCcw, Info, X, Globe2, Land
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { USMapFull } from "@/components/USMapFull";
 import HomepageExample from "@/pages/HomepageExample";
+import { rankedWorldSignals, worldSignalLabel } from "@/lib/worldElectionDisplay";
 
 type MapView = "house" | "senate" | "governor" | "blackrep";
 
@@ -61,7 +62,6 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
 
   const latestEpisode = episodes?.[0];
   const latestEpisodeHasAudio = Boolean(latestEpisode?.fullEpisodeCdnUrl);
-
   // Build map data from senate races (for senate view) or house (aggregate by state)
   const mapData = useMemo(() => {
     const data: Record<string, { rating: string | null; candidate1: string; candidate2: string; calledWinner?: string | null }> = {};
@@ -492,6 +492,12 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
 }
 
 function HomepageDiscoveryRail() {
+  const { data: worldElections = [] } = trpc.world.elections.useQuery();
+  const mobileWorldBrief = useMemo(() => {
+    const featured = rankedWorldSignals(worldElections as any[])[0];
+    return featured ? { featured, label: worldSignalLabel(featured) } : null;
+  }, [worldElections]);
+
   return (
     <section className="border-t border-border/50 bg-gradient-to-b from-background via-background to-muted/20 px-5 py-8 md:px-8 lg:px-12">
       <div className="mx-auto max-w-6xl">
@@ -528,6 +534,7 @@ function HomepageDiscoveryRail() {
               </div>
               <h3 className="text-lg font-bold leading-tight">Democracy, Black voices, and the wider world.</h3>
               <p className="mt-2 text-xs leading-relaxed text-muted-foreground">Country briefings and election context from across the globe.</p>
+              {mobileWorldBrief && <p className="mt-2 text-[10px] font-semibold text-primary">{mobileWorldBrief.label}: {mobileWorldBrief.featured.country}</p>}
               <span className="mt-5 inline-flex items-center gap-1 text-xs font-semibold text-primary">Explore the globe <ArrowUpRight size={13} /></span>
             </div>
             <div aria-hidden="true" className="absolute right-[-28px] top-1/2 h-64 w-64 -translate-y-1/2 rounded-full border border-cyan-200/45 bg-[radial-gradient(circle_at_35%_30%,rgba(148,226,255,0.46),rgba(37,94,158,0.28)_36%,rgba(5,19,43,0.96)_69%)] shadow-[inset_-34px_-20px_55px_rgba(0,0,0,0.68),0_0_45px_rgba(63,166,255,0.18)] animate-[spin_36s_linear_infinite]">

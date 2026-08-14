@@ -584,3 +584,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify Zambia’s current election status and source date against the World Elections records
 - [x] Correct the public next-election ranking so a voting or results event is not displaced by a stale upcoming watch
 - [x] Verify World Elections source links, status language, and homepage globe callout after the correction
+
+## Homepage World Elections Live Alignment (Aug 14)
+- [x] Apply the shared live-event ranking to the homepage World Elections callout
+- [x] Verify Zambia and future results-pending events automatically replace stale upcoming labels on the homepage
+
+## Historical Atlas Complete Playback (Aug 14)
+- [x] Audit and verify all 50 states across every Historical Atlas playback Congress
+- [x] Synchronize playback with national boundary changes, verified party/member overlays, and selected-state historical context
+- [x] Make the Atlas playback state and coverage visible, accurate, and responsive
