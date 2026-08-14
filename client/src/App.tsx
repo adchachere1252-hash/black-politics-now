@@ -21,6 +21,7 @@ const ResearchDesk = lazy(() => import("./pages/ResearchDesk"));
 const NewsConceptPreview = lazy(() => import("./pages/NewsConceptPreview"));
 const HomepageExample = lazy(() => import("./pages/HomepageExample"));
 const Newsroom = lazy(() => import("./pages/Newsroom"));
+const IntelligenceExample = lazy(() => import("./pages/IntelligenceExample"));
 
 function Router() {
   return (
@@ -31,6 +32,9 @@ function Router() {
       </Route>
       <Route path={"/newsroom"}>
         <Suspense fallback={<PageLoader />}><Newsroom /></Suspense>
+      </Route>
+      <Route path={"/intelligence-example"}>
+        <Suspense fallback={<PageLoader />}><IntelligenceExample /></Suspense>
       </Route>
       <Route path={"/podcast"}>
         <Suspense fallback={<PageLoader />}><Podcast /></Suspense>

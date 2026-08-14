@@ -476,3 +476,8 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Produce a visual concept that upgrades the existing Black Politics Now WordPress newsroom while preserving its category-led editorial identity
 - [x] Explain the recommended homepage hierarchy, theme treatment, and selective platform-feature placements without proposing a WordPress rebuild
 - [x] Include a prominent homepage and navigation destination that directs readers to the live Election Map
+
+## Editor-Confirmed News Links and AI Chatbot Example (Aug 14)
+- [x] Build a review-first example that connects selected WordPress stories to relevant Election Map, Historical Atlas, World Elections, or Daily Brief records
+- [x] Build a viewable public Research and Intelligence Agent example that presents guided questions, source-cited answers, evidence gathering, and ready-for-review recommendations
+- [x] Verify the preview route on desktop and mobile, with no automatic article linking or public record mutation
