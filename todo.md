@@ -471,3 +471,8 @@ The following earlier duplicate checklist is retained as project history. The ex
 ## Election Guide World Elections Verification (Aug 14)
 - [x] Compare the World Elections country calendar, dates, and statuses against the published Election Guide reference
 - [x] Document confirmed matches, source discrepancies, and any review-first corrections recommended for the public map
+
+## Original WordPress Newsroom Visual Recommendation (Aug 14)
+- [x] Produce a visual concept that upgrades the existing Black Politics Now WordPress newsroom while preserving its category-led editorial identity
+- [x] Explain the recommended homepage hierarchy, theme treatment, and selective platform-feature placements without proposing a WordPress rebuild
+- [x] Include a prominent homepage and navigation destination that directs readers to the live Election Map
