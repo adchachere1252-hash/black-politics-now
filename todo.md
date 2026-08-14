@@ -593,3 +593,14 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Audit and verify all 50 states across every Historical Atlas playback Congress
 - [x] Synchronize playback with national boundary changes, verified party/member overlays, and selected-state historical context
 - [x] Make the Atlas playback state and coverage visible, accurate, and responsive
+
+## Historical Atlas Boundary Availability Repair (Aug 14)
+- [x] Reproduce and diagnose the full-map boundary bundle failure on the public Atlas
+- [x] Add a resilient, repository-grounded boundary-bundle fallback that keeps the national map available
+- [ ] Verify the Atlas across multiple Congresses and overlays without the temporary-unavailable fallback
+
+## Historical Atlas Final Launch Focus (Aug 14)
+- [ ] Limit final launch work to Historical Atlas reliability, completeness, and verification; defer unrelated feature expansion
+
+## Power Context Removal (Aug 14)
+- [ ] Remove the public Power Context route, page, and shared navigation entry without affecting existing news, election, or Atlas workflows

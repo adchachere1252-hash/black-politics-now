@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { gunzipSync } from "node:zlib";
 import { registerAtlasBoundaryRoute } from "./atlasBoundaryRoute";
 
 type Handler = (req: { params: Record<string, string> }, res: ReturnType<typeof createResponse>) => Promise<unknown> | unknown;
@@ -43,7 +44,8 @@ describe("Historical Atlas boundary bundle", () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.headers["content-type"]).toBe("application/json");
-    expect(Object.keys(JSON.parse(String(response.body)))).not.toHaveLength(0);
+    expect(response.headers["content-encoding"]).toBe("gzip");
+    expect(Object.keys(JSON.parse(gunzipSync(response.body as Buffer).toString("utf8")))).not.toHaveLength(0);
   });
 
   it("returns verified Voteview House member and party overlay data without recoding other parties", async () => {

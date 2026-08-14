@@ -4,6 +4,7 @@ import { geoAlbersUsa, geoPath } from "d3-geo";
 import { LEWIS_MANIFEST } from "@/data/atlasBoundaryManifest";
 import { STATE_CODES } from "@/data/atlasHistory";
 import { atlasManifestCoverage } from "@/lib/atlasPlayback";
+import { loadNationalAtlasBoundaryBundle } from "@/lib/atlasBoundaryLoader";
 
 export type AtlasOverlayMode = "boundary" | "party" | "member";
 export type AtlasFrameStatus = { congress: number; expectedStates: number; renderedStates: number; districtCount: number; changedStateCount: number; overlayMode: AtlasOverlayMode; overlayCount: number; overlayState: "not-applicable" | "loading" | "ready" | "unavailable"; ready: boolean };
@@ -83,9 +84,8 @@ export function HistoricalUSMap({ congress, selectedState, onStateSelect, overla
     setError(false);
     setZoom(1);
     setPan({ x: 0, y: 0 });
-    fetch(`/api/atlas/bundle/${congress}`, { signal: controller.signal })
-      .then((response) => response.ok ? response.json() : Promise.reject(new Error("Unavailable")))
-      .then((data) => { if (!controller.signal.aborted) setBundle(data as Record<string, string>); })
+    loadNationalAtlasBoundaryBundle(congress, (input, init) => fetch(input, { ...init, signal: controller.signal }))
+      .then((data) => { if (!controller.signal.aborted) setBundle(data.bundle); })
       .catch(() => { if (!controller.signal.aborted) setError(true); });
     return () => controller.abort();
   }, [congress]);
