@@ -4,6 +4,7 @@ import { LEWIS_MANIFEST } from "../client/src/data/atlasBoundaryManifest";
 
 const LEWIS_GEOJSON_BASE = "https://raw.githubusercontent.com/JeffreyBLewis/congressional-district-boundaries/master/GeoJson";
 const boundaryCache = new Map<string, string>();
+const mapBoundaryCache = new Map<string, string>();
 const boundaryFetches = new Map<string, Promise<string | null>>();
 const congressBundleCache = new Map<string, { json: string; gzip: Buffer }>();
 const congressBundleFetches = new Map<string, Promise<string | null>>();
@@ -22,6 +23,46 @@ function cacheBoundary(filename: string, value: string) {
   if (boundaryCache.has(filename)) boundaryCache.delete(filename);
   boundaryCache.set(filename, value);
   if (boundaryCache.size > MAX_BOUNDARY_CACHE_ENTRIES) boundaryCache.delete(boundaryCache.keys().next().value as string);
+}
+
+/**
+ * State GeoJSON remains the authoritative archive. The nationwide Atlas needs
+ * a lighter visual layer so it can render all 50 states without parsing
+ * coastline-level source geometry in every browser session.
+ */
+function simplifyRingForMap(ring: unknown) {
+  if (!Array.isArray(ring) || ring.length < 4) return ring;
+  const isCoordinate = (value: unknown) => Array.isArray(value) && value.length >= 2 && Number.isFinite(Number(value[0])) && Number.isFinite(Number(value[1]));
+  if (!ring.every(isCoordinate)) return ring;
+  const openRing = ring.slice(0, -1);
+  if (openRing.length < 3) return ring;
+  const pointCount = Math.min(140, openRing.length);
+  const sampled = Array.from({ length: pointCount }, (_, index) => {
+    const sourceIndex = Math.round((index * (openRing.length - 1)) / Math.max(1, pointCount - 1));
+    const coordinate = openRing[sourceIndex] as number[];
+    return [Number(coordinate[0].toFixed(4)), Number(coordinate[1].toFixed(4))];
+  });
+  return [...sampled, sampled[0]];
+}
+
+function simplifyBoundaryForMap(filename: string, raw: string) {
+  const cached = mapBoundaryCache.get(filename);
+  if (cached) return cached;
+  try {
+    const collection = JSON.parse(raw) as { features?: Array<{ geometry?: { type?: string; coordinates?: unknown } }> };
+    collection.features?.forEach((feature) => {
+      const geometry = feature.geometry;
+      if (!geometry?.coordinates) return;
+      if (geometry.type === "Polygon") geometry.coordinates = (geometry.coordinates as unknown[]).map(simplifyRingForMap);
+      if (geometry.type === "MultiPolygon") geometry.coordinates = (geometry.coordinates as unknown[][]).map((polygon) => polygon.map(simplifyRingForMap));
+    });
+    const value = JSON.stringify(collection);
+    mapBoundaryCache.set(filename, value);
+    if (mapBoundaryCache.size > MAX_BOUNDARY_CACHE_ENTRIES) mapBoundaryCache.delete(mapBoundaryCache.keys().next().value as string);
+    return value;
+  } catch {
+    return raw;
+  }
 }
 
 function bundleCacheKey(congress: number, chunk?: number) { return `${congress}:${chunk ?? "all"}`; }
@@ -75,7 +116,7 @@ async function buildCongressBundle(congress: number, chunk?: number): Promise<st
       if (!filenames.length) return null;
       const fetched = await Promise.all(filenames.map(async (filename) => ({ filename, body: await getBoundaryFile(filename) })));
       const bundle: Record<string, string> = {};
-      fetched.forEach(({ filename, body }) => { if (body) bundle[filename] = body; });
+      fetched.forEach(({ filename, body }) => { if (body) bundle[filename] = simplifyBoundaryForMap(filename, body); });
       if (!Object.keys(bundle).length) return null;
       const serialized = JSON.stringify(bundle);
       cacheCongressBundle(congress, serialized, chunk);

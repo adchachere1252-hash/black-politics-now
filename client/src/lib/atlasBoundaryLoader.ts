@@ -28,7 +28,7 @@ async function loadFilesWithConcurrency(filenames: string[], request: BoundaryRe
 export async function loadNationalAtlasBoundaryBundle(congress: number, request: BoundaryRequest = fetch) : Promise<AtlasBoundaryLoad> {
   const coverage = atlasManifestCoverage(congress);
   try {
-    const response = await request(`/api/atlas/bundle/${congress}`);
+    const response = await request(`/api/atlas/bundle/${congress}?atlas_bundle_revision=3`);
     if (response.ok) {
       const candidate = await response.json();
       if (candidate && typeof candidate === "object" && Object.keys(candidate as Record<string, string>).length === coverage.stateCount) {
