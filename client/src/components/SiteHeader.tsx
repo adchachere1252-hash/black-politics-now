@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 
 const NAV_ITEMS: { href: string; label: string; icon: any; external?: boolean }[] = [
-  { href: "/newsroom", label: "News", icon: Newspaper },
+  { href: "https://blkpoliticsnow.com", label: "News", icon: Newspaper, external: true },
   { href: "/elections", label: "Election Map", icon: Map },
   { href: "/world", label: "World Elections", icon: Globe2 },
   { href: "/atlas", label: "Historical Atlas", icon: Landmark },

@@ -494,3 +494,9 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add a dedicated protected Proposed Changes page with before/after views, evidence, target details, and Approve, Reject, or Request Revision controls
 - [x] Preserve no-autopublish, no-election-record-mutation, and no-WordPress-change safeguards until the administrator explicitly approves a proposed change
 - [x] Verify the corrected homepage and Agent Desk proposed-change review flow on desktop and mobile
+
+## Original Newsroom Boundary and Election Day Admin Roadmap (Aug 14)
+- [x] Document the decision to preserve the original WordPress newsroom and limit platform integration to optional utility entry points
+- [x] Restore the primary platform News navigation to the original Black Politics Now WordPress newsroom while leaving any internal concept route unpromoted
+- [x] Assess the current Admin dashboard against Election Day command-center needs and identify practical missing controls
+- [x] Deliver a prioritized Election Day Admin roadmap for user approval before implementing new operations features
