@@ -191,19 +191,12 @@ export function registerAtlasBoundaryRoute(app: Express) {
   app.get("/api/atlas/bundle/:congress", async (req, res) => {
     const congress = Number(req.params.congress);
     if (!Number.isInteger(congress) || congress < 89 || congress > 119) return res.status(400).json({ error: "Congress must be between 89 and 119" });
-    const bundle = await buildCongressBundle(congress);
-    if (!bundle) return res.status(502).json({ error: "Historical boundary bundle is unavailable" });
-    return sendCompressedBundle(res, bundle, congress);
-  });
-
-  app.get("/api/atlas/bundle/:congress/chunk/:chunk", async (req, res) => {
-    const congress = Number(req.params.congress);
-    const chunk = Number(req.params.chunk);
+    const queryChunk = req.query?.chunk;
+    const chunk = queryChunk === undefined ? undefined : Number(queryChunk);
     const chunkCount = Math.ceil(filenamesForCongress(congress).length / BOUNDARY_BUNDLE_CHUNK_SIZE);
-    if (!Number.isInteger(congress) || congress < 89 || congress > 119) return res.status(400).json({ error: "Congress must be between 89 and 119" });
-    if (!Number.isInteger(chunk) || chunk < 0 || chunk >= chunkCount) return res.status(400).json({ error: "Historical boundary chunk is unavailable" });
+    if (chunk !== undefined && (!Number.isInteger(chunk) || chunk < 0 || chunk >= chunkCount)) return res.status(400).json({ error: "Historical boundary chunk is unavailable" });
     const bundle = await buildCongressBundle(congress, chunk);
-    if (!bundle) return res.status(502).json({ error: "Historical boundary chunk is unavailable" });
+    if (!bundle) return res.status(502).json({ error: chunk === undefined ? "Historical boundary bundle is unavailable" : "Historical boundary chunk is unavailable" });
     return sendCompressedBundle(res, bundle, congress, chunk);
   });
 

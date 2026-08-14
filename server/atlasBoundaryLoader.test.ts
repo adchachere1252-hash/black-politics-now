@@ -28,7 +28,7 @@ describe("Historical Atlas client boundary fallback", () => {
     const coverage = atlasManifestCoverage(104);
     const request = async (input: string) => {
       if (input === "/api/atlas/bundle/104") return { ok: false, json: async () => ({}), text: async () => "" };
-      const chunk = Number(input.match(/chunk\/(\d+)$/)?.[1]);
+      const chunk = Number(input.match(/chunk=(\d+)$/)?.[1]);
       const entries = coverage.boundaryFiles.slice(chunk * 10, (chunk + 1) * 10).map((filename) => [filename, "{}"]);
       return { ok: true, json: async () => Object.fromEntries(entries), text: async () => "" };
     };

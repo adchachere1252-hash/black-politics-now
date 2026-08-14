@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { gunzipSync } from "node:zlib";
 import { registerAtlasBoundaryRoute } from "./atlasBoundaryRoute";
 
-type Handler = (req: { params: Record<string, string> }, res: ReturnType<typeof createResponse>) => Promise<unknown> | unknown;
+type Handler = (req: { params: Record<string, string>; query?: Record<string, string> }, res: ReturnType<typeof createResponse>) => Promise<unknown> | unknown;
 
 function createResponse() {
   const response = {
@@ -54,7 +54,7 @@ describe("Historical Atlas boundary bundle", () => {
     const historicalFeatureCollection = JSON.stringify({ type: "FeatureCollection", features: [], source: "repository-backed congressional district boundary fixture retained for Atlas validation" });
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, text: async () => historicalFeatureCollection }));
 
-    await routes.get("/api/atlas/bundle/:congress/chunk/:chunk")!({ params: { congress: "118", chunk: "0" } }, response);
+    await routes.get("/api/atlas/bundle/:congress")!({ params: { congress: "118" }, query: { chunk: "0" } }, response);
 
     expect(response.statusCode).toBe(200);
     expect(Object.keys(JSON.parse(gunzipSync(response.body as Buffer).toString("utf8")))).toHaveLength(10);
