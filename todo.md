@@ -535,3 +535,7 @@ The following earlier duplicate checklist is retained as project history. The ex
 ## Live Portrait Research Run (Aug 14)
 - [x] Run the AI portrait-research agent for one remaining candidate photo gap and return any source-backed proposal to private review
 - [x] Verify no portrait or public profile is changed without explicit administrator approval
+
+## Alphabetized Top-Level Navigation (Aug 14)
+- [x] Reorder all top-level platform destinations alphabetically while preserving the wordmark and matching icons
+- [x] Verify the alphabetical header order remains readable on desktop and mobile

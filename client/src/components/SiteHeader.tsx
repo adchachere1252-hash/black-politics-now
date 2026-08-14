@@ -4,13 +4,13 @@ import { useState } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 
 const NAV_ITEMS: { href: string; label: string; icon: any; external?: boolean }[] = [
-  { href: "https://blkpoliticsnow.com", label: "News", icon: Newspaper, external: true },
-  { href: "/elections", label: "Election Map", icon: Map },
-  { href: "/world", label: "World Elections", icon: Globe2 },
-  { href: "/atlas", label: "Historical Atlas", icon: Landmark },
-  { href: "/podcast", label: "Podcast", icon: Headphones },
   { href: "/archive", label: "Archive", icon: Archive },
+  { href: "/elections", label: "Election Map", icon: Map },
+  { href: "/atlas", label: "Historical Atlas", icon: Landmark },
+  { href: "https://blkpoliticsnow.com", label: "News", icon: Newspaper, external: true },
+  { href: "/podcast", label: "Podcast", icon: Headphones },
   { href: "/research", label: "Research Desk", icon: Sparkles },
+  { href: "/world", label: "World Elections", icon: Globe2 },
 ];
 
 export default function SiteHeader() {
