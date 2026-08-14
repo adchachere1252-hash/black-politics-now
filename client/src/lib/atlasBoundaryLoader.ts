@@ -40,7 +40,7 @@ export async function loadNationalAtlasBoundaryBundle(congress: number, request:
   try {
     const chunkCount = Math.ceil(coverage.boundaryFiles.length / 10);
     const chunks = await Promise.all(Array.from({ length: chunkCount }, async (_, chunk) => {
-      const response = await request(`/api/atlas/bundle/${congress}?chunk=${chunk}`);
+      const response = await request(`/api/atlas/bundle/${congress}?chunk=${chunk}&atlas_bundle_revision=2`);
       if (!response.ok) throw new Error("Historical boundary chunk unavailable");
       return response.json() as Promise<Record<string, string>>;
     }));
