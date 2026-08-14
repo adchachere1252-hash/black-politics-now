@@ -356,3 +356,26 @@ describe("world elections router", () => {
     expect(operations.settings.lastSummary).toMatch(/Checked \d+ dated World Elections records/);
   });
 });
+
+describe("candidate portrait review router", () => {
+  it("keeps portrait targets and submission history administrator-only", async () => {
+    const publicCaller = appRouter.createCaller(createPublicContext());
+    const adminCaller = appRouter.createCaller(createAdminContext());
+
+    await expect(publicCaller.portraits.targets()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(publicCaller.portraits.submissions()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    const [targets, submissions] = await Promise.all([
+      adminCaller.portraits.targets(),
+      adminCaller.portraits.submissions(),
+    ]);
+    expect(Array.isArray(targets)).toBe(true);
+    expect(Array.isArray(submissions)).toBe(true);
+    for (const target of targets as any[]) {
+      expect(target).toMatchObject({
+        targetType: expect.stringMatching(/^(senate|house|governor|black_representation)$/),
+        targetRecordId: expect.any(Number),
+        candidateName: expect.any(String),
+      });
+    }
+  });
+});

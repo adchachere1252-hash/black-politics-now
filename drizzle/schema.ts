@@ -436,6 +436,33 @@ export const worldElectionRefreshItems = mysqlTable("world_election_refresh_item
 
 export type WorldElectionRefreshItem = typeof worldElectionRefreshItems.$inferSelect;
 
+/**
+ * Editor-submitted candidate portrait candidates. A submission cannot affect a
+ * public race or Black Representation profile until a named administrator
+ * approves it after reviewing provenance.
+ */
+export const candidatePortraitSubmissions = mysqlTable("candidate_portrait_submissions", {
+  id: int("id").autoincrement().primaryKey(),
+  targetType: mysqlEnum("target_type", ["senate", "house", "governor", "black_representation"]).notNull(),
+  targetRecordId: int("target_record_id").notNull(),
+  targetPhotoField: mysqlEnum("target_photo_field", ["candidate1", "candidate2", "dem", "rep", "profile"]).notNull(),
+  candidateName: varchar("candidate_name", { length: 128 }).notNull(),
+  imageUrl: text("image_url").notNull(),
+  sourceUrl: text("source_url").notNull(),
+  provenanceType: mysqlEnum("provenance_type", ["official_campaign", "official_government", "bioguide", "licensed_media", "other_verified"]).notNull(),
+  submissionNote: text("submission_note"),
+  status: mysqlEnum("status", ["pending", "approved", "rejected"]).default("pending").notNull(),
+  submittedBy: varchar("submitted_by", { length: 128 }).notNull(),
+  reviewedBy: varchar("reviewed_by", { length: 128 }),
+  reviewedAt: timestamp("reviewed_at"),
+  reviewNote: text("review_note"),
+  appliedPhotoUrl: text("applied_photo_url"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type CandidatePortraitSubmission = typeof candidatePortraitSubmissions.$inferSelect;
+
 // ═══════════════════════════════════════════════════════════════════════════
 // BLACK REPRESENTATION TRACKING
 // ═══════════════════════════════════════════════════════════════════════════

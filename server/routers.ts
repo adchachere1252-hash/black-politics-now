@@ -9,6 +9,7 @@ import { fetchWithCache } from "./newsCache";
 import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
 import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
 import { getWorldElectionRefreshOperations, runDatedWorldElectionRefresh } from "./worldElectionRefresh";
+import { getPortraitSubmissionTargets, getPortraitSubmissions, portraitPhotoFields, portraitProvenanceTypes, portraitTargetTypes, reviewPortraitSubmission, submitPortraitSubmission } from "./portraitReview";
 import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, executeAgentTask, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, reviewAgentRecommendation, runResearchDesk, setAgentDefaultOwners, setAgentPriorityMode, updateAgentTask } from "./agentDesk";
 
 export const appRouter = router({
@@ -86,6 +87,28 @@ export const appRouter = router({
       .query(async ({ input }) => getWorldElectionsByCountry(input.countryCode)),
     refreshOperations: adminProcedure.query(async () => getWorldElectionRefreshOperations()),
     runRefreshNow: adminProcedure.mutation(async () => runDatedWorldElectionRefresh()),
+  }),
+
+  portraits: router({
+    targets: adminProcedure.query(async () => getPortraitSubmissionTargets()),
+    submissions: adminProcedure
+      .input(z.object({ status: z.enum(["pending", "approved", "rejected"]).optional() }).optional())
+      .query(async ({ input }) => getPortraitSubmissions(input?.status)),
+    submit: adminProcedure
+      .input(z.object({
+        targetType: z.enum(portraitTargetTypes),
+        targetRecordId: z.number().int().positive(),
+        targetPhotoField: z.enum(portraitPhotoFields),
+        candidateName: z.string().min(2).max(128),
+        imageUrl: z.string().url().max(2048),
+        sourceUrl: z.string().url().max(2048),
+        provenanceType: z.enum(portraitProvenanceTypes),
+        submissionNote: z.string().max(2000).optional(),
+      }))
+      .mutation(async ({ input, ctx }) => submitPortraitSubmission(input, ctx.user.name || "Administrator")),
+    review: adminProcedure
+      .input(z.object({ id: z.number().int().positive(), decision: z.enum(["approved", "rejected"]), reviewNote: z.string().max(2000).optional() }))
+      .mutation(async ({ input, ctx }) => reviewPortraitSubmission(input.id, input.decision, ctx.user.name || "Administrator", input.reviewNote)),
   }),
 
   // ─── News (WordPress proxy) ──────────────────────────────────────────────────

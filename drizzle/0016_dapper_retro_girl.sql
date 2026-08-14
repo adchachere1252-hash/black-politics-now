@@ -1,0 +1,20 @@
+CREATE TABLE `candidate_portrait_submissions` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`target_type` enum('senate','house','governor','black_representation') NOT NULL,
+	`target_record_id` int NOT NULL,
+	`target_photo_field` enum('candidate1','candidate2','dem','rep','profile') NOT NULL,
+	`candidate_name` varchar(128) NOT NULL,
+	`image_url` text NOT NULL,
+	`source_url` text NOT NULL,
+	`provenance_type` enum('official_campaign','official_government','bioguide','licensed_media','other_verified') NOT NULL,
+	`submission_note` text,
+	`status` enum('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+	`submitted_by` varchar(128) NOT NULL,
+	`reviewed_by` varchar(128),
+	`reviewed_at` timestamp,
+	`review_note` text,
+	`applied_photo_url` text,
+	`created_at` timestamp NOT NULL DEFAULT (now()),
+	`updated_at` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `candidate_portrait_submissions_id` PRIMARY KEY(`id`)
+);
