@@ -455,3 +455,9 @@ The following earlier duplicate checklist is retained as project history. The ex
 ## Homepage Historical Atlas Coverage (Aug 14)
 - [x] Correct the homepage Historical Atlas summary to state the complete 50-state archive while separately identifying the 16-state active redistricting watchlist
 - [x] Verify the corrected homepage Atlas presentation and preserve the mobile layout
+
+## Historical Atlas Repository Comparison and Improvement (Aug 14)
+- [x] Compare the current Historical Atlas data, assets, and interactions against the original election-map-2026 repository
+- [x] Re-verify all 50 apportionment histories, boundary-era archives, active redistricting context, source transparency, and responsive state interactions
+- [x] Implement prioritized Atlas improvements supported by the repository comparison
+- [x] Produce a complete Historical Atlas findings report with strengths, gaps, remediation, and remaining editorial decisions
