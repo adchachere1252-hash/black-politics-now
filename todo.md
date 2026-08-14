@@ -481,3 +481,7 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Build a review-first example that connects selected WordPress stories to relevant Election Map, Historical Atlas, World Elections, or Daily Brief records
 - [x] Build a viewable public Research and Intelligence Agent example that presents guided questions, source-cited answers, evidence gathering, and ready-for-review recommendations
 - [x] Verify the preview route on desktop and mobile, with no automatic article linking or public record mutation
+
+## Research Agent Preview Route Repair (Aug 14)
+- [ ] Diagnose and correct the reported live 404 on `/intelligence-example`
+- [ ] Verify the repaired published route directly and provide the working link
