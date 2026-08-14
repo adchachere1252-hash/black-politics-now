@@ -139,6 +139,11 @@
   h1, h2, h3 {
     font-family: var(--font-display);
   }
+  .homepage-editorial-home h1,
+  .homepage-editorial-home h2,
+  .homepage-editorial-home h3 {
+    font-family: var(--font-sans);
+  }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
   [type="button"]:not(:disabled),
