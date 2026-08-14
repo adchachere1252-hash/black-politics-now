@@ -6,7 +6,11 @@ import { LEWIS_MANIFEST } from "@/data/atlasBoundaryManifest";
 
 export default function Atlas() {
   const { data: states = [], isLoading } = trpc.election.redistricting.useQuery();
-  const [selectedCode, setSelectedCode] = useState<string | null>(null);
+  const [selectedCode, setSelectedCode] = useState<string | null>(() => {
+    if (typeof window === "undefined") return null;
+    const code = new URLSearchParams(window.location.search).get("state")?.toUpperCase();
+    return code && /^[A-Z]{2}$/.test(code) ? code : null;
+  });
   const historicalStates = useMemo(() => {
     const activeByName = new Map((states as any[]).map((state) => [state.stateName, state]));
     return Object.keys(APPORTIONMENT_HISTORY).sort().map((stateName) => activeByName.get(stateName) ?? ({ stateCode: STATE_CODES[stateName], stateName, enacted: false, status: "Historical record", method: "Congressional apportionment", delegationBefore: null, projectedImpact: null, litigationNotes: null, reason: null }));

@@ -258,6 +258,21 @@ export const pipelineRuns = mysqlTable("pipeline_runs", {
 export type PipelineRun = typeof pipelineRuns.$inferSelect;
 export type InsertPipelineRun = typeof pipelineRuns.$inferInsert;
 
+// ─── Daily Brief Source Preflights ───────────────────────────────────────────
+// Recorded by the cloud automation before the morning generator is allowed to
+// start. The report is intentionally operational metadata, not public content.
+export const podcastPreflights = mysqlTable("podcast_preflights", {
+  id: int("id").autoincrement().primaryKey(),
+  episodeDate: varchar("episode_date", { length: 10 }).notNull().unique(),
+  status: varchar("status", { length: 16 }).notNull(),
+  topicCount: int("topic_count").notNull().default(0),
+  readyCount: int("ready_count").notNull().default(0),
+  report: text("report"),
+  checkedAt: timestamp("checked_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PodcastPreflight = typeof podcastPreflights.$inferSelect;
+
 // ─── Podcast Play Analytics ──────────────────────────────────────────────────
 export const podcastPlays = mysqlTable("podcast_plays", {
   id: int("id").autoincrement().primaryKey(),
@@ -547,7 +562,8 @@ export type AgentRecommendation = typeof agentRecommendations.$inferSelect;
 /**
  * Human-approved work items created from an Agent Desk recommendation. The
  * agent cannot create these rows: an administrator must approve the underlying
- * recommendation first, preserving editorial and election-data control.
+ * recommendation first. Agent execution can produce only a reviewable, cited
+ * work package; it has no publishing, alerting, or election-data mutation path.
  */
 export const agentTasks = mysqlTable("agent_tasks", {
   id: int("id").autoincrement().primaryKey(),
@@ -556,7 +572,15 @@ export const agentTasks = mysqlTable("agent_tasks", {
   description: text("description").notNull(),
   owner: varchar("owner", { length: 128 }),
   dueDate: timestamp("due_date"),
-  status: mysqlEnum("status", ["open", "in_progress", "blocked", "completed"]).notNull().default("open"),
+  status: mysqlEnum("status", ["open", "in_progress", "blocked", "ready_for_review", "completed"]).notNull().default("open"),
+  executionMode: mysqlEnum("execution_mode", ["human", "agent"]).notNull().default("human"),
+  executionScope: text("execution_scope"),
+  sourceRequirements: text("source_requirements"),
+  agentWorkPackage: text("agent_work_package"),
+  agentWorkPackageSources: text("agent_work_package_sources"),
+  executionStartedAt: timestamp("execution_started_at"),
+  executionCompletedAt: timestamp("execution_completed_at"),
+  executionError: text("execution_error"),
   createdBy: varchar("created_by", { length: 128 }).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),

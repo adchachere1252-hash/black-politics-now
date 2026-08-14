@@ -88,6 +88,15 @@ describe("election router", () => {
     expect(APPORTIONMENT_HISTORY.Mississippi).toEqual([5, 5, 5, 5, 4, 4, 4]);
     expect(APPORTIONMENT_HISTORY.Alaska).toEqual([1, 1, 1, 1, 1, 1, 1]);
     expect(APPORTIONMENT_HISTORY.Texas.at(-1)).toBe(38);
+
+    // U.S. Census historical apportionment table: 1960–2020 results.
+    expect(APPORTIONMENT_HISTORY.Alabama).toEqual([8, 7, 7, 7, 7, 7, 7]);
+    expect(APPORTIONMENT_HISTORY.California).toEqual([38, 43, 45, 52, 53, 53, 52]);
+    expect(APPORTIONMENT_HISTORY.Texas).toEqual([23, 24, 27, 30, 32, 36, 38]);
+    for (const index of APPORTIONMENT_YEARS.keys()) {
+      const nationalSeats = Object.values(APPORTIONMENT_HISTORY).reduce((sum, stateSeries) => sum + stateSeries[index], 0);
+      expect(nationalSeats).toBe(435);
+    }
   });
 
   it("preserves the original Atlas boundary-era archive for all 50 state histories", () => {
@@ -225,6 +234,34 @@ describe("podcast router", () => {
       expect(episode).toHaveProperty("fullEpisodeCdnUrl");
     }
   });
+
+  it("keeps Podcast Ops operational diagnostics administrator-only and reports the full release gate", async () => {
+    const publicCaller = appRouter.createCaller(createPublicContext());
+    const adminCaller = appRouter.createCaller(createAdminContext());
+
+    await expect(publicCaller.podcast.operations()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    const operations = await adminCaller.podcast.operations() as any;
+    expect(operations).toMatchObject({
+      recentEpisodes: expect.any(Array),
+      recentRuns: expect.any(Array),
+      preflights: expect.any(Array),
+    });
+    if (operations.latest) {
+      expect(operations.latest).toMatchObject({
+        date: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/),
+        segmentCount: expect.any(Number),
+        expectedSegments: expect.any(Number),
+        scriptsReady: expect.any(Number),
+        andrewReady: expect.any(Number),
+        jennyReady: expect.any(Number),
+        duplicateKeys: expect.any(Array),
+        fullAudioReady: expect.any(Boolean),
+        segments: expect.any(Array),
+      });
+      expect(operations.latest.segmentCount).toBeGreaterThanOrEqual(operations.latest.expectedSegments);
+      expect(operations.latest.duplicateKeys).toEqual([]);
+    }
+  });
 });
 
 describe("Autonomous Research Desk router", () => {
@@ -250,6 +287,18 @@ describe("Autonomous Research Desk router", () => {
 
     const disabled = await adminCaller.agent.setPriorityMode({ enabled: false });
     expect(disabled).toMatchObject({ priorityModeEnabled: false, priorityModeExpiresAt: null });
+  });
+
+  it("keeps bounded agent task execution administrator-only and exposes review-safe task fields", async () => {
+    const publicCaller = appRouter.createCaller(createPublicContext());
+    const adminCaller = appRouter.createCaller(createAdminContext());
+
+    await expect(publicCaller.agent.executeTask({ id: 1 })).rejects.toMatchObject({ code: "FORBIDDEN" });
+    const tasks = await adminCaller.agent.tasks() as any[];
+    for (const task of tasks) {
+      expect(task.executionMode).toMatch(/^(human|agent)$/);
+      expect(task.status).toMatch(/^(open|in_progress|blocked|ready_for_review|completed)$/);
+    }
   });
 });
 

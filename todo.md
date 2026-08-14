@@ -337,6 +337,9 @@
  - [x] Verify and correct any unauthenticated Admin dashboard visibility so all operational content and mutations remain role-gated — Interactive preview showed the expected Admin Access Required gate; an earlier screenshot used an authenticated capture context
 
 ## AI Research Agent & Continuous Improvement
+- [x] Run a complete Historical Atlas launch verification for apportionment, boundary eras, redistricting context, sources, interactions, and responsive presentation
+- [x] Diagnose and restore today’s autonomous Daily Intelligence Brief update while preserving full-audio publication gates
+- [x] Replace the outdated Meta News research source key that prevented sufficient fresh Tech News coverage for today’s Daily Brief
 - [x] Add visible official and editorial source links to every World Elections country detail drawer
 - [x] Add next-30-days and regional filters to the World Elections explorer
 - [x] Add the user-approved 30-minute Cook Islands Verified Watch that creates review-only Admin alerts when authoritative reporting changes
@@ -426,3 +429,19 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify election, news, World Elections, Historical Atlas, podcast, RSS, and election-automation data accuracy and freshness — Historical duplicate; completed in active audit above
 - [x] Correct confirmed accuracy, visual, or interaction issues and rerun targeted checks — Historical duplicate; completed in active audit above
 - [x] Document and deliver the final verification and accuracy report before AI-agent work resumes — Historical duplicate; completed in active audit above
+
+## Daily Brief Reliability Safeguards (Aug 14)
+- [x] Add a mandatory all-topic source preflight before the 6:00 AM Daily Brief generation begins
+- [x] Add an early locked recovery path when preflight fails, so source gaps are repaired before the standard generation window
+- [x] Strengthen and quality-screen Tech News fallback queries while retaining the resumable `03_meta_news` key
+- [x] Verify the safeguard with an automated source-preflight test and document the operational behavior
+
+## Podcast Ops Editorial Control Room (Aug 14)
+- [x] Expand the protected Podcast Ops tab with current-run health, publication-gate timeline, source-preflight visibility, audio diagnostics, recovery guidance, and recent-run history
+- [x] Add regression coverage for the operational Podcast Ops data contract and verify the protected dashboard presentation
+
+## Research Desk Task Execution (Aug 14)
+- [x] Allow an administrator to assign a bounded approved task to the Research Desk agent with scope, source requirements, and due date
+- [x] Execute assigned research or analysis tasks into a source-cited work package that is returned as ready for human review
+- [x] Preserve the no-autopublish, no-election-record-mutation, and no-public-alert boundaries throughout agent task execution
+- [x] Add protected API and interface regression coverage for agent task execution and review handoff

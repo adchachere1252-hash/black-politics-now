@@ -92,6 +92,20 @@
       "when": 1786656012234,
       "tag": "0012_amused_talisman",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "5",
+      "when": 1786710714465,
+      "tag": "0013_empty_lethal_legion",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "5",
+      "when": 1786711111341,
+      "tag": "0014_abandoned_reptil",
+      "breakpoints": true
     }
   ]
 }

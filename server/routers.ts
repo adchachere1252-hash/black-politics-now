@@ -3,12 +3,12 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, adminProcedure, router } from "./_core/trpc";
 import { z } from "zod";
-import { getArchiveEpisodesFormatted, getEpisodesFormatted, subscribeEmail, unsubscribeEmail, getPipelineRuns } from "./podcastDb";
+import { getArchiveEpisodesFormatted, getEpisodesFormatted, subscribeEmail, unsubscribeEmail, getPipelineRuns, getPodcastOperations } from "./podcastDb";
 import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateReferendum } from "./electionDb";
 import { fetchWithCache } from "./newsCache";
 import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
 import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
-import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, reviewAgentRecommendation, runResearchDesk, setAgentDefaultOwners, setAgentPriorityMode, updateAgentTask } from "./agentDesk";
+import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, executeAgentTask, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, reviewAgentRecommendation, runResearchDesk, setAgentDefaultOwners, setAgentPriorityMode, updateAgentTask } from "./agentDesk";
 
 export const appRouter = router({
   system: systemRouter,
@@ -34,6 +34,7 @@ export const appRouter = router({
       .input(z.object({ email: z.string().email() }))
       .mutation(async ({ input }) => { await unsubscribeEmail(input.email); return { success: true }; }),
     pipelineRuns: protectedProcedure.query(async () => getPipelineRuns()),
+    operations: adminProcedure.query(async () => getPodcastOperations()),
   }),
 
   // ─── Election ────────────────────────────────────────────────────────────────
@@ -180,11 +181,21 @@ export const appRouter = router({
         return { success: true };
       }),
     approveToTask: adminProcedure
-      .input(z.object({ id: z.number(), owner: z.string().min(2).max(128).optional(), dueDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional() }))
-      .mutation(async ({ input, ctx }) => approveRecommendationToTask(input.id, input.owner, input.dueDate, ctx.user.name ?? "Administrator")),
+      .input(z.object({
+        id: z.number(),
+        owner: z.string().min(2).max(128).optional(),
+        dueDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+        executionMode: z.enum(["human", "agent"]).default("human"),
+        executionScope: z.string().max(5000).optional(),
+        sourceRequirements: z.string().max(2000).optional(),
+      }))
+      .mutation(async ({ input, ctx }) => approveRecommendationToTask(input.id, input.owner, input.dueDate, ctx.user.name ?? "Administrator", input.executionMode, input.executionScope, input.sourceRequirements)),
     updateTask: adminProcedure
-      .input(z.object({ id: z.number(), status: z.enum(["open", "in_progress", "blocked", "completed"]), dueDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional() }))
+      .input(z.object({ id: z.number(), status: z.enum(["open", "in_progress", "blocked", "ready_for_review", "completed"]), dueDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional() }))
       .mutation(async ({ input }) => { await updateAgentTask(input.id, input.status, input.dueDate); return { success: true }; }),
+    executeTask: adminProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input, ctx }) => executeAgentTask(input.id, ctx.user.name ?? "Administrator")),
     setDefaultOwners: adminProcedure
       .input(z.object({ editorialOwner: z.string().min(2).max(128), dataQualityOwner: z.string().min(2).max(128) }))
       .mutation(async ({ input }) => setAgentDefaultOwners(input.editorialOwner, input.dataQualityOwner)),

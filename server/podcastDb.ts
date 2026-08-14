@@ -1,6 +1,6 @@
 import { eq, desc } from "drizzle-orm";
 import { getDb } from "./db";
-import { episodes, episodeSegments, emailSubscribers, pipelineRuns } from "../drizzle/schema";
+import { episodes, episodeSegments, emailSubscribers, pipelineRuns, podcastPreflights } from "../drizzle/schema";
 import type { Episode, EpisodeSegment } from "../drizzle/schema";
 
 const TOPIC_ACCENTS: Record<string, { color: string; bg: string; label: string; emoji: string }> = {
@@ -111,4 +111,82 @@ export async function getPipelineRuns() {
   const db = await getDb();
   if (!db) return [];
   return db.select().from(pipelineRuns).orderBy(desc(pipelineRuns.startedAt)).limit(20);
+}
+
+export async function getPodcastOperations() {
+  const db = await getDb();
+  if (!db) return { latest: null, recentEpisodes: [], recentRuns: [], preflights: [] };
+
+  const [recentEpisodes, recentRuns, preflights] = await Promise.all([
+    db.select().from(episodes).orderBy(desc(episodes.date)).limit(7),
+    db.select().from(pipelineRuns).orderBy(desc(pipelineRuns.startedAt)).limit(12),
+    db.select().from(podcastPreflights).orderBy(desc(podcastPreflights.checkedAt)).limit(7),
+  ]);
+  const latest = recentEpisodes[0] ?? null;
+  if (!latest) return { latest: null, recentEpisodes, recentRuns, preflights };
+
+  const segments = await db.select().from(episodeSegments).where(eq(episodeSegments.episodeDate, latest.date)).orderBy(episodeSegments.sortOrder);
+  const keyCounts = new Map<string, number>();
+  for (const segment of segments) keyCounts.set(segment.segmentKey, (keyCounts.get(segment.segmentKey) ?? 0) + 1);
+  const expectedSegments = latest.day === "Friday" || latest.day === "Monday" ? 16 : 15;
+  const andrewReady = segments.filter((segment) => Boolean(segment.andrewCdnUrl)).length;
+  const jennyReady = segments.filter((segment) => Boolean(segment.jennyCdnUrl)).length;
+  const scriptsReady = segments.filter((segment) => Boolean(segment.script?.trim())).length;
+  const duplicateKeys = Array.from(keyCounts.entries()).filter(([, count]) => count > 1).map(([key]) => key);
+  const fullAudioReady = latest.verificationStatus === "passed" && Boolean(latest.fullEpisodeCdnUrl);
+  const todayPreflight = preflights.find((preflight) => preflight.episodeDate === latest.date) ?? null;
+
+  return {
+    latest: {
+      date: latest.date,
+      day: latest.day ?? "",
+      friendlyDate: latest.friendlyDate ?? latest.date,
+      durationLabel: latest.totalDurationLabel ?? "Awaiting verification",
+      durationSec: latest.totalDurationSec ?? 0,
+      verificationStatus: latest.verificationStatus ?? "pending",
+      verificationWarnings: latest.verificationWarnings ?? null,
+      updatedAt: latest.updatedAt,
+      expectedSegments,
+      segmentCount: segments.length,
+      scriptsReady,
+      andrewReady,
+      jennyReady,
+      duplicateKeys,
+      fullAudioReady,
+      segments: segments.map((segment) => ({
+        key: segment.segmentKey,
+        label: segment.label ?? segment.segmentKey,
+        durationLabel: segment.durationLabel ?? "",
+        hasScript: Boolean(segment.script?.trim()),
+        hasAndrewAudio: Boolean(segment.andrewCdnUrl),
+        hasJennyAudio: Boolean(segment.jennyCdnUrl),
+      })),
+    },
+    recentEpisodes: recentEpisodes.map((episode) => ({
+      date: episode.date,
+      friendlyDate: episode.friendlyDate ?? episode.date,
+      durationLabel: episode.totalDurationLabel ?? "",
+      segmentCount: episode.segmentCount ?? 0,
+      verificationStatus: episode.verificationStatus ?? "pending",
+      hasFullAudio: Boolean(episode.fullEpisodeCdnUrl),
+      updatedAt: episode.updatedAt,
+    })),
+    recentRuns,
+    preflights: preflights.map((preflight) => ({
+      episodeDate: preflight.episodeDate,
+      status: preflight.status,
+      topicCount: preflight.topicCount,
+      readyCount: preflight.readyCount,
+      report: preflight.report,
+      checkedAt: preflight.checkedAt,
+    })),
+    latestPreflight: todayPreflight ? {
+      episodeDate: todayPreflight.episodeDate,
+      status: todayPreflight.status,
+      topicCount: todayPreflight.topicCount,
+      readyCount: todayPreflight.readyCount,
+      report: todayPreflight.report,
+      checkedAt: todayPreflight.checkedAt,
+    } : null,
+  };
 }
