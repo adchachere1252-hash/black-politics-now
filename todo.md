@@ -451,3 +451,7 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add a dated, source-audited World Elections refresh workflow with protected review-first updates
 - [x] Build an administrator review queue for candidate portrait submissions, provenance review, and safe approval or rejection
 - [x] Test, document, and visually verify the completed operations sequence
+
+## Homepage Historical Atlas Coverage (Aug 14)
+- [x] Correct the homepage Historical Atlas summary to state the complete 50-state archive while separately identifying the 16-state active redistricting watchlist
+- [x] Verify the corrected homepage Atlas presentation and preserve the mobile layout
