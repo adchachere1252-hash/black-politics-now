@@ -1,23 +1,27 @@
 import { trpc } from "@/lib/trpc";
 import { useAudio } from "@/contexts/AudioContext";
 import { useState, useMemo } from "react";
-import { Play, Pause, Search, ChevronDown, ChevronUp, FileText, X } from "lucide-react";
+import { Play, Pause, Search, ChevronDown, ChevronUp, FileText, X, ArrowUpRight, Clock3, ExternalLink, ShieldCheck } from "lucide-react";
 
 export default function Podcast() {
   const { data: episodes = [], isLoading } = trpc.podcast.getEpisodes.useQuery();
   const { play, pause, isPlaying, currentTrack, voicePreference, setVoicePreference } = useAudio();
   const [expandedEp, setExpandedEp] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [topicFilter, setTopicFilter] = useState("all");
   const [scriptDrawer, setScriptDrawer] = useState<{ label: string; script: string } | null>(null);
 
   const filteredEpisodes = useMemo(() => {
-    if (!searchQuery) return episodes as any[];
+    const all = episodes as any[];
+    if (!searchQuery && topicFilter === "all") return all;
     const q = searchQuery.toLowerCase();
-    return (episodes as any[]).filter(ep =>
-      ep.date.includes(q) || ep.day?.toLowerCase().includes(q) ||
-      ep.segments.some((s: any) => s.label.toLowerCase().includes(q))
+    return all.filter(ep =>
+      (!searchQuery || ep.date.includes(q) || ep.day?.toLowerCase().includes(q) || ep.segments.some((s: any) => s.label.toLowerCase().includes(q))) &&
+      (topicFilter === "all" || ep.segments.some((s: any) => s.label === topicFilter))
     );
-  }, [episodes, searchQuery]);
+  }, [episodes, searchQuery, topicFilter]);
+  const latestEpisode: any = (episodes as any[])[0];
+  const featuredTopics = useMemo<string[]>(() => Array.from(new Set<string>((latestEpisode?.segments ?? []).map((segment: any) => String(segment.label ?? "")).filter(Boolean))).slice(0, 7), [latestEpisode]);
 
   if (isLoading) {
     return (
@@ -31,8 +35,10 @@ export default function Podcast() {
     <div className="container py-8">
       <div className="mb-6">
         <h1 className="text-3xl font-extrabold mb-1">Daily Intelligence Brief</h1>
-        <p className="text-muted-foreground text-sm">13 topics. ~40 minutes. Everything you need.</p>
+        <p className="text-muted-foreground text-sm">A verified daily record of what changed, why it matters, and where to investigate next.</p>
       </div>
+
+      {latestEpisode && <section className="mb-6 overflow-hidden rounded-xl border border-primary/25 bg-primary/[0.045] p-5"><div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between"><div><p className="text-[10px] font-bold uppercase tracking-[.16em] text-primary">Start here · today’s verified briefing</p><h2 className="mt-2 text-xl font-bold">{latestEpisode.friendlyDate || latestEpisode.date}</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{latestEpisode.segmentCount} segments · {latestEpisode.totalDurationLabel || "Duration verifying"}. Listen for the day’s political, civic, global, and technology developments in one source-checked briefing.</p><div className="mt-3 flex flex-wrap gap-1.5">{featuredTopics.slice(0, 5).map((topic) => <button key={topic} onClick={() => { setTopicFilter(topic); setSearchQuery(""); }} className="rounded-full border border-primary/25 bg-background px-2 py-1 text-[10px] font-semibold text-primary hover:bg-primary/10">{topic}</button>)}</div></div><div className="flex shrink-0 flex-wrap gap-2"><button onClick={() => latestEpisode.fullEpisodeCdnUrl && play({ url: latestEpisode.fullEpisodeCdnUrl, title: `Daily Brief - ${latestEpisode.date}`, episodeDate: latestEpisode.date })} disabled={!latestEpisode.fullEpisodeCdnUrl} className="inline-flex items-center gap-2 rounded-md bg-primary px-3.5 py-2 text-sm font-bold text-primary-foreground disabled:opacity-50"><Play size={15} fill="currentColor"/> Listen now</button><a href="/archive?tab=podcast" className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-3.5 py-2 text-sm font-semibold text-foreground">Explore archive <ArrowUpRight size={14}/></a></div></div></section>}
 
       {/* Controls */}
       <div className="flex flex-col sm:flex-row gap-3 mb-6">
@@ -62,6 +68,7 @@ export default function Podcast() {
           />
         </div>
       </div>
+      <div className="mb-6 flex flex-wrap items-center gap-2"><span className="inline-flex items-center gap-1 text-xs text-muted-foreground"><Clock3 size={13}/> Find what changed</span><button onClick={() => setTopicFilter("all")} className={`rounded-full px-2.5 py-1 text-xs font-semibold ${topicFilter === "all" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>All topics</button>{featuredTopics.map((topic) => <button key={topic} onClick={() => setTopicFilter(topic)} className={`rounded-full px-2.5 py-1 text-xs font-semibold ${topicFilter === topic ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>{topic}</button>)}</div>
 
       {/* Episode list */}
       <div className="space-y-3">
@@ -133,6 +140,12 @@ export default function Podcast() {
                       );
                     })}
                   </div>
+                  {(() => {
+                    const techSegment = ep.segments.find((segment: any) => segment.key === "03_meta_news" || segment.label === "Tech News");
+                    const sources = techSegment?.sourceLinks ?? [];
+                    if (!sources.length) return null;
+                    return <section className="mt-4 rounded-lg border border-primary/25 bg-primary/[0.04] p-3"><div className="flex flex-wrap items-center justify-between gap-2"><div className="flex items-center gap-2"><ShieldCheck size={14} className="text-primary"/><h3 className="text-xs font-bold">Tech News · sources used</h3></div><span className="text-[10px] text-muted-foreground">Verified {techSegment.sourceVerifiedAt ? new Date(techSegment.sourceVerifiedAt).toLocaleDateString() : ep.date}</span></div><p className="mt-1 text-[11px] leading-5 text-muted-foreground">This segment is written from the linked reporting. Links open the underlying source context; source markers are excluded from the spoken audio.</p><div className="mt-3 flex flex-wrap gap-2">{sources.map((source: any, index: number) => <a key={`${source.url}-${index}`} href={source.url} target="_blank" rel="noreferrer" className="inline-flex max-w-full items-center gap-1 rounded-md border border-border bg-background px-2 py-1 text-[11px] font-semibold text-primary hover:bg-primary/10"><span className="truncate">{source.source}</span><ExternalLink size={11}/></a>)}</div></section>;
+                  })()}
                 </div>
               )}
             </div>

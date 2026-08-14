@@ -166,6 +166,7 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
     <div className="homepage-editorial-home hidden h-[calc(100dvh-64px)] overflow-hidden bg-background p-2 lg:block">
       <main className="mx-auto flex h-full max-w-[1640px] min-h-0 flex-col overflow-hidden rounded-xl border border-border bg-card p-2 shadow-[0_18px_70px_rgba(17,24,39,0.12)] dark:shadow-black/35">
         {mode === "preview" && <div className="mb-2 flex shrink-0 items-center justify-between border-b border-border pb-1.5"><span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-primary">Black Politics Now · Homepage direction</span><span className="text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Reference-aligned visual example</span></div>}
+        <div className="mb-2 flex shrink-0 flex-wrap items-center justify-between gap-2 rounded-md border border-primary/20 bg-primary/5 px-3 py-1.5"><p className="text-[10px] font-semibold text-foreground">Black Politics Now connects reporting, elections, and history to the public record.</p><span className="text-[8px] font-bold uppercase tracking-[0.14em] text-primary">Reporting → Record → Review</span></div>
 
         <section className="grid min-h-0 flex-1 grid-cols-[0.92fr_1.68fr_0.96fr] grid-rows-[minmax(0,1fr)] gap-2">
           <aside className="grid min-h-0 grid-rows-[minmax(0,1fr)_clamp(220px,31vh,286px)] gap-3 overflow-hidden">

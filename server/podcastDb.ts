@@ -37,6 +37,20 @@ function secsToLabel(totalSec: number): string {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
+function parseSegmentSources(value: string | null): Array<{ title: string; source: string; url: string; pubDate?: string }> {
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(value);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .filter((item) => item && typeof item.url === "string" && /^https:\/\//.test(item.url))
+      .slice(0, 6)
+      .map((item) => ({ title: String(item.title || "Source reporting"), source: String(item.source || "News source"), url: item.url, ...(item.pubDate ? { pubDate: String(item.pubDate) } : {}) }));
+  } catch {
+    return [];
+  }
+}
+
 export async function getEpisodesFormatted() {
   const db = await getDb();
   if (!db) return [];
@@ -61,6 +75,8 @@ export async function getEpisodesFormatted() {
         script: seg.script ?? "",
         durationLabel: seg.durationLabel ?? (seg.durationSec ? secsToLabel(Math.round(seg.durationSec)) : ""),
         durationSec: seg.durationSec ?? 0,
+        sourceLinks: parseSegmentSources(seg.sourceLinks),
+        sourceVerifiedAt: seg.sourceVerifiedAt ? seg.sourceVerifiedAt.toISOString() : null,
         isBreaking: seg.isBreaking === 1, breakingReason: seg.breakingReason ?? "",
       };
     });

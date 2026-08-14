@@ -132,11 +132,12 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
           Homepage enhancement example · current dashboard retained above
         </div>
       )}
-      {/* Tagline */}
+      {/* Public mission */}
       <div className="text-center py-4 border-b border-border/30">
         <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground font-medium">
-          Political Intelligence. Black Perspective. Every Day.
+          Reporting. Elections. History. The public record.
         </p>
+        <p className="mx-auto mt-2 max-w-md text-xs leading-relaxed text-muted-foreground">Black Politics Now connects Black political reporting to the races, institutions, and historical context shaping power today.</p>
       </div>
 
       {/* Three-column dashboard */}

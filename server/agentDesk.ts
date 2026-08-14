@@ -703,7 +703,7 @@ export async function runAgentTaskResearchNow(id: number, requestedBy: string) {
  * agent may prepare private evidence only; it cannot submit or apply a photo.
  */
 export async function runPortraitResearchTask(
-  target: { targetType: "senate" | "house" | "governor" | "black_representation"; targetRecordId: number; targetPhotoField: "candidate1" | "candidate2" | "dem" | "rep" | "profile"; candidateName: string },
+  target: { targetType: "senate" | "house" | "governor" | "black_representation"; targetRecordId: number; targetPhotoField: "candidate1" | "candidate2" | "dem" | "rep" | "profile"; candidateName: string; sourceLead?: string },
   requestedBy: string,
 ) {
   const db = await getDb();
@@ -712,14 +712,16 @@ export async function runPortraitResearchTask(
   const current = targets.find((item) => item.targetType === target.targetType && item.targetRecordId === target.targetRecordId && item.targetPhotoField === target.targetPhotoField && item.candidateName === target.candidateName);
   if (!current) throw new Error("This candidate is no longer a current missing-photo target");
   const model = await resolveModel();
-  const sourceSnapshot = JSON.stringify([{ id: "portrait-target", title: `${current.candidateName} — ${current.location}`, url: `${PUBLIC_SITE_ORIGIN}/admin?tab=portraits`, excerpt: "Administrator-selected private portrait research target. A portrait cannot be submitted or applied without verified provenance review." }]);
+  const sourceRows = [{ id: "portrait-target", title: `${current.candidateName} — ${current.location}`, url: `${PUBLIC_SITE_ORIGIN}/admin?tab=portraits`, excerpt: "Administrator-selected private portrait research target. A portrait cannot be submitted or applied without verified provenance review." }];
+  if (target.sourceLead?.trim()) sourceRows.push({ id: "administrator-source-lead", title: `Administrator-provided source lead for ${current.candidateName}`, url: target.sourceLead.trim(), excerpt: "Use this lead only as supplied context. Confirm candidate identity and provenance before proposing a portrait source; do not invent a direct image URL." });
+  const sourceSnapshot = JSON.stringify(sourceRows);
   await db.insert(agentRuns).values({ trigger: "admin", mode: "routine", status: "success", model, sourceSnapshot, summary: `Private portrait research requested for ${current.candidateName}.`, recommendationCount: 1 });
   const [run] = await db.select().from(agentRuns).orderBy(desc(agentRuns.id)).limit(1);
   if (!run) throw new Error("Unable to create portrait research run");
   await db.insert(agentRecommendations).values({ runId: run.id, category: "data_quality", priority: "medium", title: `Research portrait source: ${current.candidateName}`, summary: `Private source research for ${current.candidateName} (${current.location}).`, proposedAction: "Prepare a source-cited portrait-source proposal only if verified evidence is available.", evidence: sourceSnapshot, status: "approved", assignedTo: "Data Desk", assignedBy: requestedBy, assignedAt: new Date(), reviewedBy: requestedBy, reviewedAt: new Date() });
   const [recommendation] = await db.select().from(agentRecommendations).orderBy(desc(agentRecommendations.id)).limit(1);
   if (!recommendation) throw new Error("Unable to create portrait research recommendation");
-  await db.insert(agentTasks).values({ recommendationId: recommendation.id, title: `Portrait source research: ${current.candidateName}`, description: `Research target: ${current.candidateName} (${current.location}). Target reference: ${current.targetType}/${current.targetRecordId}/${current.targetPhotoField}. Do not submit or apply a portrait. Return a portrait_source proposal only when supported by exact evidence in the supplied context.`, owner: "Data Desk", executionMode: "agent", executionScope: "Return a private source-cited portrait research package. Never alter a public profile.", sourceRequirements: "Use supplied context only. Do not invent image URLs, source pages, or provenance.", createdBy: requestedBy });
+  await db.insert(agentTasks).values({ recommendationId: recommendation.id, title: `Portrait source research: ${current.candidateName}`, description: `Research target: ${current.candidateName} (${current.location}). Target reference: ${current.targetType}/${current.targetRecordId}/${current.targetPhotoField}. ${target.sourceLead?.trim() ? `Official source lead: ${target.sourceLead.trim()}. ` : ""}Do not submit or apply a portrait. Return a portrait_source proposal only when supported by exact evidence in the supplied context.`, owner: "Data Desk", executionMode: "agent", executionScope: "Return a private source-cited portrait research package. Never alter a public profile.", sourceRequirements: "Use supplied context only. Do not invent image URLs, source pages, or provenance.", createdBy: requestedBy });
   const [task] = await db.select().from(agentTasks).where(eq(agentTasks.recommendationId, recommendation.id)).limit(1);
   if (!task) throw new Error("Unable to create portrait research task");
   return executeAgentTaskWithChangeSet(task.id, requestedBy);

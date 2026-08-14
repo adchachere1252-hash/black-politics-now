@@ -1,18 +1,32 @@
 import { trpc } from "@/lib/trpc";
-import { useState } from "react";
-import { Newspaper, Headphones, MapPin } from "lucide-react";
+import { useMemo, useState } from "react";
+import { ArrowUpRight, Clock3, Headphones, MapPin, Newspaper, Search } from "lucide-react";
 
 type ArchiveTab = "news" | "podcast" | "elections";
 
 export default function ArchivePage() {
-  const [tab, setTab] = useState<ArchiveTab>("news");
+  const [tab, setTab] = useState<ArchiveTab>(() => {
+    const requested = typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("tab");
+    return requested === "podcast" || requested === "elections" ? requested : "news";
+  });
   const [newsPage, setNewsPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
   const { data: newsData, isLoading: newsLoading } = trpc.news.list.useQuery({ page: newsPage, perPage: 15 });
   const { data: episodes = [] } = trpc.podcast.getArchiveEpisodes.useQuery();
+  const featuredNews: any = newsData?.posts?.[0];
+  const latestEpisode: any = (episodes as any[])[0];
+  const newsCategories = useMemo<string[]>(() => Array.from(new Set<string>((newsData?.posts ?? []).map((post: any) => String(post._embedded?.["wp:term"]?.[0]?.[0]?.name ?? "Reporting")).filter(Boolean))).slice(0, 8), [newsData]);
+  const visibleNews = useMemo(() => (newsData?.posts ?? []).filter((post: any) => {
+    const category = String(post._embedded?.["wp:term"]?.[0]?.[0]?.name ?? "Reporting");
+    return (!searchQuery || `${post.title?.rendered ?? ""} ${post.date ?? ""}`.toLowerCase().includes(searchQuery.toLowerCase())) && (categoryFilter === "all" || category === categoryFilter);
+  }), [newsData, searchQuery, categoryFilter]);
 
   return (
     <div className="container py-8">
-      <h1 className="text-3xl font-extrabold mb-6">Archive</h1>
+      <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between"><div><p className="text-[10px] font-bold uppercase tracking-[.18em] text-primary">Search the record</p><h1 className="mt-1 text-3xl font-extrabold">Archive</h1><p className="mt-2 max-w-2xl text-sm text-muted-foreground">Trace what was reported, what was heard in the Daily Brief, and what changed across the political record.</p></div><div className="rounded-lg border border-border bg-card px-3 py-2 text-xs text-muted-foreground"><Clock3 className="mr-1 inline text-primary" size={13}/> {latestEpisode?.friendlyDate || "Latest briefing"} · {latestEpisode?.totalDurationLabel || "Archive status"}</div></div>
+
+      {(featuredNews || latestEpisode) && <section className="mb-6 grid gap-3 lg:grid-cols-2"><a href={featuredNews?.link || "https://blkpoliticsnow.com"} target="_blank" rel="noreferrer" className="rounded-xl border border-primary/25 bg-primary/[0.045] p-5 transition-colors hover:bg-primary/[0.08]"><p className="text-[10px] font-bold uppercase tracking-[.15em] text-primary">Latest reporting</p><h2 className="mt-2 text-lg font-bold leading-tight" dangerouslySetInnerHTML={{ __html: featuredNews?.title?.rendered ?? "Open the Black Politics Now newsroom" }} /><p className="mt-3 text-xs text-muted-foreground">Open the original report <ArrowUpRight className="inline" size={13}/></p></a><a href="/podcast" className="rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/45"><p className="text-[10px] font-bold uppercase tracking-[.15em] text-primary">Daily Brief record</p><h2 className="mt-2 text-lg font-bold leading-tight">{latestEpisode?.friendlyDate || "Explore verified briefings"}</h2><p className="mt-2 text-sm text-muted-foreground">{latestEpisode ? `${latestEpisode.segmentCount} topics · ${latestEpisode.totalDurationLabel}` : "Browse the complete audio and script archive."}</p><p className="mt-3 text-xs text-primary">Open the Daily Brief <ArrowUpRight className="inline" size={13}/></p></a></section>}
 
       <div className="flex gap-1 bg-muted rounded-lg p-1 mb-6 w-fit">
         {([
@@ -29,6 +43,7 @@ export default function ArchivePage() {
           </button>
         ))}
       </div>
+      {tab === "news" && <><div className="relative mb-3 max-w-xl"><Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"/><input value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder="Search this page of reporting…" className="w-full rounded-lg border border-border bg-background py-2 pl-8 pr-3 text-sm" /></div><div className="mb-5 flex flex-wrap gap-2"><button onClick={() => setCategoryFilter("all")} className={`rounded-full px-2.5 py-1 text-xs font-semibold ${categoryFilter === "all" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>All reporting</button>{newsCategories.map((category) => <button key={category} onClick={() => setCategoryFilter(category)} className={`rounded-full px-2.5 py-1 text-xs font-semibold ${categoryFilter === category ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>{category}</button>)}</div></>}
 
       {tab === "news" && (
         <div>
@@ -37,7 +52,7 @@ export default function ArchivePage() {
           ) : (
             <>
               <div className="space-y-2">
-                {newsData?.posts?.map((post: any) => (
+                {visibleNews.map((post: any) => (
                   <a key={post.id} href={post.link} target="_blank" rel="noopener noreferrer" className="block glass-card rounded-lg p-4 hover:bg-muted/50 transition-colors no-underline">
                     <p className="text-sm font-medium text-foreground" dangerouslySetInnerHTML={{ __html: post.title?.rendered ?? "" }} />
                     <p className="text-xs text-muted-foreground mt-1">{new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>

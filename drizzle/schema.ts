@@ -267,6 +267,8 @@ export const episodeSegments = mysqlTable("episode_segments", {
   episodeDate: varchar("episodeDate", { length: 10 }).notNull(),
   segmentKey: varchar("segmentKey", { length: 64 }).notNull(),
   label: varchar("label", { length: 128 }),
+  sourceLinks: text("sourceLinks"),
+  sourceVerifiedAt: timestamp("sourceVerifiedAt"),
   emoji: varchar("emoji", { length: 8 }),
   durationSec: float("durationSec"),
   durationLabel: varchar("durationLabel", { length: 16 }),

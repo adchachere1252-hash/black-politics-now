@@ -137,7 +137,7 @@ export const appRouter = router({
       .input(z.object({ id: z.number().int().positive(), decision: z.enum(["approved", "rejected"]), reviewNote: z.string().max(2000).optional() }))
       .mutation(async ({ input, ctx }) => reviewPortraitSubmission(input.id, input.decision, ctx.user.name || "Administrator", input.reviewNote)),
     researchNow: adminProcedure
-      .input(z.object({ targetType: z.enum(portraitTargetTypes), targetRecordId: z.number().int().positive(), targetPhotoField: z.enum(portraitPhotoFields), candidateName: z.string().min(2).max(128) }))
+      .input(z.object({ targetType: z.enum(portraitTargetTypes), targetRecordId: z.number().int().positive(), targetPhotoField: z.enum(portraitPhotoFields), candidateName: z.string().min(2).max(128), sourceLead: z.string().url().max(2048).optional() }))
       .mutation(async ({ input, ctx }) => runPortraitResearchTask(input, ctx.user.name || "Administrator")),
   }),
 

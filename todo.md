@@ -544,3 +544,19 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Review the public homepage, Election Map, World Elections, Historical Atlas, Daily Brief, and Research Desk experiences
 - [x] Review the protected Admin operations, Election Day controls, and human-approval safeguards
 - [x] Deliver prioritized strengths, weaknesses, and launch-readiness recommendations
+
+## Launch-Readiness Hierarchy and Discovery Improvements (Aug 14)
+- [x] Add a concise public mission statement that explains the reporting-to-record purpose of the platform
+- [x] Add a compact protected Needs Decision Now lane that prioritizes urgent Admin review work
+- [x] Add provenance-first portrait-source discovery that collects official candidate source pages for private review before portrait research runs
+- [x] Strengthen Podcast and Archive editorial entry points with featured content, topical filters, and clearer ways to find what changed today
+- [x] Verify the public and protected improvements on desktop and mobile
+
+## Tech News Brief Source Transparency (Aug 14)
+- [x] Persist verified Tech News source links with each Daily Intelligence Brief Tech segment
+- [x] Display concise, source-linked Tech Brief citations and source-verification context in the public Podcast experience
+- [x] Preserve the Daily Brief publication and audio-completion gates while validating Tech source rendering
+
+## Admin Candidate Performance Display (Aug 14)
+- [x] Add a clear protected Democratic and Republican candidate-performance display with vote share, totals, reporting, lead margin, and called/preliminary state
+- [x] Verify the display is sourced from stored election data and does not represent non-reporting races as live results

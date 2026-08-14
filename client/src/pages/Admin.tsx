@@ -7,7 +7,7 @@ import { PortraitReviewTab } from "@/components/PortraitReviewTab";
 import { ElectionDayCommandCenterTab } from "@/components/ElectionDayCommandCenterTab";
 import MiniRepositoryGlobe from "@/components/MiniRepositoryGlobe";
 import { useState, useMemo } from "react";
-import { Shield, Radio, MapPin, Users, Save, Check, Search, Star, Sparkles, AlertTriangle, CheckCircle2, Clock3, FileText, Headphones, ListChecks, RefreshCw, ShieldCheck, ImagePlus, FileDiff, Radar } from "lucide-react";
+import { ArrowUpRight, Shield, Radio, MapPin, Users, Save, Check, Search, Star, Sparkles, AlertTriangle, CheckCircle2, Clock3, FileText, Headphones, ListChecks, RefreshCw, ShieldCheck, ImagePlus, FileDiff, Radar } from "lucide-react";
 
 type AdminTab = "overview" | "command" | "podcast" | "elections" | "cbc" | "agent" | "changes" | "portraits" | "audience";
 
@@ -72,7 +72,7 @@ export default function AdminPage() {
         </div>
       </div>
 
-      {tab === "overview" && <OverviewTab onReview={(id) => { setFocusRecommendationId(id); setTab("agent"); }} />}
+      {tab === "overview" && <OverviewTab onReview={(id) => { setFocusRecommendationId(id); setTab("agent"); }} onNavigate={(destination) => setTab(destination)} />}
       {tab === "command" && <ElectionDayCommandCenterTab />}
       {tab === "podcast" && <PodcastOpsTab />}
       {tab === "elections" && <ElectionOpsTab />}
@@ -85,7 +85,7 @@ export default function AdminPage() {
   );
 }
 
-function OverviewTab({ onReview }: { onReview: (id: number) => void }) {
+function OverviewTab({ onReview, onNavigate }: { onReview: (id: number) => void; onNavigate: (destination: "agent" | "changes" | "portraits") => void }) {
   const { data: scoreboard } = trpc.election.scoreboard.useQuery();
   const { data: episodes } = trpc.podcast.getEpisodes.useQuery();
   const { data: senateRaces } = trpc.election.senate.useQuery();
@@ -94,6 +94,8 @@ function OverviewTab({ onReview }: { onReview: (id: number) => void }) {
   const { data: priorityRecommendations = [] } = trpc.agent.recommendations.useQuery({ status: "pending", priority: "high" });
   const { data: agentSettings } = trpc.agent.settings.useQuery();
   const { data: agentTasks = [] } = trpc.agent.tasks.useQuery();
+  const { data: pendingChanges = [] } = trpc.agent.changeProposals.useQuery({ status: "pending_review" });
+  const { data: pendingPortraits = [] } = trpc.portraits.submissions.useQuery({ status: "pending" });
   const { data: worldElections = [] } = trpc.world.elections.useQuery();
   const { data: worldRefresh, refetch: refetchWorldRefresh } = trpc.world.refreshOperations.useQuery();
   const runWorldRefresh = trpc.world.runRefreshNow.useMutation({ onSuccess: () => refetchWorldRefresh() });
@@ -116,6 +118,12 @@ function OverviewTab({ onReview }: { onReview: (id: number) => void }) {
   const worldRefreshSettings = worldRefresh?.settings as any;
   const worldRefreshItems = worldRefresh?.items as any[] ?? [];
   const worldRefreshChanges = worldRefreshItems.filter((item) => item.lastStatus === "changed").length;
+  const decisionItems: Array<{ id: string; title: string; detail: string; type: string; destination: "agent" | "changes" | "portraits"; recommendationId?: number }> = [
+    ...(pendingChanges as any[]).slice(0, 2).map((item) => ({ id: `change-${item.id}`, title: item.title, detail: "Agent change set awaiting decision", type: "Change set", destination: "changes" as const })),
+    ...(pendingPortraits as any[]).slice(0, 2).map((item) => ({ id: `portrait-${item.id}`, title: item.candidateName, detail: "Portrait and provenance awaiting review", type: "Portrait", destination: "portraits" as const })),
+    ...overdueTasks.slice(0, 2).map((item) => ({ id: `task-${item.id}`, title: item.title, detail: `Overdue · ${item.owner ?? "Unassigned"}`, type: "Task", destination: "agent" as const })),
+    ...visiblePriorityRecommendations.slice(0, 2).map((item) => ({ id: `recommendation-${item.id}`, title: item.title, detail: item.proposedAction, type: "Priority", destination: "agent" as const, recommendationId: item.id })),
+  ].slice(0, 5);
 
   return (
     <div className="space-y-6">
@@ -132,6 +140,11 @@ function OverviewTab({ onReview }: { onReview: (id: number) => void }) {
           <p className="text-sm text-muted-foreground mb-1">House Races Called</p>
           <p className="text-3xl font-bold">{(scoreboard?.house.dem ?? 0) + (scoreboard?.house.rep ?? 0)}</p>
         </div>
+      </div>
+
+      <div className="glass-card rounded-xl border border-amber-500/25 bg-amber-500/[0.045] p-5">
+        <div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider"><AlertTriangle size={16} className="text-amber-600 dark:text-amber-300" /> Needs Decision Now</h3><p className="mt-1 text-xs text-muted-foreground">The most time-sensitive private work across proposed changes, portrait review, overdue tasks, and Election Day priority research.</p></div><span className="rounded-full bg-amber-500/15 px-2.5 py-1 text-xs font-bold text-amber-700 dark:text-amber-300">{decisionItems.length} queued</span></div>
+        {decisionItems.length ? <div className="mt-4 grid gap-2 lg:grid-cols-2 xl:grid-cols-3">{decisionItems.map((item) => <button key={item.id} onClick={() => item.recommendationId ? onReview(item.recommendationId) : onNavigate(item.destination)} className="rounded-lg border border-border/70 bg-background/60 p-3 text-left transition-colors hover:border-primary/45 hover:bg-primary/5"><div className="flex items-center justify-between gap-2"><span className="rounded bg-primary/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[.11em] text-primary">{item.type}</span><ArrowUpRight size={13} className="text-primary" /></div><p className="mt-2 line-clamp-1 text-sm font-semibold text-foreground">{item.title}</p><p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{item.detail}</p></button>)}</div> : <p className="mt-4 rounded-lg border border-dashed border-border px-4 py-5 text-sm text-muted-foreground">No immediate human decisions are waiting. New agent work and portrait submissions will appear here first.</p>}
       </div>
 
       {/* DDHQ Sync Status */}

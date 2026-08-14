@@ -82,6 +82,39 @@ export async function getElectionDayCommandCenter() {
     ...house.map((race) => ({ chamber: "House", label: `${race.stateName} ${race.districtLabel}`, reporting: isReporting(race.pctReporting), called: Boolean(race.calledWinner), candidateGap: !isNamed(race.candidate1Name) || !isNamed(race.candidate2Name) })),
     ...governor.map((race) => ({ chamber: "Governor", label: `${race.stateName} Governor`, reporting: isReporting(race.pctReporting), called: Boolean(race.calledWinner), candidateGap: !isNamed(race.demCandidate) || !isNamed(race.repCandidate) })),
   ];
+  const toNumber = (value: unknown) => Number(value ?? 0);
+  const pairPerformance = (input: { chamber: string; label: string; reporting: unknown; calledWinner?: string | null; calledParty?: string | null; demName?: string | null; demVotes?: unknown; demPct?: unknown; repName?: string | null; repVotes?: unknown; repPct?: unknown }) => {
+    const demVotes = toNumber(input.demVotes);
+    const repVotes = toNumber(input.repVotes);
+    const totalVotes = demVotes + repVotes;
+    const reporting = toNumber(input.reporting);
+    if (reporting <= 0 && totalVotes <= 0) return null;
+    const demPct = toNumber(input.demPct) > 0 ? toNumber(input.demPct) : totalVotes > 0 ? (demVotes / totalVotes) * 100 : 0;
+    const repPct = toNumber(input.repPct) > 0 ? toNumber(input.repPct) : totalVotes > 0 ? (repVotes / totalVotes) * 100 : 0;
+    const leader = demPct === repPct ? null : demPct > repPct ? { name: input.demName, party: "D" } : { name: input.repName, party: "R" };
+    return { ...input, reporting, demVotes, repVotes, demPct, repPct, totalVotes, margin: Math.abs(demPct - repPct), leader, preliminary: !input.calledWinner };
+  };
+  const candidatePerformance = [
+    ...senate.map((race) => {
+      const candidates = [
+        { name: race.candidate1Name, party: race.candidate1Party, votes: race.candidate1Votes, pct: race.candidate1VotePct },
+        { name: race.candidate2Name, party: race.candidate2Party, votes: race.candidate2Votes, pct: race.candidate2VotePct },
+      ];
+      const dem = candidates.find((candidate) => candidate.party === "D");
+      const rep = candidates.find((candidate) => candidate.party === "R");
+      return pairPerformance({ chamber: "Senate", label: `${race.stateName} Senate`, reporting: race.pctReporting, calledWinner: race.calledWinner, calledParty: race.calledParty, demName: dem?.name, demVotes: dem?.votes, demPct: dem?.pct, repName: rep?.name, repVotes: rep?.votes, repPct: rep?.pct });
+    }),
+    ...house.map((race) => {
+      const candidates = [
+        { name: race.candidate1Name, party: race.candidate1Party, votes: race.candidate1Votes, pct: race.candidate1VotePct },
+        { name: race.candidate2Name, party: race.candidate2Party, votes: race.candidate2Votes, pct: race.candidate2VotePct },
+      ];
+      const dem = candidates.find((candidate) => candidate.party === "D");
+      const rep = candidates.find((candidate) => candidate.party === "R");
+      return pairPerformance({ chamber: "House", label: `${race.stateName} ${race.districtLabel}`, reporting: race.pctReporting, calledWinner: race.calledWinner, calledParty: race.calledParty, demName: dem?.name, demVotes: dem?.votes, demPct: dem?.pct, repName: rep?.name, repVotes: rep?.votes, repPct: rep?.pct });
+    }),
+    ...governor.map((race) => pairPerformance({ chamber: "Governor", label: `${race.stateName} Governor`, reporting: race.pctReporting, calledWinner: race.calledWinner, calledParty: race.calledParty, demName: race.demCandidate, demVotes: race.demVotes, repName: race.repCandidate, repVotes: race.repVotes })),
+  ].filter((race): race is NonNullable<typeof race> => Boolean(race)).sort((a, b) => b.reporting - a.reporting || b.totalVotes - a.totalVotes).slice(0, 12);
   const now = Date.now();
   const heartbeatAgeMinutes = heartbeat?.heartbeatAt ? Math.floor((now - new Date(heartbeat.heartbeatAt).getTime()) / 60000) : null;
   const staleHeartbeat = heartbeat?.mode === "active" && (heartbeatAgeMinutes === null || heartbeatAgeMinutes > 3);
@@ -104,6 +137,7 @@ export async function getElectionDayCommandCenter() {
       candidateGaps: raceRows.filter((race) => race.candidateGap).length,
       pendingChangeSets: pendingChanges.length,
     },
+    candidatePerformance,
     triage,
     rehearsal: rehearsal ? { ...rehearsal, progress: parseRehearsalSteps(rehearsal.steps) } : null,
     runbook: [
