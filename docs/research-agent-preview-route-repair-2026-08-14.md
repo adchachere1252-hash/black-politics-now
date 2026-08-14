@@ -11,3 +11,7 @@ This indicates the published client bundle was still serving the prior route set
 ## Safety boundary
 
 The route only presents public source-cited research and editor-confirmed examples. Republishing it does not change an election record, WordPress article, public alert, or administrative workflow.
+
+## Repair verification
+
+Following fresh deployment checkpoint `557d187f`, direct live navigation to `https://blkpolnow-nztxnshf.manus.space/intelligence-example` loaded the Research & Intelligence Agent preview rather than the client-side 404. The public route now exposes its editor-confirmed source links, Election Map entry, agent workflow stages, guided research questions, and stated human-review boundary.

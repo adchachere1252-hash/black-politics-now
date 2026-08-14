@@ -483,5 +483,5 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify the preview route on desktop and mobile, with no automatic article linking or public record mutation
 
 ## Research Agent Preview Route Repair (Aug 14)
-- [ ] Diagnose and correct the reported live 404 on `/intelligence-example`
-- [ ] Verify the repaired published route directly and provide the working link
+- [x] Diagnose and correct the reported live 404 on `/intelligence-example`
+- [x] Verify the repaired published route directly and provide the working link
