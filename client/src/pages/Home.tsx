@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { USMapFull } from "@/components/USMapFull";
 import HomepageExample from "@/pages/HomepageExample";
 
-type MapView = "house" | "senate" | "governor";
+type MapView = "house" | "senate" | "governor" | "blackrep";
 
 export default function Home() {
   const [isDesktop, setIsDesktop] = useState(false);
@@ -30,6 +30,8 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
   const { data: senateRaces } = trpc.election.senate.useQuery();
   const { data: houseRaces } = trpc.election.house.useQuery();
   const { data: governors } = trpc.election.governors.useQuery();
+  const { data: cbcMembers } = trpc.election.cbc.useQuery();
+  const { data: blackRepresentationElections } = trpc.election.blackRepresentationElections.useQuery();
   const { play, voicePreference } = useAudio();
   const [mapView, setMapView] = useState<MapView>("house");
   const [selectedState, setSelectedState] = useState<string | null>(null);
@@ -44,8 +46,13 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
     if (mapView === "house") return (houseRaces as any[] ?? []).filter(r => r.stateCode === selectedState);
     if (mapView === "senate") return (senateRaces as any[] ?? []).filter(r => r.stateCode === selectedState);
     if (mapView === "governor") return (governors as any[] ?? []).filter(r => r.stateCode === selectedState);
+    if (mapView === "blackrep") {
+      const members = (cbcMembers as any[] ?? []).filter(member => member.stateCode === selectedState).map(member => ({ ...member, popupType: "member" }));
+      const elections = (blackRepresentationElections as any[] ?? []).filter(election => election.stateCode === selectedState).map(election => ({ ...election, popupType: "election" }));
+      return [...members, ...elections];
+    }
     return [];
-  }, [mapView, houseRaces, senateRaces, governors, selectedState]);
+  }, [mapView, houseRaces, senateRaces, governors, cbcMembers, blackRepresentationElections, selectedState]);
 
   const handleStateClick = (stateId: string) => {
     setSelectedState(prev => prev === stateId ? null : stateId);
@@ -80,7 +87,7 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
           };
         }
       });
-    } else {
+    } else if (mapView === "house") {
       // For house view, aggregate by state - show the most competitive rating
       const stateRatings: Record<string, string[]> = {};
       (houseRaces as any[] ?? []).forEach((r: any) => {
@@ -102,14 +109,33 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
           calledWinner: null,
         };
       });
+    } else {
+      const memberCountByState: Record<string, number> = {};
+      (cbcMembers as any[] ?? []).forEach((member: any) => {
+        if (member.stateCode) memberCountByState[member.stateCode] = (memberCountByState[member.stateCode] ?? 0) + 1;
+      });
+      Object.entries(memberCountByState).forEach(([code, count]) => {
+        data[code] = {
+          rating: "Toss-up",
+          candidate1: `${count} Black member${count === 1 ? "" : "s"}`,
+          candidate2: "Black Representation",
+          calledWinner: null,
+        };
+      });
     }
     return data;
-  }, [senateRaces, houseRaces, governors, mapView]);
+  }, [senateRaces, houseRaces, governors, cbcMembers, mapView]);
+
+  const blackRepresentationSummary = useMemo(() => {
+    const members = cbcMembers as any[] ?? [];
+    const electionRecords = blackRepresentationElections as any[] ?? [];
+    return { members: members.length, states: new Set(members.map(member => member.stateCode).filter(Boolean)).size, records: electionRecords.length };
+  }, [cbcMembers, blackRepresentationElections]);
 
   // Calculate rating counts for the scoreboard
   const ratingCounts = useMemo(() => {
     const counts = { solidD: 0, likelyD: 0, leanD: 0, tossup: 0, leanR: 0, likelyR: 0, solidR: 0, noData: 0 };
-    const races = mapView === "senate" ? (senateRaces as any[] ?? []) : mapView === "governor" ? (governors as any[] ?? []) : (houseRaces as any[] ?? []);
+    const races = mapView === "senate" ? (senateRaces as any[] ?? []) : mapView === "governor" ? (governors as any[] ?? []) : mapView === "house" ? (houseRaces as any[] ?? []) : [];
     races.forEach((r: any) => {
       switch (r.rating) {
         case "Solid D": counts.solidD++; break;
@@ -197,7 +223,7 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
 
           {/* Map view tabs */}
           <div className="flex justify-center gap-2 mb-4">
-            {(["governor", "house", "senate"] as const).map(v => (
+            {(["governor", "house", "senate", "blackrep"] as const).map(v => (
               <button
                 key={v}
                 onClick={() => setMapView(v)}
@@ -207,7 +233,7 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
                     : "bg-muted/50 text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {v}
+                {v === "blackrep" ? "Black Rep" : v}
               </button>
             ))}
           </div>
@@ -222,7 +248,7 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
           </div>
 
           {/* Rating Scoreboard */}
-          <div className="grid grid-cols-7 gap-1 mt-4">
+          {mapView === "blackrep" ? <div className="grid grid-cols-3 gap-1 mt-4"><ScoreBox label="PROFILES" count={blackRepresentationSummary.members} color="var(--color-tossup)" /><ScoreBox label="STATES" count={blackRepresentationSummary.states} color="var(--color-tossup)" /><ScoreBox label="RECORDS" count={blackRepresentationSummary.records} color="var(--color-tossup)" /></div> : <div className="grid grid-cols-7 gap-1 mt-4">
             <ScoreBox label="SOLID D" count={ratingCounts.solidD} color="var(--color-solid-d)" />
             <ScoreBox label="LIKELY D" count={ratingCounts.likelyD} color="var(--color-likely-d)" />
             <ScoreBox label="LEAN D" count={ratingCounts.leanD} color="var(--color-lean-d)" />
@@ -230,12 +256,12 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
             <ScoreBox label="LEAN R" count={ratingCounts.leanR} color="var(--color-lean-r)" />
             <ScoreBox label="LIKELY R" count={ratingCounts.likelyR} color="var(--color-likely-r)" />
             <ScoreBox label="SOLID R" count={ratingCounts.solidR} color="var(--color-solid-r)" />
-          </div>
+          </div>}
 
           {/* Bottom actions */}
           <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/30">
             <button
-              onClick={() => alert("This interactive map shows 2026 U.S. election race ratings from Cook Political Report and Sabato's Crystal Ball. Colors indicate competitiveness: Solid (safe seat), Likely (strong lean), Lean (slight advantage), and Toss-up (either party could win). Data updates in real-time on election night via DDHQ. Switch between House, Senate, and Governor views using the tabs above.")}
+              onClick={() => alert("This interactive map shows 2026 U.S. election race ratings from Cook Political Report and Sabato's Crystal Ball. Colors indicate competitiveness: Solid (safe seat), Likely (strong lean), Lean (slight advantage), and Toss-up (either party could win). The Black Representation view uses purple only as a neutral presence indicator, not a party rating, and combines profile records with article-backed election records. Data updates in real-time on election night via DDHQ.")}
               className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
               <Info size={14} /> About the Map
@@ -249,7 +275,7 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
           <Dialog open={statePopupOpen} onOpenChange={setStatePopupOpen}>
             <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto animate-in fade-in-0 zoom-in-95 duration-200">
               <DialogHeader>
-                <DialogTitle>{selectedState ? `${STATE_NAMES[selectedState] || selectedState} — ${mapView === "senate" ? "Senate Race" : mapView === "governor" ? "Governor Race" : "House Races"}` : ""}</DialogTitle>
+                <DialogTitle>{selectedState ? `${STATE_NAMES[selectedState] || selectedState} — ${mapView === "senate" ? "Senate Race" : mapView === "governor" ? "Governor Race" : mapView === "house" ? "House Races" : "Black Representation"}` : ""}</DialogTitle>
               </DialogHeader>
               {popupData.length > 0 ? (
                 <div className="space-y-3">
@@ -358,11 +384,23 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
                           )}
                         </>
                       )}
+                      {mapView === "blackrep" && item.popupType === "member" && (
+                        <>
+                          <div className="flex items-start gap-3"><>{item.photo ? <img src={item.photo} alt="" className="w-10 h-10 rounded-full object-cover border border-primary/30" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} /> : <div className="grid w-10 h-10 place-items-center rounded-full border border-primary/30 bg-primary/10 text-[9px] font-bold text-primary">BR</div>}</><div className="min-w-0 flex-1"><div className="flex items-start justify-between gap-2"><div><span className="font-bold text-sm block">{item.member}</span><span className="text-xs text-muted-foreground">District {item.district} · {item.party}</span></div><span className="text-[9px] px-2 py-0.5 rounded-full font-medium bg-purple-500/15 text-purple-700 dark:text-purple-300 border border-purple-500/30 uppercase">{String(item.status ?? "tracked").replaceAll("_", " ")}</span></div><p className="text-xs text-muted-foreground mt-2 leading-relaxed">{item.raceSummary || item.notes || "Representation profile tracked by Black Politics Now."}</p>{item.sourceUrl && <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-block mt-2 text-xs font-medium text-primary hover:underline">{item.sourceLabel || "Source"} ↗</a>}</div></div>
+                        </>
+                      )}
+                      {mapView === "blackrep" && item.popupType === "election" && (
+                        <>
+                          <div className="flex items-center justify-between gap-2"><div><span className="font-bold text-sm block">District {item.district}</span><span className="text-xs text-muted-foreground">{item.chamber} {item.electionType}{item.partyContest ? ` · ${item.partyContest}` : ""}</span></div><span className="text-[9px] px-2 py-0.5 rounded-full font-medium bg-primary/10 text-primary border border-primary/30 uppercase">{String(item.resultStatus ?? "tracked").replaceAll("_", " ")}</span></div>
+                          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 text-xs mt-2"><div className="rounded border border-purple-500/30 bg-purple-500/10 px-2 py-1.5 text-purple-800 dark:text-purple-200"><span className="font-semibold block truncate">{item.winnerName || "Result pending"}</span><span className="text-[10px] opacity-75">{item.winnerParty || "—"}{item.winnerVotePct != null ? ` · ${item.winnerVotePct}%` : ""}</span></div><span className="text-muted-foreground text-[10px]">vs</span><div className="rounded border border-border bg-muted/30 px-2 py-1.5 text-right"><span className="font-semibold block truncate">{item.runnerUpName || item.generalOpponent || "Opponent pending"}</span><span className="text-[10px] text-muted-foreground">{item.runnerUpParty || "—"}{item.runnerUpVotePct != null ? ` · ${item.runnerUpVotePct}%` : ""}</span></div></div>
+                          <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{item.notes || item.redistrictingContext || "Article-backed election record tracked by Black Politics Now."}</p><div className="mt-2 flex flex-wrap gap-2 text-xs">{item.electionDate && <span className="text-muted-foreground">Election: {item.electionDate}</span>}{item.articleUrl && <a href={item.articleUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline">Article ↗</a>}{item.sourceUrl && <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline">{item.sourceLabel || "Source"} ↗</a>}</div>
+                        </>
+                      )}
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-muted-foreground text-sm">No {mapView === "senate" ? "Senate race" : mapView === "governor" ? "Governor race" : "House races"} found for this state.</p>
+                <p className="text-muted-foreground text-sm">No {mapView === "senate" ? "Senate race" : mapView === "governor" ? "Governor race" : mapView === "house" ? "House races" : "Black Representation profiles or article-backed election records"} found for this state.</p>
               )}
             </DialogContent>
           </Dialog>

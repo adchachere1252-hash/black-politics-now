@@ -560,3 +560,7 @@ The following earlier duplicate checklist is retained as project history. The ex
 ## Admin Candidate Performance Display (Aug 14)
 - [x] Add a clear protected Democratic and Republican candidate-performance display with vote share, totals, reporting, lead margin, and called/preliminary state
 - [x] Verify the display is sourced from stored election data and does not represent non-reporting races as live results
+
+## Homepage Black Representation Map (Aug 14)
+- [x] Add a Black Representation view to the homepage Election Map using the existing trusted profile and election-record data
+- [x] Preserve chamber views and state/map interactions while making the Black Representation view readable on mobile

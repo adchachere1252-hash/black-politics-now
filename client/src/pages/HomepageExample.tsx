@@ -8,7 +8,7 @@ import { useAudio } from "@/contexts/AudioContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
-type MapMode = "senate" | "house" | "governor";
+type MapMode = "senate" | "house" | "governor" | "blackrep";
 
 const STATE_NAMES: Record<string, string> = {
   AL: "Alabama", AK: "Alaska", AZ: "Arizona", AR: "Arkansas", CA: "California", CO: "Colorado", CT: "Connecticut", DE: "Delaware", FL: "Florida", GA: "Georgia", HI: "Hawaii", ID: "Idaho", IL: "Illinois", IN: "Indiana", IA: "Iowa", KS: "Kansas", KY: "Kentucky", LA: "Louisiana", ME: "Maine", MD: "Maryland", MA: "Massachusetts", MI: "Michigan", MN: "Minnesota", MS: "Mississippi", MO: "Missouri", MT: "Montana", NE: "Nebraska", NV: "Nevada", NH: "New Hampshire", NJ: "New Jersey", NM: "New Mexico", NY: "New York", NC: "North Carolina", ND: "North Dakota", OH: "Ohio", OK: "Oklahoma", OR: "Oregon", PA: "Pennsylvania", RI: "Rhode Island", SC: "South Carolina", SD: "South Dakota", TN: "Tennessee", TX: "Texas", UT: "Utah", VT: "Vermont", VA: "Virginia", WA: "Washington", WV: "West Virginia", WI: "Wisconsin", WY: "Wyoming", DC: "District of Columbia",
@@ -47,6 +47,27 @@ function RaceDetail({ race, mode }: { race: any; mode: MapMode }) {
   </article>;
 }
 
+function BlackRepresentationDetail({ record }: { record: any }) {
+  if (record.popupType === "member") {
+    const profileNote = record.raceSummary || record.notes || "No additional profile note is available for this representation record yet.";
+    return <article className="rounded-md border border-border bg-card p-3">
+      <div className="flex items-start gap-3">
+        {record.photo ? <img src={record.photo} alt="" className="h-10 w-10 shrink-0 rounded-full border border-primary/30 object-cover" onError={(event) => { (event.target as HTMLImageElement).style.display = "none"; }} /> : <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-primary/30 bg-primary/10 text-[9px] font-bold text-primary">BR</div>}
+        <div className="min-w-0 flex-1"><div className="flex flex-wrap items-start justify-between gap-2"><div><h4 className="text-sm font-bold text-foreground">{record.member}</h4><p className="text-[10px] text-muted-foreground">{record.state} · District {record.district} · {record.party}</p></div><span className="rounded border border-purple-500/35 bg-purple-500/10 px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wide text-purple-700 dark:text-purple-300">{String(record.status ?? "tracked").replaceAll("_", " ")}</span></div><p className="mt-1.5 text-[10px] leading-relaxed text-muted-foreground">{profileNote}</p><div className="mt-2 flex flex-wrap gap-2 text-[9px] text-muted-foreground"><span>{record.roleType ? `Role: ${String(record.roleType).replaceAll("_", " ")}` : "Representation profile"}</span>{record.upIn2026 && <span>· Up in 2026</span>}{record.sourceUrl && <a href={record.sourceUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline">{record.sourceLabel || "Source"} ↗</a>}</div></div>
+      </div>
+    </article>;
+  }
+
+  const result = record.resultStatus ? String(record.resultStatus).replaceAll("_", " ") : "tracked";
+  const resultNote = record.notes || record.redistrictingContext || "This article-backed record is being tracked in the Black Representation election file.";
+  return <article className="rounded-md border border-border bg-card p-3">
+    <div className="flex items-start justify-between gap-3"><div><h4 className="text-sm font-bold text-foreground">{record.state} · District {record.district}</h4><p className="text-[10px] text-muted-foreground">{record.chamber} {record.electionType} {record.partyContest ? `· ${record.partyContest}` : ""}</p></div><span className="rounded border border-primary/35 bg-primary/10 px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wide text-primary">{result}</span></div>
+    <div className="mt-2 grid grid-cols-[1fr_auto_1fr] items-center gap-2 text-[10px]"><div className="rounded border border-purple-500/25 bg-purple-500/5 px-2 py-1.5 text-purple-800 dark:text-purple-200"><strong className="block truncate">{record.winnerName || "Result pending"}</strong><span className="opacity-75">{record.winnerParty || "—"}{record.winnerVotePct != null ? ` · ${record.winnerVotePct}%` : ""}</span></div><span className="text-[8px] text-muted-foreground">VS</span><div className="rounded border border-border bg-muted/35 px-2 py-1.5 text-right text-foreground"><strong className="block truncate">{record.runnerUpName || record.generalOpponent || "Opponent pending"}</strong><span className="opacity-65">{record.runnerUpParty || "—"}{record.runnerUpVotePct != null ? ` · ${record.runnerUpVotePct}%` : ""}</span></div></div>
+    <p className="mt-2 text-[10px] leading-relaxed text-muted-foreground">{resultNote}</p>
+    <div className="mt-2 flex flex-wrap gap-2 text-[9px]">{record.electionDate && <span className="text-muted-foreground">Election: {record.electionDate}</span>}{record.articleUrl && <a href={record.articleUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline">Black Politics Now article ↗</a>}{record.sourceUrl && <a href={record.sourceUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline">{record.sourceLabel || "Source"} ↗</a>}</div>
+  </article>;
+}
+
 function Candidate({ candidate, partyClass, align = "left" }: { candidate: { name?: string; party?: string; photo?: string }; partyClass: "blue" | "red"; align?: "left" | "right" }) {
   const skin = partyClass === "blue" ? "border-blue-500/30 bg-blue-500/10 text-blue-700 dark:text-blue-300" : "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-300";
   return <div className={`flex min-w-0 items-center gap-1.5 rounded border px-1.5 py-1.5 ${skin} ${align === "right" ? "flex-row-reverse text-right" : ""}`}>
@@ -60,6 +81,8 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
   const { data: senateRaces, isLoading: senateLoading } = trpc.election.senate.useQuery();
   const { data: houseRaces, isLoading: houseLoading } = trpc.election.house.useQuery();
   const { data: governors, isLoading: governorLoading } = trpc.election.governors.useQuery();
+  const { data: cbcMembers, isLoading: blackRepresentationLoading } = trpc.election.cbc.useQuery();
+  const { data: blackRepresentationElections } = trpc.election.blackRepresentationElections.useQuery();
   const { data: episodes, isLoading: episodesLoading } = trpc.podcast.getEpisodes.useQuery();
   const { data: worldElections = [], isLoading: worldLoading } = trpc.world.elections.useQuery();
   const { data: atlasStates = [], isLoading: atlasLoading } = trpc.election.redistricting.useQuery();
@@ -75,7 +98,7 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
   const latestEpisode: any = episodes?.[0];
   const segments: any[] = latestEpisode?.segments ?? [];
   const latestEpisodeHasAudio = Boolean(latestEpisode?.fullEpisodeCdnUrl);
-  const mapLoading = mapMode === "senate" ? senateLoading : mapMode === "house" ? houseLoading : governorLoading;
+  const mapLoading = mapMode === "senate" ? senateLoading : mapMode === "house" ? houseLoading : mapMode === "governor" ? governorLoading : blackRepresentationLoading;
 
   const mapData = useMemo(() => {
     const entries: Record<string, { rating: string | null; candidate1: string; candidate2: string; calledWinner?: string | null }> = {};
@@ -87,7 +110,7 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
       (governors as any[] ?? []).forEach((race) => {
         if (race.stateCode) entries[race.stateCode] = { rating: race.rating, candidate1: race.demCandidate ? `${race.demCandidate} (D)` : "Democratic candidate", candidate2: race.repCandidate ? `${race.repCandidate} (R)` : "Republican candidate", calledWinner: race.calledWinner };
       });
-    } else {
+    } else if (mapMode === "house") {
       const stateRatings: Record<string, string[]> = {};
       (houseRaces as any[] ?? []).forEach((race) => {
         if (!race.stateCode) return;
@@ -99,18 +122,36 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
         const rating = priority.find((item) => ratings.includes(item)) ?? ratings[0] ?? null;
         entries[code] = { rating, candidate1: `${ratings.length} districts`, candidate2: `${ratings.filter((item) => item.includes("D")).length} D · ${ratings.filter((item) => item.includes("R")).length} R` };
       });
+    } else {
+      const memberCountByState: Record<string, number> = {};
+      (cbcMembers as any[] ?? []).forEach((member) => {
+        if (member.stateCode) memberCountByState[member.stateCode] = (memberCountByState[member.stateCode] ?? 0) + 1;
+      });
+      Object.entries(memberCountByState).forEach(([code, count]) => {
+        entries[code] = { rating: "Toss-up", candidate1: `${count} Black member${count === 1 ? "" : "s"}`, candidate2: "Black Representation" };
+      });
     }
     return entries;
-  }, [mapMode, senateRaces, houseRaces, governors]);
+  }, [mapMode, senateRaces, houseRaces, governors, cbcMembers]);
 
   const selectedRaces = useMemo(() => {
     if (!selectedState) return [];
     if (mapMode === "senate") return (senateRaces as any[] ?? []).filter((race) => race.stateCode === selectedState);
     if (mapMode === "governor") return (governors as any[] ?? []).filter((race) => race.stateCode === selectedState);
-    return (houseRaces as any[] ?? []).filter((race) => race.stateCode === selectedState);
-  }, [selectedState, mapMode, senateRaces, houseRaces, governors]);
+    if (mapMode === "house") return (houseRaces as any[] ?? []).filter((race) => race.stateCode === selectedState);
+    const members = (cbcMembers as any[] ?? []).filter((member) => member.stateCode === selectedState).map((member) => ({ ...member, popupType: "member" }));
+    const elections = (blackRepresentationElections as any[] ?? []).filter((election) => election.stateCode === selectedState).map((election) => ({ ...election, popupType: "election" }));
+    return [...members, ...elections];
+  }, [selectedState, mapMode, senateRaces, houseRaces, governors, cbcMembers, blackRepresentationElections]);
 
   const chamberInsight = useMemo(() => {
+    if (mapMode === "blackrep") {
+      const members = cbcMembers as any[] ?? [];
+      const electionRecords = blackRepresentationElections as any[] ?? [];
+      const states = new Set(members.map((member) => member.stateCode).filter(Boolean));
+      const completed = electionRecords.filter((record) => record.resultStatus === "called" || record.resultStatus === "uncontested").length;
+      return { title: "Black Representation tracker", coverage: "representation profiles", total: members.length, tossUps: electionRecords.length, leans: states.size, calls: completed, summary: `${members.length} tracked profiles across ${states.size} states, alongside ${electionRecords.length} article-backed election records.` };
+    }
     const races = (mapMode === "senate" ? senateRaces : mapMode === "house" ? houseRaces : governors) as any[] ?? [];
     const ratings = races.map((race) => race.rating).filter(Boolean);
     const tossUps = ratings.filter((rating) => rating === "Toss-up").length;
@@ -129,7 +170,7 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
         ? `${tossUps} toss-up and ${leans} lean race${tossUps + leans === 1 ? "" : "s"} shape the current outlook.`
         : `Every tracked ${coverage.slice(0, -1)} currently has a defined rating outlook.`,
     };
-  }, [mapMode, senateRaces, houseRaces, governors]);
+  }, [mapMode, senateRaces, houseRaces, governors, cbcMembers, blackRepresentationElections]);
 
   const worldBrief = useMemo(() => {
     const records = worldElections as any[];
@@ -144,23 +185,23 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
     return { activeWatch: records.length, enacted: records.filter((item) => item.enacted).length, litigated: records.filter((item) => item.litigationNotes).length };
   }, [atlasStates]);
 
-  const mapLabel = mapMode === "senate" ? "2026 U.S. Senate Outlook" : mapMode === "house" ? "2026 U.S. House Outlook" : "2026 Governor Outlook";
-  const stateTitle = selectedState ? `${STATE_NAMES[selectedState] ?? selectedState} · ${mapMode === "house" ? "House races" : mapMode === "governor" ? "Governor race" : "Senate race"}` : "State race details";
+  const mapLabel = mapMode === "senate" ? "2026 U.S. Senate Outlook" : mapMode === "house" ? "2026 U.S. House Outlook" : mapMode === "governor" ? "2026 Governor Outlook" : "Black Representation Tracker";
+  const stateTitle = selectedState ? `${STATE_NAMES[selectedState] ?? selectedState} · ${mapMode === "house" ? "House races" : mapMode === "governor" ? "Governor race" : mapMode === "senate" ? "Senate race" : "Black Representation"}` : "State race details";
   const mapSearchMatches = useMemo(() => {
     const query = mapSearch.trim().toLowerCase();
     if (query.length < 2) return [];
-    const races = (mapMode === "senate" ? senateRaces : mapMode === "house" ? houseRaces : governors) as any[] ?? [];
+    const races = (mapMode === "blackrep" ? [...(cbcMembers as any[] ?? []), ...(blackRepresentationElections as any[] ?? [])] : mapMode === "senate" ? senateRaces : mapMode === "house" ? houseRaces : governors) as any[] ?? [];
     const seen = new Set<string>();
     return races.flatMap((race) => {
       const stateCode = race.stateCode;
       const stateName = race.stateName ?? STATE_NAMES[stateCode] ?? stateCode;
-      const candidates = mapMode === "governor" ? [race.demCandidate, race.repCandidate] : [race.candidate1Name, race.candidate2Name];
+      const candidates = mapMode === "blackrep" ? [race.member, race.winnerName, race.runnerUpName] : mapMode === "governor" ? [race.demCandidate, race.repCandidate] : [race.candidate1Name, race.candidate2Name];
       const matches = `${stateName} ${stateCode} ${candidates.filter(Boolean).join(" ")}`.toLowerCase().includes(query);
       if (!matches || !stateCode || seen.has(stateCode)) return [];
       seen.add(stateCode);
-      return [{ stateCode, label: `${stateName} · ${mapMode === "house" ? `${(houseRaces as any[] ?? []).filter((item) => item.stateCode === stateCode).length} districts` : candidates.filter(Boolean).join(" vs ")}` }];
+      return [{ stateCode, label: `${stateName} · ${mapMode === "house" ? `${(houseRaces as any[] ?? []).filter((item) => item.stateCode === stateCode).length} districts` : mapMode === "blackrep" ? `${(cbcMembers as any[] ?? []).filter((item) => item.stateCode === stateCode).length} members` : candidates.filter(Boolean).join(" vs ")}` }];
     }).slice(0, 6);
-  }, [mapSearch, mapMode, senateRaces, houseRaces, governors]);
+  }, [mapSearch, mapMode, senateRaces, houseRaces, governors, cbcMembers, blackRepresentationElections]);
 
   return (
     <div className="homepage-editorial-home hidden h-[calc(100dvh-64px)] overflow-hidden bg-background p-2 lg:block">
@@ -179,8 +220,8 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
 
           <section className="relative min-h-0 overflow-hidden rounded-lg border border-border bg-background/55">
             <div className="absolute inset-x-4 bottom-[94px] top-[136px] flex items-center justify-center overflow-hidden rounded-md"><div className="w-full translate-y-2"><USMapFull showLegend={false} raceData={mapData} selectedState={selectedState} onStateClick={(state) => { setSelectedState(state); setStateDetailOpen(true); }} /></div>{mapLoading && <div className="absolute inset-0 grid place-items-center bg-background/45 backdrop-blur-[1px]"><div className="rounded-full border border-primary/25 bg-card/90 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-primary shadow-sm">Loading election intelligence</div></div>}</div>
-            <div className="pointer-events-none absolute inset-x-3 top-3 z-10 rounded-lg border border-border bg-card/94 p-3 shadow-sm"><div className="pointer-events-auto flex flex-wrap items-start justify-between gap-2"><div><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">Interactive Election Map</p><h1 className="mt-0.5 text-[clamp(1rem,1.55vw,1.3rem)] font-bold tracking-tight text-foreground">{mapLabel}</h1><p className="mt-0.5 text-[11px] text-muted-foreground">Choose a chamber, then select a state for contest notes and detail.</p></div><div className="flex rounded border border-border bg-background/85 p-0.5 shadow-sm">{(["governor", "house", "senate"] as MapMode[]).map((item) => <button key={item} type="button" onClick={() => { setMapMode(item); setSelectedState(null); setMapSearch(""); }} className={`rounded px-2 py-1 text-[8px] font-bold uppercase tracking-[0.09em] transition-colors ${mapMode === item ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>{item}</button>)}</div></div><div className="pointer-events-auto relative mt-2 max-w-sm"><Search className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground" size={12} /><input value={mapSearch} onChange={(event) => setMapSearch(event.target.value)} placeholder={`Search ${mapMode === "house" ? "a state or candidate" : "a state or candidate"}`} className="h-7 w-full rounded border border-border bg-background/85 pl-7 pr-2 text-[10px] text-foreground outline-none placeholder:text-muted-foreground focus:border-primary/60" aria-label="Search election map" />{mapSearchMatches.length > 0 && <div className="absolute inset-x-0 top-8 overflow-hidden rounded border border-border bg-card shadow-lg">{mapSearchMatches.map((match) => <button key={match.stateCode} type="button" onClick={() => { setSelectedState(match.stateCode); setStateDetailOpen(true); setMapSearch(""); }} className="block w-full border-b border-border px-2 py-1.5 text-left text-[9px] text-foreground last:border-b-0 hover:bg-muted">{match.label}</button>)}</div>}</div><div className="mt-2 flex flex-wrap gap-x-2.5 gap-y-1">{LEGEND.map(([label, color]) => <span key={label} className="inline-flex items-center gap-1 text-[8px] text-muted-foreground"><i className={`h-2 w-2 rounded-full ${color}`} />{label}</span>)}</div></div>
-            <div className="absolute inset-x-3 bottom-3 z-10 rounded-md border border-border bg-card/94 px-3 py-2 shadow-sm"><div className="flex items-center gap-2"><span className="font-bold uppercase tracking-[0.09em] text-primary">{chamberInsight.title}</span><span className="text-muted-foreground">•</span><span className="truncate text-[9px] text-muted-foreground">{chamberInsight.summary}</span><Link href="/elections" className="ml-auto inline-flex shrink-0 items-center gap-1 text-[9px] font-semibold text-primary">More <ArrowUpRight size={10} /></Link></div><div className="mt-1.5 grid grid-cols-4 divide-x divide-border/70 text-center"><MapIntel value={chamberInsight.total} label={mapMode === "house" ? "Districts" : "Races"} /><MapIntel value={chamberInsight.tossUps} label="Toss-up" /><MapIntel value={chamberInsight.leans} label="Lean" /><MapIntel value={chamberInsight.calls} label="Called" /></div></div>
+            <div className="pointer-events-none absolute inset-x-3 top-3 z-10 rounded-lg border border-border bg-card/94 p-3 shadow-sm"><div className="pointer-events-auto flex flex-wrap items-start justify-between gap-2"><div><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">Interactive Election Map</p><h1 className="mt-0.5 text-[clamp(1rem,1.55vw,1.3rem)] font-bold tracking-tight text-foreground">{mapLabel}</h1><p className="mt-0.5 text-[11px] text-muted-foreground">Choose a view, then select a state for verified details and notes.</p></div><div className="flex rounded border border-border bg-background/85 p-0.5 shadow-sm">{(["governor", "house", "senate", "blackrep"] as MapMode[]).map((item) => <button key={item} type="button" onClick={() => { setMapMode(item); setSelectedState(null); setMapSearch(""); }} className={`rounded px-2 py-1 text-[8px] font-bold uppercase tracking-[0.09em] transition-colors ${mapMode === item ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>{item === "blackrep" ? "Black Rep" : item}</button>)}</div></div><div className="pointer-events-auto relative mt-2 max-w-sm"><Search className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground" size={12} /><input value={mapSearch} onChange={(event) => setMapSearch(event.target.value)} placeholder="Search a state or person" className="h-7 w-full rounded border border-border bg-background/85 pl-7 pr-2 text-[10px] text-foreground outline-none placeholder:text-muted-foreground focus:border-primary/60" aria-label="Search election map" />{mapSearchMatches.length > 0 && <div className="absolute inset-x-0 top-8 overflow-hidden rounded border border-border bg-card shadow-lg">{mapSearchMatches.map((match) => <button key={match.stateCode} type="button" onClick={() => { setSelectedState(match.stateCode); setStateDetailOpen(true); setMapSearch(""); }} className="block w-full border-b border-border px-2 py-1.5 text-left text-[9px] text-foreground last:border-b-0 hover:bg-muted">{match.label}</button>)}</div>}</div><div className="mt-2 flex flex-wrap gap-x-2.5 gap-y-1">{mapMode === "blackrep" ? <span className="inline-flex items-center gap-1 text-[8px] text-muted-foreground"><i className="h-2 w-2 rounded-full bg-[#7b3ff2]" />Black Representation presence</span> : LEGEND.map(([label, color]) => <span key={label} className="inline-flex items-center gap-1 text-[8px] text-muted-foreground"><i className={`h-2 w-2 rounded-full ${color}`} />{label}</span>)}</div></div>
+            <div className="absolute inset-x-3 bottom-3 z-10 rounded-md border border-border bg-card/94 px-3 py-2 shadow-sm"><div className="flex items-center gap-2"><span className="font-bold uppercase tracking-[0.09em] text-primary">{chamberInsight.title}</span><span className="text-muted-foreground">•</span><span className="truncate text-[9px] text-muted-foreground">{chamberInsight.summary}</span><Link href={mapMode === "blackrep" ? "/elections?tab=cbc" : "/elections"} className="ml-auto inline-flex shrink-0 items-center gap-1 text-[9px] font-semibold text-primary">More <ArrowUpRight size={10} /></Link></div><div className="mt-1.5 grid grid-cols-4 divide-x divide-border/70 text-center"><MapIntel value={chamberInsight.total} label={mapMode === "blackrep" ? "Profiles" : mapMode === "house" ? "Districts" : "Races"} /><MapIntel value={chamberInsight.tossUps} label={mapMode === "blackrep" ? "Records" : "Toss-up"} /><MapIntel value={chamberInsight.leans} label={mapMode === "blackrep" ? "States" : "Lean"} /><MapIntel value={chamberInsight.calls} label={mapMode === "blackrep" ? "Completed" : "Called"} /></div></div>
           </section>
 
           <aside className="flex min-h-0 flex-col overflow-hidden rounded-lg border border-border bg-background/55 p-3"><h2 className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">Daily Intelligence Brief</h2>
@@ -193,7 +234,7 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
       </main>
 
       <Dialog open={stateDetailOpen} onOpenChange={setStateDetailOpen}>
-        <DialogContent className="max-h-[82vh] max-w-2xl overflow-y-auto"><DialogHeader><DialogTitle>{stateTitle}</DialogTitle></DialogHeader><div className="space-y-2">{selectedRaces.length ? selectedRaces.map((race, index) => <RaceDetail key={race.id ?? index} race={race} mode={mapMode} />) : <p className="rounded border border-border p-3 text-sm text-muted-foreground">No {mapMode === "house" ? "House races" : mapMode === "governor" ? "Governor race" : "Senate race"} are currently tracked for this state.</p>}</div></DialogContent>
+        <DialogContent className="max-h-[82vh] max-w-2xl overflow-y-auto"><DialogHeader><DialogTitle>{stateTitle}</DialogTitle></DialogHeader><div className="space-y-2">{selectedRaces.length ? selectedRaces.map((race, index) => mapMode === "blackrep" ? <BlackRepresentationDetail key={`${race.popupType}-${race.id ?? index}`} record={race} /> : <RaceDetail key={race.id ?? index} race={race} mode={mapMode} />) : <p className="rounded border border-border p-3 text-sm text-muted-foreground">No {mapMode === "blackrep" ? "Black Representation profiles or article-backed election records" : mapMode === "house" ? "House races" : mapMode === "governor" ? "Governor race" : "Senate race"} are currently tracked for this state.</p>}</div></DialogContent>
       </Dialog>
     </div>
   );
