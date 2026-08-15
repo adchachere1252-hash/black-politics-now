@@ -3,6 +3,22 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, adminProcedure, router } from "./_core/trpc";
 import { z } from "zod";
+import { TRPCError } from "@trpc/server";
+
+export function requireManualCallEvidence(data: Record<string, unknown>) {
+  const isManualWinnerConfirmation = typeof data.calledWinner === "string" && data.calledWinner.trim().length > 0
+    && (data.status === "Called" || typeof data.calledAt === "number");
+  if (!isManualWinnerConfirmation) return;
+  if (typeof data.calledSourceUrl !== "string") {
+    throw new TRPCError({ code: "BAD_REQUEST", message: "A valid HTTPS or HTTP source URL is required before confirming a winner." });
+  }
+  try {
+    const url = new URL(data.calledSourceUrl);
+    if (url.protocol !== "https:" && url.protocol !== "http:") throw new Error("Unsupported protocol");
+  } catch {
+    throw new TRPCError({ code: "BAD_REQUEST", message: "A valid HTTPS or HTTP source URL is required before confirming a winner." });
+  }
+}
 
 function publicNewsListPost(post: any) {
   return {
@@ -71,13 +87,13 @@ export const appRouter = router({
     // Admin mutations
     updateSenate: adminProcedure
       .input(z.object({ id: z.number(), data: z.record(z.string(), z.unknown()) }))
-      .mutation(async ({ input }) => { await updateSenateRace(input.id, input.data as any); return { success: true }; }),
+      .mutation(async ({ input }) => { requireManualCallEvidence(input.data); await updateSenateRace(input.id, input.data as any); return { success: true }; }),
     updateHouse: adminProcedure
       .input(z.object({ id: z.number(), data: z.record(z.string(), z.unknown()) }))
-      .mutation(async ({ input }) => { await updateHouseRace(input.id, input.data as any); return { success: true }; }),
+      .mutation(async ({ input }) => { requireManualCallEvidence(input.data); await updateHouseRace(input.id, input.data as any); return { success: true }; }),
     updateGovernor: adminProcedure
       .input(z.object({ id: z.number(), data: z.record(z.string(), z.unknown()) }))
-      .mutation(async ({ input }) => { await updateGovernorRace(input.id, input.data as any); return { success: true }; }),
+      .mutation(async ({ input }) => { requireManualCallEvidence(input.data); await updateGovernorRace(input.id, input.data as any); return { success: true }; }),
     updateReferendum: adminProcedure
       .input(z.object({ id: z.number(), data: z.record(z.string(), z.unknown()) }))
       .mutation(async ({ input }) => { await updateReferendum(input.id, input.data as any); return { success: true }; }),

@@ -673,7 +673,7 @@ function RaceGrid({ races, chamber }: { races: any[]; chamber: string }) {
             </div>
           )}
           {race.calledWinner && (
-            <p className="text-xs text-primary mt-2 font-medium">Winner: {race.calledWinner} ({race.calledParty})</p>
+            <p className="mt-2 flex flex-wrap items-center gap-2 text-xs font-medium text-primary">Winner: {race.calledWinner} ({race.calledParty}){race.calledSourceUrl && <a href={race.calledSourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Evidence source ↗</a>}</p>
           )}
           <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
             <span>Status: {race.status}</span>
@@ -740,7 +740,7 @@ function GovernorGrid({ races }: { races: any[] }) {
             <span>{race.repCandidate ?? "TBD"} (R)</span>
           </div>
           {race.calledWinner && (
-            <p className="text-xs text-primary mt-2 font-medium">Winner: {race.calledWinner}</p>
+            <p className="mt-2 flex flex-wrap items-center gap-2 text-xs font-medium text-primary">Winner: {race.calledWinner}{race.calledSourceUrl && <a href={race.calledSourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Evidence source ↗</a>}</p>
           )}
           {/* Expanded detail section */}
           {expandedId === race.id && (

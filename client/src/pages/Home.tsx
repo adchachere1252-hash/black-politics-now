@@ -218,7 +218,7 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
 
           {/* Map view tabs */}
           <div className="flex justify-center gap-2 mb-4">
-            {(["governor", "house", "senate", "blackrep"] as const).map(v => (
+            {(["blackrep", "governor", "house", "senate"] as const).map(v => (
               <button
                 key={v}
                 onClick={() => setMapView(v)}

@@ -386,7 +386,7 @@ function RaceEditor({ race, onSave, saving, showDistrict }: { race: any; onSave:
   const [calledWinner, setCalledWinner] = useState(race.calledWinner ?? "");
   const [calledParty, setCalledParty] = useState(race.calledParty ?? "");
   const [notes, setNotes] = useState(race.notes ?? "");
-  const [manualCallSource, setManualCallSource] = useState("");
+  const [manualCallSource, setManualCallSource] = useState(race.calledSourceUrl ?? "");
   const [callError, setCallError] = useState("");
   const [pctReporting, setPctReporting] = useState(race.pctReporting?.toString() ?? "0");
   const [votes1, setVotes1] = useState(race.candidate1Votes?.toString() ?? "0");
@@ -395,9 +395,15 @@ function RaceEditor({ race, onSave, saving, showDistrict }: { race: any; onSave:
 
   const confirmManualCall = () => {
     if (!calledWinner) return setCallError("Select one of the listed candidates before confirming a manual call.");
-    if (!manualCallSource.trim()) return setCallError("Add the official results source or review note for this manual call.");
+    let sourceUrl: URL;
+    try {
+      sourceUrl = new URL(manualCallSource.trim());
+      if (sourceUrl.protocol !== "https:" && sourceUrl.protocol !== "http:") throw new Error("Unsupported protocol");
+    } catch {
+      return setCallError("Add a valid HTTPS or HTTP results source URL before confirming this call.");
+    }
     setCallError("");
-    onSave({ rating: rating || null, calledWinner, calledParty: calledParty || null, status: "Called", calledAt: Date.now(), notes: `${notes ? `${notes}\n\n` : ""}Manual administrator call. Review source: ${manualCallSource.trim()}`, pctReporting: parseFloat(pctReporting) || 0, candidate1Votes: parseInt(votes1) || 0, candidate2Votes: parseInt(votes2) || 0 });
+    onSave({ rating: rating || null, calledWinner, calledParty: calledParty || null, status: "Called", calledAt: Date.now(), calledSourceUrl: sourceUrl.toString(), notes: `${notes ? `${notes}\n\n` : ""}Manual administrator call. Evidence source: ${sourceUrl.toString()}`, pctReporting: parseFloat(pctReporting) || 0, candidate1Votes: parseInt(votes1) || 0, candidate2Votes: parseInt(votes2) || 0 });
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
@@ -431,8 +437,9 @@ function RaceEditor({ race, onSave, saving, showDistrict }: { race: any; onSave:
           {race.candidate1Name && <option value={race.candidate1Name}>{race.candidate1Name} ({race.candidate1Party ?? "?"})</option>}
           {race.candidate2Name && <option value={race.candidate2Name}>{race.candidate2Name} ({race.candidate2Party ?? "?"})</option>}
         </select>
-        <input value={manualCallSource} onChange={e => setManualCallSource(e.target.value)} placeholder="Manual call source / note" className="bg-muted rounded px-2 py-1 text-xs w-44" />
+        <input value={manualCallSource} onChange={e => setManualCallSource(e.target.value)} placeholder="Required results source URL" type="url" className="bg-muted rounded px-2 py-1 text-xs w-52" />
         <button onClick={confirmManualCall} disabled={saving || !calledWinner} className="rounded bg-amber-600 px-2 py-1 text-xs font-semibold text-white disabled:opacity-50">Confirm call</button>
+        {race.calledSourceUrl && <a href={race.calledSourceUrl} target="_blank" rel="noreferrer" className="text-[10px] font-semibold text-primary underline underline-offset-2">Evidence ↗</a>}
         {callError && <span className="text-[10px] text-destructive">{callError}</span>}
         <input
           value={notes}
@@ -488,15 +495,21 @@ function GovEditor({ race, onSave, saving }: { race: any; onSave: (data: any) =>
   const [rating, setRating] = useState(race.rating ?? "");
   const [calledWinner, setCalledWinner] = useState(race.calledWinner ?? "");
   const [notes, setNotes] = useState(race.notes ?? "");
-  const [manualCallSource, setManualCallSource] = useState("");
+  const [manualCallSource, setManualCallSource] = useState(race.calledSourceUrl ?? "");
   const [callError, setCallError] = useState("");
   const [saved, setSaved] = useState(false);
 
   const confirmManualCall = () => {
     if (!calledWinner) return setCallError("Select the Democratic or Republican candidate before confirming a manual call.");
-    if (!manualCallSource.trim()) return setCallError("Add the official results source or review note for this manual call.");
+    let sourceUrl: URL;
+    try {
+      sourceUrl = new URL(manualCallSource.trim());
+      if (sourceUrl.protocol !== "https:" && sourceUrl.protocol !== "http:") throw new Error("Unsupported protocol");
+    } catch {
+      return setCallError("Add a valid HTTPS or HTTP results source URL before confirming this call.");
+    }
     setCallError("");
-    onSave({ rating: rating || null, calledWinner, calledParty: calledWinner === race.demCandidate ? "D" : "R", status: "Called", calledAt: Date.now(), notes: `${notes ? `${notes}\n\n` : ""}Manual administrator call. Review source: ${manualCallSource.trim()}` });
+    onSave({ rating: rating || null, calledWinner, calledParty: calledWinner === race.demCandidate ? "D" : "R", status: "Called", calledAt: Date.now(), calledSourceUrl: sourceUrl.toString(), notes: `${notes ? `${notes}\n\n` : ""}Manual administrator call. Evidence source: ${sourceUrl.toString()}` });
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
@@ -523,8 +536,9 @@ function GovEditor({ race, onSave, saving }: { race: any; onSave: (data: any) =>
           className="bg-muted rounded px-2 py-1 text-xs w-28"
         />
         <select aria-label="Select Governor winner" value="" onChange={e => { if (e.target.value) setCalledWinner(e.target.value); }} className="bg-amber-500/10 rounded px-2 py-1 text-xs min-w-[150px]"><option value="">Select winner from ballot</option>{race.demCandidate && <option value={race.demCandidate}>{race.demCandidate} (D)</option>}{race.repCandidate && <option value={race.repCandidate}>{race.repCandidate} (R)</option>}</select>
-        <input value={manualCallSource} onChange={e => setManualCallSource(e.target.value)} placeholder="Manual call source / note" className="bg-muted rounded px-2 py-1 text-xs w-44" />
+        <input value={manualCallSource} onChange={e => setManualCallSource(e.target.value)} placeholder="Required results source URL" type="url" className="bg-muted rounded px-2 py-1 text-xs w-52" />
         <button onClick={confirmManualCall} disabled={saving || !calledWinner} className="rounded bg-amber-600 px-2 py-1 text-xs font-semibold text-white disabled:opacity-50">Confirm call</button>
+        {race.calledSourceUrl && <a href={race.calledSourceUrl} target="_blank" rel="noreferrer" className="text-[10px] font-semibold text-primary underline underline-offset-2">Evidence ↗</a>}
         {callError && <span className="text-[10px] text-destructive">{callError}</span>}
         <input
           value={notes}

@@ -57,6 +57,8 @@ function describeMode(mode: AtlasOverlayMode) {
 export function HistoricalUSMap({ congress, selectedState, onStateSelect, overlayMode = "boundary", label, onFrameStatus }: { congress: number; selectedState?: string | null; onStateSelect: (stateCode: string) => void; overlayMode?: AtlasOverlayMode; label?: string; onFrameStatus?: (status: AtlasFrameStatus) => void }) {
   const [frame, setFrame] = useState<TrueDistrictFrame | null>(null);
   const [overlay, setOverlay] = useState<OverlayResponse | null>(null);
+  const [displayedCongress, setDisplayedCongress] = useState<number | null>(null);
+  const [loadingFrame, setLoadingFrame] = useState(true);
   const [error, setError] = useState(false);
   const [overlayError, setOverlayError] = useState(false);
   const [zoom, setZoom] = useState(1);
@@ -67,25 +69,28 @@ export function HistoricalUSMap({ congress, selectedState, onStateSelect, overla
 
   useEffect(() => {
     const controller = new AbortController();
-    setFrame(null);
+    setLoadingFrame(true);
     setError(false);
-    setZoom(1);
-    setPan({ x: 0, y: 0 });
-    loadTrueDistrictFrame(congress, (input, init) => fetch(input, { ...init, signal: controller.signal }))
-      .then((loaded) => { if (!controller.signal.aborted) setFrame(loaded); })
-      .catch(() => { if (!controller.signal.aborted) setError(true); });
-    return () => controller.abort();
-  }, [congress]);
+    const frameRequest = loadTrueDistrictFrame(congress, (input, init) => fetch(input, { ...init, signal: controller.signal }));
+    const overlayRequest: Promise<OverlayResponse | null> = overlayMode === "boundary"
+      ? Promise.resolve(null)
+      : fetch(`/api/atlas/overlay/${congress}`, { signal: controller.signal })
+          .then((response) => response.ok ? response.json() : Promise.reject(new Error("Unavailable")))
+          .then((data) => data as OverlayResponse)
+          .catch(() => null);
 
-  useEffect(() => {
-    if (overlayMode === "boundary") { setOverlay(null); setOverlayError(false); return; }
-    const controller = new AbortController();
-    setOverlay(null);
-    setOverlayError(false);
-    fetch(`/api/atlas/overlay/${congress}`, { signal: controller.signal })
-      .then((response) => response.ok ? response.json() : Promise.reject(new Error("Unavailable")))
-      .then((data) => { if (!controller.signal.aborted) setOverlay(data as OverlayResponse); })
-      .catch(() => { if (!controller.signal.aborted) setOverlayError(true); });
+    Promise.all([frameRequest, overlayRequest])
+      .then(([nextFrame, nextOverlay]) => {
+        if (controller.signal.aborted) return;
+        setFrame(nextFrame);
+        setOverlay(nextOverlay);
+        setDisplayedCongress(congress);
+        setOverlayError(overlayMode !== "boundary" && !nextOverlay);
+        setZoom(1);
+        setPan({ x: 0, y: 0 });
+      })
+      .catch(() => { if (!controller.signal.aborted) setError(true); })
+      .finally(() => { if (!controller.signal.aborted) setLoadingFrame(false); });
     return () => controller.abort();
   }, [congress, overlayMode]);
 
@@ -106,16 +111,17 @@ export function HistoricalUSMap({ congress, selectedState, onStateSelect, overla
 
   useEffect(() => {
     const overlayState = overlayMode === "boundary" ? "not-applicable" : overlay ? "ready" : overlayError ? "unavailable" : "loading";
-    onFrameStatus?.({ congress, expectedStates: 50, renderedStates: map.renderedStates, sourceGeometryCount: map.sourceGeometryCount, officialSeatCount: 435, geometryExceptionStateCount: 0, changedStateCount: 0, overlayMode, overlayCount: map.overlayCount, overlayState, ready: Boolean(frame) && !error && map.renderedStates === 50 && overlayState !== "loading" && overlayState !== "unavailable" });
-  }, [congress, error, frame, map.overlayCount, map.renderedStates, map.sourceGeometryCount, onFrameStatus, overlay, overlayError, overlayMode]);
+    onFrameStatus?.({ congress: displayedCongress ?? congress, expectedStates: 50, renderedStates: map.renderedStates, sourceGeometryCount: map.sourceGeometryCount, officialSeatCount: 435, geometryExceptionStateCount: 0, changedStateCount: 0, overlayMode, overlayCount: map.overlayCount, overlayState, ready: displayedCongress === congress && Boolean(frame) && !error && map.renderedStates === 50 && overlayState !== "loading" && overlayState !== "unavailable" });
+  }, [congress, displayedCongress, error, frame, map.overlayCount, map.renderedStates, map.sourceGeometryCount, onFrameStatus, overlay, overlayError, overlayMode]);
 
   const handlePointerDown = (event: React.PointerEvent<SVGSVGElement>) => { dragOrigin.current = { x: event.clientX, y: event.clientY, panX: pan.x, panY: pan.y }; moved.current = false; event.currentTarget.setPointerCapture(event.pointerId); };
   const handlePointerMove = (event: React.PointerEvent<SVGSVGElement>) => { if (!dragOrigin.current) return; const dx = event.clientX - dragOrigin.current.x; const dy = event.clientY - dragOrigin.current.y; if (Math.abs(dx) + Math.abs(dy) > 4) moved.current = true; setPan({ x: dragOrigin.current.panX + dx, y: dragOrigin.current.panY + dy }); };
   const handlePointerUp = () => { dragOrigin.current = null; };
-  const mapAriaLabel = `${label ? `${label}: ` : ""}validated UCLA United States congressional district map for the ${congress}th Congress, ${describeMode(overlayMode)} overlay`;
+  const visibleCongress = displayedCongress ?? congress;
+  const mapAriaLabel = `${label ? `${label}: ` : ""}validated UCLA United States congressional district map for the ${visibleCongress}th Congress, ${describeMode(overlayMode)} overlay`;
 
   return <div className="relative overflow-hidden rounded-2xl border border-primary/25 bg-[radial-gradient(circle_at_53%_30%,rgba(53,91,120,.28),transparent_36%),linear-gradient(150deg,#090f19,#101820_58%,#080b12)] shadow-[inset_0_0_54px_rgba(88,160,204,.1)]">
-    <div className="absolute left-4 top-4 z-10 max-w-[72%] rounded border border-white/10 bg-slate-950/70 px-2.5 py-1.5 text-[10px] text-slate-200 backdrop-blur-sm"><strong className="text-primary">{map.renderedStates}/50</strong> states loaded · <strong className="text-primary">435</strong> apportioned House seats · <span>{map.sourceGeometryCount || "—"} mapped district regions</span></div>
+    <div className="absolute left-4 top-4 z-10 max-w-[72%] rounded border border-white/10 bg-slate-950/70 px-2.5 py-1.5 text-[10px] text-slate-200 backdrop-blur-sm"><strong className="text-primary">{map.renderedStates}/50</strong> states loaded · <strong className="text-primary">435</strong> apportioned House seats · <span>{map.sourceGeometryCount || "—"} mapped district regions</span>{loadingFrame && frame && <span className="ml-2 text-primary">· Loading {congress}th frame</span>}</div>
     {label && <div className="absolute left-4 top-12 z-10 rounded border border-primary/25 bg-slate-950/70 px-2 py-1 text-[9px] font-semibold uppercase tracking-[.12em] text-primary backdrop-blur-sm">{label}</div>}
     <div className="absolute right-4 top-4 z-10 flex overflow-hidden rounded border border-white/10 bg-slate-950/70 backdrop-blur-sm"><button aria-label="Zoom out" type="button" onClick={() => setZoom((value) => Math.max(0.8, Number((value - 0.2).toFixed(1))))} className="grid h-8 w-8 place-items-center text-slate-200 hover:bg-white/10"><Minus size={14} /></button><button aria-label="Reset map view" type="button" onClick={() => { setZoom(1); setPan({ x: 0, y: 0 }); }} className="grid h-8 w-8 place-items-center border-x border-white/10 text-slate-200 hover:bg-white/10"><RotateCcw size={13} /></button><button aria-label="Zoom in" type="button" onClick={() => setZoom((value) => Math.min(2.4, Number((value + 0.2).toFixed(1))))} className="grid h-8 w-8 place-items-center text-slate-200 hover:bg-white/10"><Plus size={14} /></button></div>
     <svg viewBox="0 0 1000 620" className="block aspect-[1.62/1] w-full touch-none select-none" role="img" aria-label={mapAriaLabel} onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp} onPointerLeave={() => { handlePointerUp(); setHover(null); }} onWheel={(event) => { event.preventDefault(); setZoom((value) => Math.max(0.8, Math.min(2.4, Number((value + (event.deltaY < 0 ? 0.15 : -0.15)).toFixed(2))))); }}>

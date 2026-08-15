@@ -643,3 +643,16 @@ The following earlier duplicate checklist is retained as project history. The ex
 
 ## Homepage Results Ticker Eligibility (Aug 15)
 - [x] Restrict homepage ticker entries to verified U.S. Senate and House general-election or special-election outcomes; exclude all primary results
+
+## Manual Winner Confirmation Source Evidence (Aug 15)
+- [x] Require a valid source URL before an administrator can confirm a Senate, House, or Governor winner
+- [x] Persist and display the manual-call source link alongside the result without automatic public race calls
+- [x] Verify validation, protected access, display behavior, and regression coverage
+
+## Homepage Map Control Order (Aug 15)
+- [x] Alphabetize the Black Rep, Governor, House, and Senate map controls on desktop and mobile homepages
+
+## Historical Atlas Playback Acceptance Repair (Aug 15)
+- [x] Reproduce the incomplete-state playback rendering across early, middle, and current Congress frames
+- [x] Fix frame loading and playback state so every transition visibly renders the full 50-state map
+- [x] Verify continuous desktop and mobile playback through multiple frame transitions before publishing
