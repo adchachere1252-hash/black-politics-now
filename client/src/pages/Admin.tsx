@@ -6,16 +6,17 @@ import { AgentProposedChangesTab } from "@/components/AgentProposedChangesTab";
 import { PortraitReviewTab } from "@/components/PortraitReviewTab";
 import { ElectionDayCommandCenterTab } from "@/components/ElectionDayCommandCenterTab";
 import MiniRepositoryGlobe from "@/components/MiniRepositoryGlobe";
+import { rankedWorldSignals, worldSignalLabel } from "@/lib/worldElectionDisplay";
 import { useState, useMemo } from "react";
-import { ArrowUpRight, Shield, Radio, MapPin, Users, Save, Check, Search, Star, Sparkles, AlertTriangle, CheckCircle2, Clock3, FileText, Headphones, ListChecks, RefreshCw, ShieldCheck, ImagePlus, FileDiff, Radar } from "lucide-react";
+import { ArrowUpRight, Shield, Radio, MapPin, Users, Save, Check, Search, Star, Sparkles, AlertTriangle, CheckCircle2, Clock3, FileText, Headphones, ListChecks, RefreshCw, ShieldCheck, ImagePlus, FileDiff, Radar, Globe2 } from "lucide-react";
 
-type AdminTab = "overview" | "command" | "podcast" | "elections" | "cbc" | "agent" | "changes" | "portraits" | "audience";
+type AdminTab = "overview" | "command" | "podcast" | "elections" | "cbc" | "atlasWorld" | "agent" | "changes" | "portraits" | "audience";
 
 export default function AdminPage() {
   const { user, isAuthenticated, loading } = useAuth();
   const [tab, setTab] = useState<AdminTab>(() => {
     const requested = typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("tab");
-    return requested === "command" || requested === "podcast" || requested === "elections" || requested === "cbc" || requested === "agent" || requested === "changes" || requested === "portraits" || requested === "audience" ? requested : "overview";
+    return requested === "command" || requested === "podcast" || requested === "elections" || requested === "cbc" || requested === "atlasWorld" || requested === "agent" || requested === "changes" || requested === "portraits" || requested === "audience" ? requested : "overview";
   });
   const [focusRecommendationId, setFocusRecommendationId] = useState<number | undefined>();
 
@@ -56,6 +57,7 @@ export default function AdminPage() {
           { key: "podcast", label: "Podcast Ops", icon: Radio },
           { key: "elections", label: "Election Ops", icon: MapPin },
           { key: "cbc", label: "Black Representation", icon: Star },
+          { key: "atlasWorld", label: "Atlas & World", icon: Globe2 },
           { key: "agent", label: "Agent Desk", icon: Sparkles },
           { key: "changes", label: "Proposed Changes", icon: FileDiff },
           { key: "portraits", label: "Portrait Review", icon: ImagePlus },
@@ -77,6 +79,7 @@ export default function AdminPage() {
       {tab === "podcast" && <PodcastOpsTab />}
       {tab === "elections" && <ElectionOpsTab />}
       {tab === "cbc" && <CbcOpsTab />}
+      {tab === "atlasWorld" && <AtlasWorldOpsTab />}
       {tab === "agent" && <AgentDeskTab focusRecommendationId={focusRecommendationId} />}
       {tab === "changes" && <AgentProposedChangesTab />}
       {tab === "portraits" && <PortraitReviewTab />}
@@ -734,6 +737,26 @@ function BlackRepresentationElectionEditor({ race, onSave, saving }: { race: any
       </div>
     </div>
   );
+}
+
+function AtlasWorldOpsTab() {
+  const { data: worldElections = [] } = trpc.world.elections.useQuery();
+  const { data: worldRefresh, refetch: refetchWorldRefresh } = trpc.world.refreshOperations.useQuery();
+  const runWorldRefresh = trpc.world.runRefreshNow.useMutation({ onSuccess: () => refetchWorldRefresh() });
+  const records = worldElections as any[];
+  const signals = rankedWorldSignals(records).slice(0, 3);
+  const refreshSettings = worldRefresh?.settings as any;
+  const reviewItems = ((worldRefresh?.items as any[] ?? []).filter((item) => item.lastStatus === "changed" || item.lastStatus === "needs_review")).length;
+
+  return <div className="space-y-6">
+    <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-primary text-xs font-bold uppercase tracking-[.16em]">Public map integrity</p><h2 className="mt-1 text-xl font-bold">Atlas & World Elections Operations</h2><p className="mt-1 max-w-3xl text-sm text-muted-foreground">A compact review surface for the public 50-state historical map and the review-only World Elections refresh workflow.</p></div><div className="flex gap-2"><a href="/atlas" className="rounded-md border border-border px-3 py-2 text-xs font-semibold text-primary hover:bg-primary/5">Open Atlas</a><a href="/world" className="rounded-md border border-border px-3 py-2 text-xs font-semibold text-primary hover:bg-primary/5">Open World Elections</a></div></div>
+
+    <div className="grid gap-4 lg:grid-cols-2">
+      <section className="glass-card rounded-xl p-5"><div className="flex items-start justify-between gap-3"><div><h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider"><MapPin size={16} className="text-primary" /> Historical Atlas frame health</h3><p className="mt-1 text-xs text-muted-foreground">The public Atlas loads one validated UCLA district frame at a time and preserves the last complete frame during playback transitions.</p></div><span className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-bold uppercase text-emerald-700 dark:text-emerald-300">Source validated</span></div><div className="mt-4 grid grid-cols-3 divide-x divide-border text-center"><AdminMetric value="31" label="Congress frames" /><AdminMetric value="50" label="States per frame" /><AdminMetric value="4.5s" label="Default pace" /></div><div className="mt-4 rounded-lg border border-border/70 bg-background/50 p-3 text-xs text-muted-foreground"><p><strong className="text-foreground">Playback rule:</strong> the next Congress does not replace the visible map until all 50 states and the selected overlay are ready.</p><p className="mt-1"><strong className="text-foreground">Source boundary:</strong> UCLA district geometry is displayed separately from Census apportionment totals.</p></div></section>
+
+      <section className="glass-card rounded-xl p-5"><div className="flex items-start justify-between gap-3"><div><h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider"><Globe2 size={16} className="text-cyan-500" /> World Elections public signal</h3><p className="mt-1 text-xs text-muted-foreground">Homepage and World page signals rank the current database records; date-refresh changes remain review-only.</p></div><button onClick={() => runWorldRefresh.mutate()} disabled={runWorldRefresh.isPending} className="rounded-md border border-border px-2.5 py-1.5 text-xs font-semibold text-foreground hover:bg-muted disabled:opacity-50">{runWorldRefresh.isPending ? "Refreshing…" : "Refresh sources"}</button></div><div className="mt-4 space-y-2">{signals.length ? signals.map((signal: any) => <div key={signal.id} className="flex items-center justify-between gap-3 rounded-lg border border-border/70 bg-background/50 px-3 py-2"><div><p className="text-sm font-semibold text-foreground">{signal.country}</p><p className="text-xs text-muted-foreground">{worldSignalLabel(signal)} · {signal.electionDate}</p></div><span className="rounded bg-cyan-500/10 px-2 py-1 text-[10px] font-bold uppercase text-cyan-700 dark:text-cyan-300">{signal.status}</span></div>) : <p className="rounded-lg border border-dashed border-border p-3 text-sm text-muted-foreground">No World Elections signals are currently available.</p>}</div><div className="mt-4 rounded-lg border border-border/70 bg-background/50 p-3 text-xs text-muted-foreground"><p><strong className="text-foreground">Last review:</strong> {refreshSettings?.lastSummary ?? "No dated source-refresh summary is recorded yet."}</p><p className="mt-1"><strong className="text-foreground">Review queue:</strong> {reviewItems} change{reviewItems === 1 ? "" : "s"} require Data Desk approval; public records are not changed automatically.</p></div></section>
+    </div>
+  </div>;
 }
 
 function AudienceTab() {

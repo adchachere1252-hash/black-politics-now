@@ -656,3 +656,18 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Reproduce the incomplete-state playback rendering across early, middle, and current Congress frames
 - [x] Fix frame loading and playback state so every transition visibly renders the full 50-state map
 - [x] Verify continuous desktop and mobile playback through multiple frame transitions before publishing
+
+## Atlas, Globe, and Homepage Review Controls (Aug 15)
+- [x] Add in-site homepage palette review controls so color directions are visible without external preview links
+- [x] Correct the desktop homepage globe alignment within its World Elections card
+- [x] Add a compact Admin Atlas and World Elections operations view with map-frame and source-refresh status
+- [x] Add slower Atlas playback controls with clear speed settings and a readability-first default
+- [x] Implement verified-data homepage globe refresh so the card automatically re-ranks human-approved World Elections records
+- [x] Add additional homepage palette directions to the in-site color review
+
+## Bright Gold Contrast Tuning (Aug 15)
+- [x] Brighten the established gold accent in dark and light themes while preserving election party and toss-up colors
+
+## Homepage Warm Editorial Palette Review (Aug 15)
+- [x] Add Antique Brass, Champagne Ivory, and Muted Plum to the in-site homepage color comparison
+- [x] Capture and share the warm editorial palette directions for user selection before changing the live palette

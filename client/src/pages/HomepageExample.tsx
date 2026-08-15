@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowUpRight, Globe2, Landmark, Mic2, Play, Search } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { rankedWorldSignals, worldSignalLabel } from "@/lib/worldElectionDisplay";
@@ -80,6 +80,12 @@ function Candidate({ candidate, partyClass, align = "left" }: { candidate: { nam
 }
 
 export default function HomepageExample({ mode = "preview" }: { mode?: "preview" | "home" }) {
+  const [palettePreview, setPalettePreview] = useState<"heritage" | "bronze" | "teal" | "emerald" | "indigo" | "brass" | "champagne" | "plum">(() => {
+    if (typeof window === "undefined") return "heritage";
+    const value = new URLSearchParams(window.location.search).get("palette");
+    return value === "bronze" || value === "teal" || value === "emerald" || value === "indigo" || value === "brass" || value === "champagne" || value === "plum" ? value : "heritage";
+  });
+  const [paletteReview] = useState(() => typeof window !== "undefined" && new URLSearchParams(window.location.search).get("paletteReview") === "1");
   const { data: news, isLoading: newsLoading } = trpc.news.list.useQuery({ page: 1, perPage: 12 });
   const { data: senateRaces, isLoading: senateLoading } = trpc.election.senate.useQuery();
   const { data: houseRaces, isLoading: houseLoading } = trpc.election.house.useQuery();
@@ -87,7 +93,11 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
   const { data: cbcMembers, isLoading: blackRepresentationLoading } = trpc.election.cbc.useQuery();
   const { data: blackRepresentationElections } = trpc.election.blackRepresentationElections.useQuery();
   const { data: episodes, isLoading: episodesLoading } = trpc.podcast.getEpisodes.useQuery();
-  const { data: worldElections = [], isLoading: worldLoading } = trpc.world.elections.useQuery();
+  const { data: worldElections = [], isLoading: worldLoading } = trpc.world.elections.useQuery(undefined, {
+    staleTime: 15_000,
+    refetchInterval: 60_000,
+    refetchIntervalInBackground: true,
+  });
   const { data: atlasStates = [], isLoading: atlasLoading } = trpc.election.redistricting.useQuery();
   const { play } = useAudio();
   const { theme } = useTheme();
@@ -95,6 +105,22 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [stateDetailOpen, setStateDetailOpen] = useState(false);
   const [mapSearch, setMapSearch] = useState("");
+
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const root = document.documentElement;
+    root.dataset.homePalette = palettePreview;
+    return () => { delete root.dataset.homePalette; };
+  }, [palettePreview]);
+
+  const selectPalettePreview = (palette: "heritage" | "bronze" | "teal" | "emerald" | "indigo" | "brass" | "champagne" | "plum") => {
+    setPalettePreview(palette);
+    if (typeof window === "undefined") return;
+    const parameters = new URLSearchParams(window.location.search);
+    parameters.set("palette", palette);
+    parameters.set("paletteReview", "1");
+    window.history.replaceState(null, "", `${window.location.pathname}?${parameters.toString()}`);
+  };
 
   const posts: any[] = (news as any)?.posts ?? [];
   const leadPosts = posts.slice(0, 8);
@@ -211,6 +237,7 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
       <main className="mx-auto flex h-full max-w-[1640px] min-h-0 flex-col overflow-hidden rounded-xl border border-border bg-card p-2 shadow-[0_18px_70px_rgba(17,24,39,0.12)] dark:shadow-black/35">
         {mode === "preview" && <div className="mb-2 flex shrink-0 items-center justify-between border-b border-border pb-1.5"><span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-primary">Black Politics Now · Homepage direction</span><span className="text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Reference-aligned visual example</span></div>}
         <div className="mb-2 shrink-0"><ResultsTicker senateRaces={senateRaces as any[] ?? []} houseRaces={houseRaces as any[] ?? []} /></div>
+        {paletteReview && <div className="mb-2 flex shrink-0 flex-wrap items-center justify-between gap-2 rounded-md border border-primary/30 bg-primary/5 px-3 py-2"><div><p className="text-[9px] font-bold uppercase tracking-[0.14em] text-primary">Homepage color review</p><p className="text-[9px] text-muted-foreground">Choose a direction for the site accent; election-party map colors stay unchanged.</p></div><div className="flex flex-wrap items-center gap-1.5">{([{ key: "heritage", label: "Heritage gold", swatch: "bg-[#d4a552]" }, { key: "bronze", label: "Burnished bronze", swatch: "bg-[#b77b44]" }, { key: "brass", label: "Antique brass", swatch: "bg-[#b7a05b]" }, { key: "champagne", label: "Champagne ivory", swatch: "bg-[#e7d6a8]" }, { key: "plum", label: "Muted plum", swatch: "bg-[#9b7798]" }, { key: "teal", label: "Civic teal", swatch: "bg-[#39b9b2]" }, { key: "emerald", label: "Deep emerald", swatch: "bg-[#3f9b77]" }, { key: "indigo", label: "Midnight indigo", swatch: "bg-[#7389d7]" }] as const).map((option) => <button key={option.key} type="button" onClick={() => selectPalettePreview(option.key)} className={`inline-flex items-center gap-1.5 rounded border px-2 py-1 text-[9px] font-semibold transition-colors ${palettePreview === option.key ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-muted-foreground hover:border-primary/45 hover:text-foreground"}`}><span className={`h-2.5 w-2.5 rounded-full border border-black/10 ${option.swatch}`} />{option.label}</button>)}</div></div>}
 
         <section className="grid min-h-0 flex-1 grid-cols-[0.92fr_1.68fr_0.96fr] grid-rows-[minmax(0,1fr)] gap-2">
           <aside className="grid min-h-0 grid-rows-[minmax(0,1fr)_clamp(220px,31vh,286px)] gap-3 overflow-hidden">
@@ -231,7 +258,7 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
             <div className="mt-2 grid grid-cols-[76px_1fr] gap-2.5 border-b border-border pb-2.5"><div className="flex aspect-[0.8] items-end rounded border border-primary/45 bg-[linear-gradient(145deg,var(--secondary),var(--background))] p-2"><div><p className="text-sm font-black leading-[0.8] text-foreground">BLACK<br />POLITICS<br />NOW</p><p className="mt-2 border-t border-primary/70 pt-1 text-[7px] font-bold tracking-[0.1em] text-primary">DAILY BRIEF</p></div></div><div><p className="text-[10px] text-muted-foreground">{latestEpisode?.friendlyDate || (latestEpisode?.date ? `${latestEpisode?.day ?? "Daily Brief"} · ${latestEpisode.date}` : "Today")}</p><h3 className="mt-1 text-base font-bold leading-tight text-foreground">The Daily Intelligence Brief</h3><p className="mt-1.5 text-[10px] text-muted-foreground">{episodesLoading ? "Loading verified briefing" : latestEpisode?.totalDurationLabel ? `${latestEpisode.totalDurationLabel} · Current analysis and context` : "Current analysis and context"}</p></div></div>
             <div className="flex items-center gap-2.5 border-b border-border py-2.5"><button type="button" onClick={() => latestEpisodeHasAudio && play({ url: latestEpisode.fullEpisodeCdnUrl, title: "The Daily Intelligence Brief", episodeDate: latestEpisode.date })} disabled={!latestEpisodeHasAudio} className="grid h-8 w-8 place-items-center rounded-full bg-primary text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"><Play size={14} fill="currentColor" /></button><span className="text-[10px] font-semibold text-foreground">{latestEpisodeHasAudio ? "Play episode" : "Audio preparation"}</span><div className="ml-auto flex h-6 items-center gap-0.5">{[10, 20, 13, 25, 17, 22, 11, 19, 14].map((height, index) => <i key={index} className="w-1 rounded-full bg-primary/55" style={{ height }} />)}</div></div>
             <div className="min-h-0 flex flex-1 flex-col pt-2"><p className="mb-1 shrink-0 text-[8px] font-bold uppercase tracking-[0.15em] text-primary">Episode Segments</p><div className="min-h-0 flex-1 divide-y divide-border/60 overflow-y-auto pr-1 [scrollbar-color:var(--primary)_transparent] [scrollbar-width:thin]">{(segments.length ? segments : [{ label: "Opening Take" }, { label: "Congressional Roundup" }, { label: "State Watch" }, { label: "Global Black Politics" }, { label: "Final Word" }]).map((segment, index) => <div key={index} className="flex gap-2 py-1.5 text-[10px]"><span className="text-primary">▶</span><span className="min-w-0 flex-1 truncate text-foreground/80">{segment.label}</span><span className="text-muted-foreground">{segment.durationLabel ?? "—"}</span></div>)}</div><Link href="/podcast" className="mt-2 inline-flex shrink-0 items-center gap-1 text-[9px] font-semibold text-primary">Open full briefing <ArrowUpRight size={10} /></Link></div>
-            <Link href="/world" className="group relative mt-2 h-[clamp(220px,31vh,286px)] shrink-0 overflow-hidden rounded-lg border border-cyan-300/35 bg-[radial-gradient(circle_at_77%_36%,rgba(121,221,255,0.58),transparent_42%),radial-gradient(circle_at_12%_118%,rgba(76,102,230,0.5),transparent_54%),linear-gradient(135deg,#041124,#0a315a_52%,#11213b)] p-3 shadow-[inset_0_0_44px_rgba(94,199,255,0.18)] transition-all hover:border-cyan-200 hover:shadow-[inset_0_0_50px_rgba(94,199,255,0.24)]"><div className="relative z-10 flex h-full max-w-[56%] flex-col justify-end"><div className="flex items-start justify-between gap-2"><p className="text-[8px] font-bold uppercase tracking-[0.15em] text-cyan-50"><Globe2 className="mr-1 inline" size={10} />World Elections</p><span className="rounded border border-cyan-100/30 bg-cyan-100/10 px-1.5 py-0.5 text-[8px] font-bold text-cyan-50">{worldBrief.total}</span></div><h3 className="mt-1 text-[18px] font-bold leading-[1.05] text-white">Democracy is moving.</h3><p className="mt-1 text-[9px] leading-snug text-cyan-100/80">A live field guide to elections, transitions, and civic power beyond U.S. borders.</p><div className="mt-2 grid grid-cols-3 divide-x divide-cyan-100/20 rounded border border-cyan-100/20 bg-slate-950/25 text-center"><WorldStat value={worldBrief.total} label="Tracked" /><WorldStat value={worldBrief.upcomingCount} label="Upcoming" /><WorldStat value={worldBrief.live || "—"} label="Live" /></div>{worldBrief.featured && <p className="mt-1.5 truncate text-[8px] font-semibold text-cyan-50/90">{worldBrief.featuredLabel}: {worldBrief.featured.country} · {shortDate(worldBrief.featured.electionDate)}</p>}</div><div aria-hidden className="absolute -bottom-6 -right-6 h-[248px] w-[248px] drop-shadow-[0_0_34px_rgba(110,222,255,0.98)] transition-transform duration-500 group-hover:scale-105"><MiniRepositoryGlobe theme={theme} vibrant /></div></Link>
+            <Link href="/world" className="group relative mt-2 h-[clamp(220px,31vh,286px)] shrink-0 overflow-hidden rounded-lg border border-cyan-300/35 bg-[radial-gradient(circle_at_77%_36%,rgba(121,221,255,0.58),transparent_42%),radial-gradient(circle_at_12%_118%,rgba(76,102,230,0.5),transparent_54%),linear-gradient(135deg,#041124,#0a315a_52%,#11213b)] p-3 shadow-[inset_0_0_44px_rgba(94,199,255,0.18)] transition-all hover:border-cyan-200 hover:shadow-[inset_0_0_50px_rgba(94,199,255,0.24)]"><div className="relative z-10 flex h-full max-w-[56%] flex-col justify-end"><div className="flex items-start justify-between gap-2"><p className="text-[8px] font-bold uppercase tracking-[0.15em] text-cyan-50"><Globe2 className="mr-1 inline" size={10} />World Elections</p><span className="rounded border border-cyan-100/30 bg-cyan-100/10 px-1.5 py-0.5 text-[8px] font-bold text-cyan-50">{worldBrief.total}</span></div><h3 className="mt-1 text-[18px] font-bold leading-[1.05] text-white">Democracy is moving.</h3><p className="mt-1 text-[9px] leading-snug text-cyan-100/80">A live field guide to elections, transitions, and civic power beyond U.S. borders.</p><div className="mt-2 grid grid-cols-3 divide-x divide-cyan-100/20 rounded border border-cyan-100/20 bg-slate-950/25 text-center"><WorldStat value={worldBrief.total} label="Tracked" /><WorldStat value={worldBrief.upcomingCount} label="Upcoming" /><WorldStat value={worldBrief.live || "—"} label="Live" /></div>{worldBrief.featured && <p className="mt-1.5 truncate text-[8px] font-semibold text-cyan-50/90">{worldBrief.featuredLabel}: {worldBrief.featured.country} · {shortDate(worldBrief.featured.electionDate)}</p>}</div><div aria-hidden className="absolute inset-y-0 right-0 flex w-[52%] items-center justify-center transition-transform duration-500 group-hover:scale-105"><div className="h-[232px] w-[232px] drop-shadow-[0_0_34px_rgba(110,222,255,0.98)]"><MiniRepositoryGlobe theme={theme} vibrant /></div></div></Link>
           </aside>
         </section>
       </main>
