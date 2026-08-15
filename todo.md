@@ -668,6 +668,11 @@ The following earlier duplicate checklist is retained as project history. The ex
 ## Bright Gold Contrast Tuning (Aug 15)
 - [x] Brighten the established gold accent in dark and light themes while preserving election party and toss-up colors
 
+## Historical Atlas Playback Progress (Aug 15)
+- [x] Add a visual progress bar that shows the visible Atlas Congress frame out of all 31 frames
+- [x] Keep queued-frame loading status distinct from completed frame progress during playback
+- [x] Verify playback progress is synchronized on desktop and mobile
+
 ## Homepage Warm Editorial Palette Review (Aug 15)
 - [x] Add Antique Brass, Champagne Ivory, and Muted Plum to the in-site homepage color comparison
 - [x] Capture and share the warm editorial palette directions for user selection before changing the live palette
