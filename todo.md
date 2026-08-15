@@ -624,7 +624,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Independently audit historical boundary provenance, coverage, and map geometry fidelity
 - [x] Independently audit Voteview overlay semantics and the Voting Rights Act timeline source claims
 - [x] Independently audit all-state map UX, timeline/comparison interactions, mobile clarity, and load behavior
-- [ ] Correct verified launch blockers and document remaining limitations without claiming launch readiness prematurely
+- [x] Correct verified launch blockers and document remaining limitations without claiming launch readiness prematurely
+
+## Historical Atlas True District Geometry (Aug 15)
+- [x] Validate UCLA Congress-by-Congress historical district shapefiles against official apportionment totals for all VRA-era frames
+- [x] Convert and prepare a fast, source-preserving 89th–119th Congress district-geometry dataset for the public Atlas
+- [x] Replace aggregated state-era map frames with validated per-Congress district boundaries and revalidate overlays, performance, and accessibility
 
 ## Historical Atlas Speed and Usability (Aug 14)
 - [x] Reduce time-to-first-usable national map frame through accurate progressive loading and caching
@@ -635,3 +640,6 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add an immediate-start bulk workflow for all current missing portrait submissions with visible progress, failure reporting, and no automatic public changes
 - [x] Expand Admin Election Ops with an authenticated manual winner-selection workflow that clearly distinguishes manual review from automated calls
 - [x] Add a homepage ticker with concise, mission-appropriate language
+
+## Homepage Results Ticker Eligibility (Aug 15)
+- [x] Restrict homepage ticker entries to verified U.S. Senate and House general-election or special-election outcomes; exclude all primary results

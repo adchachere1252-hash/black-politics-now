@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { isFinalElectionTickerOutcome } from "@/lib/resultsTickerEligibility";
 
 interface TickerItem {
   state: string;
@@ -10,23 +11,19 @@ interface TickerItem {
 interface ResultsTickerProps {
   senateRaces: any[];
   houseRaces: any[];
-  governors: any[];
 }
 
-export function ResultsTicker({ senateRaces, houseRaces, governors }: ResultsTickerProps) {
+export function ResultsTicker({ senateRaces, houseRaces }: ResultsTickerProps) {
   const calledRaces = useMemo(() => {
     const results: TickerItem[] = [];
     senateRaces.forEach((r: any) => {
-      if (r.calledWinner) results.push({ state: r.stateName, winner: r.calledWinner, party: r.calledParty ?? "?", chamber: "Senate" });
+      if (isFinalElectionTickerOutcome(r)) results.push({ state: r.stateName, winner: r.calledWinner, party: r.calledParty ?? "?", chamber: "Senate" });
     });
     houseRaces.forEach((r: any) => {
-      if (r.calledWinner) results.push({ state: `${r.stateName}-${r.district ?? "AL"}`, winner: r.calledWinner, party: r.calledParty ?? "?", chamber: "House" });
-    });
-    governors.forEach((r: any) => {
-      if (r.calledWinner) results.push({ state: r.stateName, winner: r.calledWinner, party: "?", chamber: "Governor" });
+      if (isFinalElectionTickerOutcome(r)) results.push({ state: `${r.stateName}-${r.district ?? "AL"}`, winner: r.calledWinner, party: r.calledParty ?? "?", chamber: "House" });
     });
     return results;
-  }, [senateRaces, houseRaces, governors]);
+  }, [senateRaces, houseRaces]);
 
   if (calledRaces.length === 0) {
     return (

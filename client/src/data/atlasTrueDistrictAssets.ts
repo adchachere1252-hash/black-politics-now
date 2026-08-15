@@ -1,0 +1,37 @@
+/**
+ * Generated from UCLA Congressional District Maps Congress-specific shapefiles.
+ * Each stored asset contains the VRA-era 50-state frame for one Congress.
+ */
+export const UCLA_TRUE_DISTRICT_ASSETS: Record<number, string> = {
+  89: "/manus-storage/districts089_1632c031.json",
+  90: "/manus-storage/districts090_5c81fde7.json",
+  91: "/manus-storage/districts091_213913c7.json",
+  92: "/manus-storage/districts092_d79fb9fa.json",
+  93: "/manus-storage/districts093_cb5efa93.json",
+  94: "/manus-storage/districts094_2b6f2030.json",
+  95: "/manus-storage/districts095_8d991ccb.json",
+  96: "/manus-storage/districts096_f1cd76d9.json",
+  97: "/manus-storage/districts097_34dc94ec.json",
+  98: "/manus-storage/districts098_e12d7b55.json",
+  99: "/manus-storage/districts099_f7db3125.json",
+  100: "/manus-storage/districts100_709798ec.json",
+  101: "/manus-storage/districts101_7d470e8f.json",
+  102: "/manus-storage/districts102_845e9cd1.json",
+  103: "/manus-storage/districts103_52ed495e.json",
+  104: "/manus-storage/districts104_ac507a2e.json",
+  105: "/manus-storage/districts105_96b730ac.json",
+  106: "/manus-storage/districts106_0571dabe.json",
+  107: "/manus-storage/districts107_da2c75ee.json",
+  108: "/manus-storage/districts108_e629c16a.json",
+  109: "/manus-storage/districts109_b97c770c.json",
+  110: "/manus-storage/districts110_5e4d0287.json",
+  111: "/manus-storage/districts111_61fca2ed.json",
+  112: "/manus-storage/districts112_c1da8a9a.json",
+  113: "/manus-storage/districts113_f485f740.json",
+  114: "/manus-storage/districts114_c3f711e4.json",
+  115: "/manus-storage/districts115_94d388ee.json",
+  116: "/manus-storage/districts116_31abb02a.json",
+  117: "/manus-storage/districts117_0c67075a.json",
+  118: "/manus-storage/districts118_858dabae.json",
+  119: "/manus-storage/districts119_8abd75bd.json",
+};

@@ -356,7 +356,7 @@ export default function Elections() {
 
         {/* Results Ticker */}
         <div className="mb-6">
-          <ResultsTicker senateRaces={senateRaces as any[]} houseRaces={houseRaces as any[]} governors={governors as any[]} />
+          <ResultsTicker senateRaces={senateRaces as any[]} houseRaces={houseRaces as any[]} />
         </div>
 
         {/* Tabs + Filters (moved under ticker) */}

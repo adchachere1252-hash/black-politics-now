@@ -159,7 +159,7 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
           Homepage enhancement example · current dashboard retained above
         </div>
       )}
-      <div className="border-b border-border/30 px-3 py-2"><ResultsTicker senateRaces={senateRaces as any[] ?? []} houseRaces={houseRaces as any[] ?? []} governors={governors as any[] ?? []} /></div>
+      <div className="border-b border-border/30 px-3 py-2"><ResultsTicker senateRaces={senateRaces as any[] ?? []} houseRaces={houseRaces as any[] ?? []} /></div>
 
       {/* Three-column dashboard */}
       <div className="grid grid-cols-1 md:grid-cols-[280px_1fr_300px] lg:grid-cols-[320px_1fr_340px] gap-0 min-h-[calc(100vh-120px)]">

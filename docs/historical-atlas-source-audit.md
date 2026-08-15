@@ -8,6 +8,12 @@ The Atlas manifest contains **50 state histories**, **50 apportionment records**
 
 Some repository file names begin before the audit window. The Atlas manifest correctly narrows those broad source-file ranges to the period it displays; for example, a source file that begins before the 89th Congress remains valid for the 89th Congress when its file range contains that Congress.
 
+## Per-Congress district-geometry remediation
+
+The original state-era GeoJSON delivery could aggregate historical district geometry in ways that did not reliably equal a selected Congress’s House apportionment. The public Atlas now uses UCLA’s separate Congress-by-Congress shapefile series (`https://cdmaps.polisci.ucla.edu/shp/districtsNNN.zip`) for the 89th through 119th Congresses. Converted public frames retain the UCLA source URL, Congress, state, district, and source identifier in their metadata; the coordinate reduction is solely for browser delivery.
+
+The preparation audit validated **31 of 31** VRA-era Congress frames against the Atlas’s 50-state apportionment series. The validator accounts for legitimate at-large geometries, including cases where one at-large region represents multiple apportioned House seats, and removes duplicate or overlapping at-large source artifacts only when a specific numbered district geometry exists for the same state and Congress. The map displays Census apportionment independently from the count of mapped regions.
+
 ## Interpretation standard
 
 The national map is an all-state historical geography view. Its lightweight rendering is derived from the same repository GeoJSON used by the state archive, while the original file remains linked in each state record. A boundary-era change indicates that the repository file era changes; it does **not** by itself establish a legal finding, party-control outcome, demographic claim, or current-map certification.
