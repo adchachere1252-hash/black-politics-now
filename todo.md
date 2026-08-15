@@ -698,6 +698,10 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add clear institutional source badges to the timeline cards
 - [x] Verify markers, state comparison, source badges, and responsive behavior
 
+## Homepage Historical Atlas Visual Parity (Aug 15)
+- [x] Replace homepage-specific dark surfaces, borders, and accents that prevent visible parity with the Historical Atlas charcoal-and-gold treatment
+- [x] Verify the desktop and mobile homepages visibly match the Historical Atlas visual system while preserving functional election colors
+
 ## Homepage Warm Editorial Palette Review (Aug 15)
 - [x] Add Antique Brass, Champagne Ivory, and Muted Plum to the in-site homepage color comparison
 - [x] Capture and share the warm editorial palette directions for user selection before changing the live palette

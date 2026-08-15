@@ -153,7 +153,7 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
   }, [senateRaces, houseRaces, governors, mapView]);
 
   return (
-    <div className="min-h-screen">
+    <div className="homepage-atlas-shell min-h-screen">
       {previewMode && (
         <div className="border-b border-primary/30 bg-primary/10 px-4 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-primary">
           Homepage enhancement example · current dashboard retained above
@@ -165,7 +165,7 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
       <div className="grid grid-cols-1 md:grid-cols-[280px_1fr_300px] lg:grid-cols-[320px_1fr_340px] gap-0 min-h-[calc(100vh-120px)]">
 
         {/* Column 1: Latest News */}
-        <section className="border-r border-border/30 p-5 overflow-y-auto">
+        <section className="homepage-atlas-panel border-r border-border/30 p-5 overflow-y-auto">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-bold uppercase tracking-wider">Latest News</h2>
             <a href="https://blkpoliticsnow.com" target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline flex items-center gap-1">View All <ArrowRight size={12} /></a>
@@ -208,7 +208,7 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
         </section>
 
         {/* Column 2: Interactive Election Map */}
-        <section className="p-5 flex flex-col">
+        <section className="homepage-atlas-panel p-5 flex flex-col">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-bold uppercase tracking-wider">Interactive Election Map</h2>
             <Link href="/elections" className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors">
