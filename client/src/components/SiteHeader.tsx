@@ -23,7 +23,7 @@ export default function SiteHeader() {
       <div className="container flex items-center justify-between h-16">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 no-underline">
-          <span className="font-display text-xl font-extrabold tracking-tight text-primary">
+          <span className="brand-gold-glimmer font-display text-xl font-extrabold tracking-tight">
             BLACK POLITICS NOW
           </span>
         </Link>

@@ -673,6 +673,11 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Keep queued-frame loading status distinct from completed frame progress during playback
 - [x] Verify playback progress is synchronized on desktop and mobile
 
+## Refined Gold Glimmer Treatment (Aug 15)
+- [x] Restore a refined gold accent direction and add a restrained glimmer treatment to non-map brand accents
+- [x] Preserve election-party colors and respect reduced-motion preferences
+- [x] Verify gold contrast and glimmer clarity across desktop and mobile
+
 ## Homepage Warm Editorial Palette Review (Aug 15)
 - [x] Add Antique Brass, Champagne Ivory, and Muted Plum to the in-site homepage color comparison
 - [x] Capture and share the warm editorial palette directions for user selection before changing the live palette

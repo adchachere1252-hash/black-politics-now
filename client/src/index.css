@@ -262,3 +262,26 @@ html[data-home-palette="plum"] {
 .ticker-scroll {
   animation: ticker-scroll 30s linear infinite;
 }
+
+/* A restrained brand-only glimmer. Election map and rating colors intentionally
+   remain tokenized separately above and are never animated. */
+.brand-gold-glimmer {
+  color: var(--primary);
+  background: linear-gradient(108deg, var(--primary) 0%, var(--primary) 35%, oklch(0.96 0.08 86) 49%, var(--primary) 63%, var(--primary) 100%);
+  background-size: 230% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 18px color-mix(in oklch, var(--primary) 24%, transparent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .brand-gold-glimmer {
+    animation: gold-glimmer 7.5s cubic-bezier(0.23, 1, 0.32, 1) infinite;
+  }
+}
+
+@keyframes gold-glimmer {
+  0%, 62% { background-position: 105% 0; }
+  100% { background-position: -112% 0; }
+}
