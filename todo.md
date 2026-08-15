@@ -604,3 +604,18 @@ The following earlier duplicate checklist is retained as project history. The ex
 
 ## Power Context Removal (Aug 14)
 - [x] Remove the public Power Context route, page, and shared navigation entry without affecting existing news, election, or Atlas workflows
+
+## Historical Atlas Interpretation Enhancements (Aug 14)
+- [x] Add a concise source-backed guided timeline of landmark Voting Rights Act map changes
+- [x] Add shareable URLs for two-Congress comparisons with clear copied-link feedback
+- [x] Use the user-approved source-checked archive context label for selected state boundary eras; do not claim editor approval
+- [x] Verify source labeling, comparison URL behavior, accessibility, responsive design, and regression coverage
+
+## Historical Atlas Source-by-Source Accuracy Audit (Aug 14)
+- [x] Verify all 50 state boundary-era mappings and national map coverage against the UCLA repository files
+- [x] Verify party/member overlay interpretation against the documented Voteview dataset contract
+- [x] Verify Voting Rights Act timeline and state-note statements against authoritative primary or institutional sources
+- [x] Correct or remove any Atlas claim that does not meet the source-evidence standard before publication
+
+## Historical Atlas Full 50-State VRA View (Aug 14)
+- [x] Make the central Atlas view explicitly show and describe the full 50-state national map from the Voting Rights Act era forward
