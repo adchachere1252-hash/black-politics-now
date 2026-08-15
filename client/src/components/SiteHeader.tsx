@@ -52,7 +52,7 @@ export default function SiteHeader() {
                 href={href}
                 className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors no-underline ${
                   active
-                    ? "bg-primary/10 text-primary"
+                    ? "nav-active-gold-glow bg-primary/10 text-primary"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 }`}
               >
@@ -64,7 +64,7 @@ export default function SiteHeader() {
           <Link
             href="/search"
             className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline ${
-              location === "/search" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              location === "/search" ? "nav-active-gold-glow bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-muted"
             }`}
           >
             <SearchIcon size={16} />
@@ -125,7 +125,7 @@ export default function SiteHeader() {
                 href={href}
                 onClick={() => setMobileOpen(false)}
                 className={`flex items-center gap-3 px-6 py-3 text-sm font-medium no-underline ${
-                  active ? "text-primary bg-primary/5" : "text-muted-foreground"
+                  active ? "nav-active-gold-glow text-primary bg-primary/5" : "text-muted-foreground"
                 }`}
               >
                 <Icon size={18} strokeWidth={2.25} className="shrink-0 text-primary" />

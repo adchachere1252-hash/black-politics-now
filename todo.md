@@ -678,6 +678,20 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Preserve election-party colors and respect reduced-motion preferences
 - [x] Verify gold contrast and glimmer clarity across desktop and mobile
 
+## Active Navigation Gold Glow (Aug 15)
+- [x] Add a quiet gold glow to active desktop and mobile navigation states only
+- [x] Verify inactive navigation remains calm and responsive layouts preserve contrast
+
+## Unified Historical Atlas Visual System (Aug 15)
+- [x] Apply the Historical Atlas charcoal-and-gold visual treatment consistently across public pages and the Admin dashboard
+- [x] Preserve all election-party, toss-up, and results-status colors as functional data colors
+- [x] Verify color contrast, light/dark behavior, and responsive visual consistency
+
+## Historical Atlas Functional Review and Louisiana v. Callais (Aug 15)
+- [x] Verify 50-state map loading, playback, comparison, overlays, source links, and mobile behavior end to end
+- [x] Verify Louisiana v. Callais primary-source context and add a precise Voting Rights Act timeline entry
+- [x] Correct any verified Atlas functional issue and report remaining limitations without overstating readiness
+
 ## Homepage Warm Editorial Palette Review (Aug 15)
 - [x] Add Antique Brass, Champagne Ivory, and Muted Plum to the in-site homepage color comparison
 - [x] Capture and share the warm editorial palette directions for user selection before changing the live palette

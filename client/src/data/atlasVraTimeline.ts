@@ -53,6 +53,14 @@ export const ATLAS_VRA_TIMELINE: AtlasVraMilestone[] = [
     sourceLabel: "U.S. Supreme Court",
     sourceUrl: "https://www.supremecourt.gov/opinions/22pdf/21-1086_1co6.pdf",
   },
+  {
+    year: 2026,
+    congress: 119,
+    title: "Louisiana v. Callais",
+    summary: "The Supreme Court held that Section 2 did not require Louisiana’s additional majority-minority district at issue and that no compelling interest justified the State’s race-based map; this entry records a legal framework change, not an automatic map change or representation forecast.",
+    sourceLabel: "U.S. Supreme Court",
+    sourceUrl: "https://www.supremecourt.gov/opinions/25pdf/24-109_21o3.pdf",
+  },
 ];
 
 export function sourceCheckedBoundaryNote(stateName: string, congress: number, sourceFilename?: string) {

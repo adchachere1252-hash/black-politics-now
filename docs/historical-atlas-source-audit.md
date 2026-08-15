@@ -24,6 +24,13 @@ Party and member overlays use the documented Voteview House member fields and mu
 
 The guided timeline is limited to five map-relevant legal milestones: the 1965 Act, the 1982 Section 2 amendment, the 1986 *Gingles* framework, *Shelby County* in 2013, and *Allen v. Milligan* in 2023. The timeline uses the Department of Justice history, the U.S. House Historian’s redistricting essay, and the official Supreme Court opinion. It deliberately does not claim that any milestone alone caused a specific state boundary-file transition.
 
+### Louisiana v. Callais (2026)
+
+The Atlas may describe *Louisiana v. Callais*, No. 24-109 (consolidated with *Robinson v. Callais*, No. 24-110), as a 2026 Supreme Court decision concerning Louisiana's second majority-minority congressional district and the relationship between Section 2 of the Voting Rights Act and race-based districting. The official syllabus states that the Court held, 6-3, that Section 2 did not require Louisiana to create the additional majority-minority district at issue; therefore, no compelling interest justified the State's use of race to create SB8, which the Court held unconstitutional. The public Atlas must link the official opinion and state that this entry records a legal framework change, not an automatic change to any historical map frame or a prediction about future representation.
+
+- Primary source: [Louisiana v. Callais, 608 U.S. ___ (Apr. 29, 2026)](https://www.supremecourt.gov/opinions/25pdf/24-109_21o3.pdf)
+- Context source: [Harvard Kennedy School analysis](https://www.hks.harvard.edu/faculty-research/policy-topics/fairness-justice/what-louisiana-v-callais-means-voting-rights-act)
+
 ## Audit artifacts
 
 - Automated coverage test: `server/atlasSourceIntegrity.test.ts`
