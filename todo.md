@@ -692,6 +692,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify Louisiana v. Callais primary-source context and add a precise Voting Rights Act timeline entry
 - [x] Correct any verified Atlas functional issue and report remaining limitations without overstating readiness
 
+## Historical Atlas Timeline and Comparison Context (Aug 15)
+- [x] Add labeled progress-bar markers for source-backed legal timeline events
+- [x] Add a one-click comparison workflow using the currently selected state
+- [x] Add clear institutional source badges to the timeline cards
+- [x] Verify markers, state comparison, source badges, and responsive behavior
+
 ## Homepage Warm Editorial Palette Review (Aug 15)
 - [x] Add Antique Brass, Champagne Ivory, and Muted Plum to the in-site homepage color comparison
 - [x] Capture and share the warm editorial palette directions for user selection before changing the live palette
