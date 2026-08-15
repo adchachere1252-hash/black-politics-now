@@ -1,10 +1,12 @@
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import {
   agentChangeProposals,
   agentRecommendations,
   agentRuns,
   agentSettings,
   agentTasks,
+  portraitResearchBatchItems,
+  portraitResearchBatches,
 } from "../drizzle/schema";
 import { getAllCbcMembers, getAllRedistrictingStates } from "./cbcDb";
 import { getDb } from "./db";
@@ -38,6 +40,17 @@ async function resolveModel() {
     ?? catalog.data.find((model) => model.id.startsWith("gpt-5"))?.id
     ?? catalog.data[0]?.id
     ?? CHAT_MODEL_PREFERENCE;
+}
+
+function insertedId(result: unknown, label: string) {
+  const header = Array.isArray(result) ? result[0] : result;
+  const id = Number((header as { insertId?: number } | undefined)?.insertId ?? 0);
+  if (!Number.isInteger(id) || id <= 0) throw new Error(`Unable to create ${label}`);
+  return id;
+}
+
+export function summarizePortraitResearchBatchItems(items: Array<{ status: string }>) {
+  return Object.fromEntries(["queued", "in_progress", "ready_for_review", "blocked", "skipped"].map((status) => [status, items.filter((item) => item.status === status).length]));
 }
 
 function sourceMarkdown(sourceIds: string[], sourceItems: SourceItem[]) {
@@ -715,16 +728,57 @@ export async function runPortraitResearchTask(
   const sourceRows = [{ id: "portrait-target", title: `${current.candidateName} — ${current.location}`, url: `${PUBLIC_SITE_ORIGIN}/admin?tab=portraits`, excerpt: "Administrator-selected private portrait research target. A portrait cannot be submitted or applied without verified provenance review." }];
   if (target.sourceLead?.trim()) sourceRows.push({ id: "administrator-source-lead", title: `Administrator-provided source lead for ${current.candidateName}`, url: target.sourceLead.trim(), excerpt: "Use this lead only as supplied context. Confirm candidate identity and provenance before proposing a portrait source; do not invent a direct image URL." });
   const sourceSnapshot = JSON.stringify(sourceRows);
-  await db.insert(agentRuns).values({ trigger: "admin", mode: "routine", status: "success", model, sourceSnapshot, summary: `Private portrait research requested for ${current.candidateName}.`, recommendationCount: 1 });
-  const [run] = await db.select().from(agentRuns).orderBy(desc(agentRuns.id)).limit(1);
-  if (!run) throw new Error("Unable to create portrait research run");
-  await db.insert(agentRecommendations).values({ runId: run.id, category: "data_quality", priority: "medium", title: `Research portrait source: ${current.candidateName}`, summary: `Private source research for ${current.candidateName} (${current.location}).`, proposedAction: "Prepare a source-cited portrait-source proposal only if verified evidence is available.", evidence: sourceSnapshot, status: "approved", assignedTo: "Data Desk", assignedBy: requestedBy, assignedAt: new Date(), reviewedBy: requestedBy, reviewedAt: new Date() });
-  const [recommendation] = await db.select().from(agentRecommendations).orderBy(desc(agentRecommendations.id)).limit(1);
-  if (!recommendation) throw new Error("Unable to create portrait research recommendation");
-  await db.insert(agentTasks).values({ recommendationId: recommendation.id, title: `Portrait source research: ${current.candidateName}`, description: `Research target: ${current.candidateName} (${current.location}). Target reference: ${current.targetType}/${current.targetRecordId}/${current.targetPhotoField}. ${target.sourceLead?.trim() ? `Official source lead: ${target.sourceLead.trim()}. ` : ""}Do not submit or apply a portrait. Return a portrait_source proposal only when supported by exact evidence in the supplied context.`, owner: "Data Desk", executionMode: "agent", executionScope: "Return a private source-cited portrait research package. Never alter a public profile.", sourceRequirements: "Use supplied context only. Do not invent image URLs, source pages, or provenance.", createdBy: requestedBy });
-  const [task] = await db.select().from(agentTasks).where(eq(agentTasks.recommendationId, recommendation.id)).limit(1);
+  const runId = insertedId(await db.insert(agentRuns).values({ trigger: "admin", mode: "routine", status: "success", model, sourceSnapshot, summary: `Private portrait research requested for ${current.candidateName}.`, recommendationCount: 1 }), "portrait research run");
+  const recommendationId = insertedId(await db.insert(agentRecommendations).values({ runId, category: "data_quality", priority: "medium", title: `Research portrait source: ${current.candidateName}`, summary: `Private source research for ${current.candidateName} (${current.location}).`, proposedAction: "Prepare a source-cited portrait-source proposal only if verified evidence is available.", evidence: sourceSnapshot, status: "approved", assignedTo: "Data Desk", assignedBy: requestedBy, assignedAt: new Date(), reviewedBy: requestedBy, reviewedAt: new Date() }), "portrait research recommendation");
+  const taskId = insertedId(await db.insert(agentTasks).values({ recommendationId, title: `Portrait source research: ${current.candidateName}`, description: `Research target: ${current.candidateName} (${current.location}). Target reference: ${current.targetType}/${current.targetRecordId}/${current.targetPhotoField}. ${target.sourceLead?.trim() ? `Official source lead: ${target.sourceLead.trim()}. ` : ""}Do not submit or apply a portrait. Return a portrait_source proposal only when supported by exact evidence in the supplied context.`, owner: "Data Desk", executionMode: "agent", executionScope: "Return a private source-cited portrait research package. Never alter a public profile.", sourceRequirements: "Use supplied context only. Do not invent image URLs, source pages, or provenance.", createdBy: requestedBy }), "portrait research task");
+  const [task] = await db.select().from(agentTasks).where(eq(agentTasks.id, taskId)).limit(1);
   if (!task) throw new Error("Unable to create portrait research task");
   return executeAgentTaskWithChangeSet(task.id, requestedBy);
+}
+
+export async function getLatestPortraitResearchBatch() {
+  const db = await getDb();
+  if (!db) return null;
+  const [batch] = await db.select().from(portraitResearchBatches).orderBy(desc(portraitResearchBatches.id)).limit(1);
+  if (!batch) return null;
+  const items = await db.select().from(portraitResearchBatchItems).where(eq(portraitResearchBatchItems.batchId, batch.id));
+  const byStatus = summarizePortraitResearchBatchItems(items);
+  return { ...batch, byStatus, recentItems: items.slice(-12).reverse() };
+}
+
+async function executePortraitResearchBatch(batchId: number, requestedBy: string) {
+  const db = await getDb();
+  if (!db) return;
+  const items = await db.select().from(portraitResearchBatchItems).where(and(eq(portraitResearchBatchItems.batchId, batchId), eq(portraitResearchBatchItems.status, "queued")));
+  let cursor = 0;
+  const worker = async () => {
+    while (cursor < items.length) {
+      const item = items[cursor++];
+      await db.update(portraitResearchBatchItems).set({ status: "in_progress", startedAt: new Date() }).where(eq(portraitResearchBatchItems.id, item.id));
+      try {
+        const task = await runPortraitResearchTask({ targetType: item.targetType, targetRecordId: item.targetRecordId, targetPhotoField: item.targetPhotoField, candidateName: item.candidateName }, requestedBy);
+        await db.update(portraitResearchBatchItems).set({ status: "ready_for_review", agentTaskId: task.id, completedAt: new Date(), error: null }).where(eq(portraitResearchBatchItems.id, item.id));
+      } catch (error) {
+        await db.update(portraitResearchBatchItems).set({ status: "blocked", error: error instanceof Error ? error.message.slice(0, 2000) : "Unknown research failure", completedAt: new Date() }).where(eq(portraitResearchBatchItems.id, item.id));
+      }
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(4, items.length) }, worker));
+  const finalItems = await db.select().from(portraitResearchBatchItems).where(eq(portraitResearchBatchItems.batchId, batchId));
+  const completedTargets = finalItems.filter((item) => item.status === "ready_for_review").length;
+  const failedTargets = finalItems.filter((item) => item.status === "blocked").length;
+  await db.update(portraitResearchBatches).set({ status: failedTargets ? "completed_with_failures" : "completed", completedTargets, failedTargets, completedAt: new Date(), summary: `${completedTargets} private review packages ready; ${failedTargets} research items blocked. No portrait was submitted or applied automatically.` }).where(eq(portraitResearchBatches.id, batchId));
+}
+
+export async function startAllPortraitResearch(requestedBy: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const targets = await getPortraitSubmissionTargets();
+  if (!targets.length) throw new Error("No current portrait gaps are available for research");
+  const batchId = insertedId(await db.insert(portraitResearchBatches).values({ requestedBy, totalTargets: targets.length, summary: `Immediate private research start requested for ${targets.length} current portrait gaps.` }), "portrait research batch");
+  await db.insert(portraitResearchBatchItems).values(targets.map((target) => ({ batchId, ...target })));
+  void executePortraitResearchBatch(batchId, requestedBy);
+  return { batchId, totalTargets: targets.length, started: true, safeguards: "Private review packages only. No photo submission, approval, or public mutation is automated." };
 }
 
 /**

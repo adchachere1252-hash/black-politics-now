@@ -386,10 +386,21 @@ function RaceEditor({ race, onSave, saving, showDistrict }: { race: any; onSave:
   const [calledWinner, setCalledWinner] = useState(race.calledWinner ?? "");
   const [calledParty, setCalledParty] = useState(race.calledParty ?? "");
   const [notes, setNotes] = useState(race.notes ?? "");
+  const [manualCallSource, setManualCallSource] = useState("");
+  const [callError, setCallError] = useState("");
   const [pctReporting, setPctReporting] = useState(race.pctReporting?.toString() ?? "0");
   const [votes1, setVotes1] = useState(race.candidate1Votes?.toString() ?? "0");
   const [votes2, setVotes2] = useState(race.candidate2Votes?.toString() ?? "0");
   const [saved, setSaved] = useState(false);
+
+  const confirmManualCall = () => {
+    if (!calledWinner) return setCallError("Select one of the listed candidates before confirming a manual call.");
+    if (!manualCallSource.trim()) return setCallError("Add the official results source or review note for this manual call.");
+    setCallError("");
+    onSave({ rating: rating || null, calledWinner, calledParty: calledParty || null, status: "Called", calledAt: Date.now(), notes: `${notes ? `${notes}\n\n` : ""}Manual administrator call. Review source: ${manualCallSource.trim()}`, pctReporting: parseFloat(pctReporting) || 0, candidate1Votes: parseInt(votes1) || 0, candidate2Votes: parseInt(votes2) || 0 });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
 
   const handleSave = () => {
     onSave({
@@ -415,18 +426,14 @@ function RaceEditor({ race, onSave, saving, showDistrict }: { race: any; onSave:
           <option value="">No Rating</option>
           {RATINGS.map(r => <option key={r} value={r}>{r}</option>)}
         </select>
-        <input
-          value={calledWinner}
-          onChange={e => setCalledWinner(e.target.value)}
-          placeholder="Called winner"
-          className="bg-muted rounded px-2 py-1 text-xs w-28"
-        />
-        <select value={calledParty} onChange={e => setCalledParty(e.target.value)} className="bg-muted rounded px-2 py-1 text-xs">
-          <option value="">Party</option>
-          <option value="D">D</option>
-          <option value="R">R</option>
-          <option value="I">I</option>
+        <select aria-label="Select verified race winner" value={calledWinner} onChange={e => { const winner = e.target.value; setCalledWinner(winner); setCalledParty(winner === race.candidate1Name ? race.candidate1Party ?? "" : winner === race.candidate2Name ? race.candidate2Party ?? "" : ""); }} className="bg-amber-500/10 rounded px-2 py-1 text-xs min-w-[180px]">
+          <option value="">Select winner from ballot</option>
+          {race.candidate1Name && <option value={race.candidate1Name}>{race.candidate1Name} ({race.candidate1Party ?? "?"})</option>}
+          {race.candidate2Name && <option value={race.candidate2Name}>{race.candidate2Name} ({race.candidate2Party ?? "?"})</option>}
         </select>
+        <input value={manualCallSource} onChange={e => setManualCallSource(e.target.value)} placeholder="Manual call source / note" className="bg-muted rounded px-2 py-1 text-xs w-44" />
+        <button onClick={confirmManualCall} disabled={saving || !calledWinner} className="rounded bg-amber-600 px-2 py-1 text-xs font-semibold text-white disabled:opacity-50">Confirm call</button>
+        {callError && <span className="text-[10px] text-destructive">{callError}</span>}
         <input
           value={notes}
           onChange={e => setNotes(e.target.value)}
@@ -481,7 +488,18 @@ function GovEditor({ race, onSave, saving }: { race: any; onSave: (data: any) =>
   const [rating, setRating] = useState(race.rating ?? "");
   const [calledWinner, setCalledWinner] = useState(race.calledWinner ?? "");
   const [notes, setNotes] = useState(race.notes ?? "");
+  const [manualCallSource, setManualCallSource] = useState("");
+  const [callError, setCallError] = useState("");
   const [saved, setSaved] = useState(false);
+
+  const confirmManualCall = () => {
+    if (!calledWinner) return setCallError("Select the Democratic or Republican candidate before confirming a manual call.");
+    if (!manualCallSource.trim()) return setCallError("Add the official results source or review note for this manual call.");
+    setCallError("");
+    onSave({ rating: rating || null, calledWinner, calledParty: calledWinner === race.demCandidate ? "D" : "R", status: "Called", calledAt: Date.now(), notes: `${notes ? `${notes}\n\n` : ""}Manual administrator call. Review source: ${manualCallSource.trim()}` });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
 
   const handleSave = () => {
     onSave({ rating: rating || null, calledWinner: calledWinner || null, notes: notes || null });
@@ -504,6 +522,10 @@ function GovEditor({ race, onSave, saving }: { race: any; onSave: (data: any) =>
           placeholder="Called winner"
           className="bg-muted rounded px-2 py-1 text-xs w-28"
         />
+        <select aria-label="Select Governor winner" value="" onChange={e => { if (e.target.value) setCalledWinner(e.target.value); }} className="bg-amber-500/10 rounded px-2 py-1 text-xs min-w-[150px]"><option value="">Select winner from ballot</option>{race.demCandidate && <option value={race.demCandidate}>{race.demCandidate} (D)</option>}{race.repCandidate && <option value={race.repCandidate}>{race.repCandidate} (R)</option>}</select>
+        <input value={manualCallSource} onChange={e => setManualCallSource(e.target.value)} placeholder="Manual call source / note" className="bg-muted rounded px-2 py-1 text-xs w-44" />
+        <button onClick={confirmManualCall} disabled={saving || !calledWinner} className="rounded bg-amber-600 px-2 py-1 text-xs font-semibold text-white disabled:opacity-50">Confirm call</button>
+        {callError && <span className="text-[10px] text-destructive">{callError}</span>}
         <input
           value={notes}
           onChange={e => setNotes(e.target.value)}

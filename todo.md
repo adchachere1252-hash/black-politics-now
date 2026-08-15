@@ -619,3 +619,19 @@ The following earlier duplicate checklist is retained as project history. The ex
 
 ## Historical Atlas Full 50-State VRA View (Aug 14)
 - [x] Make the central Atlas view explicitly show and describe the full 50-state national map from the Voting Rights Act era forward
+
+## Historical Atlas Strict Launch-Readiness Review (Aug 14)
+- [x] Independently audit historical boundary provenance, coverage, and map geometry fidelity
+- [x] Independently audit Voteview overlay semantics and the Voting Rights Act timeline source claims
+- [x] Independently audit all-state map UX, timeline/comparison interactions, mobile clarity, and load behavior
+- [ ] Correct verified launch blockers and document remaining limitations without claiming launch readiness prematurely
+
+## Historical Atlas Speed and Usability (Aug 14)
+- [x] Reduce time-to-first-usable national map frame through accurate progressive loading and caching
+- [x] Simplify Atlas controls and map status language so users can quickly understand state selection, timeline, and comparison actions
+- [x] Preserve source-count transparency while preventing inaccurate geometry or feature totals from being presented as House-seat totals
+
+## Admin Portrait and Election Operations Enhancements (Aug 15)
+- [x] Add an immediate-start bulk workflow for all current missing portrait submissions with visible progress, failure reporting, and no automatic public changes
+- [x] Expand Admin Election Ops with an authenticated manual winner-selection workflow that clearly distinguishes manual review from automated calls
+- [x] Add a homepage ticker with concise, mission-appropriate language

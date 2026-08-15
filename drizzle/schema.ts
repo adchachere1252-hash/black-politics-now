@@ -506,6 +506,40 @@ export const candidatePortraitSubmissions = mysqlTable("candidate_portrait_submi
 
 export type CandidatePortraitSubmission = typeof candidatePortraitSubmissions.$inferSelect;
 
+/**
+ * An administrator-started batch for private portrait-source research. A batch
+ * creates review artifacts only; it never submits or applies a public photo.
+ */
+export const portraitResearchBatches = mysqlTable("portrait_research_batches", {
+  id: int("id").autoincrement().primaryKey(),
+  status: mysqlEnum("status", ["running", "completed", "completed_with_failures"]).notNull().default("running"),
+  requestedBy: varchar("requested_by", { length: 128 }).notNull(),
+  totalTargets: int("total_targets").notNull(),
+  completedTargets: int("completed_targets").notNull().default(0),
+  failedTargets: int("failed_targets").notNull().default(0),
+  startedAt: timestamp("started_at").defaultNow().notNull(),
+  completedAt: timestamp("completed_at"),
+  summary: text("summary"),
+});
+
+export const portraitResearchBatchItems = mysqlTable("portrait_research_batch_items", {
+  id: int("id").autoincrement().primaryKey(),
+  batchId: int("batch_id").notNull(),
+  targetType: mysqlEnum("target_type", ["senate", "house", "governor", "black_representation"]).notNull(),
+  targetRecordId: int("target_record_id").notNull(),
+  targetPhotoField: mysqlEnum("target_photo_field", ["candidate1", "candidate2", "dem", "rep", "profile"]).notNull(),
+  candidateName: varchar("candidate_name", { length: 128 }).notNull(),
+  location: varchar("location", { length: 160 }).notNull(),
+  status: mysqlEnum("status", ["queued", "in_progress", "ready_for_review", "blocked", "skipped"]).notNull().default("queued"),
+  agentTaskId: int("agent_task_id"),
+  error: text("error"),
+  startedAt: timestamp("started_at"),
+  completedAt: timestamp("completed_at"),
+});
+
+export type PortraitResearchBatch = typeof portraitResearchBatches.$inferSelect;
+export type PortraitResearchBatchItem = typeof portraitResearchBatchItems.$inferSelect;
+
 // ═══════════════════════════════════════════════════════════════════════════
 // BLACK REPRESENTATION TRACKING
 // ═══════════════════════════════════════════════════════════════════════════

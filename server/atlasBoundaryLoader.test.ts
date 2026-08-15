@@ -2,36 +2,32 @@ import { describe, expect, it } from "vitest";
 import { atlasManifestCoverage } from "../client/src/lib/atlasPlayback";
 import { loadNationalAtlasBoundaryBundle } from "../client/src/lib/atlasBoundaryLoader";
 
-describe("Historical Atlas client boundary fallback", () => {
-  it("uses the compact national bundle when every expected state file is present", async () => {
-    const coverage = atlasManifestCoverage(104);
-    const bundle = Object.fromEntries(coverage.boundaryFiles.map((filename) => [filename, "{}"]));
-    const request = async () => ({ ok: true, json: async () => bundle, text: async () => "" });
-    await expect(loadNationalAtlasBoundaryBundle(104, request)).resolves.toMatchObject({ source: "bundle", bundle });
-  });
-
-  it("reconstructs a complete all-state frame from individual repository-backed state routes when the bundle fails", async () => {
+describe("Historical Atlas client boundary loading", () => {
+  it("reconstructs a complete all-state frame from individual repository-backed state routes when chunks fail", async () => {
     const coverage = atlasManifestCoverage(104);
     const requested: string[] = [];
     const request = async (input: string) => {
       requested.push(input);
-      if (input === "/api/atlas/bundle/104") return { ok: false, json: async () => ({}), text: async () => "" };
+      if (input.startsWith("/api/atlas/bundle/104")) return { ok: false, json: async () => ({}), text: async () => "" };
       return { ok: true, json: async () => ({}), text: async () => '{"type":"FeatureCollection","features":[]}' };
     };
     const loaded = await loadNationalAtlasBoundaryBundle(104, request);
     expect(loaded.source).toBe("state-fallback");
     expect(Object.keys(loaded.bundle)).toHaveLength(50);
-    expect(requested).toHaveLength(56);
+    expect(requested).toHaveLength(55);
   });
 
-  it("uses compact ten-state chunks before relying on individual state routes", async () => {
-    const coverage = atlasManifestCoverage(104);
+  it("surfaces completed ten-state chunks progressively before returning a complete frame", async () => {
+    const coverage = atlasManifestCoverage(90);
+    const observed: number[] = [];
     const request = async (input: string) => {
-      if (input === "/api/atlas/bundle/104") return { ok: false, json: async () => ({}), text: async () => "" };
       const chunk = Number(input.match(/chunk=(\d+)/)?.[1]);
       const entries = coverage.boundaryFiles.slice(chunk * 10, (chunk + 1) * 10).map((filename) => [filename, "{}"]);
       return { ok: true, json: async () => Object.fromEntries(entries), text: async () => "" };
     };
-    await expect(loadNationalAtlasBoundaryBundle(104, request)).resolves.toMatchObject({ source: "chunked-bundle" });
+    const loaded = await loadNationalAtlasBoundaryBundle(90, request, (_bundle, loadedStateFiles) => observed.push(loadedStateFiles));
+    expect(loaded.source).toBe("chunked-bundle");
+    expect(observed.some((count) => count > 0 && count < 50)).toBe(true);
+    expect(observed.at(-1)).toBe(50);
   });
 });

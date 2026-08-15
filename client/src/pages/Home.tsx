@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, Play, Maximize2, Download, RotateCcw, Info, X, Globe2, Landmark, ArrowUpRight } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { USMapFull } from "@/components/USMapFull";
+import { ResultsTicker } from "@/components/ResultsTicker";
 import HomepageExample from "@/pages/HomepageExample";
 import { rankedWorldSignals, worldSignalLabel } from "@/lib/worldElectionDisplay";
 
@@ -158,13 +159,7 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
           Homepage enhancement example · current dashboard retained above
         </div>
       )}
-      {/* Public mission */}
-      <div className="text-center py-4 border-b border-border/30">
-        <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground font-medium">
-          Reporting. Elections. History. The public record.
-        </p>
-        <p className="mx-auto mt-2 max-w-md text-xs leading-relaxed text-muted-foreground">Black Politics Now connects Black political reporting to the races, institutions, and historical context shaping power today.</p>
-      </div>
+      <div className="border-b border-border/30 px-3 py-2"><ResultsTicker senateRaces={senateRaces as any[] ?? []} houseRaces={houseRaces as any[] ?? []} governors={governors as any[] ?? []} /></div>
 
       {/* Three-column dashboard */}
       <div className="grid grid-cols-1 md:grid-cols-[280px_1fr_300px] lg:grid-cols-[320px_1fr_340px] gap-0 min-h-[calc(100vh-120px)]">
