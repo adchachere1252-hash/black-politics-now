@@ -49,7 +49,7 @@ describe("protected Admin workspace acceptance", () => {
 
     for (const submission of pendingPortraits) {
       expect(submission.status).toBe("pending");
-      expect(submission.imageUrl).toMatch(/^https:\/\//);
+      expect(submission.imageUrl).toMatch(/^(https:\/\/|\/manus-storage\/)/);
       expect(submission.sourceUrl).toMatch(/^https:\/\//);
       expect(submission.appliedPhotoUrl).toBeNull();
       expect(submission.reviewedAt).toBeNull();

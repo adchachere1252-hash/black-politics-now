@@ -31,6 +31,13 @@ export default function AdminPage() {
     window.history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}`);
   };
 
+  const openActivePortraitBatch = () => {
+    navigateToTab("portraits");
+    window.setTimeout(() => {
+      document.getElementById("portrait-research-batch")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 60);
+  };
+
   if (loading) return <div className="container py-8"><div className="h-40 bg-muted rounded animate-pulse" /></div>;
 
   if (!isAuthenticated) {
@@ -87,10 +94,10 @@ export default function AdminPage() {
 
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/25 bg-primary/[0.045] px-4 py-3">
         <div><p className="text-xs font-bold uppercase tracking-[0.14em] text-primary">Portrait operations</p><p className="mt-1 text-sm text-muted-foreground">Open the active research batch, filter its status, and inspect source packages before any portrait reaches the public record.</p></div>
-        <button onClick={() => navigateToTab("portraits")} className="inline-flex shrink-0 items-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-bold text-primary-foreground shadow-sm hover:bg-primary/90"><ImagePlus size={14} /> Open Portrait Review</button>
+        <button onClick={openActivePortraitBatch} className="inline-flex shrink-0 items-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-bold text-primary-foreground shadow-sm hover:bg-primary/90"><ImagePlus size={14} /> Open active batch</button>
       </div>
 
-      {tab === "overview" && <OverviewTab onReview={(id) => { setFocusRecommendationId(id); navigateToTab("agent"); }} onNavigate={navigateToTab} />}
+      {tab === "overview" && <OverviewTab onReview={(id) => { setFocusRecommendationId(id); navigateToTab("agent"); }} onNavigate={(destination) => destination === "portraits" ? openActivePortraitBatch() : navigateToTab(destination)} />}
       {tab === "command" && <ElectionDayCommandCenterTab />}
       {tab === "podcast" && <PodcastOpsTab />}
       {tab === "elections" && <ElectionOpsTab />}

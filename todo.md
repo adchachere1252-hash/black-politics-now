@@ -787,6 +787,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Reclassify current and future portrait research with no source proposal as evidence-needed rather than review-ready
 - [x] Verify the live proposal-to-approval interface on desktop and mobile using a source-backed review package
 
+## Admin Controls and Copy Audit (Aug 16)
+- [x] Repair the dead Open active research batch control so it moves directly to the active batch workspace
+- [x] Inventory every Admin action, navigation link, form control, status label, and informational-only element
+- [x] Verify and correct confirmed control failures, unclear labels, and missing user feedback across desktop and mobile
+- [x] Deliver a candid Admin controls report distinguishing working functions, informational status, deferred functionality, and outstanding gaps
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
