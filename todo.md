@@ -808,6 +808,14 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Prepare source-backed status updates and identify candidates that remain pending, contested, or require manual review
 - [x] Validate the homepage displays only approved, current Black Representation data after updates
 
+## Operational Readiness Upgrade (Aug 16)
+- [x] Verify homepage data-refresh health and surface a clear refresh status panel in Admin
+- [x] Add an all-candidates Admin workspace for Senate, House, Governor, and Black Representation candidate coverage and portrait status
+- [x] Repair the homepage mini-globe Africa rendering defect without changing the globe’s country data or interactions
+- [x] Verify the Daily Intelligence Brief’s latest complete episode has both Andrew and Jenny audio for every required segment
+- [x] Confirm the daily guard and recovery workflow fails safely when either voice is incomplete
+- [x] Re-run technical, visual, and operational verification across the new Admin and homepage features
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
