@@ -715,6 +715,10 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Remove homepage-only ivory gradients, panel tints, and accent overrides that differ from the Historical Atlas light page
 - [x] Verify the homepage matches the Atlas warm ivory surface, card, border, and refined gold colors exactly on desktop and mobile
 
+## Exact Homepage-to-Atlas Gold Accent Parity (Aug 16)
+- [x] Replace pale homepage gold accent overrides with the exact deeper ochre-gold used by the Historical Atlas
+- [x] Verify wordmark, labels, buttons, borders, icons, and active controls match the Atlas gold on desktop and mobile
+
 ## Homepage Warm Editorial Palette Review (Aug 15)
 - [x] Add Antique Brass, Champagne Ivory, and Muted Plum to the in-site homepage color comparison
 - [x] Capture and share the warm editorial palette directions for user selection before changing the live palette

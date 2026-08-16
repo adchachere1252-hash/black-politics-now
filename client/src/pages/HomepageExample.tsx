@@ -109,9 +109,13 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
   useEffect(() => {
     if (typeof document === "undefined") return;
     const root = document.documentElement;
+    if (!paletteReview) {
+      delete root.dataset.homePalette;
+      return;
+    }
     root.dataset.homePalette = palettePreview;
     return () => { delete root.dataset.homePalette; };
-  }, [palettePreview]);
+  }, [palettePreview, paletteReview]);
 
   const selectPalettePreview = (palette: "heritage" | "bronze" | "teal" | "emerald" | "indigo" | "brass" | "champagne" | "plum") => {
     setPalettePreview(palette);
