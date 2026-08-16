@@ -867,6 +867,8 @@ The following earlier duplicate checklist is retained as project history. The ex
 
 ## Bulk Portrait Review and Candidate Image Status Accuracy (Aug 16)
 - [x] Audit mapped candidate images for reachability and distinguish verified, missing, and needs-verification states
+- [x] Conduct a visual candidate-to-image identity audit for every reachable candidate portrait and route uncertain assignments to review
+- [x] Remove the confirmed Steve Cohen Tennessee portrait from the unrelated California 50 candidate record
 - [x] Make All Candidates labels reflect verified image availability rather than a stored or fallback URL alone
 - [x] Add a bulk AI portrait review queue that supports individual visual approve or deny decisions without automatic publication
 - [x] Add bulk AI image-search start and sequential pending-image review controls to the candidate-first Portrait Review desk

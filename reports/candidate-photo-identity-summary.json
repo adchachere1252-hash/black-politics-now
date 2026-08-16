@@ -1,0 +1,2923 @@
+{
+  "generated_at": "2026-08-16T21:11:07.651Z",
+  "total_reachable_portraits": 415,
+  "counts": {
+    "verified_match": 276,
+    "mismatch": 1,
+    "broken": 0,
+    "unverifiable": 0,
+    "audit_failed": 138
+  },
+  "mismatches": [
+    {
+      "audit_id": 40,
+      "candidate_name": "Steve Cohen",
+      "verdict": "mismatch",
+      "reason": "Portal portrait depicts Tennessee U.S. Representative Steve Cohen rather than the California 50th district candidate Steve Cohen.",
+      "source_url": "https://ballotpedia.org/Steve_Cohen_(California)"
+    }
+  ],
+  "unavailable": [
+    {
+      "audit_id": 269,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 274,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 276,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 277,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 279,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 280,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 281,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 282,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 283,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 285,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 286,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 287,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 288,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 289,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 290,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 291,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 292,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 293,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 294,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 295,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 296,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 297,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 298,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 299,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 300,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 301,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 302,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 303,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 304,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 306,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 307,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 308,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 309,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 310,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 311,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 312,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 313,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 314,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 315,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 316,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 317,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 318,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 319,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 320,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 321,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 322,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 323,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 324,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 325,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 326,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 327,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 328,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 329,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 330,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 331,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 332,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 333,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 334,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 335,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 336,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 337,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 338,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 339,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 340,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 341,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 342,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 343,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 344,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 345,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 346,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 347,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 348,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 349,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 350,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 351,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 352,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 353,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 354,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 355,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 356,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 357,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 358,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 359,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 360,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 361,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 362,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 363,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 364,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 365,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 366,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 367,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 368,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 369,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 370,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 371,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 372,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 373,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 374,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 375,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 376,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 377,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 378,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 379,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 380,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 381,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 382,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 383,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 384,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 385,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 386,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 387,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 388,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 389,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 390,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 391,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 392,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 393,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 394,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 395,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 396,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 397,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 398,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 399,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 400,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 401,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 402,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 403,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 404,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 405,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 406,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 407,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 408,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 409,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 410,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 411,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 412,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 413,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    },
+    {
+      "audit_id": 414,
+      "candidate_name": "Unknown",
+      "verdict": "audit_failed",
+      "reason": "dailyFreeCreditLimitReached",
+      "source_url": null
+    }
+  ],
+  "needs_human_verification": [],
+  "verified_matches": [
+    {
+      "audit_id": 1,
+      "candidate_name": "TBD — Primary: Aug 18 (Peltola)",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait repository image correctly depicts candidate Mary Peltola as supported by authoritative congressional and campaign sources.",
+      "source_url": "https://www.congress.gov/member/mary-peltola/P000619"
+    },
+    {
+      "audit_id": 2,
+      "candidate_name": "John Hickenlooper",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Senator John Hickenlooper.",
+      "source_url": "https://www.congress.gov/member/john-hickenlooper/H000273"
+    },
+    {
+      "audit_id": 3,
+      "candidate_name": "Chris Coons",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches U.S. Senator Chris Coons.",
+      "source_url": "https://www.congress.gov/member/chris-coons/C001088"
+    },
+    {
+      "audit_id": 4,
+      "candidate_name": "Jon Ossoff",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts U.S. Senator Jon Ossoff.",
+      "source_url": "https://www.congress.gov/member/jon-ossoff/O000174"
+    },
+    {
+      "audit_id": 5,
+      "candidate_name": "Cory Booker",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Cory Booker.",
+      "source_url": "https://www.congress.gov/member/cory-booker/B001288"
+    },
+    {
+      "audit_id": 6,
+      "candidate_name": "Ben Ray Luján",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate.",
+      "source_url": "https://bioguide.congress.gov/search/bio/L000570"
+    },
+    {
+      "audit_id": 7,
+      "candidate_name": "Sherrod Brown",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches candidate Sherrod Brown.",
+      "source_url": "https://bioguide.congress.gov/search/bio/B000944"
+    },
+    {
+      "audit_id": 8,
+      "candidate_name": "Jeff Merkley",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches U.S. Senator Jeff Merkley.",
+      "source_url": "https://bioguide.congress.gov/search/bio/M001176"
+    },
+    {
+      "audit_id": 9,
+      "candidate_name": "Jack Reed",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts U.S. Senator Jack Reed.",
+      "source_url": "https://www.congress.gov/member/john-reed/R000122"
+    },
+    {
+      "audit_id": 10,
+      "candidate_name": "Mark Warner",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Senator Mark Warner.",
+      "source_url": "https://www.congress.gov/member/mark-warner/W000805"
+    },
+    {
+      "audit_id": 11,
+      "candidate_name": "Barry Moore",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches U.S. Representative Barry Moore.",
+      "source_url": "https://www.congress.gov/member/barry-moore/M001212"
+    },
+    {
+      "audit_id": 12,
+      "candidate_name": "TBD — Primary: Aug 18 (Sullivan)",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Senator Dan Sullivan referenced in the manifest.",
+      "source_url": "https://www.congress.gov/member/dan-sullivan/S001198"
+    },
+    {
+      "audit_id": 13,
+      "candidate_name": "Tom Cotton",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Tom Cotton.",
+      "source_url": "https://www.congress.gov/member/tom-cotton/C001095"
+    },
+    {
+      "audit_id": 14,
+      "candidate_name": "Mike Collins",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Mike Collins.",
+      "source_url": "https://www.congress.gov/member/mike-collins/C001129"
+    },
+    {
+      "audit_id": 15,
+      "candidate_name": "Jim Risch",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Jim Risch.",
+      "source_url": "https://bioguide.congress.gov/search/bio/R000584"
+    },
+    {
+      "audit_id": 16,
+      "candidate_name": "Ashley Hinson",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Ashley Hinson.",
+      "source_url": "https://www.congress.gov/member/ashley-hinson/H001091"
+    },
+    {
+      "audit_id": 17,
+      "candidate_name": "Roger Marshall",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts Senator Roger Marshall.",
+      "source_url": "https://bioguide.congress.gov/search/bio/M001198"
+    },
+    {
+      "audit_id": 18,
+      "candidate_name": "Andy Barr",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Andy Barr.",
+      "source_url": "https://www.congress.gov/member/andy-barr/B001282"
+    },
+    {
+      "audit_id": 19,
+      "candidate_name": "Julia Letlow",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Julia Letlow.",
+      "source_url": "https://www.congress.gov/member/julia-letlow/L000595"
+    },
+    {
+      "audit_id": 20,
+      "candidate_name": "Susan Collins",
+      "verdict": "verified_match",
+      "reason": "Official congressional bioguide portrait matches the portal portrait of U.S. Senator Susan Collins.",
+      "source_url": "https://bioguide.congress.gov/search/bio/c001035"
+    },
+    {
+      "audit_id": 21,
+      "candidate_name": "Mike Rogers",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait accurately depicts the candidate.",
+      "source_url": "https://bioguide.congress.gov/search/bio/r000572"
+    },
+    {
+      "audit_id": 22,
+      "candidate_name": "Cindy Hyde-Smith",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Senator Cindy Hyde-Smith.",
+      "source_url": "https://www.congress.gov/member/cindy-hyde-smith/H001079"
+    },
+    {
+      "audit_id": 23,
+      "candidate_name": "Pete Ricketts",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Pete Ricketts.",
+      "source_url": "https://www.congress.gov/member/pete-ricketts/R000618"
+    },
+    {
+      "audit_id": 24,
+      "candidate_name": "Kevin Hern",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the candidate Kevin Hern.",
+      "source_url": "https://bioguide.congress.gov/search/bio/H001082"
+    },
+    {
+      "audit_id": 25,
+      "candidate_name": "Mike Rounds",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts named candidate Mike Rounds.",
+      "source_url": "https://www.congress.gov/member/mike-rounds/R000605"
+    },
+    {
+      "audit_id": 26,
+      "candidate_name": "Bill Hagerty",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Senator Bill Hagerty.",
+      "source_url": "https://www.congress.gov/member/bill-hagerty/H000601"
+    },
+    {
+      "audit_id": 27,
+      "candidate_name": "Shelley Moore Capito",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Shelley Moore Capito.",
+      "source_url": "https://www.congress.gov/member/shelley-capito/C001047"
+    },
+    {
+      "audit_id": 28,
+      "candidate_name": "Mike Rogers",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches candidate Mike Rogers of Alabama's 3rd congressional district.",
+      "source_url": "https://bioguide.congress.gov/search/bio/r000575"
+    },
+    {
+      "audit_id": 29,
+      "candidate_name": "Robert B. Aderholt",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait on Congress.gov confirms the portal image correctly depicts Representative Robert B. Aderholt.",
+      "source_url": "https://www.congress.gov/member/robert-aderholt/A000055"
+    },
+    {
+      "audit_id": 30,
+      "candidate_name": "Dale Strong",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Dale Strong.",
+      "source_url": "https://www.congress.gov/member/dale-strong/S001220"
+    },
+    {
+      "audit_id": 31,
+      "candidate_name": "Gary Palmer",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Gary Palmer.",
+      "source_url": "https://www.congress.gov/member/gary-palmer/P000609"
+    },
+    {
+      "audit_id": 32,
+      "candidate_name": "Elijah Crane",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches named candidate Elijah Crane.",
+      "source_url": "https://www.congress.gov/member/elijah-crane/C001132"
+    },
+    {
+      "audit_id": 33,
+      "candidate_name": "Juan Ciscomani",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Juan Ciscomani.",
+      "source_url": "https://bioguide.congress.gov/search/bio/C001133"
+    },
+    {
+      "audit_id": 34,
+      "candidate_name": "Rick Crawford",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate.",
+      "source_url": "https://www.congress.gov/member/eric-crawford/C001087"
+    },
+    {
+      "audit_id": 35,
+      "candidate_name": "J. French Hill",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait and biographical records confirm the identity of J. French Hill.",
+      "source_url": "https://www.congress.gov/member/j-hill/H001072"
+    },
+    {
+      "audit_id": 36,
+      "candidate_name": "Steve Womack",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Steve Womack.",
+      "source_url": "https://www.congress.gov/member/steve-womack/W000809"
+    },
+    {
+      "audit_id": 37,
+      "candidate_name": "Bruce Westerman",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts Bruce Westerman, the U.S. Representative for Arkansas's 4th congressional district.",
+      "source_url": "https://www.congress.gov/member/bruce-westerman/W000821"
+    },
+    {
+      "audit_id": 38,
+      "candidate_name": "David Valadao",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate.",
+      "source_url": "https://www.congress.gov/member/david-valadao/V000129"
+    },
+    {
+      "audit_id": 39,
+      "candidate_name": "Young Kim",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Young Kim.",
+      "source_url": "https://www.congress.gov/member/young-kim/K000397"
+    },
+    {
+      "audit_id": 41,
+      "candidate_name": "Jeff Hurd",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Jeff Hurd.",
+      "source_url": "https://www.congress.gov/member/jeff-hurd/H001100"
+    },
+    {
+      "audit_id": 42,
+      "candidate_name": "Lauren Boebert",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Lauren Boebert.",
+      "source_url": "https://bioguide.congress.gov/search/bio/B000825"
+    },
+    {
+      "audit_id": 43,
+      "candidate_name": "Jeff Crank",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches named candidate Jeff Crank.",
+      "source_url": "https://www.congress.gov/member/jeff-crank/C001137"
+    },
+    {
+      "audit_id": 44,
+      "candidate_name": "Gabe Evans",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait from the United States Congress repository correctly depicts Representative Gabe Evans.",
+      "source_url": "https://bioguide.congress.gov/scripts/biodisplay.pl?index=E000300"
+    },
+    {
+      "audit_id": 45,
+      "candidate_name": "Joe Courtney",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate.",
+      "source_url": "https://www.congress.gov/member/joe-courtney/C001069"
+    },
+    {
+      "audit_id": 46,
+      "candidate_name": "Rosa DeLauro",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal manifest image for Rosa DeLauro.",
+      "source_url": "https://bioguide.congress.gov/search/bio/D000216"
+    },
+    {
+      "audit_id": 47,
+      "candidate_name": "Jimmy Patronis",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Jimmy Patronis.",
+      "source_url": "https://www.congress.gov/member/jimmy-patronis/P000622"
+    },
+    {
+      "audit_id": 48,
+      "candidate_name": "Randy Fine",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches portal image for Randy Fine.",
+      "source_url": "https://bioguide.congress.gov/search/bio/F000484"
+    },
+    {
+      "audit_id": 49,
+      "candidate_name": "Cory Mills",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Cory Mills.",
+      "source_url": "https://www.congress.gov/member/cory-mills/M001216"
+    },
+    {
+      "audit_id": 50,
+      "candidate_name": "Mario Diaz-Balart",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the candidate.",
+      "source_url": "https://mariodiazbalart.house.gov/"
+    },
+    {
+      "audit_id": 51,
+      "candidate_name": "Maria Elvira Salazar",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Maria Elvira Salazar.",
+      "source_url": "https://www.congress.gov/member/maria-salazar/S000168"
+    },
+    {
+      "audit_id": 52,
+      "candidate_name": "Brian Jack",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Brian Jack.",
+      "source_url": "https://www.congress.gov/member/brian-jack/J000311"
+    },
+    {
+      "audit_id": 53,
+      "candidate_name": "Rich McCormick",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Rich McCormick.",
+      "source_url": "https://bioguide.congress.gov/search/bio/M001218"
+    },
+    {
+      "audit_id": 54,
+      "candidate_name": "Austin Scott",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches portal image.",
+      "source_url": "https://www.congress.gov/member/austin-scott/S001189"
+    },
+    {
+      "audit_id": 55,
+      "candidate_name": "Andrew Clyde",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Andrew Clyde.",
+      "source_url": "https://www.congress.gov/member/andrew-clyde/C001116"
+    },
+    {
+      "audit_id": 56,
+      "candidate_name": "Jill Tokuda",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts the named candidate.",
+      "source_url": "https://www.congress.gov/member/jill-tokuda/T000487"
+    },
+    {
+      "audit_id": 57,
+      "candidate_name": "Russ Fulcher",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Russ Fulcher.",
+      "source_url": "https://clerk.house.gov/members/F000469"
+    },
+    {
+      "audit_id": 58,
+      "candidate_name": "Mike Simpson",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Mike Simpson.",
+      "source_url": "https://simpson.house.gov/"
+    },
+    {
+      "audit_id": 59,
+      "candidate_name": "Mike Bost",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches named candidate Mike Bost.",
+      "source_url": "https://www.congress.gov/member/mike-bost/B001295"
+    },
+    {
+      "audit_id": 60,
+      "candidate_name": "Mary Miller",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Mary Miller.",
+      "source_url": "https://bioguide.congress.gov/search/bio/M001211"
+    },
+    {
+      "audit_id": 61,
+      "candidate_name": "Darin LaHood",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Darin LaHood.",
+      "source_url": "https://www.congress.gov/member/darin-lahood/L000585"
+    },
+    {
+      "audit_id": 62,
+      "candidate_name": "Rudy Yakym",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the candidate.",
+      "source_url": "https://www.congress.gov/member/rudy-yakym/Y000067"
+    },
+    {
+      "audit_id": 63,
+      "candidate_name": "Marlin Stutzman",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate.",
+      "source_url": "https://bioguide.congress.gov/search/bio/S001188"
+    },
+    {
+      "audit_id": 64,
+      "candidate_name": "Jim Baird",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Jim Baird.",
+      "source_url": "https://www.congress.gov/member/james-baird/B001307"
+    },
+    {
+      "audit_id": 65,
+      "candidate_name": "Victoria Spartz",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts Representative Victoria Spartz.",
+      "source_url": "https://bioguide.congress.gov/search/bio/S000929"
+    },
+    {
+      "audit_id": 66,
+      "candidate_name": "Jefferson Shreve",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal portrait for Jefferson Shreve.",
+      "source_url": "https://www.congress.gov/member/jefferson-shreve/S001229"
+    },
+    {
+      "audit_id": 67,
+      "candidate_name": "Mark Messmer",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Mark Messmer.",
+      "source_url": "https://www.congress.gov/member/mark-messmer/M001233"
+    },
+    {
+      "audit_id": 68,
+      "candidate_name": "Erin Houchin",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the candidate's verified identity.",
+      "source_url": "https://www.congress.gov/member/erin-houchin/H001093"
+    },
+    {
+      "audit_id": 69,
+      "candidate_name": "Mariannette Miller-Meeks",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Mariannette Miller-Meeks.",
+      "source_url": "https://bioguide.congress.gov/search/bio/M001215"
+    },
+    {
+      "audit_id": 70,
+      "candidate_name": "Zach Nunn",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts Representative Zach Nunn.",
+      "source_url": "https://bioguide.congress.gov/search/bio/N000193"
+    },
+    {
+      "audit_id": 71,
+      "candidate_name": "Tracey Mann",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Tracey Mann.",
+      "source_url": "https://www.congress.gov/member/tracey-mann/M000871"
+    },
+    {
+      "audit_id": 72,
+      "candidate_name": "Ron Estes",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches portal image of Ron Estes.",
+      "source_url": "https://estes.house.gov/biography/"
+    },
+    {
+      "audit_id": 73,
+      "candidate_name": "James Comer",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for James Comer.",
+      "source_url": "https://www.congress.gov/member/james-comer/C001108"
+    },
+    {
+      "audit_id": 74,
+      "candidate_name": "Brett Guthrie",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait from Congress.gov matches the named candidate Brett Guthrie.",
+      "source_url": "https://www.congress.gov/member/brett-guthrie/G000558"
+    },
+    {
+      "audit_id": 75,
+      "candidate_name": "Harold Rogers",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Harold Rogers.",
+      "source_url": "https://www.congress.gov/member/harold-rogers/R000395"
+    },
+    {
+      "audit_id": 76,
+      "candidate_name": "Andy Harris",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Andy Harris.",
+      "source_url": "https://www.congress.gov/member/andy-harris/H001052"
+    },
+    {
+      "audit_id": 77,
+      "candidate_name": "Jack Bergman",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Jack Bergman.",
+      "source_url": "https://www.congress.gov/member/jack-bergman/B001301"
+    },
+    {
+      "audit_id": 78,
+      "candidate_name": "John Moolenaar",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the candidate name.",
+      "source_url": "https://bioguide.congress.gov/scripts/biodisplay.pl?index=M001194"
+    },
+    {
+      "audit_id": 79,
+      "candidate_name": "Bill Huizenga",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Bill Huizenga.",
+      "source_url": "https://www.congress.gov/member/bill-huizenga/H001058"
+    },
+    {
+      "audit_id": 80,
+      "candidate_name": "Tim Walberg",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Tim Walberg.",
+      "source_url": "https://www.congress.gov/member/tim-walberg/W000798"
+    },
+    {
+      "audit_id": 81,
+      "candidate_name": "Lisa McClain",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Lisa McClain.",
+      "source_url": "https://bioguide.congress.gov/search/bio/M001136"
+    },
+    {
+      "audit_id": 82,
+      "candidate_name": "John James",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches portal image for Representative John James.",
+      "source_url": "https://bioguide.congress.gov/search/bio/J000307"
+    },
+    {
+      "audit_id": 83,
+      "candidate_name": "Brad Finstad",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Brad Finstad.",
+      "source_url": "https://bioguide.congress.gov/search/bio/F000475"
+    },
+    {
+      "audit_id": 84,
+      "candidate_name": "Michelle Fischbach",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Michelle Fischbach.",
+      "source_url": "https://www.congress.gov/member/michelle-fischbach/F000470"
+    },
+    {
+      "audit_id": 85,
+      "candidate_name": "Pete Stauber",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait from the United States Congress directory correctly depicts candidate Pete Stauber.",
+      "source_url": "https://www.congress.gov/member/pete-stauber/S001212"
+    },
+    {
+      "audit_id": 86,
+      "candidate_name": "Trent Kelly",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly matches Representative Trent Kelly.",
+      "source_url": "https://bioguide.congress.gov/scripts/biodisplay.pl?index=K000388"
+    },
+    {
+      "audit_id": 87,
+      "candidate_name": "Michael Guest",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate.",
+      "source_url": "https://bioguide.congress.gov/search/bio/G000591"
+    },
+    {
+      "audit_id": 88,
+      "candidate_name": "Mike Ezell",
+      "verdict": "verified_match",
+      "reason": "Official congressional biographical and image records confirm that the portal portrait depicts Representative Mike Ezell.",
+      "source_url": "https://bioguide.congress.gov/search/bio/E000235"
+    },
+    {
+      "audit_id": 89,
+      "candidate_name": "Ann Wagner",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Ann Wagner.",
+      "source_url": "https://www.congress.gov/member/ann-wagner/W000812"
+    },
+    {
+      "audit_id": 90,
+      "candidate_name": "Eric Burlison",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches portal image for Eric Burlison.",
+      "source_url": "https://bioguide.congress.gov/search/bio/B001316"
+    },
+    {
+      "audit_id": 91,
+      "candidate_name": "Jason Smith",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Jason Smith.",
+      "source_url": "https://www.congress.gov/member/jason-smith/S001195"
+    },
+    {
+      "audit_id": 92,
+      "candidate_name": "Troy Downing",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Troy Downing.",
+      "source_url": "https://www.congress.gov/member/troy-downing/D000634"
+    },
+    {
+      "audit_id": 93,
+      "candidate_name": "Mike Flood",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait from Congress.gov matches the portal image for Mike Flood.",
+      "source_url": "https://www.congress.gov/member/mike-flood/F000474"
+    },
+    {
+      "audit_id": 94,
+      "candidate_name": "Adrian Smith",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Adrian Smith.",
+      "source_url": "https://www.congress.gov/member/adrian-smith/S001172"
+    },
+    {
+      "audit_id": 95,
+      "candidate_name": "Jeff Van Drew",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait from the United States Congress directory correctly depicts Representative Jeff Van Drew.",
+      "source_url": "https://bioguide.congress.gov/search/bio/V000133"
+    },
+    {
+      "audit_id": 96,
+      "candidate_name": "Christopher H. Smith",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts Representative Christopher H. Smith.",
+      "source_url": "https://bioguide.congress.gov/search/bio/S000522"
+    },
+    {
+      "audit_id": 97,
+      "candidate_name": "Thomas Kean Jr.",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait from the United States collection matches named candidate Thomas Kean Jr.",
+      "source_url": "https://www.congress.gov/member/thomas-kean/K000398"
+    },
+    {
+      "audit_id": 98,
+      "candidate_name": "Nicole Malliotakis",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate.",
+      "source_url": "https://bioguide.congress.gov/search/bio/M000317"
+    },
+    {
+      "audit_id": 99,
+      "candidate_name": "Mike Lawler",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches candidate Mike Lawler.",
+      "source_url": "https://bioguide.congress.gov/search/bio/L000599"
+    },
+    {
+      "audit_id": 100,
+      "candidate_name": "Claudia Tenney",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches candidate identity in portal manifest.",
+      "source_url": "https://bioguide.congress.gov/search/bio/T000478"
+    },
+    {
+      "audit_id": 101,
+      "candidate_name": "Greg Murphy",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait accurately depicts Representative Greg Murphy.",
+      "source_url": "https://www.congress.gov/member/gregory-murphy/M001210"
+    },
+    {
+      "audit_id": 102,
+      "candidate_name": "Virginia Foxx",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches named candidate Virginia Foxx.",
+      "source_url": "https://bioguide.congress.gov/search/bio/f000450"
+    },
+    {
+      "audit_id": 103,
+      "candidate_name": "Addison P. McDowell",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Addison P. McDowell.",
+      "source_url": "https://www.congress.gov/member/addison-mcdowell/M001240"
+    },
+    {
+      "audit_id": 104,
+      "candidate_name": "David Rouzer",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts David Rouzer.",
+      "source_url": "https://www.congress.gov/member/david-rouzer/R000603"
+    },
+    {
+      "audit_id": 105,
+      "candidate_name": "Mark Harris",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Mark Harris.",
+      "source_url": "https://www.congress.gov/member/mark-harris/H001102"
+    },
+    {
+      "audit_id": 106,
+      "candidate_name": "Richard Hudson",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Richard Hudson.",
+      "source_url": "https://hudson.house.gov/about"
+    },
+    {
+      "audit_id": 107,
+      "candidate_name": "Pat Harrigan",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait from Congress.gov matches the portal manifest record for Pat Harrigan.",
+      "source_url": "https://www.congress.gov/member/pat-harrigan/H001101"
+    },
+    {
+      "audit_id": 108,
+      "candidate_name": "Brad Knott",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Brad Knott.",
+      "source_url": "https://www.congress.gov/member/brad-knott/K000405"
+    },
+    {
+      "audit_id": 109,
+      "candidate_name": "Tim Moore",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches named candidate Tim Moore.",
+      "source_url": "https://www.congress.gov/member/tim-moore/M001236"
+    },
+    {
+      "audit_id": 110,
+      "candidate_name": "Julie Fedorchak",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate.",
+      "source_url": "https://fedorchak.house.gov/"
+    },
+    {
+      "audit_id": 111,
+      "candidate_name": "David J. Taylor",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate David J. Taylor.",
+      "source_url": "https://www.congress.gov/member/david-taylor/T000490"
+    },
+    {
+      "audit_id": 112,
+      "candidate_name": "Jim Jordan",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Jim Jordan.",
+      "source_url": "https://bioguide.congress.gov/search/bio/j000289"
+    },
+    {
+      "audit_id": 113,
+      "candidate_name": "Bob Latta",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Bob Latta.",
+      "source_url": "https://bioguide.congress.gov/search/bio/L000566"
+    },
+    {
+      "audit_id": 114,
+      "candidate_name": "Michael A. Rulli",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches named candidate Michael A. Rulli.",
+      "source_url": "https://www.congress.gov/member/michael-rulli/R000619"
+    },
+    {
+      "audit_id": 115,
+      "candidate_name": "Max Miller",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Max Miller.",
+      "source_url": "https://bioguide.congress.gov/search/bio/M001222"
+    },
+    {
+      "audit_id": 116,
+      "candidate_name": "Warren Davidson",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Warren Davidson.",
+      "source_url": "https://bioguide.congress.gov/search/bio/D000626"
+    },
+    {
+      "audit_id": 117,
+      "candidate_name": "Mike Turner",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Mike Turner.",
+      "source_url": "https://www.congress.gov/member/michael-turner/T000463"
+    },
+    {
+      "audit_id": 118,
+      "candidate_name": "Troy Balderson",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Troy Balderson.",
+      "source_url": "https://www.congress.gov/member/troy-balderson/B001306"
+    },
+    {
+      "audit_id": 119,
+      "candidate_name": "David P. Joyce",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative David P. Joyce.",
+      "source_url": "https://www.congress.gov/member/david-joyce/J000295"
+    },
+    {
+      "audit_id": 120,
+      "candidate_name": "Mike Carey",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Mike Carey.",
+      "source_url": "https://bioguide.congress.gov/search/bio/C001126"
+    },
+    {
+      "audit_id": 121,
+      "candidate_name": "Josh Brecheen",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the candidate.",
+      "source_url": "https://bioguide.congress.gov/search/bio/B001317"
+    },
+    {
+      "audit_id": 122,
+      "candidate_name": "Frank Lucas",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Frank Lucas.",
+      "source_url": "https://lucas.house.gov/"
+    },
+    {
+      "audit_id": 123,
+      "candidate_name": "Tom Cole",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly matches Representative Tom Cole.",
+      "source_url": "https://www.congress.gov/member/tom-cole/C001053"
+    },
+    {
+      "audit_id": 124,
+      "candidate_name": "Stephanie Bice",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts candidate Stephanie Bice.",
+      "source_url": "https://www.congress.gov/member/stephanie-bice/B000740"
+    },
+    {
+      "audit_id": 125,
+      "candidate_name": "Cliff Bentz",
+      "verdict": "verified_match",
+      "reason": "Portal portrait matches official congressional bioguide photograph for Cliff Bentz.",
+      "source_url": "https://bioguide.congress.gov/search/bio/B000668"
+    },
+    {
+      "audit_id": 126,
+      "candidate_name": "Brian Fitzpatrick",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal manifest image for Brian Fitzpatrick.",
+      "source_url": "https://www.congress.gov/member/brian-fitzpatrick/F000466"
+    },
+    {
+      "audit_id": 127,
+      "candidate_name": "Ryan Mackenzie",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Ryan Mackenzie.",
+      "source_url": "https://www.congress.gov/member/ryan-mackenzie/M001230"
+    },
+    {
+      "audit_id": 128,
+      "candidate_name": "Robert P. Bresnahan",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait from the United States Congress directory correctly depicts Representative Robert P. Bresnahan.",
+      "source_url": "https://www.congress.gov/member/robert-bresnahan/B001327"
+    },
+    {
+      "audit_id": 129,
+      "candidate_name": "Daniel Meuser",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches candidate Daniel Meuser.",
+      "source_url": "https://bioguide.congress.gov/search/bio/M001204"
+    },
+    {
+      "audit_id": 130,
+      "candidate_name": "Scott Perry",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Scott Perry.",
+      "source_url": "https://bioguide.congress.gov/search/bio/P000605"
+    },
+    {
+      "audit_id": 131,
+      "candidate_name": "Lloyd Smucker",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Representative Lloyd Smucker.",
+      "source_url": "https://www.congress.gov/member/lloyd-smucker/S001199"
+    },
+    {
+      "audit_id": 132,
+      "candidate_name": "John Joyce",
+      "verdict": "verified_match",
+      "reason": "The portal portrait matches the official congressional portrait and identity records of U.S. Representative John Joyce.",
+      "source_url": "https://www.congress.gov/member/john-joyce/J000302"
+    },
+    {
+      "audit_id": 133,
+      "candidate_name": "Guy Reschenthaler",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Guy Reschenthaler.",
+      "source_url": "https://www.congress.gov/member/guy-reschenthaler/R000610"
+    },
+    {
+      "audit_id": 134,
+      "candidate_name": "Glenn W. Thompson",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Glenn W. Thompson of Pennsylvania's 15th district.",
+      "source_url": "https://www.congress.gov/member/glenn-thompson/T000467"
+    },
+    {
+      "audit_id": 135,
+      "candidate_name": "Mike Kelly",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait from Bioguide and Congress.gov matches the named candidate.",
+      "source_url": "https://bioguide.congress.gov/search/bio/K000376"
+    },
+    {
+      "audit_id": 136,
+      "candidate_name": "Joe Wilson",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Joe Wilson.",
+      "source_url": "https://www.congress.gov/member/joe-wilson/W000795"
+    },
+    {
+      "audit_id": 137,
+      "candidate_name": "Sheri Biggs",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Representative Sheri Biggs.",
+      "source_url": "https://www.congress.gov/member/sheri-biggs/B001325"
+    },
+    {
+      "audit_id": 138,
+      "candidate_name": "William Timmons",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate William Timmons.",
+      "source_url": "https://bioguide.congress.gov/search/bio/T000480"
+    },
+    {
+      "audit_id": 139,
+      "candidate_name": "Russell Fry",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches portal image for Russell Fry.",
+      "source_url": "https://bioguide.congress.gov/search/bio/F000478"
+    },
+    {
+      "audit_id": 140,
+      "candidate_name": "Scott DesJarlais",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Scott DesJarlais.",
+      "source_url": "https://www.congress.gov/member/scott-desjarlais/D000616"
+    },
+    {
+      "audit_id": 141,
+      "candidate_name": "Andy Ogles",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Andy Ogles.",
+      "source_url": "https://bioguide.congress.gov/search/bio/O000175"
+    },
+    {
+      "audit_id": 142,
+      "candidate_name": "David Kustoff",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches David Kustoff.",
+      "source_url": "https://kustoff.house.gov/"
+    },
+    {
+      "audit_id": 143,
+      "candidate_name": "Nathaniel Moran",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Nathaniel Moran.",
+      "source_url": "https://bioguide.congress.gov/search/bio/M001224"
+    },
+    {
+      "audit_id": 144,
+      "candidate_name": "Keith Self",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Keith Self.",
+      "source_url": "https://www.congress.gov/member/keith-self/S001224"
+    },
+    {
+      "audit_id": 145,
+      "candidate_name": "Pat Fallon",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Pat Fallon.",
+      "source_url": "https://bioguide.congress.gov/search/bio/F000246"
+    },
+    {
+      "audit_id": 146,
+      "candidate_name": "Lance Gooden",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image.",
+      "source_url": "https://www.congress.gov/member/lance-gooden/G000589"
+    },
+    {
+      "audit_id": 147,
+      "candidate_name": "Jake Ellzey",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Jake Ellzey.",
+      "source_url": "https://bioguide.congress.gov/search/bio/E000071"
+    },
+    {
+      "audit_id": 148,
+      "candidate_name": "August Pfluger",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches August Pfluger.",
+      "source_url": "https://www.congress.gov/member/august-pfluger/P000048"
+    },
+    {
+      "audit_id": 149,
+      "candidate_name": "Craig A. Goldman",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait accurately depicts Representative Craig Goldman.",
+      "source_url": "https://craiggoldman.house.gov/"
+    },
+    {
+      "audit_id": 150,
+      "candidate_name": "Ronny Jackson",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Rep. Ronny Jackson.",
+      "source_url": "https://www.congress.gov/member/ronny-jackson/J000304"
+    },
+    {
+      "audit_id": 151,
+      "candidate_name": "Monica De La Cruz",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Monica De La Cruz.",
+      "source_url": "https://www.congress.gov/member/monica-de-la-cruz/D000594"
+    },
+    {
+      "audit_id": 152,
+      "candidate_name": "Pete Sessions",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Representative Pete Sessions.",
+      "source_url": "https://bioguide.congress.gov/search/bio/s000250"
+    },
+    {
+      "audit_id": 153,
+      "candidate_name": "Beth Van Duyne",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts Beth Van Duyne.",
+      "source_url": "https://www.congress.gov/member/beth-van-duyne/V000134"
+    },
+    {
+      "audit_id": 154,
+      "candidate_name": "Roger Williams",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Roger Williams.",
+      "source_url": "https://bioguide.congress.gov/search/bio/W000816"
+    },
+    {
+      "audit_id": 155,
+      "candidate_name": "Michael Cloud",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Michael Cloud.",
+      "source_url": "https://www.congress.gov/member/michael-cloud/C001115"
+    },
+    {
+      "audit_id": 156,
+      "candidate_name": "John R. Carter",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative John R. Carter.",
+      "source_url": "https://www.congress.gov/member/john-carter/C001051"
+    },
+    {
+      "audit_id": 157,
+      "candidate_name": "Brian Babin",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Brian Babin.",
+      "source_url": "https://bioguide.congress.gov/search/bio/B001291"
+    },
+    {
+      "audit_id": 158,
+      "candidate_name": "Celeste Maloy",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the candidate portal image.",
+      "source_url": "https://bioguide.congress.gov/search/bio/M001228"
+    },
+    {
+      "audit_id": 159,
+      "candidate_name": "Mike Kennedy",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Mike Kennedy.",
+      "source_url": "https://www.congress.gov/member/mike-kennedy/K000403"
+    },
+    {
+      "audit_id": 160,
+      "candidate_name": "Jen Kiggans",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches named candidate Jen Kiggans.",
+      "source_url": "https://www.congress.gov/member/jennifer-kiggans/K000399"
+    },
+    {
+      "audit_id": 161,
+      "candidate_name": "Morgan Griffith",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait accurately depicts candidate Morgan Griffith.",
+      "source_url": "https://bioguide.congress.gov/search/bio/G000568"
+    },
+    {
+      "audit_id": 162,
+      "candidate_name": "Michael Baumgartner",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches candidate Michael Baumgartner.",
+      "source_url": "https://bioguide.congress.gov/scripts/biodisplay.pl?index=B001322"
+    },
+    {
+      "audit_id": 163,
+      "candidate_name": "Pramila Jayapal",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts Pramila Jayapal.",
+      "source_url": "https://bioguide.congress.gov/search/bio/J000298"
+    },
+    {
+      "audit_id": 164,
+      "candidate_name": "Carol Miller",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts candidate Carol Miller.",
+      "source_url": "https://bioguide.congress.gov/search/bio/M001205"
+    },
+    {
+      "audit_id": 165,
+      "candidate_name": "Riley Moore",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the candidate portal image.",
+      "source_url": "https://www.congress.gov/member/riley-moore/M001235"
+    },
+    {
+      "audit_id": 166,
+      "candidate_name": "Bryan Steil",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Bryan Steil.",
+      "source_url": "https://bioguide.congress.gov/search/bio/S001213"
+    },
+    {
+      "audit_id": 167,
+      "candidate_name": "Derrick Van Orden",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts Representative Derrick Van Orden.",
+      "source_url": "https://www.congress.gov/member/derrick-van-orden/V000135"
+    },
+    {
+      "audit_id": 168,
+      "candidate_name": "Glenn Grothman",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Glenn Grothman.",
+      "source_url": "https://www.congress.gov/member/glenn-grothman/G000576"
+    },
+    {
+      "audit_id": 169,
+      "candidate_name": "Tom Tiffany",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait from Congress.gov matches representative Tom Tiffany.",
+      "source_url": "https://www.congress.gov/member/thomas-tiffany/T000165"
+    },
+    {
+      "audit_id": 170,
+      "candidate_name": "Shomari Figures",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Shomari Figures.",
+      "source_url": "https://www.congress.gov/member/shomari-figures/F000481"
+    },
+    {
+      "audit_id": 171,
+      "candidate_name": "Terri Sewell",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image and accurately depicts Terri Sewell.",
+      "source_url": "https://www.congress.gov/member/terri-sewell/S001185"
+    },
+    {
+      "audit_id": 172,
+      "candidate_name": "Greg Stanton",
+      "verdict": "verified_match",
+      "reason": "The portal portrait matches the official congressional photo of Representative Greg Stanton.",
+      "source_url": "https://www.congress.gov/member/greg-stanton/S001211"
+    },
+    {
+      "audit_id": 173,
+      "candidate_name": "Jared Huffman",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Jared Huffman.",
+      "source_url": "https://bioguide.congress.gov/search/bio/H001068"
+    },
+    {
+      "audit_id": 174,
+      "candidate_name": "Ami Bera",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the candidate identity.",
+      "source_url": "https://www.congress.gov/member/ami-bera/B001287"
+    },
+    {
+      "audit_id": 175,
+      "candidate_name": "Mike Thompson",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts Representative Mike Thompson.",
+      "source_url": "https://www.congress.gov/member/mike-thompson/T000460"
+    },
+    {
+      "audit_id": 176,
+      "candidate_name": "Tom McClintock",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches named candidate Tom McClintock.",
+      "source_url": "https://bioguide.congress.gov/search/bio/M001177"
+    },
+    {
+      "audit_id": 177,
+      "candidate_name": "John Garamendi",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the candidate.",
+      "source_url": "https://bioguide.congress.gov/search/bio/G000559"
+    },
+    {
+      "audit_id": 178,
+      "candidate_name": "Josh Harder",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Josh Harder.",
+      "source_url": "https://bioguide.congress.gov/search/bio/H001090"
+    },
+    {
+      "audit_id": 179,
+      "candidate_name": "Mark DeSaulnier",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Mark DeSaulnier.",
+      "source_url": "https://bioguide.congress.gov/search/bio/D000623"
+    },
+    {
+      "audit_id": 180,
+      "candidate_name": "Lateefah Simon",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Lateefah Simon.",
+      "source_url": "https://www.congress.gov/member/lateefah-simon/S001231"
+    },
+    {
+      "audit_id": 181,
+      "candidate_name": "Adam Gray",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Adam Gray.",
+      "source_url": "https://www.congress.gov/member/adam-gray/G000605"
+    },
+    {
+      "audit_id": 182,
+      "candidate_name": "Kevin Mullin",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Kevin Mullin.",
+      "source_url": "https://www.congress.gov/member/kevin-mullin/M001225"
+    },
+    {
+      "audit_id": 183,
+      "candidate_name": "Ro Khanna",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Ro Khanna.",
+      "source_url": "https://www.congress.gov/member/ro-khanna/K000389"
+    },
+    {
+      "audit_id": 184,
+      "candidate_name": "Zoe Lofgren",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Zoe Lofgren as verified by her official congressional biography and bioguide record.",
+      "source_url": "https://bioguide.congress.gov/search/bio/l000397"
+    },
+    {
+      "audit_id": 185,
+      "candidate_name": "Jimmy Panetta",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate.",
+      "source_url": "https://www.congress.gov/member/jimmy-panetta/P000613"
+    },
+    {
+      "audit_id": 186,
+      "candidate_name": "Vince Fong",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts Representative Vince Fong.",
+      "source_url": "https://www.congress.gov/member/vince-fong/F000480"
+    },
+    {
+      "audit_id": 187,
+      "candidate_name": "Jim Costa",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait from the United States Congress image repository correctly depicts Representative Jim Costa.",
+      "source_url": "https://www.congress.gov/member/jim-costa/C001059"
+    },
+    {
+      "audit_id": 188,
+      "candidate_name": "Jay Obernolte",
+      "verdict": "verified_match",
+      "reason": "Official House congressional portrait matches portal image.",
+      "source_url": "https://obernolte.house.gov/about"
+    },
+    {
+      "audit_id": 189,
+      "candidate_name": "Salud Carbajal",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Salud Carbajal.",
+      "source_url": "https://www.congress.gov/member/salud-carbajal/C001112"
+    },
+    {
+      "audit_id": 190,
+      "candidate_name": "Raul Ruiz",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait from the United States Congress directory matches candidate Raul Ruiz.",
+      "source_url": "https://www.congress.gov/member/raul-ruiz/R000599"
+    },
+    {
+      "audit_id": 191,
+      "candidate_name": "George Whitesides",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches candidate George Whitesides.",
+      "source_url": "https://www.congress.gov/member/george-whitesides/W000830"
+    },
+    {
+      "audit_id": 192,
+      "candidate_name": "Judy Chu",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate.",
+      "source_url": "https://www.congress.gov/member/judy-chu/C001080"
+    },
+    {
+      "audit_id": 193,
+      "candidate_name": "Luz Rivas",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the candidate portal image.",
+      "source_url": "https://www.congress.gov/member/luz-rivas/R000620"
+    },
+    {
+      "audit_id": 194,
+      "candidate_name": "Laura Friedman",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches portal image for Laura Friedman.",
+      "source_url": "https://www.congress.gov/member/laura-friedman/F000483"
+    },
+    {
+      "audit_id": 195,
+      "candidate_name": "Brad Sherman",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches candidate Brad Sherman.",
+      "source_url": "https://www.congress.gov/member/brad-sherman/S000344"
+    },
+    {
+      "audit_id": 196,
+      "candidate_name": "Pete Aguilar",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait accurately depicts Representative Pete Aguilar.",
+      "source_url": "https://www.congress.gov/member/pete-aguilar/A000371"
+    },
+    {
+      "audit_id": 197,
+      "candidate_name": "Jimmy Gomez",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches named candidate Jimmy Gomez.",
+      "source_url": "https://www.congress.gov/member/jimmy-gomez/G000585"
+    },
+    {
+      "audit_id": 198,
+      "candidate_name": "Norma Torres",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait accurately matches Congresswoman Norma Torres.",
+      "source_url": "https://bioguide.congress.gov/search/bio/T000474"
+    },
+    {
+      "audit_id": 199,
+      "candidate_name": "Ted Lieu",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Representative Ted Lieu.",
+      "source_url": "https://bioguide.congress.gov/search/bio/L000582"
+    },
+    {
+      "audit_id": 200,
+      "candidate_name": "Sydney Kamlager-Dove",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Sydney Kamlager-Dove.",
+      "source_url": "https://kamlager-dove.house.gov/"
+    },
+    {
+      "audit_id": 201,
+      "candidate_name": "Mark Takano",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Mark Takano.",
+      "source_url": "https://www.congress.gov/member/mark-takano/T000472"
+    },
+    {
+      "audit_id": 202,
+      "candidate_name": "Ken Calvert",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the candidate record for Ken Calvert.",
+      "source_url": "https://www.congress.gov/member/ken-calvert/C000059"
+    },
+    {
+      "audit_id": 203,
+      "candidate_name": "Linda Sánchez",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Linda Sánchez.",
+      "source_url": "https://bioguide.congress.gov/search/bio/s001156"
+    },
+    {
+      "audit_id": 204,
+      "candidate_name": "Robert Garcia",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts Robert Garcia.",
+      "source_url": "https://www.congress.gov/member/robert-garcia/G000598"
+    },
+    {
+      "audit_id": 205,
+      "candidate_name": "Maxine Waters",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Maxine Waters.",
+      "source_url": "https://bioguide.congress.gov/search/bio/W000187"
+    },
+    {
+      "audit_id": 206,
+      "candidate_name": "Nanette Barragan",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Nanette Barragan.",
+      "source_url": "https://bioguide.congress.gov/search/bio/B001300"
+    },
+    {
+      "audit_id": 207,
+      "candidate_name": "Derek Tran",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches candidate Derek Tran.",
+      "source_url": "https://www.congress.gov/member/derek-tran/T000491"
+    },
+    {
+      "audit_id": 208,
+      "candidate_name": "Lou Correa",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches candidate Lou Correa.",
+      "source_url": "https://bioguide.congress.gov/search/bio/C001110"
+    },
+    {
+      "audit_id": 209,
+      "candidate_name": "Dave Min",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait corresponds to Representative Dave Min.",
+      "source_url": "https://www.congress.gov/member/dave-min/M001241"
+    },
+    {
+      "audit_id": 210,
+      "candidate_name": "Mike Levin",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Mike Levin.",
+      "source_url": "https://www.congress.gov/member/mike-levin/L000593"
+    },
+    {
+      "audit_id": 211,
+      "candidate_name": "Scott Peters",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Scott Peters.",
+      "source_url": "https://www.congress.gov/member/scott-peters/P000608"
+    },
+    {
+      "audit_id": 212,
+      "candidate_name": "Sara Jacobs",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Sara Jacobs.",
+      "source_url": "https://www.congress.gov/member/sara-jacobs/J000305"
+    },
+    {
+      "audit_id": 213,
+      "candidate_name": "Juan Vargas",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image and accurately depicts Representative Juan Vargas.",
+      "source_url": "https://vargas.house.gov/media/media-kit"
+    },
+    {
+      "audit_id": 214,
+      "candidate_name": "Joe Neguse",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts Representative Joe Neguse.",
+      "source_url": "https://www.congress.gov/member/joe-neguse/N000191"
+    },
+    {
+      "audit_id": 215,
+      "candidate_name": "Jason Crow",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches named candidate Jason Crow.",
+      "source_url": "https://www.congress.gov/member/jason-crow/C001121"
+    },
+    {
+      "audit_id": 216,
+      "candidate_name": "Brittany Pettersen",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the candidate.",
+      "source_url": "https://www.congress.gov/member/brittany-pettersen/P000620"
+    },
+    {
+      "audit_id": 217,
+      "candidate_name": "Jahana Hayes",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Jahana Hayes.",
+      "source_url": "https://bioguide.congress.gov/search/bio/H001081"
+    },
+    {
+      "audit_id": 218,
+      "candidate_name": "Sarah McBride",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Sarah McBride.",
+      "source_url": "https://www.congress.gov/member/sarah-mcbride/M001238"
+    },
+    {
+      "audit_id": 219,
+      "candidate_name": "Kat Cammack",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Kat Cammack as confirmed by authoritative identity sources.",
+      "source_url": "https://bioguide.congress.gov/search/bio/C001039"
+    },
+    {
+      "audit_id": 220,
+      "candidate_name": "Aaron Bean",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches portal image for Aaron Bean.",
+      "source_url": "https://www.congress.gov/member/aaron-bean/B001314"
+    },
+    {
+      "audit_id": 221,
+      "candidate_name": "Mike Haridopolos",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Mike Haridopolos.",
+      "source_url": "https://www.congress.gov/member/mike-haridopolos/H001099"
+    },
+    {
+      "audit_id": 222,
+      "candidate_name": "Darren Soto",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches portal image for Darren Soto.",
+      "source_url": "https://www.congress.gov/member/darren-soto/S001200"
+    },
+    {
+      "audit_id": 223,
+      "candidate_name": "Maxwell Frost",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Maxwell Frost.",
+      "source_url": "https://www.congress.gov/member/maxwell-frost/F000476"
+    },
+    {
+      "audit_id": 224,
+      "candidate_name": "Kathy Castor",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Kathy Castor.",
+      "source_url": "https://www.congress.gov/member/kathy-castor/C001066"
+    },
+    {
+      "audit_id": 225,
+      "candidate_name": "Laurel Lee",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches official member profile for Laurel Lee.",
+      "source_url": "https://www.congress.gov/member/laurel-lee/L000597"
+    },
+    {
+      "audit_id": 226,
+      "candidate_name": "Greg Steube",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate.",
+      "source_url": "https://www.congress.gov/member/w-steube/S001214"
+    },
+    {
+      "audit_id": 227,
+      "candidate_name": "Scott Franklin",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait and Bioguide record correctly match candidate Scott Franklin.",
+      "source_url": "https://www.congress.gov/member/scott-franklin/F000472"
+    },
+    {
+      "audit_id": 228,
+      "candidate_name": "Brian Mast",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Brian Mast.",
+      "source_url": "https://www.congress.gov/member/brian-mast/M001199"
+    },
+    {
+      "audit_id": 229,
+      "candidate_name": "Lois Frankel",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts Representative Lois Frankel.",
+      "source_url": "https://www.congress.gov/member/lois-frankel/F000462"
+    },
+    {
+      "audit_id": 230,
+      "candidate_name": "Debbie Wasserman Schultz",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Debbie Wasserman Schultz.",
+      "source_url": "https://www.congress.gov/member/debbie-wasserman-schultz/W000797"
+    },
+    {
+      "audit_id": 231,
+      "candidate_name": "Debbie Wasserman Schultz",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches named candidate Debbie Wasserman Schultz.",
+      "source_url": "https://www.congress.gov/member/debbie-wasserman-schultz/W000797"
+    },
+    {
+      "audit_id": 232,
+      "candidate_name": "Sanford Bishop",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the candidate portal assignment.",
+      "source_url": "https://www.congress.gov/member/sanford-bishop/B000490"
+    },
+    {
+      "audit_id": 233,
+      "candidate_name": "Henry Johnson",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Henry Johnson.",
+      "source_url": "https://www.congress.gov/member/henry-johnson/J000288"
+    },
+    {
+      "audit_id": 234,
+      "candidate_name": "Nikema Williams",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches named candidate Nikema Williams.",
+      "source_url": "https://www.congress.gov/member/nikema-williams/W000788"
+    },
+    {
+      "audit_id": 235,
+      "candidate_name": "Lucy McBath",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches named candidate Lucy McBath.",
+      "source_url": "https://www.congress.gov/member/lucy-mcbath/M001208"
+    },
+    {
+      "audit_id": 236,
+      "candidate_name": "Delia Ramirez",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly matches Representative Delia Ramirez.",
+      "source_url": "https://bioguide.congress.gov/search/bio/R000617"
+    },
+    {
+      "audit_id": 237,
+      "candidate_name": "Mike Quigley",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts Representative Mike Quigley.",
+      "source_url": "https://bioguide.congress.gov/search/bio/q000023"
+    },
+    {
+      "audit_id": 238,
+      "candidate_name": "Sean Casten",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts Representative Sean Casten.",
+      "source_url": "https://bioguide.congress.gov/search/bio/C001117"
+    },
+    {
+      "audit_id": 239,
+      "candidate_name": "Bradley Schneider",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Bradley Schneider.",
+      "source_url": "https://www.congress.gov/member/bradley-schneider/S001190"
+    },
+    {
+      "audit_id": 240,
+      "candidate_name": "Bill Foster",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts Representative Bill Foster.",
+      "source_url": "https://www.congress.gov/member/bill-foster/F000454"
+    },
+    {
+      "audit_id": 241,
+      "candidate_name": "Nikki Budzinski",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Nikki Budzinski.",
+      "source_url": "https://www.congress.gov/member/nikki-budzinski/B001315"
+    },
+    {
+      "audit_id": 242,
+      "candidate_name": "Lauren Underwood",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate.",
+      "source_url": "https://www.congress.gov/member/lauren-underwood/U000040"
+    },
+    {
+      "audit_id": 243,
+      "candidate_name": "Eric Sorensen",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Eric Sorensen.",
+      "source_url": "https://sorensen.house.gov/"
+    },
+    {
+      "audit_id": 244,
+      "candidate_name": "André Carson",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate André Carson.",
+      "source_url": "https://www.congress.gov/member/andre-carson/C001072"
+    },
+    {
+      "audit_id": 245,
+      "candidate_name": "Sharice Davids",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Sharice Davids.",
+      "source_url": "https://www.congress.gov/member/sharice-davids/D000629"
+    },
+    {
+      "audit_id": 246,
+      "candidate_name": "Morgan McGarvey",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Morgan McGarvey.",
+      "source_url": "https://bioguide.congress.gov/search/bio/M001220"
+    },
+    {
+      "audit_id": 247,
+      "candidate_name": "Steve Scalise",
+      "verdict": "verified_match",
+      "reason": "Official congressional portal portrait matches Representative Steve Scalise.",
+      "source_url": "https://bioguide.congress.gov/search/bio/s001176"
+    },
+    {
+      "audit_id": 248,
+      "candidate_name": "Troy Carter",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts Representative Troy Carter.",
+      "source_url": "https://bioguide.congress.gov/search/bio/C001125"
+    },
+    {
+      "audit_id": 249,
+      "candidate_name": "Clay Higgins",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait accurately depicts Representative Clay Higgins.",
+      "source_url": "https://bioguide.congress.gov/search/bio/H001077"
+    },
+    {
+      "audit_id": 250,
+      "candidate_name": "Mike Johnson",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Mike Johnson for Louisiana's 4th district.",
+      "source_url": "https://www.congress.gov/member/mike-johnson/J000299"
+    },
+    {
+      "audit_id": 251,
+      "candidate_name": "Chellie Pingree",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches portal image for Chellie Pingree.",
+      "source_url": "https://bioguide.congress.gov/search/bio/P000597"
+    },
+    {
+      "audit_id": 252,
+      "candidate_name": "Sarah Elfreth",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Sarah Elfreth.",
+      "source_url": "https://www.congress.gov/member/sarah-elfreth/E000301"
+    },
+    {
+      "audit_id": 253,
+      "candidate_name": "Glenn F. Ivey",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Glenn F. Ivey.",
+      "source_url": "https://www.congress.gov/member/glenn-ivey/I000058"
+    },
+    {
+      "audit_id": 254,
+      "candidate_name": "April McClain Delaney",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait from the United States Congress image repository matches April McClain Delaney as confirmed by her congressional profile.",
+      "source_url": "https://www.congress.gov/member/april-mcclain-delaney/M001232"
+    },
+    {
+      "audit_id": 255,
+      "candidate_name": "Kweisi Mfume",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Kweisi Mfume.",
+      "source_url": "https://www.congress.gov/member/kweisi-mfume/M000687"
+    },
+    {
+      "audit_id": 256,
+      "candidate_name": "Jamie Raskin",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the candidate name Jamie Raskin.",
+      "source_url": "https://bioguide.congress.gov/search/bio/R000606"
+    },
+    {
+      "audit_id": 257,
+      "candidate_name": "Richard E. Neal",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait accurately depicts Representative Richard E. Neal.",
+      "source_url": "https://www.congress.gov/member/richard-neal/N000015"
+    },
+    {
+      "audit_id": 258,
+      "candidate_name": "James P. McGovern",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image of Representative James P. McGovern.",
+      "source_url": "https://www.congress.gov/member/james-mcgovern/M000312"
+    },
+    {
+      "audit_id": 259,
+      "candidate_name": "Lori Trahan",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the portal image for Lori Trahan.",
+      "source_url": "https://www.congress.gov/member/lori-trahan/T000482"
+    },
+    {
+      "audit_id": 260,
+      "candidate_name": "Jake Auchincloss",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Jake Auchincloss.",
+      "source_url": "https://www.congress.gov/member/jake-auchincloss/A000148"
+    },
+    {
+      "audit_id": 261,
+      "candidate_name": "Katherine M. Clark",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Katherine M. Clark.",
+      "source_url": "https://www.congress.gov/member/katherine-clark/C001101"
+    },
+    {
+      "audit_id": 262,
+      "candidate_name": "Ayanna Pressley",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait verified against authoritative congressional records and depicts Ayanna Pressley.",
+      "source_url": "https://www.congress.gov/member/ayanna-pressley/P000617"
+    },
+    {
+      "audit_id": 263,
+      "candidate_name": "Stephen F. Lynch",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches portal image for Stephen F. Lynch.",
+      "source_url": "https://www.congress.gov/member/stephen-lynch/L000562"
+    },
+    {
+      "audit_id": 264,
+      "candidate_name": "William R. Keating",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate William R. Keating.",
+      "source_url": "https://bioguide.congress.gov/search/bio/K000375"
+    },
+    {
+      "audit_id": 265,
+      "candidate_name": "Debbie Dingell",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate.",
+      "source_url": "https://www.congress.gov/member/debbie-dingell/D000624"
+    },
+    {
+      "audit_id": 266,
+      "candidate_name": "Kristen McDonald Rivet",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait correctly depicts Representative Kristen McDonald Rivet.",
+      "source_url": "https://mcdonaldrivet.house.gov/about"
+    },
+    {
+      "audit_id": 267,
+      "candidate_name": "Haley Stevens",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Haley Stevens.",
+      "source_url": "https://www.congress.gov/member/haley-stevens/S001215"
+    },
+    {
+      "audit_id": 268,
+      "candidate_name": "Rashida Tlaib",
+      "verdict": "verified_match",
+      "reason": "Official congressional bioguide portrait matches the portal image of Representative Rashida Tlaib.",
+      "source_url": "https://bioguide.congress.gov/search/bio/T000481"
+    },
+    {
+      "audit_id": 270,
+      "candidate_name": "Betty McCollum",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Betty McCollum.",
+      "source_url": "https://bioguide.congress.gov/search/bio/M001143"
+    },
+    {
+      "audit_id": 271,
+      "candidate_name": "Ilhan Omar",
+      "verdict": "verified_match",
+      "reason": "Official congressional biographical source verifies the portal portrait matches Representative Ilhan Omar.",
+      "source_url": "https://www.congress.gov/member/ilhan-omar/O000173"
+    },
+    {
+      "audit_id": 272,
+      "candidate_name": "Bennie Thompson",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the candidate.",
+      "source_url": "https://bioguide.congress.gov/search/bio/t000193"
+    },
+    {
+      "audit_id": 273,
+      "candidate_name": "Dina Titus",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Representative Dina Titus.",
+      "source_url": "https://bioguide.congress.gov/search/bio/T000468"
+    },
+    {
+      "audit_id": 275,
+      "candidate_name": "Steven Horsford",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Steven Horsford.",
+      "source_url": "https://bioguide.congress.gov/search/bio/H001066"
+    },
+    {
+      "audit_id": 278,
+      "candidate_name": "Josh Gottheimer",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches the named candidate Josh Gottheimer.",
+      "source_url": "https://www.congress.gov/member/josh-gottheimer/G000583"
+    },
+    {
+      "audit_id": 284,
+      "candidate_name": "Gabe Vasquez",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Gabe Vasquez.",
+      "source_url": "https://www.congress.gov/member/gabe-vasquez/V000136"
+    },
+    {
+      "audit_id": 305,
+      "candidate_name": "Brian Shaver",
+      "verdict": "verified_match",
+      "reason": "Official Ballotpedia portrait matches the portal portrait of Brian Shaver.",
+      "source_url": "https://ballotpedia.org/Brian_Shaver"
+    },
+    {
+      "audit_id": 415,
+      "candidate_name": "Tim Scott",
+      "verdict": "verified_match",
+      "reason": "Official congressional portrait matches Senator Tim Scott.",
+      "source_url": "https://www.congress.gov/member/tim-scott/S001184"
+    }
+  ]
+}
