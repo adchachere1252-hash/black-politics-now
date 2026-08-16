@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getBoundedMapTooltipPosition } from "@/lib/mapTooltipPosition";
 
 // Real geographic SVG paths from Wikimedia Commons US Map
 const STATE_PATHS: Record<string, string> = {
@@ -118,7 +119,7 @@ interface USMapFullProps {
 
 export function USMapFull({ raceData, onStateClick, selectedState, showLegend = true }: USMapFullProps) {
   const [hoveredState, setHoveredState] = useState<string | null>(null);
-  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
+  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0, width: 0, height: 0 });
 
   const getStateColor = (stateId: string) => {
     const race = raceData[stateId];
@@ -137,6 +138,7 @@ export function USMapFull({ raceData, onStateClick, selectedState, showLegend = 
 
   const hoveredData = hoveredState ? raceData[hoveredState] : null;
   const hoveredName = hoveredState ? STATE_NAMES[hoveredState] : null;
+  const boundedTooltipPos = getBoundedMapTooltipPosition(tooltipPos);
 
   return (
     <div className="relative w-full">
@@ -159,7 +161,7 @@ export function USMapFull({ raceData, onStateClick, selectedState, showLegend = 
               setHoveredState(stateId);
               const rect = (e.target as SVGElement).ownerSVGElement?.getBoundingClientRect();
               if (rect) {
-                setTooltipPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+                setTooltipPos({ x: e.clientX - rect.left, y: e.clientY - rect.top, width: rect.width, height: rect.height });
               }
             }}
             onMouseLeave={() => setHoveredState(null)}
@@ -167,13 +169,14 @@ export function USMapFull({ raceData, onStateClick, selectedState, showLegend = 
         ))}
       </svg>
 
-      {/* Tooltip */}
+      {/* Desktop-only hover summary. The full click detail opens in the page dialog.
+          Keep this bounded so edge states such as Alaska never clip beyond the map. */}
       {hoveredState && hoveredData && (
         <div
-          className="absolute pointer-events-none z-50 bg-popover border border-border rounded-lg shadow-xl p-3 min-w-[180px]"
+          className="absolute pointer-events-none z-50 hidden w-[210px] rounded-lg border border-border bg-popover p-3 shadow-xl md:block"
           style={{
-            left: `${tooltipPos.x}px`,
-            top: `${Math.max(0, tooltipPos.y - 80)}px`,
+            left: `${boundedTooltipPos.x}px`,
+            top: `${boundedTooltipPos.y}px`,
             transform: "translateX(-50%)",
           }}
         >

@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { ArrowUpRight, Globe2, Landmark, Mic2, Play, Search } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { rankedWorldSignals, worldSignalLabel } from "@/lib/worldElectionDisplay";
@@ -80,12 +80,6 @@ function Candidate({ candidate, partyClass, align = "left" }: { candidate: { nam
 }
 
 export default function HomepageExample({ mode = "preview" }: { mode?: "preview" | "home" }) {
-  const [palettePreview, setPalettePreview] = useState<"heritage" | "bronze" | "teal" | "emerald" | "indigo" | "brass" | "champagne" | "plum">(() => {
-    if (typeof window === "undefined") return "heritage";
-    const value = new URLSearchParams(window.location.search).get("palette");
-    return value === "bronze" || value === "teal" || value === "emerald" || value === "indigo" || value === "brass" || value === "champagne" || value === "plum" ? value : "heritage";
-  });
-  const [paletteReview] = useState(() => typeof window !== "undefined" && new URLSearchParams(window.location.search).get("paletteReview") === "1");
   const { data: news, isLoading: newsLoading } = trpc.news.list.useQuery({ page: 1, perPage: 12 });
   const { data: senateRaces, isLoading: senateLoading } = trpc.election.senate.useQuery();
   const { data: houseRaces, isLoading: houseLoading } = trpc.election.house.useQuery();
@@ -105,26 +99,6 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [stateDetailOpen, setStateDetailOpen] = useState(false);
   const [mapSearch, setMapSearch] = useState("");
-
-  useEffect(() => {
-    if (typeof document === "undefined") return;
-    const root = document.documentElement;
-    if (!paletteReview) {
-      delete root.dataset.homePalette;
-      return;
-    }
-    root.dataset.homePalette = palettePreview;
-    return () => { delete root.dataset.homePalette; };
-  }, [palettePreview, paletteReview]);
-
-  const selectPalettePreview = (palette: "heritage" | "bronze" | "teal" | "emerald" | "indigo" | "brass" | "champagne" | "plum") => {
-    setPalettePreview(palette);
-    if (typeof window === "undefined") return;
-    const parameters = new URLSearchParams(window.location.search);
-    parameters.set("palette", palette);
-    parameters.set("paletteReview", "1");
-    window.history.replaceState(null, "", `${window.location.pathname}?${parameters.toString()}`);
-  };
 
   const posts: any[] = (news as any)?.posts ?? [];
   const leadPosts = posts.slice(0, 8);
@@ -241,8 +215,6 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
       <main className="homepage-atlas-main mx-auto flex h-full max-w-[1640px] min-h-0 flex-col overflow-hidden rounded-xl border border-border bg-card p-2 shadow-[0_18px_70px_rgba(17,24,39,0.12)] dark:shadow-black/35">
         {mode === "preview" && <div className="mb-2 flex shrink-0 items-center justify-between border-b border-border pb-1.5"><span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-primary">Black Politics Now · Homepage direction</span><span className="text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Reference-aligned visual example</span></div>}
         <div className="mb-2 shrink-0"><ResultsTicker senateRaces={senateRaces as any[] ?? []} houseRaces={houseRaces as any[] ?? []} /></div>
-        {paletteReview && <div className="mb-2 flex shrink-0 flex-wrap items-center justify-between gap-2 rounded-md border border-primary/30 bg-primary/5 px-3 py-2"><div><p className="text-[9px] font-bold uppercase tracking-[0.14em] text-primary">Homepage color review</p><p className="text-[9px] text-muted-foreground">Choose a direction for the site accent; election-party map colors stay unchanged.</p></div><div className="flex flex-wrap items-center gap-1.5">{([{ key: "heritage", label: "Heritage gold", swatch: "bg-[#d4a552]" }, { key: "bronze", label: "Burnished bronze", swatch: "bg-[#b77b44]" }, { key: "brass", label: "Antique brass", swatch: "bg-[#b7a05b]" }, { key: "champagne", label: "Champagne ivory", swatch: "bg-[#e7d6a8]" }, { key: "plum", label: "Muted plum", swatch: "bg-[#9b7798]" }, { key: "teal", label: "Civic teal", swatch: "bg-[#39b9b2]" }, { key: "emerald", label: "Deep emerald", swatch: "bg-[#3f9b77]" }, { key: "indigo", label: "Midnight indigo", swatch: "bg-[#7389d7]" }] as const).map((option) => <button key={option.key} type="button" onClick={() => selectPalettePreview(option.key)} className={`inline-flex items-center gap-1.5 rounded border px-2 py-1 text-[9px] font-semibold transition-colors ${palettePreview === option.key ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-muted-foreground hover:border-primary/45 hover:text-foreground"}`}><span className={`h-2.5 w-2.5 rounded-full border border-black/10 ${option.swatch}`} />{option.label}</button>)}</div></div>}
-
         <section className="grid min-h-0 flex-1 grid-cols-[0.92fr_1.68fr_0.96fr] grid-rows-[minmax(0,1fr)] gap-2">
           <aside className="grid min-h-0 grid-rows-[minmax(0,1fr)_clamp(220px,31vh,286px)] gap-3 overflow-hidden">
             <section className="homepage-atlas-panel flex min-h-0 flex-col overflow-hidden rounded-lg border border-border bg-background/55 p-3">

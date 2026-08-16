@@ -268,7 +268,7 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
 
           {/* State Popup Dialog */}
           <Dialog open={statePopupOpen} onOpenChange={setStatePopupOpen}>
-            <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto animate-in fade-in-0 zoom-in-95 duration-200">
+            <DialogContent className="max-h-[80dvh] w-[calc(100%-1.5rem)] max-w-[calc(100%-1.5rem)] overflow-y-auto animate-in fade-in-0 zoom-in-95 duration-200 sm:max-w-2xl">
               <DialogHeader>
                 <DialogTitle>{selectedState ? `${STATE_NAMES[selectedState] || selectedState} — ${mapView === "senate" ? "Senate Race" : mapView === "governor" ? "Governor Race" : mapView === "house" ? "House Races" : "Black Representation"}` : ""}</DialogTitle>
               </DialogHeader>

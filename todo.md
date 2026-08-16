@@ -719,6 +719,16 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Replace pale homepage gold accent overrides with the exact deeper ochre-gold used by the Historical Atlas
 - [x] Verify wordmark, labels, buttons, borders, icons, and active controls match the Atlas gold on desktop and mobile
 
+## Mobile Map Detail Overflow Repair (Aug 16)
+- [x] Replace the off-screen mobile selected-state card with a fully visible responsive detail treatment
+- [x] Verify Black Representation, Governor, House, and Senate state details do not obstruct or overflow the mobile map
+- [x] Ensure Alaska and every other state remain fully visible within the mobile map frame
+- [x] Clamp desktop edge-state popups so Alaska and every selected state detail remain fully visible
+
+## Atlas Color Parity Follow-up (Aug 16)
+- [x] Compare the rendered Homepage and Historical Atlas style sources to identify the remaining visible color mismatch
+- [x] Apply the exact Historical Atlas warm-ivory and deep-ochre visual values to the homepage without changing functional map colors
+
 ## Homepage Warm Editorial Palette Review (Aug 15)
 - [x] Add Antique Brass, Champagne Ivory, and Muted Plum to the in-site homepage color comparison
 - [x] Capture and share the warm editorial palette directions for user selection before changing the live palette
