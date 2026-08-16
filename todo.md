@@ -876,6 +876,18 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Block bulk approval when a proposed image preview cannot load and clearly mark that review item as image unavailable
 - [x] Verify bulk review progress, photo-status labels, and responsive actions on desktop and mobile
 
+## Repository-Grounded Portrait Identity Recheck (Aug 16)
+- [ ] Compare unresolved candidate portrait records with selected repository mappings and provenance before external research
+- [ ] Recheck unresolved portraits against curated official campaign, government, congressional, and state-election sources
+- [ ] Route only repository- and source-supported image matches into the visual approval queue; retain uncertainty as Needs verification
+- [ ] Deliver the recheck coverage, confirmed corrections, and remaining evidence-needed queue
+
+## Admin Site Engagement and Visits (Aug 16)
+- [x] Define privacy-preserving anonymous visit and engagement metrics for the public site
+- [x] Add page-view persistence and protected Admin engagement summary procedures
+- [x] Replace the deferred Audience workspace with an Admin engagement dashboard for visits, unique sessions, top pages, devices, and recent activity
+- [x] Test the anonymous tracking pipeline and visually verify responsive Admin analytics views
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade

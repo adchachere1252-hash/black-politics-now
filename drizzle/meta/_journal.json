@@ -183,6 +183,13 @@
       "when": 1786910358638,
       "tag": "0025_sparkling_wallow",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "5",
+      "when": 1786918821722,
+      "tag": "0026_damp_skin",
+      "breakpoints": true
     }
   ]
 }

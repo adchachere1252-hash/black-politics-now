@@ -1,0 +1,1385 @@
+{
+  "generated_at": "2026-08-16T22:03:58.490Z",
+  "records": [
+    {
+      "audit_id": 269,
+      "candidate_name": "Kelly Morrison",
+      "category": "House",
+      "jurisdiction": "MN-3",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/M001234.jpg",
+      "repository_bioguide_id": "M001234",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/M001234.jpg"
+    },
+    {
+      "audit_id": 274,
+      "candidate_name": "Susie Lee",
+      "category": "House",
+      "jurisdiction": "NV-3",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/L000590.jpg",
+      "repository_bioguide_id": "L000590",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/L000590.jpg"
+    },
+    {
+      "audit_id": 276,
+      "candidate_name": "Donald Norcross",
+      "category": "House",
+      "jurisdiction": "NJ-1",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/N000188.jpg",
+      "repository_bioguide_id": "N000188",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/N000188.jpg"
+    },
+    {
+      "audit_id": 277,
+      "candidate_name": "Herb Conaway Jr.",
+      "category": "House",
+      "jurisdiction": "NJ-3",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/C001136.jpg",
+      "repository_bioguide_id": "C001136",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/C001136.jpg"
+    },
+    {
+      "audit_id": 279,
+      "candidate_name": "Frank Pallone Jr.",
+      "category": "House",
+      "jurisdiction": "NJ-6",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/P000034.jpg",
+      "repository_bioguide_id": "P000034",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/P000034.jpg"
+    },
+    {
+      "audit_id": 280,
+      "candidate_name": "Rob Menendez",
+      "category": "House",
+      "jurisdiction": "NJ-8",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/M001226.jpg",
+      "repository_bioguide_id": "M001226",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/M001226.jpg"
+    },
+    {
+      "audit_id": 281,
+      "candidate_name": "Nellie Pou",
+      "category": "House",
+      "jurisdiction": "NJ-9",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/P000621.jpg",
+      "repository_bioguide_id": "P000621",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/P000621.jpg"
+    },
+    {
+      "audit_id": 282,
+      "candidate_name": "LaMonica McIver",
+      "category": "House",
+      "jurisdiction": "NJ-10",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/M001229.jpg",
+      "repository_bioguide_id": "M001229",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/M001229.jpg"
+    },
+    {
+      "audit_id": 283,
+      "candidate_name": "Melanie A. Stansbury",
+      "category": "House",
+      "jurisdiction": "NM-1",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/S001218.jpg",
+      "repository_bioguide_id": "S001218",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/S001218.jpg"
+    },
+    {
+      "audit_id": 285,
+      "candidate_name": "Teresa Leger Fernandez",
+      "category": "House",
+      "jurisdiction": "NM-3",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/L000273.jpg",
+      "repository_bioguide_id": "L000273",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/L000273.jpg"
+    },
+    {
+      "audit_id": 286,
+      "candidate_name": "Thomas Suozzi",
+      "category": "House",
+      "jurisdiction": "NY-3",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/S001201.jpg",
+      "repository_bioguide_id": "S001201",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/S001201.jpg"
+    },
+    {
+      "audit_id": 287,
+      "candidate_name": "Laura Gillen",
+      "category": "House",
+      "jurisdiction": "NY-4",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/G000602.jpg",
+      "repository_bioguide_id": "G000602",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/G000602.jpg"
+    },
+    {
+      "audit_id": 288,
+      "candidate_name": "Gregory Meeks",
+      "category": "House",
+      "jurisdiction": "NY-5",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/M001137.jpg",
+      "repository_bioguide_id": "M001137",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/M001137.jpg"
+    },
+    {
+      "audit_id": 289,
+      "candidate_name": "Grace Meng",
+      "category": "House",
+      "jurisdiction": "NY-6",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/M001188.jpg",
+      "repository_bioguide_id": "M001188",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/M001188.jpg"
+    },
+    {
+      "audit_id": 290,
+      "candidate_name": "Hakeem Jeffries",
+      "category": "House",
+      "jurisdiction": "NY-8",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/J000294.jpg",
+      "repository_bioguide_id": "J000294",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/J000294.jpg"
+    },
+    {
+      "audit_id": 291,
+      "candidate_name": "Yvette Clarke",
+      "category": "House",
+      "jurisdiction": "NY-9",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/C001067.jpg",
+      "repository_bioguide_id": "C001067",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/C001067.jpg"
+    },
+    {
+      "audit_id": 292,
+      "candidate_name": "Alexandria Ocasio-Cortez",
+      "category": "House",
+      "jurisdiction": "NY-14",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/O000172.jpg",
+      "repository_bioguide_id": "O000172",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/O000172.jpg"
+    },
+    {
+      "audit_id": 293,
+      "candidate_name": "Ritchie Torres",
+      "category": "House",
+      "jurisdiction": "NY-15",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/T000486.jpg",
+      "repository_bioguide_id": "T000486",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/T000486.jpg"
+    },
+    {
+      "audit_id": 294,
+      "candidate_name": "George Latimer",
+      "category": "House",
+      "jurisdiction": "NY-16",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/L000606.jpg",
+      "repository_bioguide_id": "L000606",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/L000606.jpg"
+    },
+    {
+      "audit_id": 295,
+      "candidate_name": "Pat Ryan",
+      "category": "House",
+      "jurisdiction": "NY-18",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/R000579.jpg",
+      "repository_bioguide_id": "R000579",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/R000579.jpg"
+    },
+    {
+      "audit_id": 296,
+      "candidate_name": "Josh Riley",
+      "category": "House",
+      "jurisdiction": "NY-19",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/R000622.jpg",
+      "repository_bioguide_id": "R000622",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/R000622.jpg"
+    },
+    {
+      "audit_id": 297,
+      "candidate_name": "Paul Tonko",
+      "category": "House",
+      "jurisdiction": "NY-20",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/T000469.jpg",
+      "repository_bioguide_id": "T000469",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/T000469.jpg"
+    },
+    {
+      "audit_id": 298,
+      "candidate_name": "Joseph D. Morelle",
+      "category": "House",
+      "jurisdiction": "NY-25",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/M001206.jpg",
+      "repository_bioguide_id": "M001206",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/M001206.jpg"
+    },
+    {
+      "audit_id": 299,
+      "candidate_name": "Timothy Kennedy",
+      "category": "House",
+      "jurisdiction": "NY-26",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/K000402.jpg",
+      "repository_bioguide_id": "K000402",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/K000402.jpg"
+    },
+    {
+      "audit_id": 300,
+      "candidate_name": "Donald Davis",
+      "category": "House",
+      "jurisdiction": "NC-1",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/D000230.jpg",
+      "repository_bioguide_id": "D000230",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/D000230.jpg"
+    },
+    {
+      "audit_id": 301,
+      "candidate_name": "Deborah K. Ross",
+      "category": "House",
+      "jurisdiction": "NC-2",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/R000305.jpg",
+      "repository_bioguide_id": "R000305",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/R000305.jpg"
+    },
+    {
+      "audit_id": 302,
+      "candidate_name": "Valerie Foushee",
+      "category": "House",
+      "jurisdiction": "NC-4",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/F000477.jpg",
+      "repository_bioguide_id": "F000477",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/F000477.jpg"
+    },
+    {
+      "audit_id": 303,
+      "candidate_name": "Greg Landsman",
+      "category": "House",
+      "jurisdiction": "OH-1",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/L000601.jpg",
+      "repository_bioguide_id": "L000601",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/L000601.jpg"
+    },
+    {
+      "audit_id": 304,
+      "candidate_name": "Joyce Beatty",
+      "category": "House",
+      "jurisdiction": "OH-3",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/B001281.jpg",
+      "repository_bioguide_id": "B001281",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/B001281.jpg"
+    },
+    {
+      "audit_id": 306,
+      "candidate_name": "Marcy Kaptur",
+      "category": "House",
+      "jurisdiction": "OH-9",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/K000009.jpg",
+      "repository_bioguide_id": "K000009",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/K000009.jpg"
+    },
+    {
+      "audit_id": 307,
+      "candidate_name": "Shontel Brown",
+      "category": "House",
+      "jurisdiction": "OH-11",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/B001313.jpg",
+      "repository_bioguide_id": "B001313",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/B001313.jpg"
+    },
+    {
+      "audit_id": 308,
+      "candidate_name": "Emilia Sykes",
+      "category": "House",
+      "jurisdiction": "OH-13",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/S001223.jpg",
+      "repository_bioguide_id": "S001223",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/S001223.jpg"
+    },
+    {
+      "audit_id": 309,
+      "candidate_name": "Suzanne Bonamici",
+      "category": "House",
+      "jurisdiction": "OR-1",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/B001278.jpg",
+      "repository_bioguide_id": "B001278",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/B001278.jpg"
+    },
+    {
+      "audit_id": 310,
+      "candidate_name": "Maxine Dexter",
+      "category": "House",
+      "jurisdiction": "OR-3",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/D000635.jpg",
+      "repository_bioguide_id": "D000635",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/D000635.jpg"
+    },
+    {
+      "audit_id": 311,
+      "candidate_name": "Val Hoyle",
+      "category": "House",
+      "jurisdiction": "OR-4",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/H001094.jpg",
+      "repository_bioguide_id": "H001094",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/H001094.jpg"
+    },
+    {
+      "audit_id": 312,
+      "candidate_name": "Janelle Bynum",
+      "category": "House",
+      "jurisdiction": "OR-5",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/B001326.jpg",
+      "repository_bioguide_id": "B001326",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/B001326.jpg"
+    },
+    {
+      "audit_id": 313,
+      "candidate_name": "Andrea Salinas",
+      "category": "House",
+      "jurisdiction": "OR-6",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/S001226.jpg",
+      "repository_bioguide_id": "S001226",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/S001226.jpg"
+    },
+    {
+      "audit_id": 314,
+      "candidate_name": "Brendan Boyle",
+      "category": "House",
+      "jurisdiction": "PA-2",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/B001296.jpg",
+      "repository_bioguide_id": "B001296",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/B001296.jpg"
+    },
+    {
+      "audit_id": 315,
+      "candidate_name": "Madeleine Dean",
+      "category": "House",
+      "jurisdiction": "PA-4",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/D000631.jpg",
+      "repository_bioguide_id": "D000631",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/D000631.jpg"
+    },
+    {
+      "audit_id": 316,
+      "candidate_name": "Mary Gay Scanlon",
+      "category": "House",
+      "jurisdiction": "PA-5",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/S001205.jpg",
+      "repository_bioguide_id": "S001205",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/S001205.jpg"
+    },
+    {
+      "audit_id": 317,
+      "candidate_name": "Chrissy Houlahan",
+      "category": "House",
+      "jurisdiction": "PA-6",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/H001085.jpg",
+      "repository_bioguide_id": "H001085",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/H001085.jpg"
+    },
+    {
+      "audit_id": 318,
+      "candidate_name": "Summer Lee",
+      "category": "House",
+      "jurisdiction": "PA-12",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/L000602.jpg",
+      "repository_bioguide_id": "L000602",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/L000602.jpg"
+    },
+    {
+      "audit_id": 319,
+      "candidate_name": "Chris Deluzio",
+      "category": "House",
+      "jurisdiction": "PA-17",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/D000530.jpg",
+      "repository_bioguide_id": "D000530",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/D000530.jpg"
+    },
+    {
+      "audit_id": 320,
+      "candidate_name": "Gabe Amo",
+      "category": "House",
+      "jurisdiction": "RI-1",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/A000380.jpg",
+      "repository_bioguide_id": "A000380",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/A000380.jpg"
+    },
+    {
+      "audit_id": 321,
+      "candidate_name": "Seth Magaziner",
+      "category": "House",
+      "jurisdiction": "RI-2",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/M001223.jpg",
+      "repository_bioguide_id": "M001223",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/M001223.jpg"
+    },
+    {
+      "audit_id": 322,
+      "candidate_name": "Diana Harshbarger",
+      "category": "House",
+      "jurisdiction": "TN-1",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/H001086.jpg",
+      "repository_bioguide_id": "H001086",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/H001086.jpg"
+    },
+    {
+      "audit_id": 323,
+      "candidate_name": "Tim Burchett",
+      "category": "House",
+      "jurisdiction": "TN-2",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/B001309.jpg",
+      "repository_bioguide_id": "B001309",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/B001309.jpg"
+    },
+    {
+      "audit_id": 324,
+      "candidate_name": "Chuck Fleischmann",
+      "category": "House",
+      "jurisdiction": "TN-3",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/F000459.jpg",
+      "repository_bioguide_id": "F000459",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/F000459.jpg"
+    },
+    {
+      "audit_id": 325,
+      "candidate_name": "Steve Cohen",
+      "category": "House",
+      "jurisdiction": "TN-9",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/C001068.jpg",
+      "repository_bioguide_id": "C001068",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/C001068.jpg"
+    },
+    {
+      "audit_id": 326,
+      "candidate_name": "Lizzie Fletcher",
+      "category": "House",
+      "jurisdiction": "TX-7",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/F000468.jpg",
+      "repository_bioguide_id": "F000468",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/F000468.jpg"
+    },
+    {
+      "audit_id": 327,
+      "candidate_name": "Veronica Escobar",
+      "category": "House",
+      "jurisdiction": "TX-16",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/E000299.jpg",
+      "repository_bioguide_id": "E000299",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/E000299.jpg"
+    },
+    {
+      "audit_id": 328,
+      "candidate_name": "Joaquin Castro",
+      "category": "House",
+      "jurisdiction": "TX-20",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/C001091.jpg",
+      "repository_bioguide_id": "C001091",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/C001091.jpg"
+    },
+    {
+      "audit_id": 329,
+      "candidate_name": "Brandon Gill",
+      "category": "House",
+      "jurisdiction": "TX-26",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/G000603.jpg",
+      "repository_bioguide_id": "G000603",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/G000603.jpg"
+    },
+    {
+      "audit_id": 330,
+      "candidate_name": "Henry Cuellar",
+      "category": "House",
+      "jurisdiction": "TX-28",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/C001063.jpg",
+      "repository_bioguide_id": "C001063",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/C001063.jpg"
+    },
+    {
+      "audit_id": 331,
+      "candidate_name": "Sylvia Garcia",
+      "category": "House",
+      "jurisdiction": "TX-29",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/G000587.jpg",
+      "repository_bioguide_id": "G000587",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/G000587.jpg"
+    },
+    {
+      "audit_id": 332,
+      "candidate_name": "Vicente Gonzalez Jr.",
+      "category": "House",
+      "jurisdiction": "TX-34",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/G000581.jpg",
+      "repository_bioguide_id": "G000581",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/G000581.jpg"
+    },
+    {
+      "audit_id": 333,
+      "candidate_name": "Greg Casar",
+      "category": "House",
+      "jurisdiction": "TX-37",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/C001131.jpg",
+      "repository_bioguide_id": "C001131",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/C001131.jpg"
+    },
+    {
+      "audit_id": 334,
+      "candidate_name": "Becca Balint",
+      "category": "House",
+      "jurisdiction": "VT-AL",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/B001318.jpg",
+      "repository_bioguide_id": "B001318",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/B001318.jpg"
+    },
+    {
+      "audit_id": 335,
+      "candidate_name": "Jennifer McClellan",
+      "category": "House",
+      "jurisdiction": "VA-4",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/M001227.jpg",
+      "repository_bioguide_id": "M001227",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/M001227.jpg"
+    },
+    {
+      "audit_id": 336,
+      "candidate_name": "Ben Cline",
+      "category": "House",
+      "jurisdiction": "VA-6",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/C001118.jpg",
+      "repository_bioguide_id": "C001118",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/C001118.jpg"
+    },
+    {
+      "audit_id": 337,
+      "candidate_name": "Eugene Vindman",
+      "category": "House",
+      "jurisdiction": "VA-7",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/V000138.jpg",
+      "repository_bioguide_id": "V000138",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/V000138.jpg"
+    },
+    {
+      "audit_id": 338,
+      "candidate_name": "Suhas Subramanyam",
+      "category": "House",
+      "jurisdiction": "VA-10",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/S001230.jpg",
+      "repository_bioguide_id": "S001230",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/S001230.jpg"
+    },
+    {
+      "audit_id": 339,
+      "candidate_name": "Rick Larsen",
+      "category": "House",
+      "jurisdiction": "WA-2",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/L000560.jpg",
+      "repository_bioguide_id": "L000560",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/L000560.jpg"
+    },
+    {
+      "audit_id": 340,
+      "candidate_name": "Marie Gluesenkamp Perez",
+      "category": "House",
+      "jurisdiction": "WA-3",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/G000600.jpg",
+      "repository_bioguide_id": "G000600",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/G000600.jpg"
+    },
+    {
+      "audit_id": 341,
+      "candidate_name": "Emily Randall",
+      "category": "House",
+      "jurisdiction": "WA-6",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/R000621.jpg",
+      "repository_bioguide_id": "R000621",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/R000621.jpg"
+    },
+    {
+      "audit_id": 342,
+      "candidate_name": "Adam Smith",
+      "category": "House",
+      "jurisdiction": "WA-9",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/S000510.jpg",
+      "repository_bioguide_id": "S000510",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/S000510.jpg"
+    },
+    {
+      "audit_id": 343,
+      "candidate_name": "Mark Pocan",
+      "category": "House",
+      "jurisdiction": "WI-2",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/P000607.jpg",
+      "repository_bioguide_id": "P000607",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/P000607.jpg"
+    },
+    {
+      "audit_id": 344,
+      "candidate_name": "Gwen Moore",
+      "category": "House",
+      "jurisdiction": "WI-4",
+      "photo_field": "candidate1",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/M001160.jpg",
+      "repository_bioguide_id": "M001160",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/M001160.jpg"
+    },
+    {
+      "audit_id": 345,
+      "candidate_name": "Tommy Tuberville",
+      "category": "Governor",
+      "jurisdiction": "AL",
+      "photo_field": "rep",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/T000278.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 346,
+      "candidate_name": "Andy Biggs",
+      "category": "Governor",
+      "jurisdiction": "AZ",
+      "photo_field": "rep",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/B001302.jpg",
+      "repository_bioguide_id": "B001302",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/B001302.jpg"
+    },
+    {
+      "audit_id": 347,
+      "candidate_name": "John James",
+      "category": "Governor",
+      "jurisdiction": "MI",
+      "photo_field": "rep",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/J000307.jpg",
+      "repository_bioguide_id": "J000307",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/J000307.jpg"
+    },
+    {
+      "audit_id": 348,
+      "candidate_name": "Alan Wilson",
+      "category": "Governor",
+      "jurisdiction": "SC",
+      "photo_field": "rep",
+      "image_url": "https://d36hbw14aib5lz.cloudfront.net/310519663589218214/nZtXnShfMV3x4xQXaBPzmj/alan-wilson-scag-review_6ea24fe0.jpg?Expires=1786916598&Signature=x5z~Ne7Fxf-UFhWAA3cyaPUW3ZiLPsckUZmCtpGDA~BgjSk7BlYPBuA0CfYd1cb9TYtOwFViExH3MBmkuAmlOP91f0m8WZqFeBgSgqI6eCVZWZtwSTBN65OkNLAat~LMwRHyUwM-pK-PzZUrCEGRdEiD4Lz37Aa2MUPeOm32C3PkbPFDVr3fiOLGL1Uop0M0lW~Vj38yT0tGfqhDj2Q-EtOC3mumldhX5Elt7exMhOypTdFn~hcQWVhltRaRR7JnNjRB04oDqMR05JOA1RiJgFkE5dlTkNgROA6BNeteusbQ7yvUdr-9US2nfiYMlo557jHgFx7oR27e6HSszGAZsg__&Key-Pair-Id=K1MP89RTKNH4J",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 349,
+      "candidate_name": "Cory Booker",
+      "category": "Black Representation",
+      "jurisdiction": "NJ-NJ-Sen",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/B001288.jpg",
+      "repository_bioguide_id": "B001288",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/B001288.jpg"
+    },
+    {
+      "audit_id": 350,
+      "candidate_name": "Lisa Blunt Rochester",
+      "category": "Black Representation",
+      "jurisdiction": "DE-DE-Sen",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/B001303.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 351,
+      "candidate_name": "Angela Alsobrooks",
+      "category": "Black Representation",
+      "jurisdiction": "MD-MD-Sen",
+      "photo_field": "profile",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/1e/Sen._Angela_Alsobrooks_official_Senate_photo%2C_119th_Congress_%28cropped%29.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 352,
+      "candidate_name": "Raphael Warnock",
+      "category": "Black Representation",
+      "jurisdiction": "GA-GA-Sen",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/W000790.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 353,
+      "candidate_name": "Shomari Figures",
+      "category": "Black Representation",
+      "jurisdiction": "AL-AL-2",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/F000481.jpg",
+      "repository_bioguide_id": "F000481",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/F000481.jpg"
+    },
+    {
+      "audit_id": 354,
+      "candidate_name": "Terri Sewell",
+      "category": "Black Representation",
+      "jurisdiction": "AL-AL-7",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/S001185.jpg",
+      "repository_bioguide_id": "S001185",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/S001185.jpg"
+    },
+    {
+      "audit_id": 355,
+      "candidate_name": "Lateefah Simon",
+      "category": "Black Representation",
+      "jurisdiction": "CA-CA-12",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/S001231.jpg",
+      "repository_bioguide_id": "S001231",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/S001231.jpg"
+    },
+    {
+      "audit_id": 356,
+      "candidate_name": "Sydney Kamlager-Dove",
+      "category": "Black Representation",
+      "jurisdiction": "CA-CA-37",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/K000400.jpg",
+      "repository_bioguide_id": "K000400",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/K000400.jpg"
+    },
+    {
+      "audit_id": 357,
+      "candidate_name": "Maxine Waters",
+      "category": "Black Representation",
+      "jurisdiction": "CA-CA-43",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/W000187.jpg",
+      "repository_bioguide_id": "W000187",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/W000187.jpg"
+    },
+    {
+      "audit_id": 358,
+      "candidate_name": "Joe Neguse",
+      "category": "Black Representation",
+      "jurisdiction": "CO-CO-2",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/N000191.jpg",
+      "repository_bioguide_id": "N000191",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/N000191.jpg"
+    },
+    {
+      "audit_id": 359,
+      "candidate_name": "Jahana Hayes",
+      "category": "Black Representation",
+      "jurisdiction": "CT-CT-5",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/H001081.jpg",
+      "repository_bioguide_id": "H001081",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/H001081.jpg"
+    },
+    {
+      "audit_id": 360,
+      "candidate_name": "Maxwell Frost",
+      "category": "Black Representation",
+      "jurisdiction": "FL-FL-10",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/F000476.jpg",
+      "repository_bioguide_id": "F000476",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/F000476.jpg"
+    },
+    {
+      "audit_id": 361,
+      "candidate_name": "Sanford Bishop Jr.",
+      "category": "Black Representation",
+      "jurisdiction": "GA-GA-2",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/B000490.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 362,
+      "candidate_name": "Hank Johnson",
+      "category": "Black Representation",
+      "jurisdiction": "GA-GA-4",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/J000288.jpg",
+      "repository_bioguide_id": "J000288",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/J000288.jpg"
+    },
+    {
+      "audit_id": 363,
+      "candidate_name": "Nikema Williams",
+      "category": "Black Representation",
+      "jurisdiction": "GA-GA-5",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/W000788.jpg",
+      "repository_bioguide_id": "W000788",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/W000788.jpg"
+    },
+    {
+      "audit_id": 364,
+      "candidate_name": "Lucy McBath",
+      "category": "Black Representation",
+      "jurisdiction": "GA-GA-6",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/M001208.jpg",
+      "repository_bioguide_id": "M001208",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/M001208.jpg"
+    },
+    {
+      "audit_id": 365,
+      "candidate_name": "Jonathan Jackson",
+      "category": "Black Representation",
+      "jurisdiction": "IL-IL-1",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/J000309.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 366,
+      "candidate_name": "Lauren Underwood",
+      "category": "Black Representation",
+      "jurisdiction": "IL-IL-14",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/U000040.jpg",
+      "repository_bioguide_id": "U000040",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/U000040.jpg"
+    },
+    {
+      "audit_id": 367,
+      "candidate_name": "Andre Carson",
+      "category": "Black Representation",
+      "jurisdiction": "IN-IN-7",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/C001072.jpg",
+      "repository_bioguide_id": "C001072",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/C001072.jpg"
+    },
+    {
+      "audit_id": 368,
+      "candidate_name": "Troy Carter",
+      "category": "Black Representation",
+      "jurisdiction": "LA-LA-2",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/C001125.jpg",
+      "repository_bioguide_id": "C001125",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/C001125.jpg"
+    },
+    {
+      "audit_id": 369,
+      "candidate_name": "Cleo Fields",
+      "category": "Black Representation",
+      "jurisdiction": "LA-LA-6",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/F000455.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 370,
+      "candidate_name": "Ayanna Pressley",
+      "category": "Black Representation",
+      "jurisdiction": "MA-MA-7",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/P000617.jpg",
+      "repository_bioguide_id": "P000617",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/P000617.jpg"
+    },
+    {
+      "audit_id": 371,
+      "candidate_name": "Glenn Ivey",
+      "category": "Black Representation",
+      "jurisdiction": "MD-MD-4",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/I000058.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 372,
+      "candidate_name": "Kweisi Mfume",
+      "category": "Black Representation",
+      "jurisdiction": "MD-MD-7",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/M000687.jpg",
+      "repository_bioguide_id": "M000687",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/M000687.jpg"
+    },
+    {
+      "audit_id": 373,
+      "candidate_name": "Ilhan Omar",
+      "category": "Black Representation",
+      "jurisdiction": "MN-MN-5",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/O000173.jpg",
+      "repository_bioguide_id": "O000173",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/O000173.jpg"
+    },
+    {
+      "audit_id": 374,
+      "candidate_name": "Wesley Bell",
+      "category": "Black Representation",
+      "jurisdiction": "MO-MO-1",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/B001224.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 375,
+      "candidate_name": "Emanuel Cleaver",
+      "category": "Black Representation",
+      "jurisdiction": "MO-MO-5",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/C001061.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 376,
+      "candidate_name": "Bennie Thompson",
+      "category": "Black Representation",
+      "jurisdiction": "MS-MS-2",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/T000193.jpg",
+      "repository_bioguide_id": "T000193",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/T000193.jpg"
+    },
+    {
+      "audit_id": 377,
+      "candidate_name": "Don Davis",
+      "category": "Black Representation",
+      "jurisdiction": "NC-NC-1",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/D000096.jpg",
+      "repository_bioguide_id": "D000230",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/D000230.jpg"
+    },
+    {
+      "audit_id": 378,
+      "candidate_name": "Valerie Foushee",
+      "category": "Black Representation",
+      "jurisdiction": "NC-NC-4",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/F000477.jpg",
+      "repository_bioguide_id": "F000477",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/F000477.jpg"
+    },
+    {
+      "audit_id": 379,
+      "candidate_name": "Alma Adams",
+      "category": "Black Representation",
+      "jurisdiction": "NC-NC-12",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/A000370.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 380,
+      "candidate_name": "LaMonica McIver",
+      "category": "Black Representation",
+      "jurisdiction": "NJ-NJ-10",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/M001229.jpg",
+      "repository_bioguide_id": "M001229",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/M001229.jpg"
+    },
+    {
+      "audit_id": 381,
+      "candidate_name": "Steven Horsford",
+      "category": "Black Representation",
+      "jurisdiction": "NV-NV-4",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/H001066.jpg",
+      "repository_bioguide_id": "H001066",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/H001066.jpg"
+    },
+    {
+      "audit_id": 382,
+      "candidate_name": "Gregory Meeks",
+      "category": "Black Representation",
+      "jurisdiction": "NY-NY-5",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/M001137.jpg",
+      "repository_bioguide_id": "M001137",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/M001137.jpg"
+    },
+    {
+      "audit_id": 383,
+      "candidate_name": "Hakeem Jeffries",
+      "category": "Black Representation",
+      "jurisdiction": "NY-NY-8",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/J000294.jpg",
+      "repository_bioguide_id": "J000294",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/J000294.jpg"
+    },
+    {
+      "audit_id": 384,
+      "candidate_name": "Yvette Clarke",
+      "category": "Black Representation",
+      "jurisdiction": "NY-NY-9",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/C001067.jpg",
+      "repository_bioguide_id": "C001067",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/C001067.jpg"
+    },
+    {
+      "audit_id": 385,
+      "candidate_name": "Adriano Espaillat",
+      "category": "Black Representation",
+      "jurisdiction": "NY-NY-13",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/E000297.jpg",
+      "repository_bioguide_id": "E000297",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/E000297.jpg"
+    },
+    {
+      "audit_id": 386,
+      "candidate_name": "Richie Torres",
+      "category": "Black Representation",
+      "jurisdiction": "NY-NY-15",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/T000486.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 387,
+      "candidate_name": "Joyce Beatty",
+      "category": "Black Representation",
+      "jurisdiction": "OH-OH-3",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/B001281.jpg",
+      "repository_bioguide_id": "B001281",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/B001281.jpg"
+    },
+    {
+      "audit_id": 388,
+      "candidate_name": "Shontel Brown",
+      "category": "Black Representation",
+      "jurisdiction": "OH-OH-11",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/B001313.jpg",
+      "repository_bioguide_id": "B001313",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/B001313.jpg"
+    },
+    {
+      "audit_id": 389,
+      "candidate_name": "Emilia Sykes",
+      "category": "Black Representation",
+      "jurisdiction": "OH-OH-13",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/S001223.jpg",
+      "repository_bioguide_id": "S001223",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/S001223.jpg"
+    },
+    {
+      "audit_id": 390,
+      "candidate_name": "Janelle Bynum",
+      "category": "Black Representation",
+      "jurisdiction": "OR-OR-5",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/B001326.jpg",
+      "repository_bioguide_id": "B001326",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/B001326.jpg"
+    },
+    {
+      "audit_id": 391,
+      "candidate_name": "Summer Lee",
+      "category": "Black Representation",
+      "jurisdiction": "PA-PA-12",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/L000602.jpg",
+      "repository_bioguide_id": "L000602",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/L000602.jpg"
+    },
+    {
+      "audit_id": 392,
+      "candidate_name": "Gabe Amo",
+      "category": "Black Representation",
+      "jurisdiction": "RI-RI-1",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/A000380.jpg",
+      "repository_bioguide_id": "A000380",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/A000380.jpg"
+    },
+    {
+      "audit_id": 393,
+      "candidate_name": "James Clyburn",
+      "category": "Black Representation",
+      "jurisdiction": "SC-SC-6",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/C000537.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 394,
+      "candidate_name": "Justin Pearson",
+      "category": "Black Representation",
+      "jurisdiction": "TN-TN-9",
+      "photo_field": "profile",
+      "image_url": "https://images.squarespace-cdn.com/content/v1/638e0e4731cb8444ce5a20e8/1759715293519-ZQLN0I1VD99KBEJKEQE0/082525+Justin+J+Pearson+Studio+Portrait-199.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 395,
+      "candidate_name": "Al Green",
+      "category": "Black Representation",
+      "jurisdiction": "TX-TX-9",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/G000553.jpg",
+      "repository_bioguide_id": "G000553",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/G000553.jpg"
+    },
+    {
+      "audit_id": 396,
+      "candidate_name": "Robert C. Scott",
+      "category": "Black Representation",
+      "jurisdiction": "VA-VA-3",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/S000185.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 397,
+      "candidate_name": "Jennifer McClellan",
+      "category": "Black Representation",
+      "jurisdiction": "VA-VA-4",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/M001227.jpg",
+      "repository_bioguide_id": "M001227",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/M001227.jpg"
+    },
+    {
+      "audit_id": 398,
+      "candidate_name": "Marilyn Strickland",
+      "category": "Black Representation",
+      "jurisdiction": "WA-WA-10",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/S001159.jpg",
+      "repository_bioguide_id": "S001159",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/S001159.jpg"
+    },
+    {
+      "audit_id": 399,
+      "candidate_name": "Gwen Moore",
+      "category": "Black Representation",
+      "jurisdiction": "WI-WI-4",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/M001160.jpg",
+      "repository_bioguide_id": "M001160",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/M001160.jpg"
+    },
+    {
+      "audit_id": 400,
+      "candidate_name": "Bonnie Watson Coleman",
+      "category": "Black Representation",
+      "jurisdiction": "NJ-NJ-12",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/W000822.jpg",
+      "repository_bioguide_id": "W000822",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/W000822.jpg"
+    },
+    {
+      "audit_id": 401,
+      "candidate_name": "Danny K. Davis",
+      "category": "Black Representation",
+      "jurisdiction": "IL-IL-7",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/D000096.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 402,
+      "candidate_name": "Marc Veasey",
+      "category": "Black Representation",
+      "jurisdiction": "TX-TX-33",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/V000131.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 403,
+      "candidate_name": "Dwight Evans",
+      "category": "Black Representation",
+      "jurisdiction": "PA-PA-3",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/E000296.jpg",
+      "repository_bioguide_id": "E000296",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/E000296.jpg"
+    },
+    {
+      "audit_id": 404,
+      "candidate_name": "Frederica Wilson",
+      "category": "Black Representation",
+      "jurisdiction": "FL-FL-24",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/W000808.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 405,
+      "candidate_name": "Sheila Cherfilus-McCormick",
+      "category": "Black Representation",
+      "jurisdiction": "FL-FL-20",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/C001127.jpg",
+      "repository_bioguide_id": "C001127",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/C001127.jpg"
+    },
+    {
+      "audit_id": 406,
+      "candidate_name": "David Scott",
+      "category": "Black Representation",
+      "jurisdiction": "GA-GA-13",
+      "photo_field": "profile",
+      "image_url": "https://clerk.house.gov/images/members/S001157.jpg",
+      "repository_bioguide_id": "S001157",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/S001157.jpg"
+    },
+    {
+      "audit_id": 407,
+      "candidate_name": "Robin Kelly",
+      "category": "Black Representation",
+      "jurisdiction": "IL-IL-2",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/K000385.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 408,
+      "candidate_name": "Jasmine Crockett",
+      "category": "Black Representation",
+      "jurisdiction": "TX-TX-30",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/C001130.jpg",
+      "repository_bioguide_id": "C001130",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/C001130.jpg"
+    },
+    {
+      "audit_id": 409,
+      "candidate_name": "Eleanor Holmes Norton",
+      "category": "Black Representation",
+      "jurisdiction": "DC-DC-Del",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/N000147.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 410,
+      "candidate_name": "Shri Thanedar",
+      "category": "Black Representation",
+      "jurisdiction": "MI-MI-13",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/T000488.jpg",
+      "repository_bioguide_id": "T000488",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/T000488.jpg"
+    },
+    {
+      "audit_id": 411,
+      "candidate_name": "Byron Donalds",
+      "category": "Black Representation",
+      "jurisdiction": "FL-FL-19",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/D000032.jpg",
+      "repository_bioguide_id": "D000032",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/D000032.jpg"
+    },
+    {
+      "audit_id": 412,
+      "candidate_name": "John James",
+      "category": "Black Representation",
+      "jurisdiction": "MI-MI-Gov",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/J000308.jpg",
+      "repository_bioguide_id": "J000307",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/J000307.jpg"
+    },
+    {
+      "audit_id": 413,
+      "candidate_name": "Wesley Hunt",
+      "category": "Black Representation",
+      "jurisdiction": "TX-TX-38",
+      "photo_field": "profile",
+      "image_url": "https://clerk.house.gov/images/members/H001095.jpg",
+      "repository_bioguide_id": null,
+      "repository_portrait_url": null
+    },
+    {
+      "audit_id": 414,
+      "candidate_name": "Burgess Owens",
+      "category": "Black Representation",
+      "jurisdiction": "UT-UT-4",
+      "photo_field": "profile",
+      "image_url": "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/O000086.jpg",
+      "repository_bioguide_id": "O000086",
+      "repository_portrait_url": "https://unitedstates.github.io/images/congress/225x275/O000086.jpg"
+    }
+  ]
+}

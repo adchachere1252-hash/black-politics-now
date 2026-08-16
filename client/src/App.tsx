@@ -9,6 +9,7 @@ import SiteHeader from "./components/SiteHeader";
 import StickyPlayer from "./components/StickyPlayer";
 import Home from "./pages/Home";
 import { lazy, Suspense } from "react";
+import { usePageTracking } from "./hooks/usePageTracking";
 
 const Elections = lazy(() => import("./pages/Elections"));
 const Podcast = lazy(() => import("./pages/Podcast"));
@@ -84,6 +85,7 @@ function PageLoader() {
 
 function App() {
   const [location] = useLocation();
+  usePageTracking();
   const usesOriginalNewsroomShell = location === "/newsroom";
   return (
     <ErrorBoundary>

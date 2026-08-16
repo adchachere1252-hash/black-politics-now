@@ -11,7 +11,7 @@ import { getAdminElectionEngineBadge } from "@/lib/electionFreshness";
 import { buildAdminCandidateRows, type AdminCandidateCategory } from "@/lib/adminCandidates";
 import { getOfficialPortraitSourceLeads } from "@/lib/portraitSourceLeads";
 import { useState, useMemo } from "react";
-import { ArrowUpRight, Shield, Radio, MapPin, Users, Save, Check, Search, SearchCheck, Star, Sparkles, AlertTriangle, CheckCircle2, Clock3, FileText, Headphones, ListChecks, RefreshCw, ShieldCheck, ImagePlus, FileDiff, Radar, Globe2, ExternalLink } from "lucide-react";
+import { ArrowUpRight, Shield, Radio, MapPin, Users, Save, Check, Search, SearchCheck, Star, Sparkles, AlertTriangle, CheckCircle2, Clock3, FileText, Headphones, ListChecks, RefreshCw, ShieldCheck, ImagePlus, FileDiff, Radar, Globe2, ExternalLink, BarChart3, Monitor, Smartphone, TabletSmartphone, MousePointerClick } from "lucide-react";
 
 type AdminTab = "overview" | "command" | "podcast" | "elections" | "candidates" | "cbc" | "atlasWorld" | "agent" | "changes" | "portraits" | "audience";
 
@@ -88,7 +88,7 @@ export default function AdminPage() {
           { key: "agent", label: "Agent Desk", icon: Sparkles },
           { key: "changes", label: "Proposed Changes", icon: FileDiff },
           { key: "portraits", label: "Portrait Review", icon: ImagePlus },
-          { key: "audience", label: "Audience", icon: Users },
+          { key: "audience", label: "Audience & Visits", icon: BarChart3 },
         ] as const).map(({ key, label, icon: Icon }) => (
             <button
               key={key}
@@ -855,10 +855,66 @@ function AtlasWorldOpsTab() {
 }
 
 function AudienceTab() {
+  const [days, setDays] = useState<7 | 30>(7);
+  const { data: summary, isLoading, dataUpdatedAt, refetch } = trpc.siteAnalytics.engagementSummary.useQuery({ days }, { refetchInterval: 60_000 });
+  const maxDailyVisits = Math.max(...(summary?.daily.map((item) => item.visits) ?? []), 1);
+  const deviceIcon = { desktop: Monitor, tablet: TabletSmartphone, mobile: Smartphone } as const;
+
+  if (isLoading) return <div className="space-y-4"><div className="h-32 rounded-xl bg-muted animate-pulse" /><div className="h-72 rounded-xl bg-muted animate-pulse" /></div>;
+
   return (
-    <div>
-      <h2 className="text-lg font-bold mb-4">Audience Insights</h2>
-      <p className="text-muted-foreground text-sm">Analytics and subscriber data will appear here once traffic is established.</p>
+    <div className="space-y-5">
+      <section className="glass-card rounded-xl border border-primary/25 bg-primary/[0.035] p-5">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">Audience intelligence</p>
+            <h2 className="mt-1 text-lg font-bold">Site Engagement & Visits</h2>
+            <p className="mt-1 max-w-2xl text-sm text-muted-foreground">Understand which public experiences are being reached, without turning readers into a profile. Reporting begins with this release and refreshes every minute.</p>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="inline-flex rounded-md border border-border bg-background p-0.5">
+              {([7, 30] as const).map((range) => <button key={range} onClick={() => setDays(range)} className={`rounded px-2.5 py-1 text-xs font-semibold ${days === range ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}>{range} days</button>)}
+            </div>
+            <button onClick={() => refetch()} className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-semibold text-foreground hover:bg-muted"><RefreshCw size={13} /> Refresh</button>
+          </div>
+        </div>
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <EngagementMetric icon={MousePointerClick} label="Today’s visits" value={summary?.todayVisits ?? 0} detail="Public route views" tone="gold" />
+          <EngagementMetric icon={Users} label="Today’s unique sessions" value={summary?.todayUniqueSessions ?? 0} detail="Anonymous browser sessions" tone="good" />
+          <EngagementMetric icon={BarChart3} label={`${days}-day visits`} value={summary?.totalVisits ?? 0} detail="All recorded public views" />
+          <EngagementMetric icon={Users} label={`${days}-day unique sessions`} value={summary?.uniqueSessions ?? 0} detail="Not an account or person count" />
+        </div>
+      </section>
+
+      <section className="grid gap-5 xl:grid-cols-[1.15fr_.85fr]">
+        <div className="glass-card rounded-xl p-5">
+          <div className="flex flex-wrap items-start justify-between gap-2"><div><h3 className="text-sm font-bold uppercase tracking-wider">Daily visit pattern</h3><p className="mt-1 text-xs text-muted-foreground">Public route views over the selected period.</p></div><span className="rounded-full bg-muted px-2.5 py-1 text-[10px] font-bold uppercase text-muted-foreground">{summary?.daily.length ?? 0} active days</span></div>
+          {summary?.daily.length ? <div className="mt-5 flex h-40 items-end gap-2 border-b border-border/80 pb-5">{summary.daily.map((item) => <div key={item.day} className="group flex min-w-0 flex-1 flex-col items-center justify-end gap-1.5" title={`${item.day}: ${item.visits} visits · ${item.uniqueSessions} unique sessions`}><span className="text-[10px] font-semibold text-foreground opacity-0 transition-opacity group-hover:opacity-100">{item.visits}</span><div className="w-full max-w-10 rounded-t bg-primary/75 transition-colors group-hover:bg-primary" style={{ height: `${Math.max(8, Math.round((item.visits / maxDailyVisits) * 100))}%` }} /><span className="text-[9px] text-muted-foreground">{new Date(`${item.day}T00:00:00`).toLocaleDateString(undefined, { month: "numeric", day: "numeric" })}</span></div>)}</div> : <EngagementEmpty title="No public visits recorded yet" detail="Collection begins with this release. The first visit will appear here after the dashboard refreshes." />}
+        </div>
+        <div className="glass-card rounded-xl p-5">
+          <h3 className="text-sm font-bold uppercase tracking-wider">Device mix</h3><p className="mt-1 text-xs text-muted-foreground">Screen-class estimates; raw browser fingerprints are not stored.</p>
+          {summary?.devices.length ? <div className="mt-4 space-y-3">{summary.devices.map((item) => { const Icon = deviceIcon[item.deviceType]; const share = summary.totalVisits ? Math.round((item.visits / summary.totalVisits) * 100) : 0; return <div key={item.deviceType}><div className="flex items-center justify-between gap-2 text-xs"><span className="flex items-center gap-2 font-semibold capitalize text-foreground"><Icon size={14} className="text-primary" />{item.deviceType}</span><span className="text-muted-foreground">{item.visits} visits · {share}%</span></div><div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-primary" style={{ width: `${share}%` }} /></div></div>; })}</div> : <EngagementEmpty title="Device mix will appear with traffic" detail="Only desktop, tablet, and mobile categories are stored." />}
+        </div>
+      </section>
+
+      <section className="grid gap-5 xl:grid-cols-2">
+        <div className="glass-card rounded-xl p-5"><div><h3 className="text-sm font-bold uppercase tracking-wider">Most visited public pages</h3><p className="mt-1 text-xs text-muted-foreground">Route-level interest, ranked by recorded visits.</p></div>{summary?.topPages.length ? <div className="mt-4 divide-y divide-border overflow-hidden rounded-lg border border-border/70">{summary.topPages.map((page, index) => <div key={page.pagePath} className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 px-3 py-2.5"><span className="text-xs font-bold text-primary">{index + 1}</span><div className="min-w-0"><p className="truncate font-mono text-xs font-semibold text-foreground">{page.pagePath}</p><p className="mt-0.5 text-[11px] text-muted-foreground">{page.uniqueSessions} unique sessions</p></div><span className="text-sm font-bold text-foreground">{page.visits}</span></div>)}</div> : <EngagementEmpty title="No page rankings yet" detail="Rankings appear once public visitors open the site." />}</div>
+        <div className="glass-card rounded-xl p-5"><div><h3 className="text-sm font-bold uppercase tracking-wider">Referring sites</h3><p className="mt-1 text-xs text-muted-foreground">External host names only; paths, search terms, and full referrer URLs are never retained.</p></div>{summary?.referrers.length ? <div className="mt-4 space-y-2">{summary.referrers.map((referrer) => <div key={referrer.referrerHost} className="flex items-center justify-between gap-3 rounded-lg border border-border/70 bg-background/50 px-3 py-2.5"><span className="truncate text-sm font-medium text-foreground">{referrer.referrerHost}</span><span className="shrink-0 text-xs font-bold text-primary">{referrer.visits} visits</span></div>)}</div> : <EngagementEmpty title="No external referrers yet" detail="Direct visits and internal navigation intentionally do not create referrer records." />}</div>
+      </section>
+
+      <section className="grid gap-5 xl:grid-cols-[1.2fr_.8fr]">
+        <div className="glass-card rounded-xl p-5"><div className="flex flex-wrap items-start justify-between gap-2"><div><h3 className="text-sm font-bold uppercase tracking-wider">Recent public activity</h3><p className="mt-1 text-xs text-muted-foreground">The latest anonymous route views. Session identifiers are deliberately never shown.</p></div><span className="text-[11px] text-muted-foreground">Updated {dataUpdatedAt ? new Date(dataUpdatedAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "now"}</span></div>{summary?.recentActivity.length ? <div className="mt-4 max-h-80 divide-y divide-border overflow-y-auto rounded-lg border border-border/70">{summary.recentActivity.map((event) => { const Icon = deviceIcon[event.deviceType]; return <div key={event.id} className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 px-3 py-2.5"><div className="min-w-0"><p className="truncate font-mono text-xs font-semibold text-foreground">{event.pagePath}</p><p className="mt-0.5 truncate text-[11px] text-muted-foreground">{event.referrerHost ? `From ${event.referrerHost}` : "Direct or internal visit"}</p></div><div className="flex items-center gap-2 text-[11px] text-muted-foreground"><Icon size={13} /><span>{new Date(event.visitedAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}</span></div></div>; })}</div> : <EngagementEmpty title="No anonymous activity to show" detail="This private log starts after the engagement tracker is live." />}</div>
+        <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/[0.045] p-5"><div className="flex items-center gap-2"><ShieldCheck size={17} className="text-emerald-700 dark:text-emerald-300" /><h3 className="text-sm font-bold uppercase tracking-wider">Privacy boundary</h3></div><p className="mt-3 text-sm leading-6 text-muted-foreground">This workspace records a page path, visit time, screen class, a one-way session hash, and an external host name when available. It does not record IP addresses, raw user agents, personal account data, full referrer URLs, query strings, or page content.</p><div className="mt-4 rounded-lg border border-emerald-500/20 bg-background/50 p-3 text-xs text-muted-foreground"><p><strong className="text-foreground">Interpretation note:</strong> “Unique sessions” estimates distinct browser sessions, not distinct people. It is useful for editorial reach trends, not audience identity.</p></div></div>
+      </section>
     </div>
   );
+}
+
+function EngagementMetric({ icon: Icon, label, value, detail, tone = "neutral" }: { icon: typeof Users; label: string; value: number; detail: string; tone?: "neutral" | "gold" | "good" }) {
+  const toneClass = tone === "gold" ? "border-primary/30 bg-primary/[0.05]" : tone === "good" ? "border-emerald-500/25 bg-emerald-500/[0.045]" : "border-border bg-background/50";
+  return <div className={`rounded-lg border p-3 ${toneClass}`}><div className="flex items-start justify-between gap-2"><div><p className="text-xs text-muted-foreground">{label}</p><p className="mt-1 text-2xl font-bold text-foreground">{value.toLocaleString()}</p></div><Icon size={16} className={tone === "good" ? "text-emerald-700 dark:text-emerald-300" : "text-primary"} /></div><p className="mt-1 text-[11px] text-muted-foreground">{detail}</p></div>;
+}
+
+function EngagementEmpty({ title, detail }: { title: string; detail: string }) {
+  return <div className="mt-4 rounded-lg border border-dashed border-border px-4 py-6 text-center"><p className="text-sm font-semibold text-foreground">{title}</p><p className="mx-auto mt-1 max-w-md text-xs leading-5 text-muted-foreground">{detail}</p></div>;
 }

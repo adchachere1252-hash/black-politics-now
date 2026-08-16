@@ -10,6 +10,7 @@ import {
   boolean,
   bigint,
   float,
+  index,
 } from "drizzle-orm/mysql-core";
 
 /**
@@ -29,6 +30,26 @@ export const users = mysqlTable("users", {
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
+
+/**
+ * Anonymous public-site visits. Session tokens are hashed before persistence;
+ * the application deliberately stores no IP address, raw user agent, account
+ * identity, query string, or full referrer URL.
+ */
+export const siteAnalyticsEvents = mysqlTable("site_analytics_events", {
+  id: int("id").autoincrement().primaryKey(),
+  pagePath: varchar("page_path", { length: 512 }).notNull(),
+  sessionHash: varchar("session_hash", { length: 64 }).notNull(),
+  deviceType: mysqlEnum("device_type", ["desktop", "tablet", "mobile"]).notNull(),
+  referrerHost: varchar("referrer_host", { length: 255 }),
+  visitedAt: timestamp("visited_at").defaultNow().notNull(),
+}, (table) => [
+  index("site_analytics_visited_at_idx").on(table.visitedAt),
+  index("site_analytics_page_visited_idx").on(table.pagePath, table.visitedAt),
+  index("site_analytics_session_visited_idx").on(table.sessionHash, table.visitedAt),
+]);
+
+export type SiteAnalyticsEvent = typeof siteAnalyticsEvents.$inferSelect;
 
 // ═══════════════════════════════════════════════════════════════════════════
 // ELECTION CENTER TABLES (ported from election-map-2026)

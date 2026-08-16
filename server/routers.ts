@@ -46,6 +46,7 @@ import { getPortraitSubmissionTargets, getPortraitSubmissions, portraitPhotoFiel
 import { getLatestPortraitResearchItems } from "./agentDesk";
 import { getLatestDailyOperationalSnapshot } from "./agentDailySummary";
 import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, executeAgentTaskWithChangeSet, getAgentChangeProposals, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, getLatestPortraitResearchBatch, reviewAgentChangeProposal, reviewAgentRecommendation, runAgentTaskResearchNow, runElectionDayCommandResearch, runPortraitResearchTask, runResearchDesk, setAgentDefaultOwners, setAgentPriorityMode, startAllPortraitResearch, updateAgentTask } from "./agentDesk";
+import { getEngagementSummary, recordAnonymousPageView } from "./siteAnalytics";
 
 export const appRouter = router({
   system: systemRouter,
@@ -58,6 +59,20 @@ export const appRouter = router({
         success: true,
       } as const;
     }),
+  }),
+
+  siteAnalytics: router({
+    trackPageView: publicProcedure
+      .input(z.object({
+        pagePath: z.string().regex(/^\//, "A page path must begin with '/'").max(512),
+        sessionToken: z.string().min(16).max(128),
+        deviceType: z.enum(["desktop", "tablet", "mobile"]),
+        referrerHost: z.string().max(255).nullable().optional(),
+      }))
+      .mutation(async ({ input }) => recordAnonymousPageView(input)),
+    engagementSummary: adminProcedure
+      .input(z.object({ days: z.union([z.literal(7), z.literal(30)]).default(7) }).optional())
+      .query(async ({ input }) => getEngagementSummary(input?.days ?? 7)),
   }),
 
   // ─── Podcast ─────────────────────────────────────────────────────────────────
