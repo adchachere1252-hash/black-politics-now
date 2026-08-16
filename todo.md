@@ -740,6 +740,16 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Prepare a clean, documented project export without environment secrets, local build outputs, or transient audit data
 - [x] Create or update the approved private GitHub repository and verify the pushed branch
 
+## Verification Findings Remediation (Aug 16)
+- [ ] Verify and correct the five likely cross-candidate portrait mismatches with source evidence
+- [ ] Create review-safe portrait backfill work for all remaining confirmed candidate image gaps
+- [x] Remove the duplicate mobile Election Center rating legend while preserving an accessible legend
+- [x] Clarify the public election map freshness display using record-update and operational-heartbeat context
+- [ ] Complete an owner-authenticated Admin dashboard acceptance pass across protected operational workflows
+- [x] Re-run complete regression, type, data, and responsive verification after remediation
+- [x] Stage five source-verified portrait corrections for private human review without changing public records
+- [ ] Apply the five staged portrait corrections after an administrator reviews and approves each source package
+
 ## Homepage Warm Editorial Palette Review (Aug 15)
 - [x] Add Antique Brass, Champagne Ivory, and Muted Plum to the in-site homepage color comparison
 - [x] Capture and share the warm editorial palette directions for user selection before changing the live palette

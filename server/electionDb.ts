@@ -1,6 +1,6 @@
 import { eq, desc, like, or, sql } from "drizzle-orm";
 import { getDb } from "./db";
-import { senateRaces, houseRaces, governorRaces, referendums } from "../drizzle/schema";
+import { senateRaces, houseRaces, governorRaces, referendums, electionDayStatus } from "../drizzle/schema";
 import { photoWithRepositoryFallback } from "./candidatePhotoResolver";
 
 function withSenatePhotoFallback(race: any) {
@@ -75,6 +75,28 @@ export async function getScoreboard() {
     else if (r.calledParty === "R") houseRep++;
   }
   return { senate: { dem: senateDem, rep: senateRep, ind: senateInd }, house: { dem: houseDem, rep: houseRep } };
+}
+
+/**
+ * A deliberately minimal, read-only status summary for public map freshness.
+ * It exposes operational timing and source health, never private runbook data,
+ * credentials, or any ability to change an election record.
+ */
+export async function getPublicElectionFreshness() {
+  const db = await getDb();
+  if (!db) return null;
+  const [status] = await db
+    .select({
+      mode: electionDayStatus.mode,
+      sourceName: electionDayStatus.sourceName,
+      sourceHealth: electionDayStatus.sourceHealth,
+      heartbeatAt: electionDayStatus.heartbeatAt,
+      lastPollAt: electionDayStatus.lastPollAt,
+    })
+    .from(electionDayStatus)
+    .orderBy(desc(electionDayStatus.updatedAt))
+    .limit(1);
+  return status ?? null;
 }
 
 export async function searchRaces(query: string) {

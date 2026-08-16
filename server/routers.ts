@@ -35,7 +35,7 @@ function publicNewsListPost(post: any) {
   };
 }
 import { getArchiveEpisodesFormatted, getEpisodesFormatted, subscribeEmail, unsubscribeEmail, getPipelineRuns, getPodcastOperations } from "./podcastDb";
-import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateReferendum } from "./electionDb";
+import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getPublicElectionFreshness, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateReferendum } from "./electionDb";
 import { fetchWithCache, getPersistedWordPressNews } from "./newsCache";
 import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
 import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
@@ -81,6 +81,7 @@ export const appRouter = router({
     governors: publicProcedure.query(async () => getAllGovernorRaces()),
     referendums: publicProcedure.query(async () => getAllReferendums()),
     scoreboard: publicProcedure.query(async () => getScoreboard()),
+    freshness: publicProcedure.query(async () => getPublicElectionFreshness()),
     search: publicProcedure
       .input(z.object({ query: z.string().min(1).max(100) }))
       .query(async ({ input }) => searchRaces(input.query)),

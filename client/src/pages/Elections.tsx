@@ -7,6 +7,7 @@ import { USMapFull } from "@/components/USMapFull";
 import { ResultsTicker } from "@/components/ResultsTicker";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { buildElectionMapFreshnessPresentation } from "@/lib/electionFreshness";
 
 const RATINGS = ["All", "Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R"] as const;
 type ViewTab = "house" | "senate" | "governors" | "cbc" | "redistricting";
@@ -142,6 +143,7 @@ export default function Elections() {
   const { data: blackRepresentationElections = [] } = trpc.election.blackRepresentationElections.useQuery();
   const { data: redistrictingStates = [] } = trpc.election.redistricting.useQuery();
   const { data: scoreboard } = trpc.election.scoreboard.useQuery(undefined, { refetchInterval });
+  const { data: electionFreshness } = trpc.election.freshness.useQuery(undefined, { refetchInterval });
 
   // Detect live mode from in-progress contests only. Historical special/primary calls
   // retain their results without making the entire Election Center look live.
@@ -236,7 +238,7 @@ export default function Elections() {
     return data;
   }, [senateRaces, houseRaces, governors, cbcMembers, redistrictingStates, tab]);
 
-  const mapLastUpdated = useMemo(() => {
+  const mapRecordUpdatedAt = useMemo(() => {
     const activeRecords = tab === "senate" ? senateRaces as any[]
       : tab === "house" ? houseRaces as any[]
       : tab === "governors" ? governors as any[]
@@ -246,9 +248,9 @@ export default function Elections() {
       .map((record: any) => record.updatedAt ?? record.updated_at)
       .map((value: any) => value ? new Date(value).getTime() : NaN)
       .filter(Number.isFinite);
-    if (!timestamps.length) return "Last updated unavailable";
-    return `Last updated ${new Date(Math.max(...timestamps)).toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" })}`;
+    return timestamps.length ? Math.max(...timestamps) : null;
   }, [tab, senateRaces, houseRaces, governors, cbcMembers, redistrictingStates]);
+  const mapFreshness = useMemo(() => buildElectionMapFreshnessPresentation(mapRecordUpdatedAt, electionFreshness), [mapRecordUpdatedAt, electionFreshness]);
 
   // Get data for a specific state based on active tab (for popup)
   const popupData = useMemo(() => {
@@ -398,7 +400,7 @@ export default function Elections() {
         {/* Interactive Map */}
         <div className="glass-card rounded-xl p-4 mb-6">
           <div className="flex items-center justify-between gap-3 mb-3">
-            <div><h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Interactive Election Map</h2><p className="mt-0.5 text-[11px] text-muted-foreground">{mapLastUpdated}</p></div>
+            <div><h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Interactive Election Map</h2><p className={`mt-0.5 text-[11px] font-semibold ${mapFreshness.status === "warning" ? "text-amber-700 dark:text-amber-300" : mapFreshness.status === "live" ? "text-emerald-700 dark:text-emerald-300" : "text-muted-foreground"}`}>{mapFreshness.primary}</p><p className="mt-0.5 text-[11px] text-muted-foreground">{mapFreshness.detail}</p></div>
             {selectedState && (
               <button onClick={() => setSelectedState(null)} className="text-xs text-primary hover:underline">
                 Clear filter ({selectedState})
@@ -411,6 +413,7 @@ export default function Elections() {
               raceData={mapData}
               onStateClick={handleStateClick}
               selectedState={selectedState}
+              showLegend={false}
             />
           </div>
           <div className="md:hidden">
@@ -418,6 +421,7 @@ export default function Elections() {
               raceData={mapData}
               onStateClick={handleStateClick}
               selectedState={selectedState}
+              showLegend={false}
             />
           </div>
           {/* Legend */}
