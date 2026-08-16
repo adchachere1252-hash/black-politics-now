@@ -793,6 +793,13 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify and correct confirmed control failures, unclear labels, and missing user feedback across desktop and mobile
 - [x] Deliver a candid Admin controls report distinguishing working functions, informational status, deferred functionality, and outstanding gaps
 
+## Strict Safe-Action Admin Verification (Aug 16)
+- [x] Execute every non-destructive Admin navigation, filtering, refresh, and private-review control through the protected application surface
+- [x] Verify safeguards for approval, publication, race-call, automation, and other public-impact controls without executing them
+- [x] Verify desktop and mobile feedback for successful, blocked, empty, and error states across all Admin workspaces
+- [x] Deliver a complete click-by-click Admin control status matrix
+- [x] Record any control that cannot receive literal browser interaction and verify its protected application procedure instead
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
