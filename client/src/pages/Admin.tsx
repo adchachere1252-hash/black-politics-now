@@ -20,6 +20,16 @@ export default function AdminPage() {
   });
   const [focusRecommendationId, setFocusRecommendationId] = useState<number | undefined>();
 
+  const navigateToTab = (nextTab: AdminTab) => {
+    setTab(nextTab);
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    if (nextTab === "overview") params.delete("tab");
+    else params.set("tab", nextTab);
+    const query = params.toString();
+    window.history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}`);
+  };
+
   if (loading) return <div className="container py-8"><div className="h-40 bg-muted rounded animate-pulse" /></div>;
 
   if (!isAuthenticated) {
@@ -50,7 +60,7 @@ export default function AdminPage() {
       <h1 className="text-3xl font-extrabold mb-6">Admin Dashboard</h1>
 
       <div className="mb-6 max-w-full overflow-x-auto pb-1">
-        <div className="flex w-max min-w-full gap-1 rounded-lg bg-muted p-1">
+        <div className="flex w-max min-w-full gap-1 rounded-lg bg-muted p-1 lg:w-full lg:flex-wrap">
           {([
           { key: "overview", label: "Overview", icon: Shield },
           { key: "command", label: "Command Center", icon: Radar },
@@ -65,7 +75,7 @@ export default function AdminPage() {
         ] as const).map(({ key, label, icon: Icon }) => (
             <button
               key={key}
-              onClick={() => setTab(key)}
+              onClick={() => navigateToTab(key)}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${tab === key ? "bg-background text-foreground shadow-sm" : "text-muted-foreground"}`}
             >
               <Icon size={14} /> {label}
@@ -74,7 +84,12 @@ export default function AdminPage() {
         </div>
       </div>
 
-      {tab === "overview" && <OverviewTab onReview={(id) => { setFocusRecommendationId(id); setTab("agent"); }} onNavigate={(destination) => setTab(destination)} />}
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/25 bg-primary/[0.045] px-4 py-3">
+        <div><p className="text-xs font-bold uppercase tracking-[0.14em] text-primary">Portrait operations</p><p className="mt-1 text-sm text-muted-foreground">Open the active research batch, filter its status, and inspect source packages before any portrait reaches the public record.</p></div>
+        <button onClick={() => navigateToTab("portraits")} className="inline-flex shrink-0 items-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-bold text-primary-foreground shadow-sm hover:bg-primary/90"><ImagePlus size={14} /> Open Portrait Review</button>
+      </div>
+
+      {tab === "overview" && <OverviewTab onReview={(id) => { setFocusRecommendationId(id); navigateToTab("agent"); }} onNavigate={navigateToTab} />}
       {tab === "command" && <ElectionDayCommandCenterTab />}
       {tab === "podcast" && <PodcastOpsTab />}
       {tab === "elections" && <ElectionOpsTab />}
@@ -99,6 +114,7 @@ function OverviewTab({ onReview, onNavigate }: { onReview: (id: number) => void;
   const { data: agentTasks = [] } = trpc.agent.tasks.useQuery();
   const { data: pendingChanges = [] } = trpc.agent.changeProposals.useQuery({ status: "pending_review" });
   const { data: pendingPortraits = [] } = trpc.portraits.submissions.useQuery({ status: "pending" });
+  const { data: portraitResearchBatch } = trpc.portraits.latestResearchBatch.useQuery();
   const { data: worldElections = [] } = trpc.world.elections.useQuery();
   const { data: worldRefresh, refetch: refetchWorldRefresh } = trpc.world.refreshOperations.useQuery();
   const runWorldRefresh = trpc.world.runRefreshNow.useMutation({ onSuccess: () => refetchWorldRefresh() });
@@ -121,8 +137,10 @@ function OverviewTab({ onReview, onNavigate }: { onReview: (id: number) => void;
   const worldRefreshSettings = worldRefresh?.settings as any;
   const worldRefreshItems = worldRefresh?.items as any[] ?? [];
   const worldRefreshChanges = worldRefreshItems.filter((item) => item.lastStatus === "changed").length;
+  const portraitsReadyForReview = portraitResearchBatch?.byStatus?.ready_for_review ?? 0;
   const decisionItems: Array<{ id: string; title: string; detail: string; type: string; destination: "agent" | "changes" | "portraits"; recommendationId?: number }> = [
     ...(pendingChanges as any[]).slice(0, 2).map((item) => ({ id: `change-${item.id}`, title: item.title, detail: "Agent change set awaiting decision", type: "Change set", destination: "changes" as const })),
+    ...(portraitsReadyForReview > 0 ? [{ id: "portrait-research-ready", title: `${portraitsReadyForReview} portrait research findings ready to inspect`, detail: "Open Portrait Review to filter the active batch and inspect source packages.", type: "Portrait research", destination: "portraits" as const }] : []),
     ...(pendingPortraits as any[]).slice(0, 2).map((item) => ({ id: `portrait-${item.id}`, title: item.candidateName, detail: "Portrait and provenance awaiting review", type: "Portrait", destination: "portraits" as const })),
     ...overdueTasks.slice(0, 2).map((item) => ({ id: `task-${item.id}`, title: item.title, detail: `Overdue · ${item.owner ?? "Unassigned"}`, type: "Task", destination: "agent" as const })),
     ...visiblePriorityRecommendations.slice(0, 2).map((item) => ({ id: `recommendation-${item.id}`, title: item.title, detail: item.proposedAction, type: "Priority", destination: "agent" as const, recommendationId: item.id })),

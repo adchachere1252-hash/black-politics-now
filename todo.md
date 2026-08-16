@@ -757,6 +757,18 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add explicit approve and reject controls that preserve the existing review-before-public-change safeguard
 - [x] Verify the protected Portrait Review workflow on desktop and mobile with regression coverage
 
+## Fresh Admin Dashboard Verification (Aug 16)
+- [ ] Verify Admin route protection, all dashboard workspaces, live data, and controlled operations without changing public data
+- [ ] Audit Portrait Review, Command Center, Agent Desk, Podcast Ops, Election Ops, and Atlas & World workflows for weak or incomplete behavior
+- [ ] Inspect desktop and mobile Admin usability, navigation, error states, and empty states
+- [ ] Fix the confirmed Portrait Review React key warning and recheck the Admin console
+- [ ] Deliver a candid, prioritized Admin dashboard verification report with recommendations
+
+## Portrait Review Live Access Correction (Aug 16)
+- [x] Diagnose why the live Admin Portrait Review workspace is not visibly reachable from the dashboard navigation
+- [x] Add a direct, visible path to the active portrait batch filters and review workspace
+- [x] Verify the live route on desktop and mobile, including the active-batch status controls
+
 ## Homepage Warm Editorial Palette Review (Aug 15)
 - [x] Add Antique Brass, Champagne Ivory, and Muted Plum to the in-site homepage color comparison
 - [x] Capture and share the warm editorial palette directions for user selection before changing the live palette
