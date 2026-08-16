@@ -53,6 +53,15 @@ export function summarizePortraitResearchBatchItems(items: Array<{ status: strin
   return Object.fromEntries(["queued", "in_progress", "ready_for_review", "blocked", "skipped"].map((status) => [status, items.filter((item) => item.status === status).length]));
 }
 
+export function resolvePortraitResearchOutcome(hasSourceProposal: boolean) {
+  return hasSourceProposal
+    ? { status: "ready_for_review" as const, error: null }
+    : {
+      status: "blocked" as const,
+      error: "Evidence needed: this research pass found no source-backed portrait proposal. Add an official campaign, government, or verified provenance lead to create a visual review package.",
+    };
+}
+
 function sourceMarkdown(sourceIds: string[], sourceItems: SourceItem[]) {
   const selected = sourceIds
     .map((id) => sourceItems.find((source) => source.id === id))
@@ -790,7 +799,16 @@ async function executePortraitResearchBatch(batchId: number, requestedBy: string
       await db.update(portraitResearchBatchItems).set({ status: "in_progress", startedAt: new Date() }).where(eq(portraitResearchBatchItems.id, item.id));
       try {
         const task = await runPortraitResearchTask({ targetType: item.targetType, targetRecordId: item.targetRecordId, targetPhotoField: item.targetPhotoField, candidateName: item.candidateName }, requestedBy);
-        await db.update(portraitResearchBatchItems).set({ status: "ready_for_review", agentTaskId: task.id, completedAt: new Date(), error: null }).where(eq(portraitResearchBatchItems.id, item.id));
+        const portraitProposals = await db.select({ id: agentChangeProposals.id })
+          .from(agentChangeProposals)
+          .where(and(eq(agentChangeProposals.taskId, task.id), eq(agentChangeProposals.kind, "portrait_source")));
+        const outcome = resolvePortraitResearchOutcome(portraitProposals.length > 0);
+        await db.update(portraitResearchBatchItems).set({
+          status: outcome.status,
+          agentTaskId: task.id,
+          completedAt: new Date(),
+          error: outcome.error,
+        }).where(eq(portraitResearchBatchItems.id, item.id));
       } catch (error) {
         await db.update(portraitResearchBatchItems).set({ status: "blocked", error: error instanceof Error ? error.message.slice(0, 2000) : "Unknown research failure", completedAt: new Date() }).where(eq(portraitResearchBatchItems.id, item.id));
       }

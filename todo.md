@@ -780,6 +780,13 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Clearly label research-only findings with no usable image evidence as not approval-ready
 - [x] Verify the visual portrait approval workflow on desktop and mobile with regression coverage
 
+## Portrait Proposal Visibility Correction (Aug 16)
+- [x] Inspect live active-batch records to confirm why no image-backed proposal is visible in Portrait Review
+- [x] Make every finding’s evidence status and next action visible without requiring a hidden eligibility condition
+- [x] Add a clear entry path from a research-only finding to the existing image-and-source portrait submission form
+- [x] Reclassify current and future portrait research with no source proposal as evidence-needed rather than review-ready
+- [x] Verify the live proposal-to-approval interface on desktop and mobile using a source-backed review package
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
