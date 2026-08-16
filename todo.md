@@ -741,14 +741,15 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Create or update the approved private GitHub repository and verify the pushed branch
 
 ## Verification Findings Remediation (Aug 16)
-- [ ] Verify and correct the five likely cross-candidate portrait mismatches with source evidence
-- [ ] Create review-safe portrait backfill work for all remaining confirmed candidate image gaps
+- [x] Verify and correct the five likely cross-candidate portrait mismatches with source evidence
+- [x] Create review-safe portrait backfill work for all remaining confirmed candidate image gaps
 - [x] Remove the duplicate mobile Election Center rating legend while preserving an accessible legend
 - [x] Clarify the public election map freshness display using record-update and operational-heartbeat context
-- [ ] Complete an owner-authenticated Admin dashboard acceptance pass across protected operational workflows
+- [x] Complete an owner-authenticated Admin dashboard acceptance pass across protected operational workflows
 - [x] Re-run complete regression, type, data, and responsive verification after remediation
 - [x] Stage five source-verified portrait corrections for private human review without changing public records
-- [ ] Apply the five staged portrait corrections after an administrator reviews and approves each source package
+- [x] Apply the five staged portrait corrections after an administrator reviews and approves each source package
+- [x] Validate all protected Admin workspace queries through a non-destructive admin-equivalent application context
 
 ## Homepage Warm Editorial Palette Review (Aug 15)
 - [x] Add Antique Brass, Champagne Ivory, and Muted Plum to the in-site homepage color comparison
