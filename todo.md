@@ -729,6 +729,17 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Compare the rendered Homepage and Historical Atlas style sources to identify the remaining visible color mismatch
 - [x] Apply the exact Historical Atlas warm-ivory and deep-ochre visual values to the homepage without changing functional map colors
 
+## Full Platform and Candidate Image Verification (Aug 16)
+- [x] Verify public site and mobile-app workflows, responsive layouts, navigation, data views, and error states
+- [x] Audit Senate, House, Governor, and Black Representation records for candidate-image presence, reachability, and visible rendering readiness
+- [x] Verify protected Admin dashboard tabs, permissions, queues, operations controls, and Election Day readiness workflows
+- [x] Identify confirmed strengths, shortcomings, data errors, broken assets, and prioritized remediation work in a source-grounded report
+
+## Private GitHub Export Preparation (Aug 16)
+- [x] Inspect the current Git state and determine the correct private GitHub destination for the Black Politics Now application
+- [x] Prepare a clean, documented project export without environment secrets, local build outputs, or transient audit data
+- [ ] Create or update the approved private GitHub repository and verify the pushed branch
+
 ## Homepage Warm Editorial Palette Review (Aug 15)
 - [x] Add Antique Brass, Champagne Ivory, and Muted Plum to the in-site homepage color comparison
 - [x] Capture and share the warm editorial palette directions for user selection before changing the live palette

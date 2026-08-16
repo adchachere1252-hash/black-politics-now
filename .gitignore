@@ -112,3 +112,7 @@ temp/
 # Manus version file (auto-generated, not part of source)
 client/public/__manus__/version.json
 .project-config.json
+
+# Local verification outputs; the final review report may be retained separately.
+reports/candidate-image-audit.json
+reports/verification-working-notes.md
