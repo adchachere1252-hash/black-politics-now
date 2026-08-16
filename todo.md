@@ -877,10 +877,10 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify bulk review progress, photo-status labels, and responsive actions on desktop and mobile
 
 ## Repository-Grounded Portrait Identity Recheck (Aug 16)
-- [ ] Compare unresolved candidate portrait records with selected repository mappings and provenance before external research
-- [ ] Recheck unresolved portraits against curated official campaign, government, congressional, and state-election sources
-- [ ] Route only repository- and source-supported image matches into the visual approval queue; retain uncertainty as Needs verification
-- [ ] Deliver the recheck coverage, confirmed corrections, and remaining evidence-needed queue
+- [x] Deferred by user decision — remaining identity checks will be completed through the manual Portrait Review workspace
+- [x] Preserve the repository-grounded manifest and conservative Needs verification state for manual review
+- [x] Keep automatic public image changes blocked until an administrator explicitly approves source-supported visual evidence
+- [x] Retain the unresolved review queue rather than representing these portraits as verified
 
 ## Admin Site Engagement and Visits (Aug 16)
 - [x] Define privacy-preserving anonymous visit and engagement metrics for the public site
