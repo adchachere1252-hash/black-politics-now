@@ -702,6 +702,15 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Replace homepage-specific dark surfaces, borders, and accents that prevent visible parity with the Historical Atlas charcoal-and-gold treatment
 - [x] Verify the desktop and mobile homepages visibly match the Historical Atlas visual system while preserving functional election colors
 
+## Platform-Wide Historical Atlas Light Palette (Aug 16)
+- [x] Make the Historical Atlas warm ivory background, black typography, and refined gold accents the default visual system across public pages and Admin
+- [x] Preserve the separate light/dark toggle and all functional Democratic, Republican, toss-up, and election-status colors
+- [x] Verify platform-wide visual consistency and responsive contrast
+
+## Historical Atlas Light System Default (Aug 16)
+- [x] Make the Atlas warm ivory, black, and refined gold visual system the default for new visitors while retaining optional dark mode
+- [x] Migrate existing stored dark preferences once to the Atlas light presentation while preserving later explicit dark-mode choices
+
 ## Homepage Warm Editorial Palette Review (Aug 15)
 - [x] Add Antique Brass, Champagne Ivory, and Muted Plum to the in-site homepage color comparison
 - [x] Capture and share the warm editorial palette directions for user selection before changing the live palette

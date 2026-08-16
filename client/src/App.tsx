@@ -87,7 +87,7 @@ function App() {
   const usesOriginalNewsroomShell = location === "/newsroom";
   return (
     <ErrorBoundary>
-      <ThemeProvider defaultTheme="dark" switchable>
+      <ThemeProvider defaultTheme="light" switchable>
         <AudioProvider>
           <TooltipProvider>
             <Toaster />

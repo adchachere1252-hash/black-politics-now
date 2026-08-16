@@ -9,6 +9,7 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const ATLAS_LIGHT_THEME_MIGRATION = "atlas-light-system-v1";
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -23,8 +24,9 @@ export function ThemeProvider({
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() => {
     if (switchable && typeof window !== "undefined") {
+      const migrated = window.localStorage.getItem("themePresentation") === ATLAS_LIGHT_THEME_MIGRATION;
       const stored = window.localStorage.getItem("theme");
-      return stored === "light" || stored === "dark" ? stored : defaultTheme;
+      return migrated && (stored === "light" || stored === "dark") ? stored : defaultTheme;
     }
     return defaultTheme;
   });
@@ -40,6 +42,7 @@ export function ThemeProvider({
 
     if (switchable && typeof window !== "undefined") {
       window.localStorage.setItem("theme", theme);
+      window.localStorage.setItem("themePresentation", ATLAS_LIGHT_THEME_MIGRATION);
     }
   }, [theme, switchable]);
 
