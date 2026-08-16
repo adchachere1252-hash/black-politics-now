@@ -738,7 +738,7 @@ The following earlier duplicate checklist is retained as project history. The ex
 ## Private GitHub Export Preparation (Aug 16)
 - [x] Inspect the current Git state and determine the correct private GitHub destination for the Black Politics Now application
 - [x] Prepare a clean, documented project export without environment secrets, local build outputs, or transient audit data
-- [ ] Create or update the approved private GitHub repository and verify the pushed branch
+- [x] Create or update the approved private GitHub repository and verify the pushed branch
 
 ## Homepage Warm Editorial Palette Review (Aug 15)
 - [x] Add Antique Brass, Champagne Ivory, and Muted Plum to the in-site homepage color comparison
