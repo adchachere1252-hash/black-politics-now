@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import { CheckCircle2, ChevronRight, ExternalLink, ImagePlus, SearchCheck, ShieldCheck, XCircle } from "lucide-react";
+import { CheckCircle2, ExternalLink, ImagePlus, SearchCheck, ShieldCheck, XCircle } from "lucide-react";
 import { trpc } from "@/lib/trpc";
-import { getPortraitApprovalEvidence, type PortraitApprovalEvidence } from "@/lib/portraitReviewEvidence";
+import { getPortraitApprovalEvidence } from "@/lib/portraitReviewEvidence";
 import { getOfficialPortraitSourceLeads } from "@/lib/portraitSourceLeads";
 
 const provenanceLabels: Record<string, string> = {
@@ -12,143 +12,131 @@ const provenanceLabels: Record<string, string> = {
   other_verified: "Other verified source",
 };
 
-type Target = { targetType: "senate" | "house" | "governor" | "black_representation"; targetRecordId: number; targetPhotoField: "candidate1" | "candidate2" | "dem" | "rep" | "profile"; candidateName: string; location: string };
-type ResearchStatus = "queued" | "in_progress" | "ready_for_review" | "blocked" | "skipped";
-
-const researchStatusLabels: Record<ResearchStatus, string> = {
-  queued: "Queued",
-  in_progress: "In progress",
-  ready_for_review: "Ready for review",
-  blocked: "Evidence needed",
-  skipped: "Skipped",
+type Target = {
+  targetType: "senate" | "house" | "governor" | "black_representation";
+  targetRecordId: number;
+  targetPhotoField: "candidate1" | "candidate2" | "dem" | "rep" | "profile";
+  candidateName: string;
+  location: string;
 };
 
-function parseSources(value: string | null | undefined) {
-  try { return JSON.parse(value || "[]") as Array<{ title?: string; url?: string; excerpt?: string }>; } catch { return []; }
+function keyFor(target: Pick<Target, "targetType" | "targetRecordId" | "targetPhotoField">) {
+  return `${target.targetType}:${target.targetRecordId}:${target.targetPhotoField}`;
 }
 
-function targetKey(target: Pick<Target, "targetType" | "targetRecordId" | "targetPhotoField">) {
-  return `${target.targetType}:${target.targetRecordId}:${target.targetPhotoField}`;
+function parseSources(value: string | null | undefined) {
+  try {
+    return JSON.parse(value || "[]") as Array<{ title?: string; url?: string }>;
+  } catch {
+    return [];
+  }
 }
 
 export function PortraitReviewTab({ initialTargetKey }: { initialTargetKey?: string }) {
   const { data: targets = [], refetch: refetchTargets } = trpc.portraits.targets.useQuery();
   const { data: pending = [], refetch: refetchPending } = trpc.portraits.submissions.useQuery({ status: "pending" });
   const { data: reviewed = [], refetch: refetchReviewed } = trpc.portraits.submissions.useQuery();
-  const { data: latestBatch, refetch: refetchBatch } = trpc.portraits.latestResearchBatch.useQuery(undefined, { refetchInterval: 3500 });
-  const [researchStatus, setResearchStatus] = useState<ResearchStatus>("blocked");
-  const { data: researchData, refetch: refetchResearchItems } = trpc.portraits.researchItems.useQuery({ status: researchStatus }, { refetchInterval: 3500 });
-  const researchItems = (researchData?.items ?? []) as any[];
-  const [selectedResearchId, setSelectedResearchId] = useState<number | null>(null);
+  const { data: latestBatch, refetch: refetchBatch } = trpc.portraits.latestResearchBatch.useQuery(undefined, { refetchInterval: 5000 });
+  const { data: evidenceNeeded, refetch: refetchBlocked } = trpc.portraits.researchItems.useQuery({ status: "blocked" }, { refetchInterval: 5000 });
+  const { data: sourcePackages, refetch: refetchPackages } = trpc.portraits.researchItems.useQuery({ status: "ready_for_review" }, { refetchInterval: 5000 });
+  const { data: searching, refetch: refetchSearching } = trpc.portraits.researchItems.useQuery({ status: "in_progress" }, { refetchInterval: 5000 });
   const [selectedKey, setSelectedKey] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [sourceUrl, setSourceUrl] = useState("");
   const [provenanceType, setProvenanceType] = useState("official_campaign");
-  const [submissionNote, setSubmissionNote] = useState("");
+  const [note, setNote] = useState("");
   const [reviewNotes, setReviewNotes] = useState<Record<number, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
-  const targetByKey = useMemo(() => new Map((targets as Target[]).map((target) => [targetKey(target), target])), [targets]);
+  const targetByKey = useMemo(() => new Map((targets as Target[]).map((target) => [keyFor(target), target])), [targets]);
   const selectedTarget = selectedKey ? targetByKey.get(selectedKey) : undefined;
+  const allResearchItems = useMemo(() => [
+    ...((sourcePackages?.items ?? []) as any[]),
+    ...((searching?.items ?? []) as any[]),
+    ...((evidenceNeeded?.items ?? []) as any[]),
+  ], [sourcePackages, searching, evidenceNeeded]);
+  const selectedResearch = selectedTarget ? allResearchItems.find((item) => keyFor(item) === keyFor(selectedTarget)) : null;
+  const selectedPending = selectedTarget ? (pending as any[]).find((item) => keyFor(item) === keyFor(selectedTarget)) : null;
+  const selectedEvidence = useMemo(() => {
+    if (!selectedResearch) return null;
+    const portraitProposals = (selectedResearch.proposals ?? []).filter((proposal: any) => proposal.kind === "portrait_source");
+    return getPortraitApprovalEvidence(portraitProposals, parseSources(selectedResearch.task?.workPackageSources));
+  }, [selectedResearch]);
+  const sourceLeads = selectedTarget ? getOfficialPortraitSourceLeads({ candidateName: selectedTarget.candidateName, location: selectedTarget.location, targetType: selectedTarget.targetType }) : [];
+  const completedDecisions = (reviewed as any[]).filter((item) => item.status !== "pending");
+
   useEffect(() => {
-    if (!initialTargetKey || !targetByKey.has(initialTargetKey)) return;
-    setSelectedKey(initialTargetKey);
-    window.setTimeout(() => document.getElementById("portrait-submission")?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
-  }, [initialTargetKey, targetByKey]);
-  const refresh = () => { refetchTargets(); refetchPending(); refetchReviewed(); refetchBatch(); refetchResearchItems(); };
-  const submit = trpc.portraits.submit.useMutation({ onSuccess: () => { setImageUrl(""); setSourceUrl(""); setSubmissionNote(""); setSelectedKey(""); setFormError(null); refresh(); }, onError: (error) => setFormError(error.message) });
-  const review = trpc.portraits.review.useMutation({ onSuccess: refresh });
-  const research = trpc.portraits.researchNow.useMutation({ onSuccess: () => { setSelectedKey(""); refresh(); } });
-  const startAllResearch = trpc.portraits.startAllResearch.useMutation({ onSuccess: refresh, onError: (error) => setFormError(error.message) });
-  const reviewSourcePackage = trpc.agent.reviewChangeProposal.useMutation({ onSuccess: refresh, onError: (error) => setFormError(error.message) });
-  const selectedResearchItem = useMemo(() => researchItems.find((item) => item.id === selectedResearchId) ?? researchItems[0] ?? null, [researchItems, selectedResearchId]);
-  const completedDecisions = (reviewed as any[]).filter((submission) => submission.status !== "pending");
-
-  const submitCandidate = () => {
-    if (!selectedTarget) return setFormError("Select a current missing-photo target first.");
-    setFormError(null);
-    submit.mutate({ ...selectedTarget, imageUrl: imageUrl.trim(), sourceUrl: sourceUrl.trim(), provenanceType: provenanceType as any, submissionNote: submissionNote.trim() || undefined });
-  };
-
-  const createVisualReviewFromResearch = (item: any, evidence: PortraitApprovalEvidence) => {
-    if (!window.confirm(`Create a private visual portrait review for ${item.candidateName}? The image and source will be shown for approval or rejection, but nothing public changes until you approve it.`)) return;
-    setFormError(null);
-    submit.mutate({
-      targetType: item.targetType,
-      targetRecordId: item.targetRecordId,
-      targetPhotoField: item.targetPhotoField,
-      candidateName: item.candidateName,
-      imageUrl: evidence.imageUrl,
-      sourceUrl: evidence.sourceUrl,
-      provenanceType: "other_verified",
-      submissionNote: `Private visual review created from research package “${evidence.proposalTitle}.” Cited source: ${evidence.sourceTitle}. Confirm identity and image rights before approval.`,
-    });
-  };
-
-  const beginEvidenceSubmission = (item: any) => {
-    const key = targetKey(item);
-    if (!targetByKey.has(key)) {
-      setFormError(`${item.candidateName} is no longer a current missing-photo target. Refresh the page before submitting evidence.`);
-      document.getElementById("portrait-submission")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (initialTargetKey && targetByKey.has(initialTargetKey)) {
+      setSelectedKey(initialTargetKey);
       return;
     }
-    setSelectedKey(key);
-    setImageUrl("");
-    setSourceUrl("");
-    setSubmissionNote(`Evidence package for ${item.candidateName}: verify the candidate identity, direct image URL, and provenance before submitting.`);
+    if (!selectedKey && targets.length) setSelectedKey(keyFor(targets[0] as Target));
+  }, [initialTargetKey, selectedKey, targetByKey, targets]);
+
+  const refresh = () => {
+    void refetchTargets();
+    void refetchPending();
+    void refetchReviewed();
+    void refetchBatch();
+    void refetchBlocked();
+    void refetchPackages();
+    void refetchSearching();
+  };
+  const submit = trpc.portraits.submit.useMutation({
+    onSuccess: () => {
+      setImageUrl("");
+      setSourceUrl("");
+      setNote("");
+      setFormError(null);
+      refresh();
+    },
+    onError: (error) => setFormError(error.message),
+  });
+  const research = trpc.portraits.researchNow.useMutation({ onSuccess: refresh, onError: (error) => setFormError(error.message) });
+  const review = trpc.portraits.review.useMutation({ onSuccess: refresh, onError: (error) => setFormError(error.message) });
+
+  const startSearch = () => {
+    if (!selectedTarget) return setFormError("Choose a candidate before starting an image search.");
     setFormError(null);
-    document.getElementById("portrait-submission")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    research.mutate({ ...selectedTarget });
+  };
+  const sendEvidenceForReview = () => {
+    if (!selectedTarget) return setFormError("Choose a candidate before submitting image evidence.");
+    if (!/^https:\/\//.test(imageUrl.trim()) || !/^https:\/\//.test(sourceUrl.trim())) return setFormError("Add secure https image and source links before sending this image to review.");
+    setFormError(null);
+    submit.mutate({ ...selectedTarget, imageUrl: imageUrl.trim(), sourceUrl: sourceUrl.trim(), provenanceType: provenanceType as any, submissionNote: note.trim() || undefined });
+  };
+  const createVisualReview = () => {
+    if (!selectedTarget || !selectedEvidence) return;
+    submit.mutate({
+      ...selectedTarget,
+      imageUrl: selectedEvidence.imageUrl,
+      sourceUrl: selectedEvidence.sourceUrl,
+      provenanceType: "other_verified",
+      submissionNote: `AI research located this image and cited source. Confirm identity and image rights before approving. Source: ${selectedEvidence.sourceTitle}.`,
+    });
+  };
+  const decide = (decision: "approved" | "rejected") => {
+    if (!selectedPending) return;
+    const reviewNote = reviewNotes[selectedPending.id]?.trim();
+    if (decision === "rejected" && !reviewNote) return setFormError("Add a short reason when denying an image so the next search can improve.");
+    if (decision === "approved" && !window.confirm(`Approve this image for ${selectedPending.candidateName}? This will update the matched public candidate portrait.`)) return;
+    setFormError(null);
+    review.mutate({ id: selectedPending.id, decision, reviewNote: reviewNote || undefined });
   };
 
-  const decideSubmission = (submission: any, decision: "approved" | "rejected") => {
-    const reviewNote = reviewNotes[submission.id]?.trim();
-    if (decision === "rejected" && !reviewNote) return setFormError("Add a short rejection note so the evidence gap is preserved for the next reviewer.");
-    if (decision === "approved" && !window.confirm(`Approve this portrait for ${submission.candidateName}? This writes the reviewed image URL to the matched public record.`)) return;
-    setFormError(null);
-    review.mutate({ id: submission.id, decision, reviewNote: reviewNote || undefined });
-  };
+  return <div className="space-y-5">
+    <section className="glass-card rounded-xl p-5">
+      <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">Candidate image desk</p><h2 className="mt-1 flex items-center gap-2 text-xl font-bold"><SearchCheck size={19} className="text-primary" /> AI Portrait Review</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">Choose a candidate, ask the AI to find a source-backed image, then make one visual decision: <strong className="text-foreground">Approve</strong> or <strong className="text-foreground">Deny</strong>. Research stays private until you approve an image.</p></div><span className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary"><ShieldCheck size={13}/> You decide before publication</span></div>
+      <div className="mt-5 grid gap-2 sm:grid-cols-3"><div className="rounded-lg border border-border bg-background/55 p-3"><p className="text-2xl font-bold">{targets.length}</p><p className="text-xs font-semibold text-muted-foreground">Candidates needing an image</p></div><div className="rounded-lg border border-primary/25 bg-primary/[0.035] p-3"><p className="text-2xl font-bold">{latestBatch?.byStatus?.in_progress ?? 0}</p><p className="text-xs font-semibold text-muted-foreground">AI image searches running</p></div><div className="rounded-lg border border-amber-500/30 bg-amber-500/[0.035] p-3"><p className="text-2xl font-bold">{pending.length}</p><p className="text-xs font-semibold text-muted-foreground">Images awaiting your decision</p></div></div>
+    </section>
 
-  return (
-    <div className="space-y-6">
-      <div id="portrait-submission" className="glass-card rounded-xl p-5">
-        <div className="flex flex-wrap items-start justify-between gap-3"><div><h2 className="flex items-center gap-2 text-lg font-bold"><ImagePlus size={18} className="text-primary" /> Portrait submission queue</h2><p className="mt-1 max-w-3xl text-sm text-muted-foreground">Submit a provenance-backed portrait only for a listed photo gap. Approval writes the reviewed URL to its exact race or representation profile; rejection changes nothing public.</p></div><span className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-primary/10 px-2 py-1 text-xs font-semibold text-primary"><ShieldCheck size={13} /> Human review required</span></div>
-        <div className="mt-5 grid gap-3 md:grid-cols-2"><label className="text-sm font-medium">Missing-photo target<select value={selectedKey} onChange={(event) => setSelectedKey(event.target.value)} className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"><option value="">Select a candidate ({targets.length} current gaps)</option>{(targets as Target[]).map((target) => <option key={targetKey(target)} value={targetKey(target)}>{target.candidateName} — {target.location}</option>)}</select></label><label className="text-sm font-medium">Portrait image URL<input value={imageUrl} onChange={(event) => setImageUrl(event.target.value)} placeholder="https://…/portrait.jpg" className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm" /></label><label className="text-sm font-medium">Provenance URL / official research lead<input value={sourceUrl} onChange={(event) => setSourceUrl(event.target.value)} placeholder="https://official-source.example/profile" className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm" /></label><label className="text-sm font-medium">Provenance type<select value={provenanceType} onChange={(event) => setProvenanceType(event.target.value)} className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm">{Object.entries(provenanceLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}</select></label></div>
-        <label className="mt-3 block text-sm font-medium">Review note <span className="font-normal text-muted-foreground">(optional)</span><textarea value={submissionNote} onChange={(event) => setSubmissionNote(event.target.value)} placeholder="Why this is an appropriate, conflict-free source…" className="mt-1 min-h-20 w-full rounded-md border border-border bg-background px-3 py-2 text-sm" /></label>
-        {formError && <p className="mt-3 text-sm text-destructive">{formError}</p>}
-        <div className="mt-4 flex flex-wrap gap-2"><button onClick={submitCandidate} disabled={submit.isPending} className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50">{submit.isPending ? "Submitting…" : "Submit for provenance review"}</button><button onClick={() => { if (!selectedTarget) return setFormError("Select a current missing-photo target first."); if (sourceUrl.trim() && !/^https:\/\//.test(sourceUrl.trim())) return setFormError("The official research lead must be a secure https URL."); setFormError(null); research.mutate({ ...selectedTarget, ...(sourceUrl.trim() ? { sourceLead: sourceUrl.trim() } : {}) }); }} disabled={research.isPending} className="inline-flex items-center gap-2 rounded-md border border-primary/35 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary disabled:opacity-50"><SearchCheck size={15} />{research.isPending ? "Researching…" : "Run portrait research"}</button><button onClick={() => { if (window.confirm(`Start private research for all ${targets.length} current portrait gaps? Each result stays in review and no image will be submitted, approved, or published automatically.`)) { setFormError(null); startAllResearch.mutate(); } }} disabled={startAllResearch.isPending || !targets.length || latestBatch?.status === "running"} className="inline-flex items-center gap-2 rounded-md border border-violet-500/45 bg-violet-500/10 px-4 py-2 text-sm font-semibold text-violet-700 dark:text-violet-200 disabled:opacity-50"><SearchCheck size={15} />{startAllResearch.isPending ? "Starting all research…" : latestBatch?.status === "running" ? "Bulk research running" : `Research all ${targets.length} gaps`}</button></div><p className="mt-2 text-xs text-muted-foreground">Individual and bulk research create private review packages only. Add an official source lead whenever possible; no action here submits, approves, or publishes a photo.</p>
-        {selectedTarget && <PortraitSourceDiscovery target={selectedTarget} />}
-      </div>
+    <section className="glass-card rounded-xl p-5">
+      <label className="block text-sm font-bold">1. Choose a candidate<select value={selectedKey} onChange={(event) => { setSelectedKey(event.target.value); setFormError(null); }} className="mt-2 w-full rounded-md border border-border bg-background px-3 py-2.5 text-sm"><option value="">Select a candidate needing an image</option>{(targets as Target[]).map((target) => <option key={keyFor(target)} value={keyFor(target)}>{target.candidateName} — {target.location}</option>)}</select></label>
+      {!selectedTarget ? <p className="mt-5 rounded-lg border border-dashed border-border p-6 text-center text-sm text-muted-foreground">Select a candidate to start an AI image search or review an image.</p> : <div className="mt-5 rounded-xl border border-primary/25 bg-primary/[0.025] p-4"><div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"><div><p className="text-xs font-bold uppercase tracking-wider text-primary">Selected candidate</p><h3 className="mt-1 text-lg font-bold">{selectedTarget.candidateName}</h3><p className="mt-1 text-sm text-muted-foreground">{selectedTarget.location}</p></div>{selectedResearch?.status === "in_progress" && <span className="rounded-full bg-violet-500/10 px-2.5 py-1 text-xs font-bold text-violet-700 dark:text-violet-200">AI search in progress</span>}{selectedPending && <span className="rounded-full bg-amber-500/10 px-2.5 py-1 text-xs font-bold text-amber-700 dark:text-amber-300">Ready for your decision</span>}</div>
+        {formError && <p className="mt-4 rounded-md border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">{formError}</p>}
+        {selectedPending ? <div className="mt-5 grid gap-4 rounded-xl border border-amber-500/35 bg-background/70 p-4 md:grid-cols-[160px_1fr]"><img src={selectedPending.imageUrl} alt={`Image proposed for ${selectedPending.candidateName}`} className="h-40 w-40 max-w-full rounded-lg border border-border object-cover"/><div><p className="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300">2. Review this AI image result</p><p className="mt-2 text-sm leading-6 text-muted-foreground">Confirm that the person is {selectedPending.candidateName}, the image is appropriate, and the source supports the identity claim.</p><div className="mt-3 flex flex-wrap gap-3 text-xs font-semibold"><a href={selectedPending.imageUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-primary underline">Open image <ExternalLink size={12}/></a><a href={selectedPending.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-primary underline">Open source <ExternalLink size={12}/></a></div><input value={reviewNotes[selectedPending.id] ?? ""} onChange={(event) => setReviewNotes((notes) => ({ ...notes, [selectedPending.id]: event.target.value }))} placeholder="Optional approval note; required if you deny this image" className="mt-4 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"/><div className="mt-3 flex flex-wrap gap-2"><button onClick={() => decide("approved")} disabled={review.isPending} className="inline-flex items-center gap-1 rounded-md bg-emerald-600 px-4 py-2 text-sm font-bold text-white disabled:opacity-50"><CheckCircle2 size={15}/> Approve image</button><button onClick={() => decide("rejected")} disabled={review.isPending} className="inline-flex items-center gap-1 rounded-md border border-destructive/45 bg-destructive/5 px-4 py-2 text-sm font-bold text-destructive disabled:opacity-50"><XCircle size={15}/> Deny image</button></div></div></div> : selectedEvidence ? <div className="mt-5 grid gap-4 rounded-xl border border-emerald-500/35 bg-emerald-500/[0.035] p-4 md:grid-cols-[160px_1fr]"><img src={selectedEvidence.imageUrl} alt={`AI-found portrait candidate for ${selectedTarget.candidateName}`} className="h-40 w-40 max-w-full rounded-lg border border-emerald-500/30 object-cover"/><div><p className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-300">2. AI found a source-backed image</p><p className="mt-2 text-sm leading-6 text-muted-foreground">The image and separate provenance page are available. Send it to your decision queue to approve or deny it visually.</p><a href={selectedEvidence.sourceUrl} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-primary underline">Open cited source: {selectedEvidence.sourceTitle} <ExternalLink size={12}/></a><button onClick={createVisualReview} disabled={submit.isPending} className="mt-4 flex items-center gap-1 rounded-md bg-primary px-4 py-2 text-sm font-bold text-primary-foreground disabled:opacity-50"><ImagePlus size={15}/> {submit.isPending ? "Preparing review…" : "Send image to Approve / Deny"}</button></div></div> : <div className="mt-5"><p className="text-xs font-bold uppercase tracking-wider text-primary">2. Find an image</p><p className="mt-2 text-sm text-muted-foreground">Ask the AI to search this candidate. If it finds a verified image and separate source, that visual card will appear here for your decision.</p><div className="mt-3 flex flex-wrap gap-2"><button onClick={startSearch} disabled={research.isPending || selectedResearch?.status === "in_progress"} className="inline-flex items-center gap-1 rounded-md bg-primary px-4 py-2 text-sm font-bold text-primary-foreground disabled:opacity-50"><SearchCheck size={15}/>{research.isPending || selectedResearch?.status === "in_progress" ? "Searching for image…" : "Ask AI to find image"}</button>{sourceLeads.map((lead) => <a key={lead.label} href={lead.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-3 py-2 text-xs font-bold text-primary"><span>{lead.label}</span><ExternalLink size={11}/></a>)}</div><details className="mt-4 rounded-lg border border-border bg-background/65 p-3"><summary className="cursor-pointer text-sm font-bold">I found an official image myself</summary><div className="mt-4 grid gap-3 md:grid-cols-2"><label className="text-xs font-bold">Direct image URL<input value={imageUrl} onChange={(event) => setImageUrl(event.target.value)} placeholder="https://…/portrait.jpg" className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"/></label><label className="text-xs font-bold">Official source page<input value={sourceUrl} onChange={(event) => setSourceUrl(event.target.value)} placeholder="https://official-source.example/profile" className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"/></label><label className="text-xs font-bold">Source type<select value={provenanceType} onChange={(event) => setProvenanceType(event.target.value)} className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm">{Object.entries(provenanceLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label><label className="text-xs font-bold">Optional note<input value={note} onChange={(event) => setNote(event.target.value)} placeholder="Why this image matches the candidate" className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"/></label></div><button onClick={sendEvidenceForReview} disabled={submit.isPending} className="mt-3 inline-flex items-center gap-1 rounded-md border border-primary/45 bg-primary/10 px-4 py-2 text-sm font-bold text-primary disabled:opacity-50"><ImagePlus size={15}/> Send image to Approve / Deny</button></details></div>}</div>}
+    </section>
 
-      {latestBatch && <div id="portrait-research-batch" className="glass-card scroll-mt-5 rounded-xl p-5"><div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="text-sm font-bold uppercase tracking-wider">Bulk portrait research</h3><p className="mt-1 text-xs text-muted-foreground">Started by {latestBatch.requestedBy} · {new Date(latestBatch.startedAt).toLocaleString()}. Progress refreshes while the private batch runs.</p></div><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${latestBatch.status === "running" ? "bg-violet-500/10 text-violet-700 dark:text-violet-200" : latestBatch.status === "completed" ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-200" : "bg-amber-500/10 text-amber-700 dark:text-amber-200"}`}>{latestBatch.status.replaceAll("_", " ")}</span></div><div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-5"><div className="rounded-lg border border-border/70 bg-background/45 px-3 py-2 text-center"><p className="text-lg font-bold">{latestBatch.totalTargets}</p><p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Total</p></div><div className="rounded-lg border border-border/70 bg-background/45 px-3 py-2 text-center"><p className="text-lg font-bold">{latestBatch.byStatus?.queued ?? 0}</p><p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Queued</p></div><div className="rounded-lg border border-border/70 bg-background/45 px-3 py-2 text-center"><p className="text-lg font-bold">{latestBatch.byStatus?.in_progress ?? 0}</p><p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Working</p></div><div className="rounded-lg border border-emerald-500/25 bg-emerald-500/[0.035] px-3 py-2 text-center"><p className="text-lg font-bold">{latestBatch.byStatus?.ready_for_review ?? 0}</p><p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Source packages</p></div><div className="rounded-lg border border-amber-500/30 bg-amber-500/[0.035] px-3 py-2 text-center"><p className="text-lg font-bold">{latestBatch.byStatus?.blocked ?? 0}</p><p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Evidence needed</p></div></div><p className="mt-3 text-xs text-muted-foreground">{latestBatch.summary || "Private research never changes a public portrait. Only a source package with a direct image and separate provenance can create an approval card."}</p></div>}
-
-      {latestBatch && <div className="glass-card rounded-xl p-5"><div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="text-sm font-bold uppercase tracking-wider">Research findings</h3><p className="mt-1 text-xs text-muted-foreground">Each item shows whether it has a proposal, needs evidence, or can create a visual approval card. Nothing is hidden behind an eligibility condition.</p></div><span className="rounded-full border border-primary/25 bg-primary/10 px-2 py-1 text-xs font-semibold text-primary">Batch {researchData?.batch?.id ?? latestBatch.id}</span></div><div className="mt-4 flex flex-wrap gap-2" aria-label="Portrait research status filter">{(Object.keys(researchStatusLabels) as ResearchStatus[]).map((status) => <button key={status} onClick={() => { setResearchStatus(status); setSelectedResearchId(null); }} className={`rounded-md border px-3 py-1.5 text-xs font-semibold transition-colors ${researchStatus === status ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-muted-foreground hover:border-primary/45 hover:text-foreground"}`}>{researchStatusLabels[status]} <span className="ml-1 opacity-75">{latestBatch.byStatus?.[status] ?? 0}</span></button>)}</div><div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]"><div className="max-h-[420px] space-y-2 overflow-y-auto pr-1">{researchItems.map((item) => <button key={item.id} onClick={() => setSelectedResearchId(item.id)} className={`w-full rounded-lg border p-3 text-left transition-colors ${selectedResearchItem?.id === item.id ? "border-primary bg-primary/5" : "border-border/70 bg-background/40 hover:border-primary/40"}`}><div className="flex items-start justify-between gap-2"><div><p className="font-semibold text-sm">{item.candidateName}</p><p className="mt-0.5 text-xs text-muted-foreground">{item.location} · {item.targetType.replace("_", " ")}</p></div><ChevronRight size={16} className="mt-0.5 shrink-0 text-primary"/></div>{item.error && <p className="mt-2 line-clamp-2 text-xs text-amber-700 dark:text-amber-300">{item.error}</p>}<p className={`mt-2 text-[11px] font-semibold uppercase tracking-wider ${(item.proposals?.length ?? 0) > 0 ? "text-emerald-700 dark:text-emerald-300" : "text-amber-700 dark:text-amber-300"}`}>{(item.proposals?.length ?? 0) > 0 ? `${item.proposals.length} source proposal${item.proposals.length === 1 ? "" : "s"}` : "Evidence needed"}</p></button>)}{researchItems.length === 0 && <p className="rounded-lg border border-dashed border-border px-4 py-8 text-center text-sm text-muted-foreground">No {researchStatusLabels[researchStatus].toLowerCase()} research items in this batch.</p>}</div><ResearchFindingDetail item={selectedResearchItem} onReview={(proposal, status) => { if (status === "approved" && !window.confirm(`Approve this source package for ${selectedResearchItem?.candidateName}? This records the source review only and does not change any public portrait.`)) return; reviewSourcePackage.mutate({ id: proposal.id, status }); }} onCreateVisualReview={createVisualReviewFromResearch} onBeginEvidenceSubmission={beginEvidenceSubmission} isReviewing={reviewSourcePackage.isPending || submit.isPending}/></div></div>}
-
-      <div id="portrait-pending-review" className="glass-card scroll-mt-5 rounded-xl p-5"><div className="flex items-center justify-between gap-2"><div><h3 className="text-sm font-bold uppercase tracking-wider">Pending visual review</h3><p className="mt-1 text-xs text-muted-foreground">Review the candidate image and separate provenance source. Approval updates one exact public photo field; rejection requires a note and changes nothing public.</p></div><span className="rounded-full bg-amber-500/10 px-2 py-1 text-xs font-bold text-amber-700 dark:text-amber-300">{pending.length} pending</span></div><div className="mt-4 space-y-3">{(pending as any[]).map((submission) => <div key={submission.id} className="grid gap-3 rounded-lg border border-border/70 bg-background/40 p-3 md:grid-cols-[72px_1fr_auto]"><img src={submission.imageUrl} alt={`Submitted portrait for ${submission.candidateName}`} className="h-[72px] w-[72px] rounded-md border border-border object-cover" onError={(event) => { event.currentTarget.style.opacity = "0.3"; }} /><div><div className="flex flex-wrap items-center gap-2"><p className="font-semibold">{submission.candidateName}</p><span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-bold uppercase">{submission.targetType.replace("_", " ")}</span></div><div className="mt-1 flex flex-wrap gap-3 text-xs text-muted-foreground"><a href={submission.imageUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-primary underline">Open image <ExternalLink size={11} /></a><a href={submission.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-primary underline">{provenanceLabels[submission.provenanceType] ?? "Source"} <ExternalLink size={11} /></a></div>{submission.submissionNote && <p className="mt-2 text-xs text-muted-foreground">{submission.submissionNote}</p>}<input value={reviewNotes[submission.id] ?? ""} onChange={(event) => setReviewNotes((notes) => ({ ...notes, [submission.id]: event.target.value }))} placeholder="Required for rejection; optional approval note" className="mt-3 w-full rounded border border-border bg-background px-2 py-1.5 text-xs" /></div><div className="flex items-start gap-2"><button onClick={() => decideSubmission(submission, "approved")} disabled={review.isPending} className="inline-flex items-center gap-1 rounded bg-emerald-600 px-2.5 py-1.5 text-xs font-semibold text-white disabled:opacity-50"><CheckCircle2 size={13} /> Approve</button><button onClick={() => decideSubmission(submission, "rejected")} disabled={review.isPending} className="inline-flex items-center gap-1 rounded border border-destructive/40 px-2.5 py-1.5 text-xs font-semibold text-destructive disabled:opacity-50"><XCircle size={13} /> Reject</button></div></div>)}{pending.length === 0 && <p className="rounded-lg border border-dashed border-border px-4 py-6 text-center text-sm text-muted-foreground">No portrait submissions are awaiting review.</p>}</div></div>
-
-      <div id="portrait-decisions" className="glass-card scroll-mt-5 rounded-xl p-5"><h3 className="text-sm font-bold uppercase tracking-wider">Recent decisions</h3><p className="mt-1 text-xs text-muted-foreground">Every completed decision retains the reviewed portrait and its provenance link for audit.</p><div className="mt-3 space-y-2">{completedDecisions.slice(0, 8).map((submission) => <div key={submission.id} className="grid grid-cols-[44px_minmax(0,1fr)_auto] items-center gap-3 rounded border border-border/60 px-3 py-2 text-sm"><img src={submission.imageUrl} alt={`Reviewed portrait of ${submission.candidateName}`} className="h-11 w-11 rounded border border-border object-cover" onError={(event) => { event.currentTarget.style.opacity = "0.3"; }} /><div className="min-w-0"><p className="truncate font-medium">{submission.candidateName}</p><div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground"><span>{submission.reviewedBy ?? "Administrator"} · {submission.reviewedAt ? new Date(submission.reviewedAt).toLocaleDateString() : ""}</span>{submission.sourceUrl && <a href={submission.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-primary underline">Source <ExternalLink size={10}/></a>}</div></div><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${submission.status === "approved" ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" : "bg-red-500/10 text-red-700 dark:text-red-300"}`}>{submission.status}</span></div>)}{completedDecisions.length === 0 && <p className="text-sm text-muted-foreground">No portrait decisions have been recorded.</p>}</div></div>
-    </div>
-  );
-}
-
-function PortraitSourceDiscovery({ target }: { target: Target }) {
-  const query = encodeURIComponent(`${target.candidateName} ${target.location} official campaign portrait`);
-  const candidateQuery = encodeURIComponent(target.candidateName);
-  const isCongressional = target.targetType === "senate" || target.targetType === "house" || target.targetType === "black_representation";
-  return <div className="mt-5 rounded-lg border border-primary/25 bg-primary/[0.035] p-4"><div className="flex items-start gap-2"><SearchCheck size={16} className="mt-0.5 shrink-0 text-primary"/><div><h3 className="text-sm font-semibold">Provenance-first source discovery</h3><p className="mt-1 text-xs leading-5 text-muted-foreground">Start with an official campaign, government, or Bioguide page. A search lead is not evidence by itself—open it, confirm the candidate identity and image rights, then paste the direct image and source URLs into the private submission form above.</p></div></div><div className="mt-3 flex flex-wrap gap-2"><a href={`https://www.google.com/search?q=${query}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-2.5 py-1.5 text-xs font-semibold text-primary">Find official source <ExternalLink size={12}/></a>{isCongressional && <a href={`https://www.fec.gov/data/candidates/?q=${candidateQuery}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-2.5 py-1.5 text-xs font-semibold text-primary">Check FEC candidate record <ExternalLink size={12}/></a>}<span className="rounded-md border border-border bg-background px-2.5 py-1.5 text-xs text-muted-foreground">Target: {target.candidateName}</span></div><p className="mt-3 text-[11px] text-muted-foreground">Accepted evidence: official campaign · official government · Bioguide · licensed media. The AI research action uses the same review-only boundary after you identify a credible source lead.</p></div>;
-}
-
-function ResearchFindingDetail({ item, onReview, onCreateVisualReview, onBeginEvidenceSubmission, isReviewing }: { item: any; onReview: (proposal: any, status: "approved" | "rejected") => void; onCreateVisualReview: (item: any, evidence: PortraitApprovalEvidence) => void; onBeginEvidenceSubmission: (item: any) => void; isReviewing: boolean }) {
-  if (!item) return <div className="rounded-lg border border-dashed border-border px-4 py-10 text-center text-sm text-muted-foreground">Select a research finding to inspect its target and source package.</div>;
-  const proposals = (item.proposals ?? []).filter((proposal: any) => proposal.kind === "portrait_source");
-  const taskSources = parseSources(item.task?.workPackageSources);
-  const approvalEvidence = getPortraitApprovalEvidence(proposals, taskSources);
-  const officialLeads = getOfficialPortraitSourceLeads({ candidateName: item.candidateName, location: item.location, targetType: item.targetType });
-
-  return <div className="rounded-lg border border-border/70 bg-background/40 p-4">
-    <div className="flex flex-wrap items-start justify-between gap-2"><div><p className="text-base font-bold">{item.candidateName}</p><p className="mt-1 text-xs text-muted-foreground">{item.location} · target: {item.targetType.replace("_", " ")} / {item.targetPhotoField}</p></div><span className="rounded-full bg-muted px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{item.status.replaceAll("_", " ")}</span></div>
-    <div className="mt-4 rounded-md border border-primary/20 bg-primary/[0.035] p-3 text-xs leading-5 text-muted-foreground"><strong className="text-foreground">Review boundary:</strong> A source-package decision is editorial metadata only. It does not submit, approve, or publish a portrait. A portrait can reach the public record only through the existing, separate provenance review queue.</div>
-    {item.error && <div className="mt-4 rounded-md border border-destructive/30 bg-destructive/5 p-3 text-xs text-destructive"><strong>Research note:</strong> {item.error}</div>}
-    {item.task?.workPackage && <div className="mt-4"><h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Research package</h4><pre className="mt-2 max-h-52 overflow-y-auto whitespace-pre-wrap rounded-md border border-border bg-background p-3 text-xs leading-5 text-foreground">{item.task.workPackage}</pre></div>}
-    {approvalEvidence ? <div className="mt-4 rounded-lg border border-emerald-500/30 bg-emerald-500/[0.045] p-3"><div className="flex flex-wrap items-start gap-3"><img src={approvalEvidence.imageUrl} alt={`Proposed portrait of ${item.candidateName}`} className="h-28 w-28 rounded-md border border-emerald-500/30 object-cover" onError={(event) => { event.currentTarget.style.display = "none"; }} /><div className="min-w-0 flex-1"><p className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-300">Visual review package ready</p><p className="mt-1 text-sm font-semibold">{item.candidateName}</p><a href={approvalEvidence.sourceUrl} target="_blank" rel="noreferrer" className="mt-1 inline-flex max-w-full items-center gap-1 text-xs font-semibold text-primary underline"><span className="truncate">{approvalEvidence.sourceTitle}</span><ExternalLink size={11}/></a><p className="mt-2 text-xs leading-5 text-muted-foreground">The image and separate cited source are present. Create a pending portrait submission to review this image visually, then approve or reject it below.</p><button onClick={() => onCreateVisualReview(item, approvalEvidence)} disabled={isReviewing} className="mt-3 inline-flex items-center gap-1 rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-50"><ImagePlus size={13}/> Create visual review</button></div></div></div> : <div className="mt-4 rounded-lg border border-dashed border-amber-500/35 bg-amber-500/[0.035] p-3 text-xs leading-5 text-muted-foreground"><strong className="text-foreground">Evidence needed — not approval-ready.</strong> This finding has no verified direct image URL plus separate source page, so approval controls are deliberately unavailable. Open one of the official-source leads below, confirm identity and image rights, then add the direct image and source to the private review queue.<div className="mt-3 flex flex-wrap gap-2">{officialLeads.map((lead) => <a key={lead.label} href={lead.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-2.5 py-1.5 text-xs font-semibold text-primary"><span>{lead.label}</span><ExternalLink size={11}/></a>)}</div><p className="mt-2 text-[11px] text-muted-foreground">Leads are discovery starting points, not evidence. A visual approval package still requires a direct image URL and a separate official provenance page.</p><button onClick={() => onBeginEvidenceSubmission(item)} className="mt-3 inline-flex items-center gap-1 rounded-md border border-primary/45 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary"><ImagePlus size={13}/> Add image and source evidence</button></div>}
-    <div className="mt-4 space-y-3">{proposals.map((proposal: any) => { const proposalSources = parseSources(proposal.evidence); const sources = proposalSources.length ? proposalSources : taskSources; return <div key={proposal.id} className="rounded-lg border border-border/70 bg-card p-3"><div className="flex flex-wrap items-start justify-between gap-2"><div><p className="font-semibold text-sm">{proposal.title}</p><p className="mt-1 text-xs text-muted-foreground">{proposal.targetReference}</p></div><span className="rounded-full bg-muted px-2 py-1 text-[10px] font-bold uppercase text-muted-foreground">{proposal.status.replaceAll("_", " ")}</span></div><div className="mt-3 grid gap-3 text-xs sm:grid-cols-2"><div><p className="font-semibold text-muted-foreground">Current context</p><p className="mt-1 whitespace-pre-wrap text-foreground">{proposal.beforeValue}</p></div><div><p className="font-semibold text-muted-foreground">Proposed source finding</p><p className="mt-1 whitespace-pre-wrap text-foreground">{proposal.proposedValue}</p></div></div><p className="mt-3 text-xs leading-5 text-muted-foreground"><strong className="text-foreground">Rationale:</strong> {proposal.rationale}</p>{sources.length > 0 && <div className="mt-3 flex flex-wrap gap-2">{sources.map((source, index) => source.url ? <a key={`${source.url}-${index}`} href={source.url} target="_blank" rel="noreferrer" className="inline-flex max-w-full items-center gap-1 rounded-md border border-border bg-background px-2 py-1 text-xs font-semibold text-primary underline"><span className="truncate">{source.title || "Open cited source"}</span><ExternalLink size={11}/></a> : null)}</div>}{proposal.status === "pending_review" && <div className="mt-4 flex flex-wrap gap-2"><button onClick={() => onReview(proposal, "approved")} disabled={isReviewing} className="inline-flex items-center gap-1 rounded-md border border-emerald-600/40 bg-emerald-600/10 px-3 py-1.5 text-xs font-semibold text-emerald-700 dark:text-emerald-300 disabled:opacity-50"><CheckCircle2 size={13}/> Accept source package</button><button onClick={() => onReview(proposal, "rejected")} disabled={isReviewing} className="inline-flex items-center gap-1 rounded-md border border-destructive/40 px-3 py-1.5 text-xs font-semibold text-destructive disabled:opacity-50"><XCircle size={13}/> Reject source package</button></div>}</div>; })}{proposals.length === 0 && <p className="rounded-md border border-dashed border-border px-3 py-5 text-center text-xs text-muted-foreground">This research item has no usable source proposal yet. Keep it in review; do not create or approve a portrait from this item.</p>}</div>
+    <section className="glass-card rounded-xl p-5"><h3 className="text-sm font-bold uppercase tracking-wider">Recent image decisions</h3><p className="mt-1 text-xs text-muted-foreground">Each decision retains the visual and cited source for a clear audit trail.</p><div className="mt-4 grid gap-2 md:grid-cols-2">{completedDecisions.slice(0, 8).map((item) => <div key={item.id} className="flex items-center gap-3 rounded-lg border border-border/70 bg-background/45 p-3"><img src={item.imageUrl} alt={`Reviewed portrait of ${item.candidateName}`} className="h-12 w-12 rounded-md border border-border object-cover"/><div className="min-w-0 flex-1"><p className="truncate text-sm font-bold">{item.candidateName}</p><a href={item.sourceUrl} target="_blank" rel="noreferrer" className="text-xs font-semibold text-primary underline">View source</a></div><span className={`rounded-full px-2 py-1 text-[10px] font-bold uppercase ${item.status === "approved" ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" : "bg-red-500/10 text-red-700 dark:text-red-300"}`}>{item.status}</span></div>)}{completedDecisions.length === 0 && <p className="text-sm text-muted-foreground">No image decisions have been recorded yet.</p>}</div></section>
   </div>;
 }

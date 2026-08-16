@@ -859,6 +859,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify complete candidate-to-portrait-decision, podcast-operations, and Proposed Changes workflows on desktop and mobile
 - [x] Deliver candid agent-use findings and prioritized operational recommendations
 
+## Simplified AI Portrait Review Desk (Aug 16)
+- [x] Replace fragmented portrait operations with a candidate-first AI image review queue
+- [x] Present image candidates as visual evidence cards with source links and a single explicit approve or deny decision
+- [x] Keep technical research and evidence-needed states in background status rather than the primary decision flow
+- [x] Verify the simplified candidate-to-search-to-decision workflow on desktop and mobile
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
