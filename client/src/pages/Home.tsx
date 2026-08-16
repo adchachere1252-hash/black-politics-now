@@ -35,7 +35,7 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
   const { data: governors } = trpc.election.governors.useQuery(undefined, homepageElectionQueryOptions);
   const { data: cbcMembers } = trpc.election.cbc.useQuery(undefined, homepageElectionQueryOptions);
   const { data: blackRepresentationElections } = trpc.election.blackRepresentationElections.useQuery(undefined, homepageElectionQueryOptions);
-  const { play, voicePreference } = useAudio();
+  const { play, voicePreference, setVoicePreference } = useAudio();
   const [mapView, setMapView] = useState<MapView>("house");
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [statePopupOpen, setStatePopupOpen] = useState(false);
@@ -446,9 +446,7 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
               </div>
 
               {/* Segment count tagline */}
-              <p className="text-xs font-bold text-primary uppercase tracking-wider mb-3">
-                {latestEpisode.totalDurationLabel}. Everything You Need.
-              </p>
+              <div className="mb-3 flex items-center justify-between gap-3"><p className="text-xs font-bold text-primary uppercase tracking-wider">{latestEpisode.totalDurationLabel}. Everything You Need.</p><div className="inline-flex rounded-md border border-border bg-background p-0.5 text-[10px] font-semibold"><button onClick={() => setVoicePreference("andrew")} className={`rounded px-2 py-1 ${voicePreference === "andrew" ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>Andrew</button><button onClick={() => setVoicePreference("jenny")} className={`rounded px-2 py-1 ${voicePreference === "jenny" ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>Jenny</button></div></div>
 
               {/* Numbered segment list */}
               <div className="space-y-0.5">
@@ -460,6 +458,8 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
                     key={seg.key}
                     onClick={() => segmentHasAudio && play({
                       url: segmentUrl,
+                      alternateUrl: voicePreference === "andrew" ? seg.jennyAudioPath : seg.audioPath,
+                      voice: voicePreference,
                       title: seg.label,
                       episodeDate: latestEpisode.date,
                       segmentKey: seg.key,

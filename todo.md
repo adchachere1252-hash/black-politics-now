@@ -816,6 +816,13 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Confirm the daily guard and recovery workflow fails safely when either voice is incomplete
 - [x] Re-run technical, visual, and operational verification across the new Admin and homepage features
 
+## Homepage Andrew-to-Jenny Playback Verification (Aug 16)
+- [x] Inspect the homepage Daily Brief voice-switching implementation and current segment-audio selection rules
+- [x] Verify Andrew and Jenny segment URL resolution, direct audio availability, and switch-state behavior
+- [x] Add a visible homepage Andrew and Jenny selector and preserve segment position when switching an active track
+- [x] Repair any confirmed homepage voice-switching defect and test desktop and mobile playback selection
+- [x] Document the verified homepage dual-voice result
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade

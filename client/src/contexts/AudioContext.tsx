@@ -1,7 +1,10 @@
-import { createContext, useContext, useState, useRef, useCallback, type ReactNode } from "react";
+import { createContext, useContext, useRef, useState, useCallback, type ReactNode } from "react";
+import { switchVoiceTrack, type BriefVoice } from "@/lib/audioVoice";
 
 interface AudioTrack {
   url: string;
+  alternateUrl?: string;
+  voice?: BriefVoice;
   title: string;
   episodeDate: string;
   segmentKey?: string;
@@ -13,13 +16,13 @@ interface AudioContextType {
   progress: number;
   duration: number;
   volume: number;
-  voicePreference: "andrew" | "jenny";
+  voicePreference: BriefVoice;
   play: (track: AudioTrack) => void;
   pause: () => void;
   resume: () => void;
   seek: (time: number) => void;
   setVolume: (vol: number) => void;
-  setVoicePreference: (voice: "andrew" | "jenny") => void;
+  setVoicePreference: (voice: BriefVoice) => void;
   audioRef: React.RefObject<HTMLAudioElement | null>;
 }
 
@@ -31,8 +34,8 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolumeState] = useState(0.8);
-  const [voicePreference, setVoicePreference] = useState<"andrew" | "jenny">(
-    () => (localStorage.getItem("bpn-voice") as "andrew" | "jenny") || "andrew"
+  const [voicePreference, setVoicePreference] = useState<BriefVoice>(
+    () => (localStorage.getItem("bpn-voice") as BriefVoice) || "andrew"
   );
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -68,10 +71,23 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     if (audioRef.current) audioRef.current.volume = vol;
   }, []);
 
-  const setVoicePreferenceWrapped = useCallback((voice: "andrew" | "jenny") => {
+  const setVoicePreferenceWrapped = useCallback((voice: BriefVoice) => {
     setVoicePreference(voice);
     localStorage.setItem("bpn-voice", voice);
-  }, []);
+    if (!currentTrack || !audioRef.current) return;
+    const nextTrack = switchVoiceTrack(currentTrack, voice);
+    if (nextTrack === currentTrack) return;
+    const audio = audioRef.current;
+    const resumeAt = audio.currentTime || 0;
+    const shouldResume = isPlaying && !audio.paused;
+    setCurrentTrack(nextTrack);
+    audio.src = nextTrack.url;
+    audio.addEventListener("loadedmetadata", () => {
+      audio.currentTime = Math.min(resumeAt, Number.isFinite(audio.duration) ? audio.duration : resumeAt);
+      setProgress(audio.currentTime);
+      if (shouldResume) audio.play().catch(() => setIsPlaying(false));
+    }, { once: true });
+  }, [currentTrack, isPlaying]);
 
   return (
     <AudioCtx.Provider value={{
