@@ -850,6 +850,15 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify all Daily Brief segments have source context, correct sequence, paired audio, and independent greeting/closing playback
 - [x] Deliver a complete Daily Brief production workflow and recommendations report
 
+## Agent Workflow Re-Audit and Completion (Aug 16)
+- [x] Verify whether portrait research, Daily Brief automation, candidate actions, downloads, and Proposed Changes research are visibly usable in the live interface
+- [x] Identify missing agent handoffs, approval controls, and progress feedback that prevent a complete portrait or podcast workflow
+- [x] Add a candidate-detail action workspace with photo evidence, private AI research, pending-review, and decision entry points
+- [x] Restore a direct Run research now action in the empty Proposed Changes workspace with explicit task handoff feedback
+- [x] Repair confirmed incomplete or hidden actions and add the highest-value safe agent controls
+- [x] Verify complete candidate-to-portrait-decision, podcast-operations, and Proposed Changes workflows on desktop and mobile
+- [x] Deliver candid agent-use findings and prioritized operational recommendations
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
