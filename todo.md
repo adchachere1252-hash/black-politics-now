@@ -758,16 +758,32 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify the protected Portrait Review workflow on desktop and mobile with regression coverage
 
 ## Fresh Admin Dashboard Verification (Aug 16)
-- [ ] Verify Admin route protection, all dashboard workspaces, live data, and controlled operations without changing public data
-- [ ] Audit Portrait Review, Command Center, Agent Desk, Podcast Ops, Election Ops, and Atlas & World workflows for weak or incomplete behavior
-- [ ] Inspect desktop and mobile Admin usability, navigation, error states, and empty states
-- [ ] Fix the confirmed Portrait Review React key warning and recheck the Admin console
-- [ ] Deliver a candid, prioritized Admin dashboard verification report with recommendations
+- [x] Verify Admin route protection, all dashboard workspaces, live data, and controlled operations without changing public data
+- [x] Audit Portrait Review, Command Center, Agent Desk, Podcast Ops, Election Ops, and Atlas & World workflows for weak or incomplete behavior
+- [x] Inspect desktop and mobile Admin usability, navigation, error states, and empty states
+- [x] Fix the confirmed Portrait Review React key warning and recheck the Admin console
+- [x] Deliver a candid, prioritized Admin dashboard verification report with recommendations
+
+## Admin Election Status Accuracy Repair (Aug 16)
+- [x] Replace the false live-engine badge that relies on historical percentage fields with the authoritative election heartbeat mode
+- [x] Verify the Overview and Command Center present consistent election-engine status on desktop and mobile
 
 ## Portrait Review Live Access Correction (Aug 16)
 - [x] Diagnose why the live Admin Portrait Review workspace is not visibly reachable from the dashboard navigation
 - [x] Add a direct, visible path to the active portrait batch filters and review workspace
 - [x] Verify the live route on desktop and mobile, including the active-batch status controls
+
+## Visual Portrait Approval Workflow (Aug 16)
+- [x] Identify which research findings contain a verified image URL and source URL sufficient to create a portrait submission
+- [x] Add a protected review-only conversion from an evidence-backed research finding to a pending visual portrait submission
+- [x] Show the candidate portrait, source evidence, and explicit approve or reject actions in the selected finding detail
+- [x] Clearly label research-only findings with no usable image evidence as not approval-ready
+- [x] Verify the visual portrait approval workflow on desktop and mobile with regression coverage
+
+## Connected Admin Feature Verification (Aug 16)
+- [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
+- [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
+- [x] Record and remediate any confirmed functional defects before publishing the completed verification
 
 ## Homepage Warm Editorial Palette Review (Aug 15)
 - [x] Add Antique Brass, Champagne Ivory, and Muted Plum to the in-site homepage color comparison

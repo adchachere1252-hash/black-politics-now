@@ -342,6 +342,37 @@ describe("Autonomous Research Desk router", () => {
   });
 });
 
+describe("portrait review router", () => {
+  it("keeps research, visual submissions, and approval decisions administrator-only while exposing review data to an administrator", async () => {
+    const publicCaller = appRouter.createCaller(createPublicContext());
+    const adminCaller = appRouter.createCaller(createAdminContext());
+    const visualSubmission = {
+      targetType: "house" as const,
+      targetRecordId: 1,
+      targetPhotoField: "candidate1" as const,
+      candidateName: "Example Candidate",
+      imageUrl: "https://official.example/images/example-candidate.jpg",
+      sourceUrl: "https://official.example/about",
+      provenanceType: "official_campaign" as const,
+    };
+
+    await expect(publicCaller.portraits.targets()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(publicCaller.portraits.submissions()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(publicCaller.portraits.researchItems({ status: "ready_for_review" })).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(publicCaller.portraits.submit(visualSubmission)).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(publicCaller.portraits.review({ id: 1, decision: "approved" })).rejects.toMatchObject({ code: "FORBIDDEN" });
+
+    const [targets, pendingSubmissions, researchItems] = await Promise.all([
+      adminCaller.portraits.targets(),
+      adminCaller.portraits.submissions({ status: "pending" }),
+      adminCaller.portraits.researchItems({ status: "ready_for_review" }),
+    ]);
+    expect(Array.isArray(targets)).toBe(true);
+    expect(Array.isArray(pendingSubmissions)).toBe(true);
+    expect(Array.isArray(researchItems.items)).toBe(true);
+  });
+});
+
 describe("world elections router", () => {
   it("returns the imported World Elections calendar with display fields", async () => {
     const caller = appRouter.createCaller(createPublicContext());

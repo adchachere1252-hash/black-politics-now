@@ -55,3 +55,11 @@ export function buildElectionMapFreshnessPresentation(recordUpdatedAt: number | 
     detail: `Latest system heartbeat: ${activityLabel}${recordLabel ? ` · latest displayed race-record change: ${recordLabel}` : ""}`,
   };
 }
+
+export function getAdminElectionEngineBadge(heartbeat: PublicElectionHeartbeat) {
+  const mode = heartbeat?.mode ?? "unknown";
+  if (mode === "active") return { mode, label: "LIVE", tone: "live" as const };
+  if (mode === "degraded") return { mode, label: "DEGRADED", tone: "warning" as const };
+  if (mode === "standby") return { mode, label: "STANDBY", tone: "standby" as const };
+  return { mode, label: "AWAITING HEARTBEAT", tone: "standby" as const };
+}

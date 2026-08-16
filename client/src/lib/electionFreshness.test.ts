@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildElectionMapFreshnessPresentation } from "./electionFreshness";
+import { buildElectionMapFreshnessPresentation, getAdminElectionEngineBadge } from "./electionFreshness";
 
 describe("buildElectionMapFreshnessPresentation", () => {
   const recordUpdatedAt = new Date("2026-08-16T12:00:00.000Z").getTime();
@@ -37,5 +37,13 @@ describe("buildElectionMapFreshnessPresentation", () => {
     expect(result.status).toBe("unknown");
     expect(result.primary).toBe("Operational refresh status unavailable");
     expect(result.detail).toContain("Latest displayed race-record change:");
+  });
+});
+
+describe("getAdminElectionEngineBadge", () => {
+  it("uses the operational heartbeat rather than historical race percentages to label the engine", () => {
+    expect(getAdminElectionEngineBadge({ mode: "standby", sourceHealth: "unknown" })).toMatchObject({ label: "STANDBY", tone: "standby" });
+    expect(getAdminElectionEngineBadge({ mode: "active", sourceHealth: "healthy" })).toMatchObject({ label: "LIVE", tone: "live" });
+    expect(getAdminElectionEngineBadge({ mode: "degraded", sourceHealth: "degraded" })).toMatchObject({ label: "DEGRADED", tone: "warning" });
   });
 });

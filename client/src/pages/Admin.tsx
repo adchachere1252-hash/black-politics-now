@@ -7,6 +7,7 @@ import { PortraitReviewTab } from "@/components/PortraitReviewTab";
 import { ElectionDayCommandCenterTab } from "@/components/ElectionDayCommandCenterTab";
 import MiniRepositoryGlobe from "@/components/MiniRepositoryGlobe";
 import { rankedWorldSignals, worldSignalLabel } from "@/lib/worldElectionDisplay";
+import { getAdminElectionEngineBadge } from "@/lib/electionFreshness";
 import { useState, useMemo } from "react";
 import { ArrowUpRight, Shield, Radio, MapPin, Users, Save, Check, Search, Star, Sparkles, AlertTriangle, CheckCircle2, Clock3, FileText, Headphones, ListChecks, RefreshCw, ShieldCheck, ImagePlus, FileDiff, Radar, Globe2 } from "lucide-react";
 
@@ -109,6 +110,7 @@ function OverviewTab({ onReview, onNavigate }: { onReview: (id: number) => void;
   const { data: senateRaces } = trpc.election.senate.useQuery();
   const { data: houseRaces } = trpc.election.house.useQuery();
   const { data: governors } = trpc.election.governors.useQuery();
+  const { data: electionFreshness } = trpc.election.freshness.useQuery();
   const { data: priorityRecommendations = [] } = trpc.agent.recommendations.useQuery({ status: "pending", priority: "high" });
   const { data: agentSettings } = trpc.agent.settings.useQuery();
   const { data: agentTasks = [] } = trpc.agent.tasks.useQuery();
@@ -124,7 +126,9 @@ function OverviewTab({ onReview, onNavigate }: { onReview: (id: number) => void;
   const liveRaces = (senateRaces as any[] ?? []).filter((r: any) => r.pctReporting > 0).length
     + (houseRaces as any[] ?? []).filter((r: any) => r.pctReporting > 0).length
     + (governors as any[] ?? []).filter((r: any) => r.pctReporting > 0).length;
-  const isLive = liveRaces > 0;
+  const engineBadge = getAdminElectionEngineBadge(electionFreshness);
+  const isLive = engineBadge.tone === "live";
+  const engineBadgeClass = engineBadge.tone === "live" ? "bg-red-500/20 text-red-400" : engineBadge.tone === "warning" ? "bg-amber-500/20 text-amber-700 dark:text-amber-300" : "bg-muted text-muted-foreground";
   const ownerOptions = Array.from(new Set((priorityRecommendations as any[]).map((item) => item.assignedTo).filter(Boolean))) as string[];
   const visiblePriorityRecommendations = (priorityRecommendations as any[]).filter((item) => priorityOwner === "all" || (priorityOwner === "unassigned" ? !item.assignedTo : item.assignedTo === priorityOwner));
   const now = Date.now();
@@ -172,7 +176,7 @@ function OverviewTab({ onReview, onNavigate }: { onReview: (id: number) => void;
       <div className="glass-card rounded-xl p-5">
         <h3 className="text-sm font-bold uppercase tracking-wider mb-3 flex items-center gap-2">
           DDHQ Election Engine Status
-          {isLive && <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 text-xs font-bold"><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />LIVE</span>}
+          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold ${engineBadgeClass}`}><span className={`w-2 h-2 rounded-full ${isLive ? "bg-red-500 animate-pulse" : engineBadge.tone === "warning" ? "bg-amber-500" : "bg-muted-foreground/60"}`} />{engineBadge.label}</span>
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
           <div>
@@ -188,13 +192,14 @@ function OverviewTab({ onReview, onNavigate }: { onReview: (id: number) => void;
             <p className="font-bold">{(governors as any[])?.length ?? 0} races</p>
           </div>
           <div>
-            <p className="text-muted-foreground text-xs">Races Reporting</p>
-            <p className="font-bold">{liveRaces} {isLive ? "🔴" : "⚪"}</p>
+            <p className="text-muted-foreground text-xs">Displayed reporting</p>
+            <p className="font-bold">{liveRaces} race{liveRaces === 1 ? "" : "s"}</p>
           </div>
         </div>
         <div className="mt-3 pt-3 border-t border-border/30 text-xs text-muted-foreground">
           <p><strong>Cloud Computer:</strong> 35.229.72.71 — Polling every 60s when active</p>
           <p><strong>Data Source:</strong> DDHQ Public API (same feed as Fox News/Newsweek)</p>
+          <p><strong>Heartbeat:</strong> {engineBadge.mode} · {electionFreshness?.heartbeatAt ? new Date(electionFreshness.heartbeatAt).toLocaleString() : "No heartbeat recorded"} · source {electionFreshness?.sourceHealth ?? "unknown"}</p>
           <p><strong>To start live polling:</strong> SSH → <code className="bg-muted px-1 rounded">cd /home/ubuntu/bpn-automation && node scripts/election-engine.mjs poll</code></p>
         </div>
       </div>
