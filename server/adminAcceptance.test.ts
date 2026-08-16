@@ -13,11 +13,12 @@ function createAdminContext(): TrpcContext {
 describe("protected Admin workspace acceptance", () => {
   it("loads the read-only operational workspaces without approving, publishing, or mutating records", async () => {
     const caller = appRouter.createCaller(createAdminContext());
-    const [podcastOperations, portraitTargets, pendingPortraits, latestPortraitBatch, commandCenter, worldOperations, recommendations, runs, settings, tasks, changeProposals] = await Promise.all([
+    const [podcastOperations, portraitTargets, pendingPortraits, latestPortraitBatch, readyPortraitResearch, commandCenter, worldOperations, recommendations, runs, settings, tasks, changeProposals] = await Promise.all([
       caller.podcast.operations(),
       caller.portraits.targets(),
       caller.portraits.submissions({ status: "pending" }),
       caller.portraits.latestResearchBatch(),
+      caller.portraits.researchItems({ status: "ready_for_review" }),
       caller.electionDay.commandCenter(),
       caller.world.refreshOperations(),
       caller.agent.recommendations(),
@@ -31,6 +32,8 @@ describe("protected Admin workspace acceptance", () => {
     expect(Array.isArray(portraitTargets)).toBe(true);
     expect(Array.isArray(pendingPortraits)).toBe(true);
     expect(latestPortraitBatch === null || typeof latestPortraitBatch === "object").toBe(true);
+    expect(Array.isArray(readyPortraitResearch.items)).toBe(true);
+    expect(readyPortraitResearch.items.every((item: any) => item.status === "ready_for_review")).toBe(true);
     expect(commandCenter).toBeTruthy();
     expect(worldOperations).toBeDefined();
     expect(Array.isArray(recommendations)).toBe(true);

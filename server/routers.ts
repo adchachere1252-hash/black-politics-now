@@ -42,6 +42,7 @@ import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
 import { getWorldElectionRefreshOperations, runDatedWorldElectionRefresh } from "./worldElectionRefresh";
 import { advanceElectionDayRehearsal, getElectionDayCommandCenter, startElectionDayRehearsal } from "./electionDayCommandCenter";
 import { getPortraitSubmissionTargets, getPortraitSubmissions, portraitPhotoFields, portraitProvenanceTypes, portraitTargetTypes, reviewPortraitSubmission, submitPortraitSubmission } from "./portraitReview";
+import { getLatestPortraitResearchItems } from "./agentDesk";
 import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, executeAgentTaskWithChangeSet, getAgentChangeProposals, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, getLatestPortraitResearchBatch, reviewAgentChangeProposal, reviewAgentRecommendation, runAgentTaskResearchNow, runElectionDayCommandResearch, runPortraitResearchTask, runResearchDesk, setAgentDefaultOwners, setAgentPriorityMode, startAllPortraitResearch, updateAgentTask } from "./agentDesk";
 
 export const appRouter = router({
@@ -157,6 +158,9 @@ export const appRouter = router({
       .input(z.object({ targetType: z.enum(portraitTargetTypes), targetRecordId: z.number().int().positive(), targetPhotoField: z.enum(portraitPhotoFields), candidateName: z.string().min(2).max(128), sourceLead: z.string().url().max(2048).optional() }))
       .mutation(async ({ input, ctx }) => runPortraitResearchTask(input, ctx.user.name || "Administrator")),
     latestResearchBatch: adminProcedure.query(async () => getLatestPortraitResearchBatch()),
+    researchItems: adminProcedure
+      .input(z.object({ status: z.enum(["queued", "in_progress", "ready_for_review", "blocked", "skipped"]).optional() }).optional())
+      .query(async ({ input }) => getLatestPortraitResearchItems(input?.status)),
     startAllResearch: adminProcedure.mutation(async ({ ctx }) => startAllPortraitResearch(ctx.user.name || "Administrator")),
   }),
 

@@ -1,4 +1,4 @@
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, inArray } from "drizzle-orm";
 import {
   agentChangeProposals,
   agentRecommendations,
@@ -744,6 +744,39 @@ export async function getLatestPortraitResearchBatch() {
   const items = await db.select().from(portraitResearchBatchItems).where(eq(portraitResearchBatchItems.batchId, batch.id));
   const byStatus = summarizePortraitResearchBatchItems(items);
   return { ...batch, byStatus, recentItems: items.slice(-12).reverse() };
+}
+
+export async function getLatestPortraitResearchItems(status?: "queued" | "in_progress" | "ready_for_review" | "blocked" | "skipped") {
+  const db = await getDb();
+  if (!db) return { batch: null, items: [] };
+  const [batch] = await db.select().from(portraitResearchBatches).orderBy(desc(portraitResearchBatches.id)).limit(1);
+  if (!batch) return { batch: null, items: [] };
+
+  const query = db.select().from(portraitResearchBatchItems).where(eq(portraitResearchBatchItems.batchId, batch.id));
+  const allItems = await query;
+  const filteredItems = status ? allItems.filter((item) => item.status === status) : allItems;
+  const taskIds = filteredItems.map((item) => item.agentTaskId).filter((id): id is number => Number.isInteger(id));
+  if (!taskIds.length) return { batch: { id: batch.id, status: batch.status }, items: filteredItems.map((item) => ({ ...item, task: null, proposals: [] })) };
+
+  const [tasks, proposals] = await Promise.all([
+    db.select({ id: agentTasks.id, status: agentTasks.status, workPackage: agentTasks.agentWorkPackage, workPackageSources: agentTasks.agentWorkPackageSources, executionError: agentTasks.executionError }).from(agentTasks).where(inArray(agentTasks.id, taskIds)),
+    db.select().from(agentChangeProposals).where(inArray(agentChangeProposals.taskId, taskIds)),
+  ]);
+  const taskById = new Map(tasks.map((task) => [task.id, task]));
+  const proposalsByTaskId = new Map<number, typeof proposals>();
+  for (const proposal of proposals) {
+    const current = proposalsByTaskId.get(proposal.taskId) ?? [];
+    current.push(proposal);
+    proposalsByTaskId.set(proposal.taskId, current);
+  }
+  return {
+    batch: { id: batch.id, status: batch.status },
+    items: filteredItems.map((item) => ({
+      ...item,
+      task: item.agentTaskId ? taskById.get(item.agentTaskId) ?? null : null,
+      proposals: item.agentTaskId ? proposalsByTaskId.get(item.agentTaskId) ?? [] : [],
+    })),
+  };
 }
 
 async function executePortraitResearchBatch(batchId: number, requestedBy: string) {

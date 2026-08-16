@@ -751,6 +751,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Apply the five staged portrait corrections after an administrator reviews and approves each source package
 - [x] Validate all protected Admin workspace queries through a non-destructive admin-equivalent application context
 
+## Portrait Review Workspace Completion (Aug 16)
+- [x] Add visible queued, in-progress, ready-for-review, blocked, and completed batch filters to Portrait Review
+- [x] Add a detail workspace for each research finding with candidate target, portrait preview, and linked source evidence
+- [x] Add explicit approve and reject controls that preserve the existing review-before-public-change safeguard
+- [x] Verify the protected Portrait Review workflow on desktop and mobile with regression coverage
+
 ## Homepage Warm Editorial Palette Review (Aug 15)
 - [x] Add Antique Brass, Champagne Ivory, and Muted Plum to the in-site homepage color comparison
 - [x] Capture and share the warm editorial palette directions for user selection before changing the live palette
