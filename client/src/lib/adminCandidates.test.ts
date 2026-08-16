@@ -17,5 +17,6 @@ describe("buildAdminCandidateRows", () => {
       ["Blair Two", "evidence_needed"],
       ["Casey Three", "pending_review"],
     ]);
+    expect(rows.find((row) => row.candidateName === "Blair Two")?.portraitTarget).toEqual({ targetType: "senate", targetRecordId: 1, targetPhotoField: "candidate2" });
   });
 });

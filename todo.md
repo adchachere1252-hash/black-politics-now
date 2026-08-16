@@ -831,6 +831,14 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add a durable Admin recovery request queue that the existing daily automation consumes and records as completed or held
 - [x] Verify automatic morning generation, safe recovery behavior, and manual repair safeguards without publishing incomplete audio
 
+## Complete Candidate, Portrait, and Agent Editorial Workflow (Aug 16)
+- [x] Add direct download controls for both Andrew and Jenny full Daily Brief episode files
+- [x] Make every Admin candidate row actionable with portrait coverage, evidence, research, and review entry points
+- [x] Rebuild Portrait Review around clear research, evidence-needed, pending visual review, approved, and rejected states
+- [x] Restore and verify the Proposed Changes Run research control with clear progress and result feedback
+- [x] Audit current AI-agent utilization, identify unused safe capacity, and add the highest-value practical agent controls
+- [x] Verify all candidate, portrait, proposed-change, download, and agent workflows on desktop and mobile
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade

@@ -21,6 +21,7 @@ export default function AdminPage() {
     return requested === "command" || requested === "podcast" || requested === "elections" || requested === "candidates" || requested === "cbc" || requested === "atlasWorld" || requested === "agent" || requested === "changes" || requested === "portraits" || requested === "audience" ? requested : "overview";
   });
   const [focusRecommendationId, setFocusRecommendationId] = useState<number | undefined>();
+  const [portraitTargetKey, setPortraitTargetKey] = useState<string | undefined>();
 
   const navigateToTab = (nextTab: AdminTab) => {
     setTab(nextTab);
@@ -33,10 +34,15 @@ export default function AdminPage() {
   };
 
   const openActivePortraitBatch = () => {
+    setPortraitTargetKey(undefined);
     navigateToTab("portraits");
     window.setTimeout(() => {
       document.getElementById("portrait-research-batch")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 60);
+  };
+  const openCandidatePortrait = (targetKey?: string) => {
+    setPortraitTargetKey(targetKey);
+    navigateToTab("portraits");
   };
 
   if (loading) return <div className="container py-8"><div className="h-40 bg-muted rounded animate-pulse" /></div>;
@@ -103,12 +109,12 @@ export default function AdminPage() {
       {tab === "command" && <ElectionDayCommandCenterTab />}
       {tab === "podcast" && <PodcastOpsTab />}
       {tab === "elections" && <ElectionOpsTab />}
-      {tab === "candidates" && <CandidatesOpsTab onOpenPortraits={openActivePortraitBatch} />}
+      {tab === "candidates" && <CandidatesOpsTab onOpenPortraits={openCandidatePortrait} />}
       {tab === "cbc" && <CbcOpsTab />}
       {tab === "atlasWorld" && <AtlasWorldOpsTab />}
       {tab === "agent" && <AgentDeskTab focusRecommendationId={focusRecommendationId} />}
       {tab === "changes" && <AgentProposedChangesTab />}
-      {tab === "portraits" && <PortraitReviewTab />}
+      {tab === "portraits" && <PortraitReviewTab initialTargetKey={portraitTargetKey} />}
       {tab === "audience" && <AudienceTab />}
     </div>
   );
@@ -681,7 +687,7 @@ function CbcOpsTab() {
   );
 }
 
-function CandidatesOpsTab({ onOpenPortraits }: { onOpenPortraits: () => void }) {
+function CandidatesOpsTab({ onOpenPortraits }: { onOpenPortraits: (targetKey?: string) => void }) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<"all" | AdminCandidateCategory>("all");
   const { data: senate = [] } = trpc.election.senate.useQuery();
@@ -690,6 +696,8 @@ function CandidatesOpsTab({ onOpenPortraits }: { onOpenPortraits: () => void }) 
   const { data: blackRepresentation = [] } = trpc.election.cbc.useQuery();
   const { data: missingTargets = [] } = trpc.portraits.targets.useQuery();
   const { data: portraitSubmissions = [] } = trpc.portraits.submissions.useQuery();
+  const utils = trpc.useUtils();
+  const researchPortrait = trpc.portraits.researchNow.useMutation({ onSuccess: () => { void utils.portraits.latestResearchBatch.invalidate(); void utils.portraits.researchItems.invalidate(); } });
 
   const candidates = useMemo(() => buildAdminCandidateRows({
     senate: senate as any[], house: house as any[], governors: governors as any[], blackRepresentation: blackRepresentation as any[], missingTargets: missingTargets as any[], portraitSubmissions: portraitSubmissions as any[],
@@ -702,13 +710,13 @@ function CandidatesOpsTab({ onOpenPortraits }: { onOpenPortraits: () => void }) 
 
   return <div className="space-y-5">
     <section className="glass-card rounded-xl p-5">
-      <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">Candidate operations</p><h2 className="mt-1 text-xl font-bold">All candidates</h2><p className="mt-1 max-w-3xl text-sm text-muted-foreground">One protected view of every Senate, House, Governor, and Black Representation candidate already tracked by the platform. Portrait readiness reflects the existing source-and-approval workflow; this workspace does not publish an image by itself.</p></div><button onClick={onOpenPortraits} className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-bold text-primary-foreground hover:bg-primary/90"><ImagePlus size={14} /> Open Portrait Review</button></div>
+      <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">Candidate operations</p><h2 className="mt-1 text-xl font-bold">All candidates</h2><p className="mt-1 max-w-3xl text-sm text-muted-foreground">One protected view of every Senate, House, Governor, and Black Representation candidate already tracked by the platform. Portrait readiness reflects the existing source-and-approval workflow; this workspace does not publish an image by itself.</p></div><button onClick={() => onOpenPortraits()} className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-bold text-primary-foreground hover:bg-primary/90"><ImagePlus size={14} /> Open Portrait Review</button></div>
       <div className="mt-5 grid gap-3 sm:grid-cols-3"><OpsMetric icon={CheckCircle2} label="Photo mapped" value={String(photoSummary.ready)} detail="Stored or repository-resolved" tone="good" /><OpsMetric icon={Clock3} label="Pending review" value={String(photoSummary.pending_review)} detail="Visual submission awaits decision" tone="warn" /><OpsMetric icon={ImagePlus} label="Evidence needed" value={String(photoSummary.evidence_needed)} detail="No approved image package yet" tone="warn" /></div>
     </section>
     <section className="glass-card rounded-xl p-5">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between"><div className="relative w-full lg:max-w-md"><Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search candidate, state, district, or party..." className="w-full rounded-lg bg-muted py-2 pl-8 pr-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary" /></div><div className="flex flex-wrap gap-2">{(["all", "senate", "house", "governor", "black_representation"] as const).map((item) => <button key={item} onClick={() => setCategory(item)} className={`rounded-md px-2.5 py-1.5 text-xs font-semibold ${category === item ? "bg-primary text-primary-foreground" : "border border-border text-muted-foreground hover:bg-muted"}`}>{item === "all" ? "All" : categoryCopy[item]}</button>)}</div></div>
       <p className="mt-3 text-xs text-muted-foreground">Showing {visibleCandidates.length} of {candidates.length} candidate records. Portraits are public only after a source-backed visual submission is approved in Portrait Review.</p>
-      <div className="mt-4 grid max-h-[62vh] gap-2 overflow-y-auto pr-1 sm:grid-cols-2 xl:grid-cols-3">{visibleCandidates.map((candidate) => <article key={candidate.id} className="flex items-center gap-3 rounded-lg border border-border/70 bg-background/50 p-3"><div className="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-full bg-muted text-xs font-bold text-muted-foreground">{candidate.photoUrl ? <img src={candidate.photoUrl} alt="" className="h-full w-full object-cover" /> : candidate.candidateName.split(" ").map((part) => part[0]).slice(0, 2).join("")}</div><div className="min-w-0 flex-1"><div className="flex items-start justify-between gap-2"><p className="truncate text-sm font-semibold text-foreground">{candidate.candidateName}</p><span className={`shrink-0 rounded px-1.5 py-0.5 text-[9px] font-bold uppercase ${candidate.photoStatus === "ready" ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" : candidate.photoStatus === "pending_review" ? "bg-amber-500/10 text-amber-700 dark:text-amber-300" : "bg-muted text-muted-foreground"}`}>{statusCopy[candidate.photoStatus]}</span></div><p className="mt-0.5 truncate text-xs text-muted-foreground">{candidate.location} · {candidate.party || categoryCopy[candidate.category]}</p>{candidate.photoStatus !== "ready" && <button onClick={onOpenPortraits} className="mt-2 text-xs font-semibold text-primary hover:underline">{candidate.photoStatus === "pending_review" ? "Review submission" : "Add source evidence"}</button>}</div></article>)}{visibleCandidates.length === 0 && <p className="rounded-lg border border-dashed border-border p-4 text-sm text-muted-foreground sm:col-span-2 xl:col-span-3">No candidate records match the current filters.</p>}</div>
+      <div className="mt-4 grid max-h-[62vh] gap-2 overflow-y-auto pr-1 sm:grid-cols-2 xl:grid-cols-3">{visibleCandidates.map((candidate) => <article key={candidate.id} className="flex items-start gap-3 rounded-lg border border-border/70 bg-background/50 p-3"><div className="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-full bg-muted text-xs font-bold text-muted-foreground">{candidate.photoUrl ? <img src={candidate.photoUrl} alt="" className="h-full w-full object-cover" /> : candidate.candidateName.split(" ").map((part) => part[0]).slice(0, 2).join("")}</div><div className="min-w-0 flex-1"><div className="flex items-start justify-between gap-2"><p className="truncate text-sm font-semibold text-foreground">{candidate.candidateName}</p><span className={`shrink-0 rounded px-1.5 py-0.5 text-[9px] font-bold uppercase ${candidate.photoStatus === "ready" ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" : candidate.photoStatus === "pending_review" ? "bg-amber-500/10 text-amber-700 dark:text-amber-300" : "bg-muted text-muted-foreground"}`}>{statusCopy[candidate.photoStatus]}</span></div><p className="mt-0.5 truncate text-xs text-muted-foreground">{candidate.location} · {candidate.party || categoryCopy[candidate.category]}</p><div className="mt-2 flex flex-wrap gap-x-3 gap-y-1">{candidate.photoUrl && <a href={candidate.photoUrl} target="_blank" rel="noreferrer" className="text-xs font-semibold text-primary hover:underline">View image</a>}{candidate.photoStatus === "pending_review" && <button onClick={() => onOpenPortraits(candidate.id)} className="text-xs font-semibold text-primary hover:underline">Review pending photo</button>}{candidate.photoStatus === "evidence_needed" && <><button onClick={() => onOpenPortraits(candidate.id)} className="text-xs font-semibold text-primary hover:underline">Add evidence</button><button onClick={() => researchPortrait.mutate({ ...candidate.portraitTarget, candidateName: candidate.candidateName })} disabled={researchPortrait.isPending} className="text-xs font-semibold text-violet-700 hover:underline disabled:opacity-50 dark:text-violet-200">{researchPortrait.isPending ? "Starting AI research…" : "Ask AI to research"}</button></>}</div></div></article>)}{visibleCandidates.length === 0 && <p className="rounded-lg border border-dashed border-border p-4 text-sm text-muted-foreground sm:col-span-2 xl:col-span-3">No candidate records match the current filters.</p>}</div>
     </section>
   </div>;
 }

@@ -1,5 +1,6 @@
 export type AdminCandidateCategory = "senate" | "house" | "governor" | "black_representation";
 export type AdminCandidatePhotoStatus = "ready" | "pending_review" | "evidence_needed";
+type PortraitPhotoField = "candidate1" | "candidate2" | "dem" | "rep" | "profile";
 
 export type AdminCandidateRow = {
   id: string;
@@ -9,12 +10,13 @@ export type AdminCandidateRow = {
   location: string;
   photoUrl: string;
   photoStatus: AdminCandidatePhotoStatus;
+  portraitTarget: PortraitTarget;
 };
 
 type PortraitTarget = {
   targetType: AdminCandidateCategory;
   targetRecordId: number;
-  targetPhotoField: string;
+  targetPhotoField: PortraitPhotoField;
 };
 
 type PortraitSubmission = {
@@ -51,9 +53,10 @@ export function buildAdminCandidateRows(input: {
 }): AdminCandidateRow[] {
   const rows: AdminCandidateRow[] = [];
   const { senate, house, governors, blackRepresentation, missingTargets, portraitSubmissions } = input;
-  const add = (row: Omit<AdminCandidateRow, "photoStatus">, photoField: string, recordId: number) => {
+  const add = (row: Omit<AdminCandidateRow, "photoStatus" | "portraitTarget">, photoField: PortraitPhotoField, recordId: number) => {
     if (!row.candidateName?.trim()) return;
-    rows.push({ ...row, photoStatus: photoStatusFor(row.category, recordId, photoField, missingTargets, portraitSubmissions) });
+    const portraitTarget: PortraitTarget = { targetType: row.category, targetRecordId: recordId, targetPhotoField: photoField };
+    rows.push({ ...row, portraitTarget, photoStatus: photoStatusFor(row.category, recordId, photoField, missingTargets, portraitSubmissions) });
   };
 
   senate.forEach((race) => {

@@ -2,7 +2,7 @@ import { trpc } from "@/lib/trpc";
 import { useAudio } from "@/contexts/AudioContext";
 import { Link } from "wouter";
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, Play, Maximize2, Download, RotateCcw, Info, X, Globe2, Landmark, ArrowUpRight } from "lucide-react";
+import { ArrowRight, Play, Maximize2, Download, Info, X, Globe2, Landmark, ArrowUpRight } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { USMapFull } from "@/components/USMapFull";
 import { ResultsTicker } from "@/components/ResultsTicker";
@@ -433,9 +433,9 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
                   <p className="text-xs text-muted-foreground">{latestEpisode.date}</p>
                   <p className="text-sm font-medium truncate">{latestEpisode.day}'s Brief</p>
                 </div>
-                <div className="flex gap-2">
-                  <button className="p-1.5 text-muted-foreground hover:text-foreground"><Download size={14} /></button>
-                  <button className="p-1.5 text-muted-foreground hover:text-foreground"><RotateCcw size={14} /></button>
+                <div className="flex items-center gap-1.5">
+                  {latestEpisode.fullEpisodeCdnUrl && <a href={latestEpisode.fullEpisodeCdnUrl} download={`daily-intelligence-brief-${latestEpisode.date}-andrew.mp3`} title="Download Andrew full episode" className="inline-flex items-center gap-1 rounded border border-border px-1.5 py-1 text-[10px] font-semibold text-primary hover:bg-primary/10"><Download size={13} /> Andrew</a>}
+                  {latestEpisode.jennyFullEpisodeCdnUrl && <a href={latestEpisode.jennyFullEpisodeCdnUrl} download={`daily-intelligence-brief-${latestEpisode.date}-jenny.mp3`} title="Download Jenny full episode" className="inline-flex items-center gap-1 rounded border border-border px-1.5 py-1 text-[10px] font-semibold text-primary hover:bg-primary/10"><Download size={13} /> Jenny</a>}
                 </div>
               </div>
 
