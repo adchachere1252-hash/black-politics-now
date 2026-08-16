@@ -231,6 +231,7 @@ describe("podcast router", () => {
       expect(Array.isArray(ep.segments)).toBe(true);
       expect(ep.verificationStatus).toBe("passed");
       expect(ep.fullEpisodeCdnUrl).toMatch(/^https:\/\//);
+      expect(ep).toHaveProperty("jennyFullEpisodeCdnUrl");
     }
   });
 
@@ -253,11 +254,13 @@ describe("podcast router", () => {
     const adminCaller = appRouter.createCaller(createAdminContext());
 
     await expect(publicCaller.podcast.operations()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(publicCaller.podcast.requestRecovery({ episodeDate: "2026-08-16" })).rejects.toMatchObject({ code: "FORBIDDEN" });
     const operations = await adminCaller.podcast.operations() as any;
     expect(operations).toMatchObject({
       recentEpisodes: expect.any(Array),
       recentRuns: expect.any(Array),
       preflights: expect.any(Array),
+      recoveryRequests: expect.any(Array),
     });
     if (operations.latest) {
       expect(operations.latest).toMatchObject({
@@ -269,6 +272,8 @@ describe("podcast router", () => {
         jennyReady: expect.any(Number),
         duplicateKeys: expect.any(Array),
         fullAudioReady: expect.any(Boolean),
+        andrewFullAudioReady: expect.any(Boolean),
+        jennyFullAudioReady: expect.any(Boolean),
         segments: expect.any(Array),
       });
       expect(operations.latest.segmentCount).toBeGreaterThanOrEqual(operations.latest.expectedSegments);

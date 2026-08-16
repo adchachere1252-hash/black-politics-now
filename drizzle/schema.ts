@@ -255,6 +255,7 @@ export const episodes = mysqlTable("episodes", {
   totalDurationLabel: varchar("totalDurationLabel", { length: 16 }),
   segmentCount: int("segmentCount"),
   fullEpisodeCdnUrl: text("fullEpisodeCdnUrl"),
+  jennyFullEpisodeCdnUrl: text("jennyFullEpisodeCdnUrl"),
   verificationStatus: mysqlEnum("verificationStatus", ["passed", "warnings", "pending"]).default("pending"),
   verificationWarnings: text("verificationWarnings"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
@@ -263,6 +264,22 @@ export const episodes = mysqlTable("episodes", {
 
 export type Episode = typeof episodes.$inferSelect;
 export type InsertEpisode = typeof episodes.$inferInsert;
+
+// ─── Podcast Recovery Requests ───────────────────────────────────────────────
+// A durable, admin-created audio repair request. The cloud automation consumes
+// queued requests and may only mark a request complete after both full voices pass.
+export const podcastRecoveryRequests = mysqlTable("podcast_recovery_requests", {
+  id: int("id").autoincrement().primaryKey(),
+  episodeDate: varchar("episode_date", { length: 10 }).notNull(),
+  status: mysqlEnum("status", ["queued", "running", "completed", "held", "failed"]).default("queued").notNull(),
+  requestedBy: varchar("requested_by", { length: 128 }).notNull(),
+  note: text("note"),
+  resultMessage: text("result_message"),
+  requestedAt: timestamp("requested_at").defaultNow().notNull(),
+  handledAt: timestamp("handled_at"),
+});
+
+export type PodcastRecoveryRequest = typeof podcastRecoveryRequests.$inferSelect;
 
 // ─── Episode Segments ────────────────────────────────────────────────────────
 export const episodeSegments = mysqlTable("episode_segments", {

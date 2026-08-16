@@ -1,5 +1,6 @@
 import { trpc } from "@/lib/trpc";
 import { useAudio } from "@/contexts/AudioContext";
+import { resolveFullEpisodeVoiceUrl } from "@/lib/fullEpisodeVoice";
 import { useState, useMemo } from "react";
 import { Play, Pause, Search, ChevronDown, ChevronUp, FileText, X, ArrowUpRight, Clock3, ExternalLink, ShieldCheck } from "lucide-react";
 
@@ -38,7 +39,7 @@ export default function Podcast() {
         <p className="text-muted-foreground text-sm">A verified daily record of what changed, why it matters, and where to investigate next.</p>
       </div>
 
-      {latestEpisode && <section className="mb-6 overflow-hidden rounded-xl border border-primary/25 bg-primary/[0.045] p-5"><div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between"><div><p className="text-[10px] font-bold uppercase tracking-[.16em] text-primary">Start here · today’s verified briefing</p><h2 className="mt-2 text-xl font-bold">{latestEpisode.friendlyDate || latestEpisode.date}</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{latestEpisode.segmentCount} segments · {latestEpisode.totalDurationLabel || "Duration verifying"}. Listen for the day’s political, civic, global, and technology developments in one source-checked briefing.</p><div className="mt-3 flex flex-wrap gap-1.5">{featuredTopics.slice(0, 5).map((topic) => <button key={topic} onClick={() => { setTopicFilter(topic); setSearchQuery(""); }} className="rounded-full border border-primary/25 bg-background px-2 py-1 text-[10px] font-semibold text-primary hover:bg-primary/10">{topic}</button>)}</div></div><div className="flex shrink-0 flex-wrap gap-2"><button onClick={() => latestEpisode.fullEpisodeCdnUrl && play({ url: latestEpisode.fullEpisodeCdnUrl, title: `Daily Brief - ${latestEpisode.date}`, episodeDate: latestEpisode.date })} disabled={!latestEpisode.fullEpisodeCdnUrl} className="inline-flex items-center gap-2 rounded-md bg-primary px-3.5 py-2 text-sm font-bold text-primary-foreground disabled:opacity-50"><Play size={15} fill="currentColor"/> Listen now</button><a href="/archive?tab=podcast" className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-3.5 py-2 text-sm font-semibold text-foreground">Explore archive <ArrowUpRight size={14}/></a></div></div></section>}
+      {latestEpisode && <section className="mb-6 overflow-hidden rounded-xl border border-primary/25 bg-primary/[0.045] p-5"><div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between"><div><p className="text-[10px] font-bold uppercase tracking-[.16em] text-primary">Start here · today’s verified briefing</p><h2 className="mt-2 text-xl font-bold">{latestEpisode.friendlyDate || latestEpisode.date}</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{latestEpisode.segmentCount} segments · {latestEpisode.totalDurationLabel || "Duration verifying"}. Listen for the day’s political, civic, global, and technology developments in one source-checked briefing.</p><div className="mt-3 flex flex-wrap gap-1.5">{featuredTopics.slice(0, 5).map((topic) => <button key={topic} onClick={() => { setTopicFilter(topic); setSearchQuery(""); }} className="rounded-full border border-primary/25 bg-background px-2 py-1 text-[10px] font-semibold text-primary hover:bg-primary/10">{topic}</button>)}</div></div><div className="flex shrink-0 flex-wrap gap-2">{(() => { const fullUrl = resolveFullEpisodeVoiceUrl(latestEpisode, voicePreference); return <button onClick={() => fullUrl && play({ url: fullUrl, alternateUrl: voicePreference === "andrew" ? latestEpisode.jennyFullEpisodeCdnUrl : latestEpisode.fullEpisodeCdnUrl, voice: voicePreference, title: `Daily Brief - ${latestEpisode.date} · ${voicePreference === "andrew" ? "Andrew" : "Jenny"}`, episodeDate: latestEpisode.date })} disabled={!fullUrl} className="inline-flex items-center gap-2 rounded-md bg-primary px-3.5 py-2 text-sm font-bold text-primary-foreground disabled:opacity-50"><Play size={15} fill="currentColor"/> Listen to {voicePreference === "andrew" ? "Andrew" : "Jenny"}</button>; })()}<a href="/archive?tab=podcast" className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-3.5 py-2 text-sm font-semibold text-foreground">Explore archive <ArrowUpRight size={14}/></a></div></div></section>}
 
       {/* Controls */}
       <div className="flex flex-col sm:flex-row gap-3 mb-6">
@@ -75,7 +76,8 @@ export default function Podcast() {
         {filteredEpisodes.map((ep: any) => {
           const isExpanded = expandedEp === ep.date;
           const isCurrentEp = currentTrack?.episodeDate === ep.date;
-          const hasFullAudio = Boolean(ep.fullEpisodeCdnUrl);
+          const selectedFullEpisodeUrl = resolveFullEpisodeVoiceUrl(ep, voicePreference);
+          const hasFullAudio = Boolean(selectedFullEpisodeUrl);
           return (
             <div key={ep.date} className="glass-card rounded-xl overflow-hidden">
               {/* Episode header */}
@@ -83,10 +85,10 @@ export default function Podcast() {
                 <button
                   onClick={() => {
                     if (isCurrentEp && isPlaying) { pause(); }
-                    else if (hasFullAudio) { play({ url: ep.fullEpisodeCdnUrl, title: `Daily Brief - ${ep.date}`, episodeDate: ep.date }); }
+                    else if (hasFullAudio) { play({ url: selectedFullEpisodeUrl, alternateUrl: voicePreference === "andrew" ? ep.jennyFullEpisodeCdnUrl : ep.fullEpisodeCdnUrl, voice: voicePreference, title: `Daily Brief - ${ep.date} · ${voicePreference === "andrew" ? "Andrew" : "Jenny"}`, episodeDate: ep.date }); }
                   }}
                   disabled={!hasFullAudio}
-                  title={hasFullAudio ? "Play full Daily Intelligence Brief" : "Full episode audio is being prepared"}
+                  title={hasFullAudio ? `Play full Daily Intelligence Brief · ${voicePreference === "andrew" ? "Andrew" : "Jenny"}` : `${voicePreference === "jenny" ? "Jenny’s" : "The"} full episode mix is being prepared`}
                   className="shrink-0 p-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-transform active:scale-95 disabled:cursor-not-allowed disabled:opacity-45"
                 >
                   {isCurrentEp && isPlaying ? <Pause size={18} /> : <Play size={18} />}

@@ -9,6 +9,7 @@ import { ResultsTicker } from "@/components/ResultsTicker";
 import HomepageExample from "@/pages/HomepageExample";
 import { rankedWorldSignals, worldSignalLabel } from "@/lib/worldElectionDisplay";
 import { homepageContentQueryOptions, homepageElectionQueryOptions } from "@/lib/homepageRefresh";
+import { resolveFullEpisodeVoiceUrl } from "@/lib/fullEpisodeVoice";
 
 type MapView = "house" | "senate" | "governor" | "blackrep";
 
@@ -63,7 +64,8 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
   };
 
   const latestEpisode = episodes?.[0];
-  const latestEpisodeHasAudio = Boolean(latestEpisode?.fullEpisodeCdnUrl);
+  const selectedFullEpisodeUrl = latestEpisode ? resolveFullEpisodeVoiceUrl(latestEpisode, voicePreference) : "";
+  const latestEpisodeHasAudio = Boolean(selectedFullEpisodeUrl);
   // Build map data from senate races (for senate view) or house (aggregate by state)
   const mapData = useMemo(() => {
     const data: Record<string, { rating: string | null; candidate1: string; candidate2: string; calledWinner?: string | null }> = {};
@@ -415,12 +417,14 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
               <div className="flex items-center gap-3 mb-4">
                 <button
                   onClick={() => latestEpisodeHasAudio && play({
-                    url: latestEpisode.fullEpisodeCdnUrl,
-                    title: `Daily Brief - ${latestEpisode.date}`,
+                    url: selectedFullEpisodeUrl,
+                    alternateUrl: voicePreference === "andrew" ? latestEpisode.jennyFullEpisodeCdnUrl : latestEpisode.fullEpisodeCdnUrl,
+                    voice: voicePreference,
+                    title: `Daily Brief - ${latestEpisode.date} · ${voicePreference === "andrew" ? "Andrew" : "Jenny"}`,
                     episodeDate: latestEpisode.date,
                   })}
                   disabled={!latestEpisodeHasAudio}
-                  title={latestEpisodeHasAudio ? "Play full Daily Intelligence Brief" : "Full episode audio is being prepared"}
+                  title={latestEpisodeHasAudio ? `Play full Daily Intelligence Brief · ${voicePreference === "andrew" ? "Andrew" : "Jenny"}` : `${voicePreference === "jenny" ? "Jenny’s" : "The"} full episode mix is being prepared`}
                   className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-transform active:scale-95 flex-shrink-0 disabled:cursor-not-allowed disabled:opacity-45"
                 >
                   <Play size={20} fill="currentColor" />
@@ -441,7 +445,7 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
                 <div className="flex-1 h-1 bg-muted rounded-full overflow-hidden">
                   <div className="h-full w-0 bg-primary rounded-full" />
                 </div>
-                {!latestEpisodeHasAudio && <p className="text-[11px] text-muted-foreground mb-3">Full episode audio is being prepared. Scripts remain available below.</p>}
+                {!latestEpisodeHasAudio && <p className="text-[11px] text-muted-foreground mb-3">{voicePreference === "jenny" ? "Jenny’s full episode mix is being prepared. Individual Jenny segments remain available below." : "Full episode audio is being prepared. Scripts remain available below."}</p>}
                 <span className="text-[10px] text-muted-foreground">{latestEpisode.totalDurationLabel}</span>
               </div>
 

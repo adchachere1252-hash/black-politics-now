@@ -823,6 +823,14 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Repair any confirmed homepage voice-switching defect and test desktop and mobile playback selection
 - [x] Document the verified homepage dual-voice result
 
+## Autonomous Dual-Voice Full Episodes and Podcast Recovery (Aug 16)
+- [x] Add a verified Jenny full-episode asset alongside Andrew’s daily full episode
+- [x] Require both full-episode assets and all paired segment assets before a Daily Brief is marked ready for public playback
+- [x] Make the public homepage and Podcast page full-episode control honor the selected Andrew or Jenny voice
+- [x] Add an Admin Podcast Operations recovery console with voice-specific status and safe manual repair controls
+- [x] Add a durable Admin recovery request queue that the existing daily automation consumes and records as completed or held
+- [x] Verify automatic morning generation, safe recovery behavior, and manual repair safeguards without publishing incomplete audio
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade

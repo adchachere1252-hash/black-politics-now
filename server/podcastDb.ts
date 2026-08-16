@@ -1,6 +1,7 @@
 import { eq, desc } from "drizzle-orm";
 import { getDb } from "./db";
 import { episodes, episodeSegments, emailSubscribers, pipelineRuns, podcastPreflights } from "../drizzle/schema";
+import { getPodcastRecoveryRequests } from "./podcastRecovery";
 import type { Episode, EpisodeSegment } from "../drizzle/schema";
 
 const TOPIC_ACCENTS: Record<string, { color: string; bg: string; label: string; emoji: string }> = {
@@ -84,6 +85,7 @@ export async function getEpisodesFormatted() {
     return {
       date: ep.date, day: ep.day ?? "", friendlyDate: ep.friendlyDate ?? "",
       fullEpisodeCdnUrl: ep.fullEpisodeCdnUrl ?? "",
+      jennyFullEpisodeCdnUrl: ep.jennyFullEpisodeCdnUrl ?? "",
       segmentCount: ep.segmentCount ?? builtSegments.length,
       totalDurationSec: totalSec,
       totalDurationLabel: ep.totalDurationLabel ?? (totalSec > 0 ? secsToLabel(totalSec) : ""),
@@ -104,6 +106,7 @@ export async function getArchiveEpisodesFormatted() {
     day: ep.day ?? "",
     friendlyDate: ep.friendlyDate ?? "",
     fullEpisodeCdnUrl: ep.fullEpisodeCdnUrl ?? "",
+    jennyFullEpisodeCdnUrl: ep.jennyFullEpisodeCdnUrl ?? "",
     segmentCount: ep.segmentCount ?? 0,
     totalDurationSec: ep.totalDurationSec ?? 0,
     totalDurationLabel: ep.totalDurationLabel ?? (ep.totalDurationSec ? secsToLabel(ep.totalDurationSec) : ""),
@@ -131,15 +134,16 @@ export async function getPipelineRuns() {
 
 export async function getPodcastOperations() {
   const db = await getDb();
-  if (!db) return { latest: null, recentEpisodes: [], recentRuns: [], preflights: [] };
+  if (!db) return { latest: null, recentEpisodes: [], recentRuns: [], preflights: [], recoveryRequests: [] };
 
-  const [recentEpisodes, recentRuns, preflights] = await Promise.all([
+  const [recentEpisodes, recentRuns, preflights, recoveryRequests] = await Promise.all([
     db.select().from(episodes).orderBy(desc(episodes.date)).limit(7),
     db.select().from(pipelineRuns).orderBy(desc(pipelineRuns.startedAt)).limit(12),
     db.select().from(podcastPreflights).orderBy(desc(podcastPreflights.checkedAt)).limit(7),
+    getPodcastRecoveryRequests(),
   ]);
   const latest = recentEpisodes[0] ?? null;
-  if (!latest) return { latest: null, recentEpisodes, recentRuns, preflights };
+  if (!latest) return { latest: null, recentEpisodes, recentRuns, preflights, recoveryRequests };
 
   const segments = await db.select().from(episodeSegments).where(eq(episodeSegments.episodeDate, latest.date)).orderBy(episodeSegments.sortOrder);
   const keyCounts = new Map<string, number>();
@@ -149,7 +153,9 @@ export async function getPodcastOperations() {
   const jennyReady = segments.filter((segment) => Boolean(segment.jennyCdnUrl)).length;
   const scriptsReady = segments.filter((segment) => Boolean(segment.script?.trim())).length;
   const duplicateKeys = Array.from(keyCounts.entries()).filter(([, count]) => count > 1).map(([key]) => key);
-  const fullAudioReady = latest.verificationStatus === "passed" && Boolean(latest.fullEpisodeCdnUrl);
+  const andrewFullAudioReady = Boolean(latest.fullEpisodeCdnUrl);
+  const jennyFullAudioReady = Boolean(latest.jennyFullEpisodeCdnUrl);
+  const fullAudioReady = latest.verificationStatus === "passed" && andrewFullAudioReady && jennyFullAudioReady;
   const todayPreflight = preflights.find((preflight) => preflight.episodeDate === latest.date) ?? null;
 
   return {
@@ -169,6 +175,8 @@ export async function getPodcastOperations() {
       jennyReady,
       duplicateKeys,
       fullAudioReady,
+      andrewFullAudioReady,
+      jennyFullAudioReady,
       segments: segments.map((segment) => ({
         key: segment.segmentKey,
         label: segment.label ?? segment.segmentKey,
@@ -185,6 +193,7 @@ export async function getPodcastOperations() {
       segmentCount: episode.segmentCount ?? 0,
       verificationStatus: episode.verificationStatus ?? "pending",
       hasFullAudio: Boolean(episode.fullEpisodeCdnUrl),
+      hasJennyFullAudio: Boolean(episode.jennyFullEpisodeCdnUrl),
       updatedAt: episode.updatedAt,
     })),
     recentRuns,
@@ -195,6 +204,16 @@ export async function getPodcastOperations() {
       readyCount: preflight.readyCount,
       report: preflight.report,
       checkedAt: preflight.checkedAt,
+    })),
+    recoveryRequests: recoveryRequests.map((request) => ({
+      id: request.id,
+      episodeDate: request.episodeDate,
+      status: request.status,
+      requestedBy: request.requestedBy,
+      note: request.note,
+      resultMessage: request.resultMessage,
+      requestedAt: request.requestedAt,
+      handledAt: request.handledAt,
     })),
     latestPreflight: todayPreflight ? {
       episodeDate: todayPreflight.episodeDate,
