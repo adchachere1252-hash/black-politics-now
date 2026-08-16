@@ -1,5 +1,5 @@
 export type AdminCandidateCategory = "senate" | "house" | "governor" | "black_representation";
-export type AdminCandidatePhotoStatus = "ready" | "pending_review" | "evidence_needed";
+export type AdminCandidatePhotoStatus = "needs_verification" | "pending_review" | "evidence_needed";
 type PortraitPhotoField = "candidate1" | "candidate2" | "dem" | "rep" | "profile";
 
 export type AdminCandidateRow = {
@@ -34,13 +34,15 @@ function photoStatusFor(
   category: AdminCandidateCategory,
   recordId: number,
   photoField: string,
+  photoUrl: string,
   missingTargets: PortraitTarget[],
   pendingSubmissions: PortraitSubmission[],
 ): AdminCandidatePhotoStatus {
   const key = targetKey(category, recordId, photoField);
   if (pendingSubmissions.some((submission) => submission.status === "pending" && targetKey(submission.targetType, submission.targetRecordId, submission.targetPhotoField) === key)) return "pending_review";
-  if (missingTargets.some((target) => targetKey(target.targetType, target.targetRecordId, target.targetPhotoField) === key)) return "evidence_needed";
-  return "ready";
+  if (missingTargets.some((target) => targetKey(target.targetType, target.targetRecordId, target.targetPhotoField) === key) || !photoUrl.trim()) return "evidence_needed";
+  // URL presence alone does not prove that an image is reachable, current, or depicts this candidate.
+  return "needs_verification";
 }
 
 export function buildAdminCandidateRows(input: {
@@ -56,7 +58,7 @@ export function buildAdminCandidateRows(input: {
   const add = (row: Omit<AdminCandidateRow, "photoStatus" | "portraitTarget">, photoField: PortraitPhotoField, recordId: number) => {
     if (!row.candidateName?.trim()) return;
     const portraitTarget: PortraitTarget = { targetType: row.category, targetRecordId: recordId, targetPhotoField: photoField };
-    rows.push({ ...row, portraitTarget, photoStatus: photoStatusFor(row.category, recordId, photoField, missingTargets, portraitSubmissions) });
+    rows.push({ ...row, portraitTarget, photoStatus: photoStatusFor(row.category, recordId, photoField, row.photoUrl, missingTargets, portraitSubmissions) });
   };
 
   senate.forEach((race) => {

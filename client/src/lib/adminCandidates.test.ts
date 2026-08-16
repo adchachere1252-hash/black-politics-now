@@ -13,7 +13,7 @@ describe("buildAdminCandidateRows", () => {
     });
 
     expect(rows.map((row) => [row.candidateName, row.photoStatus])).toEqual([
-      ["Alex One", "ready"],
+      ["Alex One", "needs_verification"],
       ["Blair Two", "evidence_needed"],
       ["Casey Three", "pending_review"],
     ]);

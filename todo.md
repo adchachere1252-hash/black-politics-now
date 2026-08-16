@@ -865,6 +865,15 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Keep technical research and evidence-needed states in background status rather than the primary decision flow
 - [x] Verify the simplified candidate-to-search-to-decision workflow on desktop and mobile
 
+## Bulk Portrait Review and Candidate Image Status Accuracy (Aug 16)
+- [x] Audit mapped candidate images for reachability and distinguish verified, missing, and needs-verification states
+- [x] Make All Candidates labels reflect verified image availability rather than a stored or fallback URL alone
+- [x] Add a bulk AI portrait review queue that supports individual visual approve or deny decisions without automatic publication
+- [x] Add bulk AI image-search start and sequential pending-image review controls to the candidate-first Portrait Review desk
+- [x] Replace the misleading Photo mapped wording with conservative Image missing, Needs verification, or Review image statuses
+- [x] Block bulk approval when a proposed image preview cannot load and clearly mark that review item as image unavailable
+- [x] Verify bulk review progress, photo-status labels, and responsive actions on desktop and mobile
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
