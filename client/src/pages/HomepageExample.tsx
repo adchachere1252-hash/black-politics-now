@@ -9,6 +9,7 @@ import MiniRepositoryGlobe from "@/components/MiniRepositoryGlobe";
 import { useAudio } from "@/contexts/AudioContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { homepageContentQueryOptions, homepageElectionQueryOptions } from "@/lib/homepageRefresh";
 
 type MapMode = "senate" | "house" | "governor" | "blackrep";
 
@@ -80,19 +81,15 @@ function Candidate({ candidate, partyClass, align = "left" }: { candidate: { nam
 }
 
 export default function HomepageExample({ mode = "preview" }: { mode?: "preview" | "home" }) {
-  const { data: news, isLoading: newsLoading } = trpc.news.list.useQuery({ page: 1, perPage: 12 });
-  const { data: senateRaces, isLoading: senateLoading } = trpc.election.senate.useQuery();
-  const { data: houseRaces, isLoading: houseLoading } = trpc.election.house.useQuery();
-  const { data: governors, isLoading: governorLoading } = trpc.election.governors.useQuery();
-  const { data: cbcMembers, isLoading: blackRepresentationLoading } = trpc.election.cbc.useQuery();
-  const { data: blackRepresentationElections } = trpc.election.blackRepresentationElections.useQuery();
-  const { data: episodes, isLoading: episodesLoading } = trpc.podcast.getEpisodes.useQuery();
-  const { data: worldElections = [], isLoading: worldLoading } = trpc.world.elections.useQuery(undefined, {
-    staleTime: 15_000,
-    refetchInterval: 60_000,
-    refetchIntervalInBackground: true,
-  });
-  const { data: atlasStates = [], isLoading: atlasLoading } = trpc.election.redistricting.useQuery();
+  const { data: news, isLoading: newsLoading } = trpc.news.list.useQuery({ page: 1, perPage: 12 }, homepageContentQueryOptions);
+  const { data: senateRaces, isLoading: senateLoading } = trpc.election.senate.useQuery(undefined, homepageElectionQueryOptions);
+  const { data: houseRaces, isLoading: houseLoading } = trpc.election.house.useQuery(undefined, homepageElectionQueryOptions);
+  const { data: governors, isLoading: governorLoading } = trpc.election.governors.useQuery(undefined, homepageElectionQueryOptions);
+  const { data: cbcMembers, isLoading: blackRepresentationLoading } = trpc.election.cbc.useQuery(undefined, homepageElectionQueryOptions);
+  const { data: blackRepresentationElections } = trpc.election.blackRepresentationElections.useQuery(undefined, homepageElectionQueryOptions);
+  const { data: episodes, isLoading: episodesLoading } = trpc.podcast.getEpisodes.useQuery(undefined, homepageContentQueryOptions);
+  const { data: worldElections = [], isLoading: worldLoading } = trpc.world.elections.useQuery(undefined, homepageElectionQueryOptions);
+  const { data: atlasStates = [], isLoading: atlasLoading } = trpc.election.redistricting.useQuery(undefined, homepageContentQueryOptions);
   const { play } = useAudio();
   const { theme } = useTheme();
   const [mapMode, setMapMode] = useState<MapMode>("senate");

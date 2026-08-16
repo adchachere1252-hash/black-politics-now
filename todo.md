@@ -800,6 +800,14 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Deliver a complete click-by-click Admin control status matrix
 - [x] Record any control that cannot receive literal browser interaction and verify its protected application procedure instead
 
+## Homepage Autonomy and Black Representation General-Election Audit (Aug 16)
+- [x] Verify the current homepage data-refresh paths, trigger cadence, and approved-record safeguards
+- [x] Compare viable background-refresh approaches and document the selected operational model
+- [x] Add a bounded in-page refresh for homepage election and Black Representation data while preserving approved-record safeguards
+- [x] Audit Black Representation candidates against official 2026 primary and runoff outcomes for general-election advancement
+- [x] Prepare source-backed status updates and identify candidates that remain pending, contested, or require manual review
+- [x] Validate the homepage displays only approved, current Black Representation data after updates
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade

@@ -8,6 +8,7 @@ import { USMapFull } from "@/components/USMapFull";
 import { ResultsTicker } from "@/components/ResultsTicker";
 import HomepageExample from "@/pages/HomepageExample";
 import { rankedWorldSignals, worldSignalLabel } from "@/lib/worldElectionDisplay";
+import { homepageContentQueryOptions, homepageElectionQueryOptions } from "@/lib/homepageRefresh";
 
 type MapView = "house" | "senate" | "governor" | "blackrep";
 
@@ -26,14 +27,14 @@ export default function Home() {
 }
 
 function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDiscoveryRail?: boolean; previewMode?: boolean }) {
-  const { data: newsData, isLoading: newsLoading } = trpc.news.list.useQuery({ page: 1, perPage: 6 });
-  const { data: episodes, isLoading: podLoading } = trpc.podcast.getEpisodes.useQuery();
-  const { data: scoreboard } = trpc.election.scoreboard.useQuery();
-  const { data: senateRaces } = trpc.election.senate.useQuery();
-  const { data: houseRaces } = trpc.election.house.useQuery();
-  const { data: governors } = trpc.election.governors.useQuery();
-  const { data: cbcMembers } = trpc.election.cbc.useQuery();
-  const { data: blackRepresentationElections } = trpc.election.blackRepresentationElections.useQuery();
+  const { data: newsData, isLoading: newsLoading } = trpc.news.list.useQuery({ page: 1, perPage: 6 }, homepageContentQueryOptions);
+  const { data: episodes, isLoading: podLoading } = trpc.podcast.getEpisodes.useQuery(undefined, homepageContentQueryOptions);
+  const { data: scoreboard } = trpc.election.scoreboard.useQuery(undefined, homepageElectionQueryOptions);
+  const { data: senateRaces } = trpc.election.senate.useQuery(undefined, homepageElectionQueryOptions);
+  const { data: houseRaces } = trpc.election.house.useQuery(undefined, homepageElectionQueryOptions);
+  const { data: governors } = trpc.election.governors.useQuery(undefined, homepageElectionQueryOptions);
+  const { data: cbcMembers } = trpc.election.cbc.useQuery(undefined, homepageElectionQueryOptions);
+  const { data: blackRepresentationElections } = trpc.election.blackRepresentationElections.useQuery(undefined, homepageElectionQueryOptions);
   const { play, voicePreference } = useAudio();
   const [mapView, setMapView] = useState<MapView>("house");
   const [selectedState, setSelectedState] = useState<string | null>(null);
