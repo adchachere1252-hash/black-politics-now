@@ -839,6 +839,17 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Audit current AI-agent utilization, identify unused safe capacity, and add the highest-value practical agent controls
 - [x] Verify all candidate, portrait, proposed-change, download, and agent workflows on desktop and mobile
 
+## Daily Brief Structure and Agent Operations Upgrade (Aug 16)
+- [x] Audit the current Daily Brief segment sequence, greeting and closing coverage, script/audio duration integrity, sources, and homepage player context
+- [x] Add official-source lead suggestions for all evidence-needed portrait candidates and surface a daily agent summary on Admin Overview
+- [x] Persist a durable morning operational snapshot from the existing Daily Brief production workflow
+- [x] Add precise active segment title, ordinal, and progress context to the homepage and persistent audio player
+- [x] Display the existing opening greeting and closing as playable first and last Daily Brief segments instead of hiding them from homepage lists
+- [x] Require source context for editorial analysis segments while retaining opening and closing as structured listener guidance
+- [x] Enforce a Daily Brief structural gate requiring a greeting, 13 editorial segments, and a closing before daily publication
+- [x] Verify all Daily Brief segments have source context, correct sequence, paired audio, and independent greeting/closing playback
+- [x] Deliver a complete Daily Brief production workflow and recommendations report
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade

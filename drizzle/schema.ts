@@ -697,6 +697,33 @@ export const agentRuns = mysqlTable("agent_runs", {
 export type AgentRun = typeof agentRuns.$inferSelect;
 
 /**
+ * A durable morning record of the editorial automation state. The Daily Brief
+ * guard writes this after each relevant outcome so Admin can diagnose what the
+ * production system found that morning without relying on transient logs.
+ */
+export const dailyOperationalSnapshots = mysqlTable("daily_operational_snapshots", {
+  id: int("id").autoincrement().primaryKey(),
+  snapshotDate: varchar("snapshotDate", { length: 10 }).notNull().unique(),
+  briefStatus: varchar("briefStatus", { length: 32 }).notNull().default("held"),
+  briefSegmentCount: int("briefSegmentCount").notNull().default(0),
+  briefSourceReadyCount: int("briefSourceReadyCount").notNull().default(0),
+  andrewFullReady: boolean("andrewFullReady").notNull().default(false),
+  jennyFullReady: boolean("jennyFullReady").notNull().default(false),
+  agentRunStatus: varchar("agentRunStatus", { length: 32 }),
+  agentRunSummary: text("agentRunSummary"),
+  pendingRecommendations: int("pendingRecommendations").notNull().default(0),
+  openAgentTasks: int("openAgentTasks").notNull().default(0),
+  readyAgentTasks: int("readyAgentTasks").notNull().default(0),
+  portraitEvidenceNeeded: int("portraitEvidenceNeeded").notNull().default(0),
+  pendingPortraitReviews: int("pendingPortraitReviews").notNull().default(0),
+  summary: text("summary"),
+  generatedAt: timestamp("generatedAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type DailyOperationalSnapshot = typeof dailyOperationalSnapshots.$inferSelect;
+
+/**
  * Recommendations are deliberately review-only. They have no link to an
  * election or publishing mutation, so an AI run cannot silently alter public
  * facts, send alerts, or publish newsroom content.

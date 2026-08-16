@@ -44,6 +44,7 @@ import { getWorldElectionRefreshOperations, runDatedWorldElectionRefresh } from 
 import { advanceElectionDayRehearsal, getElectionDayCommandCenter, startElectionDayRehearsal } from "./electionDayCommandCenter";
 import { getPortraitSubmissionTargets, getPortraitSubmissions, portraitPhotoFields, portraitProvenanceTypes, portraitTargetTypes, reviewPortraitSubmission, submitPortraitSubmission } from "./portraitReview";
 import { getLatestPortraitResearchItems } from "./agentDesk";
+import { getLatestDailyOperationalSnapshot } from "./agentDailySummary";
 import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, executeAgentTaskWithChangeSet, getAgentChangeProposals, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, getLatestPortraitResearchBatch, reviewAgentChangeProposal, reviewAgentRecommendation, runAgentTaskResearchNow, runElectionDayCommandResearch, runPortraitResearchTask, runResearchDesk, setAgentDefaultOwners, setAgentPriorityMode, startAllPortraitResearch, updateAgentTask } from "./agentDesk";
 
 export const appRouter = router({
@@ -263,6 +264,7 @@ export const appRouter = router({
       }).optional())
       .query(async ({ input }) => getAgentRecommendations(input)),
     runs: adminProcedure.query(async () => getAgentRuns()),
+    dailySummary: adminProcedure.query(async () => getLatestDailyOperationalSnapshot()),
     settings: adminProcedure.query(async () => getAgentSettings()),
     tasks: adminProcedure.query(async () => getAgentTasks()),
     changeProposals: adminProcedure

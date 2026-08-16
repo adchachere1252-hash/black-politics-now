@@ -14,6 +14,9 @@ export default function StickyPlayer() {
   if (!currentTrack) return null;
 
   const pct = duration > 0 ? (progress / duration) * 100 : 0;
+  const segmentContext = currentTrack.segmentKey
+    ? `${currentTrack.segmentRole === "greeting" ? "Opening" : currentTrack.segmentRole === "closing" ? "Closing" : "Editorial segment"}${currentTrack.segmentOrdinal && currentTrack.segmentTotal ? ` · ${currentTrack.segmentOrdinal} of ${currentTrack.segmentTotal}` : ""}`
+    : `Full episode · ${currentTrack.voice === "jenny" ? "Jenny" : "Andrew"}`;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/50 bg-card/95 backdrop-blur-md">
@@ -21,7 +24,7 @@ export default function StickyPlayer() {
         {/* Track info */}
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium truncate text-foreground">{currentTrack.title}</p>
-          <p className="text-xs text-muted-foreground">{currentTrack.episodeDate}</p>
+          <p className="text-xs text-muted-foreground">{segmentContext} · {currentTrack.episodeDate}</p>
         </div>
 
         {/* Controls */}

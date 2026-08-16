@@ -1,13 +1,16 @@
 import { createContext, useContext, useRef, useState, useCallback, type ReactNode } from "react";
 import { switchVoiceTrack, type BriefVoice } from "@/lib/audioVoice";
 
-interface AudioTrack {
+export interface AudioTrack {
   url: string;
   alternateUrl?: string;
   voice?: BriefVoice;
   title: string;
   episodeDate: string;
   segmentKey?: string;
+  segmentOrdinal?: number;
+  segmentTotal?: number;
+  segmentRole?: "greeting" | "editorial" | "closing";
 }
 
 interface AudioContextType {
@@ -42,6 +45,8 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const play = useCallback((track: AudioTrack) => {
     setCurrentTrack(track);
     setIsPlaying(true);
+    setProgress(0);
+    setDuration(0);
     if (audioRef.current) {
       audioRef.current.src = track.url;
       audioRef.current.volume = volume;

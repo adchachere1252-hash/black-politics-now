@@ -176,6 +176,13 @@
       "when": 1786907198197,
       "tag": "0024_yellow_husk",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "5",
+      "when": 1786910358638,
+      "tag": "0025_sparkling_wallow",
+      "breakpoints": true
     }
   ]
 }

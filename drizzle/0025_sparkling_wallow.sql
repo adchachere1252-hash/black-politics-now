@@ -1,0 +1,21 @@
+CREATE TABLE `daily_operational_snapshots` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`snapshotDate` varchar(10) NOT NULL,
+	`briefStatus` varchar(32) NOT NULL DEFAULT 'held',
+	`briefSegmentCount` int NOT NULL DEFAULT 0,
+	`briefSourceReadyCount` int NOT NULL DEFAULT 0,
+	`andrewFullReady` boolean NOT NULL DEFAULT false,
+	`jennyFullReady` boolean NOT NULL DEFAULT false,
+	`agentRunStatus` varchar(32),
+	`agentRunSummary` text,
+	`pendingRecommendations` int NOT NULL DEFAULT 0,
+	`openAgentTasks` int NOT NULL DEFAULT 0,
+	`readyAgentTasks` int NOT NULL DEFAULT 0,
+	`portraitEvidenceNeeded` int NOT NULL DEFAULT 0,
+	`pendingPortraitReviews` int NOT NULL DEFAULT 0,
+	`summary` text,
+	`generatedAt` timestamp NOT NULL DEFAULT (now()),
+	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `daily_operational_snapshots_id` PRIMARY KEY(`id`),
+	CONSTRAINT `daily_operational_snapshots_snapshotDate_unique` UNIQUE(`snapshotDate`)
+);

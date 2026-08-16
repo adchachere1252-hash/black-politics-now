@@ -10,7 +10,7 @@ import { rankedWorldSignals, worldSignalLabel } from "@/lib/worldElectionDisplay
 import { getAdminElectionEngineBadge } from "@/lib/electionFreshness";
 import { buildAdminCandidateRows, type AdminCandidateCategory } from "@/lib/adminCandidates";
 import { useState, useMemo } from "react";
-import { ArrowUpRight, Shield, Radio, MapPin, Users, Save, Check, Search, Star, Sparkles, AlertTriangle, CheckCircle2, Clock3, FileText, Headphones, ListChecks, RefreshCw, ShieldCheck, ImagePlus, FileDiff, Radar, Globe2 } from "lucide-react";
+import { ArrowUpRight, Shield, Radio, MapPin, Users, Save, Check, Search, SearchCheck, Star, Sparkles, AlertTriangle, CheckCircle2, Clock3, FileText, Headphones, ListChecks, RefreshCw, ShieldCheck, ImagePlus, FileDiff, Radar, Globe2 } from "lucide-react";
 
 type AdminTab = "overview" | "command" | "podcast" | "elections" | "candidates" | "cbc" | "atlasWorld" | "agent" | "changes" | "portraits" | "audience";
 
@@ -129,6 +129,7 @@ function OverviewTab({ onReview, onNavigate }: { onReview: (id: number) => void;
   const { data: electionFreshness } = trpc.election.freshness.useQuery();
   const { data: priorityRecommendations = [] } = trpc.agent.recommendations.useQuery({ status: "pending", priority: "high" });
   const { data: agentSettings } = trpc.agent.settings.useQuery();
+  const { data: dailyAgentSummary } = trpc.agent.dailySummary.useQuery(undefined, { refetchInterval: 60_000 });
   const { data: agentTasks = [] } = trpc.agent.tasks.useQuery();
   const { data: pendingChanges = [] } = trpc.agent.changeProposals.useQuery({ status: "pending_review" });
   const { data: pendingPortraits = [] } = trpc.portraits.submissions.useQuery({ status: "pending" });
@@ -181,6 +182,11 @@ function OverviewTab({ onReview, onNavigate }: { onReview: (id: number) => void;
           <p className="text-sm text-muted-foreground mb-1">House Races Called</p>
           <p className="text-3xl font-bold">{(scoreboard?.house.dem ?? 0) + (scoreboard?.house.rep ?? 0)}</p>
         </div>
+      </div>
+
+      <div className="glass-card rounded-xl border border-primary/25 bg-primary/[0.035] p-5">
+        <div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider"><Radio size={16} className="text-primary" /> Morning agent summary</h3><p className="mt-1 max-w-2xl text-xs text-muted-foreground">A durable record written by the Daily Brief guard after its morning production outcome. It preserves what the automation found instead of relying on transient logs.</p></div><span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase ${dailyAgentSummary?.briefStatus === "passed" ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" : dailyAgentSummary ? "bg-amber-500/10 text-amber-700 dark:text-amber-300" : "bg-muted text-muted-foreground"}`}>{dailyAgentSummary ? `${dailyAgentSummary.snapshotDate} · ${dailyAgentSummary.briefStatus}` : "Awaiting next morning run"}</span></div>
+        {dailyAgentSummary ? <><div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5"><OpsMetric icon={FileText} label="Brief structure" value={`${dailyAgentSummary.briefSegmentCount}/15`} detail={`${dailyAgentSummary.briefSourceReadyCount} segments with sources`} tone={dailyAgentSummary.briefSegmentCount >= 15 ? "good" : "warn"} /><OpsMetric icon={CheckCircle2} label="Andrew full" value={dailyAgentSummary.andrewFullReady ? "Ready" : "Held"} detail="Continuous episode file" tone={dailyAgentSummary.andrewFullReady ? "good" : "warn"} /><OpsMetric icon={CheckCircle2} label="Jenny full" value={dailyAgentSummary.jennyFullReady ? "Ready" : "Held"} detail="Continuous episode file" tone={dailyAgentSummary.jennyFullReady ? "good" : "warn"} /><OpsMetric icon={SearchCheck} label="Agent queue" value={String(dailyAgentSummary.openAgentTasks)} detail={`${dailyAgentSummary.pendingRecommendations} recommendations pending`} tone={dailyAgentSummary.openAgentTasks > 0 ? "warn" : "good"} /><OpsMetric icon={ImagePlus} label="Portrait evidence" value={String(dailyAgentSummary.portraitEvidenceNeeded)} detail={`${dailyAgentSummary.pendingPortraitReviews} visual reviews pending`} tone={dailyAgentSummary.portraitEvidenceNeeded > 0 ? "warn" : "good"} /></div><p className="mt-3 text-xs text-muted-foreground">{dailyAgentSummary.summary}</p></> : <p className="mt-4 rounded-lg border border-dashed border-border px-4 py-4 text-sm text-muted-foreground">The first durable summary will appear after the next Daily Brief guard completes. Current live operational cards remain available below.</p>}
       </div>
 
       <div className="glass-card rounded-xl border border-amber-500/25 bg-amber-500/[0.045] p-5">

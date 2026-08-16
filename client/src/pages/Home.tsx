@@ -10,6 +10,7 @@ import HomepageExample from "@/pages/HomepageExample";
 import { rankedWorldSignals, worldSignalLabel } from "@/lib/worldElectionDisplay";
 import { homepageContentQueryOptions, homepageElectionQueryOptions } from "@/lib/homepageRefresh";
 import { resolveFullEpisodeVoiceUrl } from "@/lib/fullEpisodeVoice";
+import { getDailyBriefSegmentRole } from "@/lib/dailyBriefStructure";
 
 type MapView = "house" | "senate" | "governor" | "blackrep";
 
@@ -36,7 +37,7 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
   const { data: governors } = trpc.election.governors.useQuery(undefined, homepageElectionQueryOptions);
   const { data: cbcMembers } = trpc.election.cbc.useQuery(undefined, homepageElectionQueryOptions);
   const { data: blackRepresentationElections } = trpc.election.blackRepresentationElections.useQuery(undefined, homepageElectionQueryOptions);
-  const { play, voicePreference, setVoicePreference } = useAudio();
+  const { play, voicePreference, setVoicePreference, currentTrack, progress, duration } = useAudio();
   const [mapView, setMapView] = useState<MapView>("house");
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [statePopupOpen, setStatePopupOpen] = useState(false);
@@ -66,6 +67,8 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
   const latestEpisode = episodes?.[0];
   const selectedFullEpisodeUrl = latestEpisode ? resolveFullEpisodeVoiceUrl(latestEpisode, voicePreference) : "";
   const latestEpisodeHasAudio = Boolean(selectedFullEpisodeUrl);
+  const activeBriefTrack = currentTrack?.episodeDate === latestEpisode?.date ? currentTrack : null;
+  const activeBriefProgress = activeBriefTrack && duration > 0 ? Math.min(100, Math.max(0, (progress / duration) * 100)) : 0;
   // Build map data from senate races (for senate view) or house (aggregate by state)
   const mapData = useMemo(() => {
     const data: Record<string, { rating: string | null; candidate1: string; candidate2: string; calledWinner?: string | null }> = {};
@@ -439,11 +442,14 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
                 </div>
               </div>
 
-              {/* Progress bar placeholder */}
-                <div className="flex items-center gap-2 mb-4">
-                <span className="text-[10px] text-muted-foreground">00:00</span>
+              <div className="mb-3 rounded-lg border border-primary/25 bg-primary/[0.045] px-3 py-2">
+                <div className="flex items-center justify-between gap-2 text-[10px]"><span className="font-bold text-primary">{activeBriefTrack?.segmentKey ? `Now playing · ${activeBriefTrack.segmentRole === "greeting" ? "Opening" : activeBriefTrack.segmentRole === "closing" ? "Closing" : "Editorial"}${activeBriefTrack.segmentOrdinal && activeBriefTrack.segmentTotal ? ` · ${activeBriefTrack.segmentOrdinal}/${activeBriefTrack.segmentTotal}` : ""}` : "Choose a segment to begin"}</span><span className="truncate text-muted-foreground">{activeBriefTrack?.title ?? "Greeting → analysis → closing"}</span></div>
+                <div className="mt-2 h-1 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-primary transition-[width]" style={{ width: `${activeBriefProgress}%` }} /></div>
+              </div>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-[10px] text-muted-foreground">{activeBriefTrack ? `${Math.floor(progress / 60)}:${String(Math.floor(progress % 60)).padStart(2, "0")}` : "0:00"}</span>
                 <div className="flex-1 h-1 bg-muted rounded-full overflow-hidden">
-                  <div className="h-full w-0 bg-primary rounded-full" />
+                  <div className="h-full bg-primary rounded-full" style={{ width: `${activeBriefProgress}%` }} />
                 </div>
                 {!latestEpisodeHasAudio && <p className="text-[11px] text-muted-foreground mb-3">{voicePreference === "jenny" ? "Jenny’s full episode mix is being prepared. Individual Jenny segments remain available below." : "Full episode audio is being prepared. Scripts remain available below."}</p>}
                 <span className="text-[10px] text-muted-foreground">{latestEpisode.totalDurationLabel}</span>
@@ -452,11 +458,13 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
               {/* Segment count tagline */}
               <div className="mb-3 flex items-center justify-between gap-3"><p className="text-xs font-bold text-primary uppercase tracking-wider">{latestEpisode.totalDurationLabel}. Everything You Need.</p><div className="inline-flex rounded-md border border-border bg-background p-0.5 text-[10px] font-semibold"><button onClick={() => setVoicePreference("andrew")} className={`rounded px-2 py-1 ${voicePreference === "andrew" ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>Andrew</button><button onClick={() => setVoicePreference("jenny")} className={`rounded px-2 py-1 ${voicePreference === "jenny" ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>Jenny</button></div></div>
 
-              {/* Numbered segment list */}
+              {/* Ordered segment list, including the opening and closing. */}
               <div className="space-y-0.5">
-                {latestEpisode.segments.filter((seg: any) => !seg.key.includes("greeting") && !seg.key.includes("closing")).map((seg: any, i: number) => {
+                {latestEpisode.segments.map((seg: any, i: number) => {
                   const segmentUrl = voicePreference === "andrew" ? seg.audioPath : seg.jennyAudioPath;
                   const segmentHasAudio = Boolean(segmentUrl);
+                  const segmentRole = getDailyBriefSegmentRole(seg.key);
+                  const isActiveSegment = activeBriefTrack?.segmentKey === seg.key;
                   return (
                   <button
                     key={seg.key}
@@ -467,13 +475,16 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
                       title: seg.label,
                       episodeDate: latestEpisode.date,
                       segmentKey: seg.key,
+                      segmentOrdinal: i + 1,
+                      segmentTotal: latestEpisode.segments.length,
+                      segmentRole,
                     })}
                     disabled={!segmentHasAudio}
                     title={segmentHasAudio ? `Play ${seg.label}` : "Segment audio is being prepared"}
-                    className="w-full flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-muted/30 transition-colors text-left group disabled:cursor-not-allowed disabled:opacity-55"
+                    className={`w-full flex items-center gap-3 py-2 px-2 rounded-lg transition-colors text-left group disabled:cursor-not-allowed disabled:opacity-55 ${isActiveSegment ? "bg-primary/10 ring-1 ring-primary/35" : "hover:bg-muted/30"}`}
                   >
                     <span className="text-sm font-bold text-muted-foreground w-5 text-right">{i + 1}</span>
-                    <span className="flex-1 text-xs font-medium text-foreground group-hover:text-primary transition-colors truncate">{seg.label}</span>
+                    <span className="flex-1 min-w-0"><span className="block text-xs font-medium text-foreground group-hover:text-primary transition-colors truncate">{seg.label}</span><span className="block text-[9px] uppercase tracking-[.11em] text-muted-foreground">{segmentRole === "greeting" ? "Opening greeting" : segmentRole === "closing" ? "Closing" : "Editorial segment"}</span></span>
                     <span className="text-[10px] text-muted-foreground">{seg.durationLabel}</span>
                     <Play size={12} className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                   </button>
