@@ -180,54 +180,22 @@ html[data-home-palette="plum"] {
   --sidebar-primary: oklch(0.7 0.09 330);
 }
 
-/* The homepage uses the Historical Atlas treatment directly rather than
-   relying on inherited tokens alone. Functional election colors stay in their
-   dedicated data components; these rules only shape editorial surfaces. */
+/* Homepage surfaces intentionally inherit the exact shared Atlas tokens.
+   Functional election colors remain in their dedicated data components. */
 .homepage-atlas-shell {
-  background:
-    radial-gradient(circle at 76% -12%, oklch(0.34 0.07 82 / 0.32), transparent 34%),
-    radial-gradient(circle at 9% 104%, oklch(0.26 0.045 80 / 0.34), transparent 42%),
-    oklch(0.105 0.01 82);
+  background: var(--background);
 }
 
 .homepage-atlas-main {
-  background: linear-gradient(145deg, oklch(0.145 0.014 82), oklch(0.11 0.009 82));
-  border-color: oklch(0.42 0.055 82 / 0.62);
-  box-shadow: 0 22px 70px oklch(0.03 0.005 82 / 0.58), inset 0 1px 0 oklch(0.9 0.1 82 / 0.06);
+  background: var(--card);
+  border-color: var(--border);
+  box-shadow: 0 10px 26px oklch(0.24 0.03 82 / 0.08);
 }
 
 .homepage-atlas-panel {
-  background:
-    linear-gradient(155deg, oklch(0.17 0.016 82 / 0.98), oklch(0.125 0.01 82 / 0.98));
-  border-color: oklch(0.40 0.05 82 / 0.58);
-  box-shadow: inset 0 1px 0 oklch(0.92 0.11 82 / 0.045), 0 10px 28px oklch(0.03 0.005 82 / 0.18);
-}
-
-.homepage-atlas-panel > .absolute.bg-card\/94,
-.homepage-atlas-panel > .absolute.bg-background\/55 {
-  background-color: oklch(0.155 0.014 82 / 0.96);
-  border-color: oklch(0.43 0.055 82 / 0.60);
-}
-
-:root:not(.dark) .homepage-atlas-shell {
-  background:
-    radial-gradient(circle at 76% -12%, oklch(0.82 0.1 82 / 0.22), transparent 34%),
-    oklch(0.985 0.008 85);
-}
-
-:root:not(.dark) .homepage-atlas-main,
-:root:not(.dark) .homepage-atlas-panel {
-  background: linear-gradient(155deg, oklch(0.99 0.008 85), oklch(0.965 0.014 85));
-  border-color: oklch(0.68 0.08 82 / 0.46);
-  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.75), 0 10px 26px oklch(0.24 0.03 82 / 0.08);
-}
-
-:root:not(.dark) .homepage-atlas-panel > .absolute.bg-card\/94,
-:root:not(.dark) .homepage-atlas-panel > .absolute.bg-background\/55,
-:root:not(.dark) .homepage-atlas-panel .bg-card\/94 {
-  background-color: oklch(0.985 0.008 85 / 0.97);
-  border-color: oklch(0.68 0.08 82 / 0.48);
-  box-shadow: 0 7px 20px oklch(0.24 0.03 82 / 0.08);
+  background: var(--card);
+  border-color: var(--border);
+  box-shadow: none;
 }
 
 @layer base {

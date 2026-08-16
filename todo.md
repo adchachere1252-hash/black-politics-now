@@ -711,6 +711,10 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Make the Atlas warm ivory, black, and refined gold visual system the default for new visitors while retaining optional dark mode
 - [x] Migrate existing stored dark preferences once to the Atlas light presentation while preserving later explicit dark-mode choices
 
+## Exact Homepage-to-Atlas Light Palette Parity (Aug 16)
+- [x] Remove homepage-only ivory gradients, panel tints, and accent overrides that differ from the Historical Atlas light page
+- [x] Verify the homepage matches the Atlas warm ivory surface, card, border, and refined gold colors exactly on desktop and mobile
+
 ## Homepage Warm Editorial Palette Review (Aug 15)
 - [x] Add Antique Brass, Champagne Ivory, and Muted Plum to the in-site homepage color comparison
 - [x] Capture and share the warm editorial palette directions for user selection before changing the live palette
