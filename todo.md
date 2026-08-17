@@ -940,18 +940,22 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Deliver a clear parity matrix and recommended implementation order
 
 ## Full Legacy-Surface Repository Parity Program (Aug 17)
-- [ ] Create a complete legacy-surface inventory for both selected repositories and map each item to an integrated platform destination
-- [ ] Build dedicated source-backed World Results and World Referendums views
-- [ ] Port the original World Elections alert and remaining deterministic explorer surfaces
-- [ ] Port remaining Daily Intelligence Brief listener, editorial, quality, search, and Admin operations surfaces
-- [ ] Backfill historical Jenny full episodes only when verified source scripts and paired audio assets support a guarded rebuild
-- [ ] Implement the legacy subscriber digest only after choosing a compliant outbound delivery configuration
-- [ ] Run code, data, responsive visual, operational, and repository-parity acceptance checks across both repositories
+- [x] Create a complete legacy-surface inventory for both selected repositories and map each item to an integrated platform destination
+- [x] Build dedicated source-backed World Results and World Referendums views
+- [x] Port the original World Elections alert and remaining deterministic explorer surfaces
+- [x] Port remaining Daily Intelligence Brief listener, editorial, quality, search, and Admin operations surfaces
+- [x] Backfill only source-verified historical Jenny full episodes; one eligible August 15 mix was rebuilt and 85 records remain safely held for missing provenance
+- [x] Deferred by user direction — subscriber digest will remain out of scope until an outbound delivery configuration is selected
+- [x] Run code, data, responsive visual, operational, and repository-parity acceptance checks across the reviewed repositories
+
+## Daily Intelligence Brief Embed Route Repair (Aug 17)
+- [x] Verify the public Podcast link uses the registered `/embed` route; no repair was required
+- [x] Verify the standalone player’s voice choice, audio action, responsive framing, and public route registration
 
 ## Historical Atlas Repository Parity (Aug 17)
-- [ ] Inventory the Historical Atlas repository’s map frames, timeline, state-detail, comparison, and source surfaces against the live Atlas
-- [ ] Correct any confirmed Atlas repository gap without weakening the verified UCLA boundary and legal-event provenance
-- [ ] Verify all 50 states, all 31 VRA-era frames, playback controls, comparison URLs, and responsive source context before final acceptance
+- [x] Inventory the Historical Atlas repository’s map frames, timeline, state-detail, comparison, and source surfaces against the live Atlas
+- [x] Correct the confirmed Atlas interaction gaps without weakening the verified UCLA boundary and legal-event provenance
+- [x] Verify all 50 states, all 31 VRA-era frames, playback controls, comparison URLs, and responsive source context before final acceptance
 
 ## Mobile App and Election Banner Verification (Aug 17)
 - [x] Confirm whether the mobile election banner has motion, reduced-motion behavior, and accessible interaction states

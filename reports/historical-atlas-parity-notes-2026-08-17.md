@@ -24,9 +24,13 @@ The integrated implementation is `/home/ubuntu/black-politics-now/client/src/pag
 - A guided Voting Rights Act legal timeline with source links and the Louisiana v. Callais milestone.
 - Historical map overlays, state selection, source badges, and responsive controls.
 
-## Initial Parity Hypothesis
+## Acceptance Result
 
-The integrated Atlas appears to carry the source repository’s major public surfaces and adds editorial/legal provenance. The remaining acceptance work must specifically test the source repository’s interaction-level features: independent comparison playback, keyboard operation, selected-state mobile detail, district popup/source behavior, and all-frame/all-state coverage. No gap should be declared or remediated until this direct comparison is complete.
+The comparison found a narrow interaction gap rather than a data or map-coverage gap. The source repository allowed each side of a two-Congress comparison to play independently and supported keyboard movement through Congress frames. The integrated Atlas already had broader source, legal-timeline, overlay, share-link, and archive context, but did not expose those two interaction refinements.
+
+The integrated Atlas now provides independent validated-frame playback in both comparison panels, global left/right Congress navigation outside form controls, an `S` shortcut that opens a focused selected-state detail on mobile, and a mobile state-detail overlay. The existing district hover context continues to show district, verified member/party information when applicable, and UCLA/Voteview provenance.
+
+The Atlas acceptance suite passed all 17 tests across boundary loading, boundary routes, comparison URL state, 31-frame integrity, playback, source integrity, true-district loading, and the VRA timeline. This confirms all 50 states, all 31 VRA-era Congress frames, source context, comparison URLs, and playback support remain intact.
 
 ## Source References
 
