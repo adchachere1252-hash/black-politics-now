@@ -933,6 +933,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add a compact all-country index beside the globe with tracked-election status and globe-focus actions
 - [x] Verify Explorer controls, keyboard access, desktop/mobile layouts, and full label coverage before publishing
 
+## Cross-Repository Parity Audit (Aug 17)
+- [x] Inventory the other selected repositories and identify their public features, source data, and parity candidates
+- [x] Compare each repository with the live Black Politics Now implementation and distinguish complete parity from deliberate scope differences
+- [x] Verify material repository-grounded gaps and prioritize safe improvements without inventing unsupported data
+- [x] Deliver a clear parity matrix and recommended implementation order
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
