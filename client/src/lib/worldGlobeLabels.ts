@@ -15,11 +15,12 @@ const NAME_OVERRIDES: Record<string, string> = { US:"United States",GB:"United K
 const LABEL_OFFSETS: Record<string, { latitude: number; longitude: number; altitude?: number }> = { BA:{latitude:-5,longitude:6},BG:{latitude:-4,longitude:7},CH:{latitude:-5,longitude:-8},CZ:{latitude:4,longitude:8},HU:{latitude:5,longitude:2},NL:{latitude:6,longitude:-5},PT:{latitude:-4,longitude:-7},RO:{latitude:5,longitude:6},RS:{latitude:-5,longitude:5},SK:{latitude:-3,longitude:10},ST:{latitude:-5,longitude:-7},CO:{latitude:-7,longitude:-12},SG:{latitude:-4,longitude:5},PS:{latitude:-4,longitude:-7},IL:{latitude:4,longitude:5},NP:{latitude:5,longitude:-6},TW:{latitude:-3,longitude:5},VN:{latitude:0,longitude:6},JP:{latitude:5,longitude:7},PH:{latitude:-5,longitude:7},NZ:{latitude:-7,longitude:6},CK:{latitude:-7,longitude:0},CV:{latitude:8,longitude:-16},GM:{latitude:-9,longitude:-16},GW:{latitude:-3,longitude:-8},SS:{latitude:4,longitude:6},HT:{latitude:5,longitude:-5},NI:{latitude:-5,longitude:-5},JO:{latitude:-7,longitude:-6},LB:{latitude:4,longitude:-6},QA:{latitude:0,longitude:6},AE:{latitude:-4,longitude:6},BJ:{latitude:5,longitude:4},TG:{latitude:-5,longitude:4},GQ:{latitude:5,longitude:5},DJ:{latitude:4,longitude:5},RW:{latitude:4,longitude:-5},BI:{latitude:-4,longitude:-5},SZ:{latitude:4,longitude:5},LS:{latitude:-5,longitude:5},BN:{latitude:5,longitude:5},TL:{latitude:-5,longitude:5} };
 
 export type WorldGlobeLabel = { countryCode:string; country:string; status:string; latitude:number; longitude:number; labelLatitude:number; labelLongitude:number; altitude:number; tracked:boolean };
+export type WorldGlobeLabelDensity = "full" | "elections" | "markers";
 const regionNames = typeof Intl !== "undefined" ? new Intl.DisplayNames(["en"], { type:"region" }) : null;
 const countryName = (code: string) => NAME_OVERRIDES[code] ?? regionNames?.of(code) ?? code;
 const statusWeight: Record<string, number> = { "Voting Today": 4, Upcoming: 3, Completed: 2, Postponed: 1, Cancelled: 0 };
 
-export function getWorldGlobeLabels(elections: GlobeElectionLabelSource[]): WorldGlobeLabel[] {
+function buildWorldGlobeLabels(elections: GlobeElectionLabelSource[], includeContextExclusions: boolean): WorldGlobeLabel[] {
   const tracked = new Map<string, GlobeElectionLabelSource>();
   elections.forEach((election) => {
     const prior = tracked.get(election.countryCode);
@@ -27,8 +28,26 @@ export function getWorldGlobeLabels(elections: GlobeElectionLabelSource[]): Worl
   });
   return Object.entries(FULL_COUNTRY_CENTROIDS).flatMap(([countryCode, centroid]) => {
     const election = tracked.get(countryCode);
-    if (!election && CONTEXT_LABEL_EXCLUSIONS.has(countryCode)) return [];
+    if (!includeContextExclusions && !election && CONTEXT_LABEL_EXCLUSIONS.has(countryCode)) return [];
     const offset = election ? (LABEL_OFFSETS[countryCode] ?? { latitude: 2.4, longitude: 0 }) : { latitude: 0, longitude: 0, altitude: 1.025 };
     return [{ countryCode, country: election?.country?.trim() || countryName(countryCode), status: election?.status || "Context", latitude:centroid.lat, longitude:centroid.lon, labelLatitude:centroid.lat + offset.latitude, labelLongitude:centroid.lon + offset.longitude, altitude:offset.altitude ?? 1.15, tracked:Boolean(election) }];
   });
+}
+
+export function getWorldGlobeLabels(elections: GlobeElectionLabelSource[]): WorldGlobeLabel[] {
+  return buildWorldGlobeLabels(elections, false);
+}
+
+export function getWorldGlobeCountryIndex(elections: GlobeElectionLabelSource[]): WorldGlobeLabel[] {
+  return buildWorldGlobeLabels(elections, true).sort((a, b) => a.country.localeCompare(b.country));
+}
+
+export function getLabelsForDensity(elections: GlobeElectionLabelSource[], density: WorldGlobeLabelDensity): WorldGlobeLabel[] {
+  const labels = getWorldGlobeLabels(elections);
+  return density === "full" ? labels : density === "elections" ? labels.filter((label) => label.tracked) : [];
+}
+
+export function getCountryFocusCoordinates(countryCode: string | null | undefined): [number, number] | null {
+  if (!countryCode) return null;
+  return WORLD_ELECTION_COORDINATES[countryCode] ?? null;
 }

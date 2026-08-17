@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import * as topojson from "topojson-client";
-import { getWorldGlobeLabels, WORLD_ELECTION_COORDINATES } from "@/lib/worldGlobeLabels";
+import { getCountryFocusCoordinates, getLabelsForDensity, getWorldGlobeLabels, type WorldGlobeLabelDensity, WORLD_ELECTION_COORDINATES } from "@/lib/worldGlobeLabels";
 
 type WorldElectionPoint = { countryCode: string; country?: string | null; status: string; [key: string]: unknown };
 
@@ -71,7 +71,7 @@ function makeLeaderLine(from: THREE.Vector3, to: THREE.Vector3, color: number) {
   return new THREE.Line(geometry, new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.76, depthTest: false }));
 }
 
-export default function WorldGlobe({ elections, onElectionSelect, immersive = false }: { elections: WorldElectionPoint[]; onElectionSelect?: (election: WorldElectionPoint) => void; immersive?: boolean }) {
+export default function WorldGlobe({ elections, onElectionSelect, immersive = false, labelDensity = "full", focusCountryCode = null }: { elections: WorldElectionPoint[]; onElectionSelect?: (election: WorldElectionPoint) => void; immersive?: boolean; labelDensity?: WorldGlobeLabelDensity; focusCountryCode?: string | null }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -146,23 +146,25 @@ export default function WorldGlobe({ elections, onElectionSelect, immersive = fa
     const interactiveMarkers: THREE.Object3D[] = [];
     const markerGroups: THREE.Group[] = [];
     const labelOverlays: Array<{ sprite: THREE.Sprite; leader?: THREE.Line }> = [];
-    const labels = getWorldGlobeLabels(elections);
-    labels.forEach((label, index) => {
-      const election = label.tracked ? elections.find((item) => item.countryCode === label.countryCode) : undefined;
+    const allLabels = getWorldGlobeLabels(elections);
+    allLabels.filter((label) => label.tracked).forEach((label, index) => {
+      const election = elections.find((item) => item.countryCode === label.countryCode);
       const coords = election ? WORLD_ELECTION_COORDINATES[election.countryCode] : undefined;
-      if (election && coords) {
-        const markerGroup = new THREE.Group();
-        markerGroup.userData = { election, pulseOffset: index * 0.43 };
-        markerGroup.position.copy(coordinateToVector(coords[0], coords[1], 2.22));
-        const marker = new THREE.Mesh(new THREE.SphereGeometry(election.status === "Voting Today" ? 0.075 : 0.052, 14, 14), new THREE.MeshBasicMaterial({ color: statusColor(election.status), transparent: true, opacity: 0.96 }));
-        const pulse = new THREE.Mesh(new THREE.RingGeometry(election.status === "Voting Today" ? 0.084 : 0.062, election.status === "Voting Today" ? 0.11 : 0.084, 24), new THREE.MeshBasicMaterial({ color: statusColor(election.status), transparent: true, opacity: 0.55, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending }));
-        pulse.lookAt(markerGroup.position.clone().multiplyScalar(2));
-        markerGroup.add(marker, pulse);
-        interactiveMarkers.push(marker);
-        markerGroups.push(markerGroup);
-        globe.add(markerGroup);
-      }
+      if (!election || !coords) return;
+      const markerGroup = new THREE.Group();
+      markerGroup.userData = { election, pulseOffset: index * 0.43 };
+      markerGroup.position.copy(coordinateToVector(coords[0], coords[1], 2.22));
+      const marker = new THREE.Mesh(new THREE.SphereGeometry(election.status === "Voting Today" ? 0.075 : 0.052, 14, 14), new THREE.MeshBasicMaterial({ color: statusColor(election.status), transparent: true, opacity: 0.96 }));
+      const pulse = new THREE.Mesh(new THREE.RingGeometry(election.status === "Voting Today" ? 0.084 : 0.062, election.status === "Voting Today" ? 0.11 : 0.084, 24), new THREE.MeshBasicMaterial({ color: statusColor(election.status), transparent: true, opacity: 0.55, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending }));
+      pulse.lookAt(markerGroup.position.clone().multiplyScalar(2));
+      markerGroup.add(marker, pulse);
+      interactiveMarkers.push(marker);
+      markerGroups.push(markerGroup);
+      globe.add(markerGroup);
+    });
 
+    getLabelsForDensity(elections, labelDensity).forEach((label) => {
+      const election = label.tracked ? elections.find((item) => item.countryCode === label.countryCode) : undefined;
       const countryLabel = makeCountryLabel(label.country, label.status, label.tracked);
       if (!countryLabel) return;
       const surface = coordinateToVector(label.latitude, label.longitude, 2.205);
@@ -226,10 +228,20 @@ export default function WorldGlobe({ elections, onElectionSelect, immersive = fa
     renderer.domElement.addEventListener("pointermove", onPointerMove);
     renderer.domElement.addEventListener("pointerleave", onPointerLeave);
     renderer.domElement.addEventListener("pointerup", onPointerUp);
+    const focusCoordinates = getCountryFocusCoordinates(focusCountryCode);
+    const focusTarget = focusCoordinates
+      ? { x: (focusCoordinates[0] * Math.PI) / 180, y: ((focusCoordinates[1] + 180) * Math.PI) / 180 }
+      : null;
+    const shortestRotation = (from: number, to: number) => Math.atan2(Math.sin(to - from), Math.cos(to - from));
     let frame = 0;
     const animate = () => {
-      globe.rotation.y += 0.00082;
-      globe.rotation.x = Math.sin(Date.now() * 0.00015) * 0.08;
+      if (focusTarget) {
+        globe.rotation.y += shortestRotation(globe.rotation.y, focusTarget.y) * 0.055;
+        globe.rotation.x += (focusTarget.x - globe.rotation.x) * 0.055;
+      } else {
+        globe.rotation.y += 0.00082;
+        globe.rotation.x = Math.sin(Date.now() * 0.00015) * 0.08;
+      }
       const time = Date.now() * 0.002;
       markerGroups.forEach((group) => {
         const pulse = group.children[1] as THREE.Mesh;
@@ -284,7 +296,7 @@ export default function WorldGlobe({ elections, onElectionSelect, immersive = fa
       renderer.dispose();
       container.removeChild(renderer.domElement);
     };
-  }, [elections, onElectionSelect]);
+  }, [elections, focusCountryCode, labelDensity, onElectionSelect]);
 
   return <div ref={containerRef} className={immersive ? "aspect-square h-auto w-full sm:aspect-auto sm:h-[610px]" : "aspect-square h-auto w-full sm:aspect-auto sm:h-[440px]"} aria-label="Animated luminous Earth globe; select an election beacon to open country details" />;
 }

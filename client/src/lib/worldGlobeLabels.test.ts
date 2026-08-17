@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { FULL_COUNTRY_CENTROIDS, getWorldGlobeLabels } from "./worldGlobeLabels";
+import { FULL_COUNTRY_CENTROIDS, getCountryFocusCoordinates, getLabelsForDensity, getWorldGlobeCountryIndex, getWorldGlobeLabels } from "./worldGlobeLabels";
 
 describe("World globe country labels", () => {
   it("keeps one bright tracked label per country while retaining the complete context catalog", () => {
@@ -21,5 +21,20 @@ describe("World globe country labels", () => {
   it("ports the original complete country centroid catalog", () => {
     expect(Object.keys(FULL_COUNTRY_CENTROIDS)).toHaveLength(180);
     expect(getWorldGlobeLabels([]).length).toBeGreaterThan(120);
+  });
+
+  it("keeps country markers available while label density can reduce visual text", () => {
+    const elections = [{ countryCode: "ZM", country: "Zambia", status: "Voting Today" }];
+    expect(getLabelsForDensity(elections, "full").length).toBeGreaterThan(100);
+    expect(getLabelsForDensity(elections, "elections")).toMatchObject([{ countryCode: "ZM", tracked: true }]);
+    expect(getLabelsForDensity(elections, "markers")).toEqual([]);
+  });
+
+  it("provides focus coordinates and every country for the compact explorer index", () => {
+    const index = getWorldGlobeCountryIndex([{ countryCode: "ZM", country: "Zambia", status: "Voting Today" }]);
+    expect(index).toHaveLength(180);
+    expect(index.find((country) => country.countryCode === "ZM")).toMatchObject({ tracked: true, country: "Zambia" });
+    expect(getCountryFocusCoordinates("ZM")).toEqual([-13, 28]);
+    expect(getCountryFocusCoordinates("XX")).toBeNull();
   });
 });

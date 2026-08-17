@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Calendar, ChevronRight, ExternalLink, Globe2, Landmark, Search, X } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { rankedWorldSignals, worldSignalLabel } from "@/lib/worldElectionDisplay";
+import { getWorldGlobeCountryIndex, type WorldGlobeLabelDensity } from "@/lib/worldGlobeLabels";
 import WorldGlobe from "@/components/WorldGlobe";
 
 const statusTone: Record<string, string> = {
@@ -40,6 +41,9 @@ export default function World() {
   const [region, setRegion] = useState("All regions");
   const [timeframe, setTimeframe] = useState<"all" | "next30">("all");
   const [selected, setSelected] = useState<any | null>(null);
+  const [labelDensity, setLabelDensity] = useState<WorldGlobeLabelDensity>("full");
+  const [focusedCountryCode, setFocusedCountryCode] = useState<string | null>(null);
+  const [countryQuery, setCountryQuery] = useState("");
   const thirtyDayWindow = useMemo(() => {
     const now = new Date();
     const start = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
@@ -58,6 +62,8 @@ export default function World() {
     complete: elections.filter((e: any) => e.status === "Completed").length,
   }), [elections]);
   const signals = useMemo(() => rankedWorldSignals(elections as any[]).slice(0, 4), [elections]);
+  const countryIndex = useMemo(() => getWorldGlobeCountryIndex(elections as any[]), [elections]);
+  const indexMatches = useMemo(() => countryIndex.filter((country) => country.country.toLowerCase().includes(countryQuery.toLowerCase())), [countryIndex, countryQuery]);
   const lastUpdated = useMemo(() => {
     const latestMs = Math.max(0, ...elections.map((election: any) => {
       const value = election.updatedAt ? new Date(election.updatedAt).getTime() : 0;
@@ -65,6 +71,13 @@ export default function World() {
     }));
     return latestMs ? new Date(latestMs).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : null;
   }, [elections]);
+  const focusCountry = (countryCode: string, openTrackedElection = false) => {
+    setFocusedCountryCode(countryCode);
+    if (openTrackedElection) {
+      const election = elections.find((item: any) => item.countryCode === countryCode);
+      if (election) setSelected(election);
+    }
+  };
 
   if (isLoading) return <div className="min-h-[70vh] grid place-items-center"><div className="w-9 h-9 rounded-full border-2 border-primary border-t-transparent animate-spin" /></div>;
 
@@ -74,13 +87,18 @@ export default function World() {
       <p className="text-primary text-xs font-semibold tracking-[0.28em] uppercase">Global democratic calendar</p>
       <div className="mt-3"><h1 className="font-display text-4xl sm:text-5xl font-bold">World Elections</h1><p className="text-muted-foreground mt-2 max-w-2xl">Track the elections shaping governments, parliaments, and referendums around the world.</p>{lastUpdated && <p className="mt-2 text-xs font-medium text-primary/85">Calendar data last reviewed {lastUpdated}</p>}</div>
     </section>
-    <section className="relative container pb-6">
+    <section className="relative container pb-6 grid gap-4 xl:grid-cols-[minmax(0,1fr)_290px]">
       <div className="rounded-[2rem] border border-cyan-200/20 bg-[radial-gradient(circle_at_50%_42%,rgba(46,157,206,.18),transparent_32%),linear-gradient(145deg,rgba(7,19,34,.96),rgba(5,10,20,.98))] overflow-hidden shadow-[0_32px_100px_rgba(4,12,24,.46)] relative">
-        <WorldGlobe elections={elections} onElectionSelect={setSelected} immersive />
-        <div className="absolute left-4 top-4 max-w-[280px] rounded-2xl border border-cyan-100/20 bg-slate-950/60 px-4 py-3 backdrop-blur-md sm:left-7 sm:top-7"><p className="text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-100">Democracy is moving</p><p className="mt-1.5 text-sm leading-relaxed text-cyan-50/85">A beacon of democratic possibility. Select a glowing country marker to see the election, people, and issues shaping its next chapter.</p></div>
+        <WorldGlobe elections={elections} onElectionSelect={setSelected} immersive labelDensity={labelDensity} focusCountryCode={focusedCountryCode} />
+        <div className="absolute left-4 top-4 max-w-[280px] rounded-2xl border border-cyan-100/20 bg-slate-950/60 px-4 py-3 backdrop-blur-md sm:left-7 sm:top-7"><p className="text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-100">Democracy is moving</p><p className="mt-1.5 text-sm leading-relaxed text-cyan-50/85">Search or select any country from the index to bring it into focus. Tracked election labels open their country record.</p></div>
         <div className="absolute right-4 top-4 hidden gap-2 sm:flex sm:right-7 sm:top-7"><Stat value={counts.upcoming} label="Upcoming" /><Stat value={counts.live} label="Voting now" /><Stat value={counts.complete} label="Completed" /></div>
-        <div className="absolute left-4 bottom-4 rounded-xl border border-cyan-100/15 bg-slate-950/65 backdrop-blur px-3 py-2 text-xs text-cyan-50/80 sm:left-7 sm:bottom-7"><span className="inline-block mr-1.5 w-2 h-2 rounded-full bg-primary" /> Upcoming&nbsp;&nbsp;<span className="inline-block mr-1.5 w-2 h-2 rounded-full bg-emerald-400" /> Completed&nbsp;&nbsp;<span className="inline-block mr-1.5 w-2 h-2 rounded-full bg-amber-400" /> Voting today</div>
+        <div className="absolute right-4 bottom-4 flex max-w-[calc(100%-2rem)] gap-1 rounded-xl border border-cyan-100/15 bg-slate-950/70 p-1 backdrop-blur sm:right-7" aria-label="Country label density"><button onClick={() => setLabelDensity("full")} className={`rounded-lg px-2.5 py-1.5 text-[10px] font-semibold ${labelDensity === "full" ? "bg-cyan-100 text-slate-950" : "text-cyan-50/75 hover:bg-white/10"}`}>Full context</button><button onClick={() => setLabelDensity("elections")} className={`rounded-lg px-2.5 py-1.5 text-[10px] font-semibold ${labelDensity === "elections" ? "bg-cyan-100 text-slate-950" : "text-cyan-50/75 hover:bg-white/10"}`}>Election labels</button><button onClick={() => setLabelDensity("markers")} className={`rounded-lg px-2.5 py-1.5 text-[10px] font-semibold ${labelDensity === "markers" ? "bg-cyan-100 text-slate-950" : "text-cyan-50/75 hover:bg-white/10"}`}>Markers</button></div>
+        <div className="absolute left-4 bottom-4 hidden rounded-xl border border-cyan-100/15 bg-slate-950/65 backdrop-blur px-3 py-2 text-xs text-cyan-50/80 sm:block sm:left-7 sm:bottom-7"><span className="inline-block mr-1.5 w-2 h-2 rounded-full bg-primary" /> Upcoming&nbsp;&nbsp;<span className="inline-block mr-1.5 w-2 h-2 rounded-full bg-emerald-400" /> Completed&nbsp;&nbsp;<span className="inline-block mr-1.5 w-2 h-2 rounded-full bg-amber-400" /> Voting today</div>
       </div>
+      <aside className="max-h-[610px] rounded-2xl border border-border bg-card/90 p-3 shadow-sm flex flex-col min-h-[280px]">
+        <div className="border-b border-border pb-3"><div className="flex items-center justify-between gap-2"><div><p className="text-primary text-[10px] font-semibold uppercase tracking-[0.18em]">Country index</p><h2 className="mt-1 font-display text-lg font-bold">All countries</h2></div><span className="rounded-full border border-primary/25 bg-primary/10 px-2 py-1 text-[10px] font-semibold text-primary">{countryIndex.length}</span></div><div className="relative mt-3"><Search size={14} className="absolute left-3 top-2.5 text-muted-foreground" /><input value={countryQuery} onChange={(event) => { const value = event.target.value; setCountryQuery(value); const match = countryIndex.find((country) => country.country.toLowerCase() === value.trim().toLowerCase()); if (match) focusCountry(match.countryCode, match.tracked); }} placeholder="Find a country" className="w-full rounded-lg border border-border bg-background py-2 pl-8 pr-3 text-xs outline-none focus:ring-2 focus:ring-primary/30" /></div></div>
+        <div className="mt-2 min-h-0 flex-1 overflow-y-auto pr-1" aria-label="All countries index">{indexMatches.map((country) => <button key={country.countryCode} onClick={() => focusCountry(country.countryCode, country.tracked)} className={`flex w-full items-center justify-between gap-2 rounded-lg px-2.5 py-2 text-left text-xs transition-colors ${focusedCountryCode === country.countryCode ? "bg-primary/12 text-primary" : "hover:bg-muted"}`}><span className="truncate font-medium">{country.country}</span>{country.tracked ? <span className={`shrink-0 rounded-full border px-1.5 py-0.5 text-[9px] ${statusTone[country.status] || statusTone.Upcoming}`}>{country.status === "Voting Today" ? "Live" : country.status}</span> : <span className="shrink-0 text-[9px] text-muted-foreground">Context</span>}</button>)}{!indexMatches.length && <p className="px-2.5 py-6 text-center text-xs text-muted-foreground">No country matches that search.</p>}</div>
+      </aside>
     </section>
     <section className="relative container pb-14 grid xl:grid-cols-[minmax(0,1fr)_360px] gap-6">
         <div className="self-start rounded-2xl border border-border bg-card/65 p-5"><p className="text-primary text-xs font-semibold tracking-[0.2em] uppercase">Explore the calendar</p><h2 className="font-display text-2xl font-bold mt-2">Find the democratic moment that matters</h2><p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">Live voting and results-pending events appear before future elections. Use the country list to compare dates, source-backed status, candidates, and the issues each vote puts in motion.</p><div className="mt-5 grid gap-2 sm:grid-cols-2">{signals.map((signal: any) => <button key={signal.id} onClick={() => setSelected(signal)} className="group rounded-xl border border-border bg-background/55 p-3 text-left transition-colors hover:border-primary/45 hover:bg-primary/5"><div className="flex items-center justify-between gap-3"><span className={`border rounded-full px-2 py-0.5 text-[10px] ${statusTone[signal.status] || statusTone.Upcoming}`}>{worldSignalLabel(signal)}</span><span className="text-[11px] text-muted-foreground">{displayDate(signal.electionDate)}</span></div><div className="mt-3 flex items-center gap-2"><img src={`https://flagcdn.com/w40/${signal.countryCode.toLowerCase()}.png`} className="h-6 w-6 rounded-full object-cover" alt=""/><div className="min-w-0"><p className="truncate text-sm font-semibold group-hover:text-primary">{signal.country}</p><p className="truncate text-xs text-muted-foreground">{signal.electionName}</p></div></div></button>)}</div></div>

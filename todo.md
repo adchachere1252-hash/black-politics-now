@@ -927,6 +927,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Apply the original decluttering and callout policy while preserving bright tracked-election labels and subdued contextual labels
 - [x] Verify full-catalog coverage, clickable tracked-country labels, and desktop/mobile readability before publishing
 
+## World Elections Explorer Controls (Aug 17)
+- [x] Add a label-density control for full context, election focus, and minimal views
+- [x] Allow country search and index selection to rotate and focus the globe on the selected country
+- [x] Add a compact all-country index beside the globe with tracked-election status and globe-focus actions
+- [x] Verify Explorer controls, keyboard access, desktop/mobile layouts, and full label coverage before publishing
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
