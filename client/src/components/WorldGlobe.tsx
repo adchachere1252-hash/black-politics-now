@@ -1,20 +1,9 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import * as topojson from "topojson-client";
+import { getWorldGlobeLabels, WORLD_ELECTION_COORDINATES } from "@/lib/worldGlobeLabels";
 
-type WorldElectionPoint = { countryCode: string; status: string; [key: string]: unknown };
-
-const COORDINATES: Record<string, [number, number]> = {
-  DZ: [28, 3], AM: [40, 45], BD: [24, 90], BA: [44, 18], BR: [-10, -55], BG: [43, 25],
-  CV: [16, -24], CO: [4, -72], CK: [-21, -159], CZ: [49, 15], ET: [9, 40], DE: [51, 10],
-  GW: [12, -15], HT: [19, -72], HU: [47, 20], IN: [22, 79], IL: [31, 35], JP: [36, 138],
-  KZ: [48, 68], MA: [32, -6], MX: [24, -102], MM: [21, 96], NL: [52, 5], NZ: [-41, 174],
-  PE: [-10, -76], PH: [13, 122], PT: [39, -8], RO: [46, 25], RS: [44, 21], SG: [1, 104],
-  SK: [49, 20], SO: [6, 46], KR: [36, 128], SE: [62, 15], TW: [24, 121], UG: [1, 32],
-  US: [39, -98], VN: [16, 108], ZM: [-14, 28],
-  TH: [15, 101], NP: [28, 84], CH: [47, 8], ST: [0, 6], RU: [61, 105], NI: [13, -85],
-  PS: [32, 35], GM: [13, -16], SS: [7, 30], GB: [55, -3],
-};
+type WorldElectionPoint = { countryCode: string; country?: string | null; status: string; [key: string]: unknown };
 
 const EARTH_TEXTURE = "/manus-storage/earth-atmosphere-2048_bed8e884.jpg";
 const COUNTRY_TOPOLOGY = "/manus-storage/countries-50m_1d29640f.json";
@@ -49,6 +38,36 @@ function makeGlowTexture() {
   context.fillStyle = gradient;
   context.fillRect(0, 0, 256, 256);
   return new THREE.CanvasTexture(canvas);
+}
+
+function makeCountryLabel(country: string, status: string) {
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  if (!context) return null;
+  const fontSize = 24;
+  context.font = `700 ${fontSize}px Inter, Arial, sans-serif`;
+  const width = Math.max(100, Math.ceil(context.measureText(country).width) + 28);
+  const height = 42;
+  canvas.width = width;
+  canvas.height = height;
+  context.font = `700 ${fontSize}px Inter, Arial, sans-serif`;
+  context.fillStyle = status === "Voting Today" ? "#fff4b8" : status === "Completed" ? "#b8f5d3" : "#ffffff";
+  context.shadowColor = "rgba(0, 0, 0, 0.95)";
+  context.shadowBlur = 8;
+  context.shadowOffsetY = 2;
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+  context.fillText(country, width / 2, height / 2 + 1);
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false, depthTest: false }));
+  sprite.scale.set(width * 0.0041, height * 0.0041, 1);
+  return sprite;
+}
+
+function makeLeaderLine(from: THREE.Vector3, to: THREE.Vector3, color: number) {
+  const geometry = new THREE.BufferGeometry().setFromPoints([from, to]);
+  return new THREE.Line(geometry, new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.76, depthTest: false }));
 }
 
 export default function WorldGlobe({ elections, onElectionSelect, immersive = false }: { elections: WorldElectionPoint[]; onElectionSelect?: (election: WorldElectionPoint) => void; immersive?: boolean }) {
@@ -125,8 +144,14 @@ export default function WorldGlobe({ elections, onElectionSelect, immersive = fa
 
     const interactiveMarkers: THREE.Object3D[] = [];
     const markerGroups: THREE.Group[] = [];
-    elections.forEach((election, index) => {
-      const coords = COORDINATES[election.countryCode] ?? [((index * 17) % 120) - 55, ((index * 31) % 300) - 150];
+    const labelSprites: THREE.Sprite[] = [];
+    const labelLeaderLines: THREE.Line[] = [];
+    const labels = getWorldGlobeLabels(elections).slice(0, immersive ? undefined : 18);
+    labels.forEach((label, index) => {
+      const election = elections.find((item) => item.countryCode === label.countryCode);
+      if (!election) return;
+      const coords = WORLD_ELECTION_COORDINATES[election.countryCode];
+      if (!coords) return;
       const markerGroup = new THREE.Group();
       markerGroup.userData = { election, pulseOffset: index * 0.43 };
       markerGroup.position.copy(coordinateToVector(coords[0], coords[1], 2.22));
@@ -143,6 +168,19 @@ export default function WorldGlobe({ elections, onElectionSelect, immersive = fa
       interactiveMarkers.push(marker);
       markerGroups.push(markerGroup);
       globe.add(markerGroup);
+
+      const countryLabel = makeCountryLabel(label.country, election.status);
+      if (!countryLabel) return;
+      const surface = coordinateToVector(label.latitude, label.longitude, 2.205);
+      const calloutPosition = coordinateToVector(label.labelLatitude, label.labelLongitude, 2.15 * label.altitude);
+      countryLabel.position.copy(calloutPosition);
+      countryLabel.userData = { election, countryLabel: label.country, isCountryLabel: true };
+      const leader = makeLeaderLine(surface, calloutPosition, statusColor(election.status));
+      leader.userData = { isCountryLeader: true };
+      interactiveMarkers.push(countryLabel);
+      labelSprites.push(countryLabel);
+      labelLeaderLines.push(leader);
+      globe.add(leader, countryLabel);
     });
 
     const stars = new THREE.BufferGeometry();
@@ -186,7 +224,7 @@ export default function WorldGlobe({ elections, onElectionSelect, immersive = fa
     const onPointerLeave = () => { renderer.domElement.style.cursor = "default"; };
     const onPointerUp = (event: PointerEvent) => {
       const hit = findMarker(event);
-      const election = hit?.object.parent?.userData?.election as WorldElectionPoint | undefined;
+      const election = (hit?.object.userData?.election ?? hit?.object.parent?.userData?.election) as WorldElectionPoint | undefined;
       if (election) onElectionSelect?.(election);
     };
     renderer.domElement.addEventListener("pointermove", onPointerMove);
@@ -202,6 +240,14 @@ export default function WorldGlobe({ elections, onElectionSelect, immersive = fa
         const scale = 1 + Math.sin(time + group.userData.pulseOffset) * 0.22;
         pulse.scale.setScalar(scale);
         (pulse.material as THREE.MeshBasicMaterial).opacity = 0.34 + (Math.sin(time + group.userData.pulseOffset) + 1) * 0.14;
+      });
+      globe.updateMatrixWorld(true);
+      const cameraDirection = camera.position.clone().normalize();
+      labelSprites.forEach((label, index) => {
+        const labelDirection = label.getWorldPosition(new THREE.Vector3()).normalize();
+        const visible = labelDirection.dot(cameraDirection) > 0.12;
+        label.visible = visible;
+        labelLeaderLines[index].visible = visible;
       });
       if (beaconGlow) beaconGlow.material.opacity = 0.57 + Math.sin(time * 0.3) * 0.09;
       renderer.render(scene, camera);
@@ -230,6 +276,15 @@ export default function WorldGlobe({ elections, onElectionSelect, immersive = fa
         mesh.geometry?.dispose();
         (mesh.material as THREE.Material | undefined)?.dispose();
       }));
+      labelSprites.forEach((label) => {
+        const material = label.material as THREE.SpriteMaterial;
+        material.map?.dispose();
+        material.dispose();
+      });
+      labelLeaderLines.forEach((line) => {
+        line.geometry.dispose();
+        (line.material as THREE.Material).dispose();
+      });
       renderer.dispose();
       container.removeChild(renderer.domElement);
     };

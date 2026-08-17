@@ -912,6 +912,11 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Reconfirm Admin role protection and current-date recovery queue behavior without creating test recovery data
 - [x] Report verified behavior and any remaining production limitation transparently
 
+## World Elections Country Labels (Aug 17)
+- [x] Compare the original repository globe’s country-label behavior and geographic data with the current World Elections globe
+- [x] Add repository-grounded country labels and selected-country explorer context without obscuring globe interaction
+- [x] Verify label coverage and responsive desktop/mobile readability for the World Elections experience
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
