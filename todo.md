@@ -963,6 +963,13 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify protected Admin routes and safe mobile controls without publishing or changing production records
 - [x] Correct confirmed mobile defects and document the final app acceptance result
 
+## Daily Intelligence Brief Post-July 27 Accuracy and Flow Audit (Aug 17)
+- [x] Preserve the pre-July archive state and inventory the original repository’s historical coverage contract without modifying scripts or segments
+- [x] Audit every post-July 27 episode for opening/closing order, editorial segment count, approved-topic adherence, source provenance, dual-voice assets, and duration consistency
+- [x] Examine post-July scripts and source packages for topic drift, unsupported assertions, duplicate coverage, and flow defects
+- [x] Compare findings to the original repository contract, correct only confirmed evidence-backed defects, and produce a dated audit report
+- [x] Replace the misleading public “Audio preparation” wording on structurally incomplete post-July archive drafts with an explicit archive-integrity hold disclosure
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade

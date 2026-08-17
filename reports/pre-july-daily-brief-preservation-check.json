@@ -1,0 +1,65 @@
+{
+  "generated_at": "2026-08-17T19:27:53.061Z",
+  "original_static_dates": [
+    "2026-07-27",
+    "2026-07-24",
+    "2026-07-23"
+  ],
+  "compared_records": [
+    {
+      "date": "2026-07-27",
+      "legacy": {
+        "date": "2026-07-27",
+        "day": "Monday",
+        "fullEpisodeCdnUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663521029713/cruSTLhc8poyJdiUebS4rw/2026-07-27/FULL_EPISODE.mp3",
+        "segmentCount": 16,
+        "totalDurationLabel": "42:50"
+      },
+      "current": {
+        "date": "2026-07-27",
+        "day": "Monday",
+        "fullEpisodeCdnUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663521029713/cruSTLhc8poyJdiUebS4rw/2026-07-27/FULL_EPISODE.mp3",
+        "segmentCount": 16,
+        "totalDurationLabel": "42:50"
+      },
+      "matches": true
+    },
+    {
+      "date": "2026-07-24",
+      "legacy": {
+        "date": "2026-07-24",
+        "day": "Friday",
+        "fullEpisodeCdnUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663521029713/cruSTLhc8poyJdiUebS4rw/podcast/2026-07-24/FULL_EPISODE_s46r5tp0.mp3",
+        "segmentCount": 16,
+        "totalDurationLabel": "43:59"
+      },
+      "current": {
+        "date": "2026-07-24",
+        "day": "Friday",
+        "fullEpisodeCdnUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663521029713/cruSTLhc8poyJdiUebS4rw/podcast/2026-07-24/FULL_EPISODE_s46r5tp0.mp3",
+        "segmentCount": 16,
+        "totalDurationLabel": "43:59"
+      },
+      "matches": true
+    },
+    {
+      "date": "2026-07-23",
+      "legacy": {
+        "date": "2026-07-23",
+        "day": "Thursday",
+        "fullEpisodeCdnUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663521029713/cruSTLhc8poyJdiUebS4rw/podcast/2026-07-23/FULL_EPISODE_y730uxpc.mp3",
+        "segmentCount": 15,
+        "totalDurationLabel": "40:28"
+      },
+      "current": {
+        "date": "2026-07-23",
+        "day": "Thursday",
+        "fullEpisodeCdnUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663521029713/cruSTLhc8poyJdiUebS4rw/podcast/2026-07-23/FULL_EPISODE_y730uxpc.mp3",
+        "segmentCount": 15,
+        "totalDurationLabel": "40:28"
+      },
+      "matches": true
+    }
+  ],
+  "all_original_records_preserved": true
+}

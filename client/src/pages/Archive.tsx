@@ -1,6 +1,7 @@
 import { trpc } from "@/lib/trpc";
 import { useMemo, useState } from "react";
 import { ArrowUpRight, Clock3, Headphones, MapPin, Newspaper, Search } from "lucide-react";
+import { getPodcastArchiveStatus } from "@/lib/podcastArchiveStatus";
 
 type ArchiveTab = "news" | "podcast" | "elections";
 
@@ -79,7 +80,17 @@ export default function ArchivePage() {
                 <p className="text-sm font-medium">{ep.friendlyDate || `${ep.day || "Daily Brief"} · ${ep.date}`}</p>
                 <p className="text-xs text-muted-foreground">{ep.segmentCount} topics &middot; {ep.totalDurationLabel}</p>
               </div>
-              <span className={`rounded-full px-2 py-1 text-[11px] font-semibold ${ep.fullEpisodeCdnUrl ? "bg-green-500/15 text-green-600 dark:text-green-400" : ep.verificationStatus === "warnings" ? "bg-amber-500/15 text-amber-700 dark:text-amber-300" : "bg-muted text-muted-foreground"}`}>{ep.fullEpisodeCdnUrl ? "Verified full brief" : ep.verificationStatus === "warnings" ? "Audio preparation" : "Review needed"}</span>
+              {(() => {
+                const status = getPodcastArchiveStatus(ep);
+                const statusClass = status.tone === "verified"
+                  ? "bg-green-500/15 text-green-600 dark:text-green-400"
+                  : status.tone === "held"
+                    ? "bg-amber-500/15 text-amber-700 dark:text-amber-300"
+                    : status.tone === "legacy"
+                      ? "bg-sky-500/15 text-sky-700 dark:text-sky-300"
+                      : "bg-muted text-muted-foreground";
+                return <span className={`rounded-full px-2 py-1 text-[11px] font-semibold ${statusClass}`}>{status.label}</span>;
+              })()}
             </div>
           ))}
         </div>
