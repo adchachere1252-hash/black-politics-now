@@ -5,6 +5,26 @@ import { getDb } from "./db";
 
 const REFRESH_WINDOW_DAYS = 120;
 const MAX_RECORDS_PER_RUN = 12;
+const NEAR_TERM_WINDOW_DAYS = 30;
+
+export type WorldRefreshCadence = "daily" | "six_hour" | "hourly";
+
+type WorldElectionRecord = typeof worldElections.$inferSelect;
+
+export function getWorldRefreshMonitoring(elections: WorldElectionRecord[], lastSuccessAt: Date | null, now = new Date()) {
+  const votingToday = elections.filter((election) => election.status === "Voting Today");
+  const nearTerm = elections.filter((election) => {
+    if (election.status !== "Upcoming") return false;
+    const date = parseDate(election.electionDate);
+    if (!date) return false;
+    const days = (date.getTime() - now.getTime()) / 86_400_000;
+    return days >= 0 && days <= NEAR_TERM_WINDOW_DAYS;
+  });
+  const cadence: WorldRefreshCadence = votingToday.length ? "hourly" : nearTerm.length ? "six_hour" : "daily";
+  const intervalHours = cadence === "hourly" ? 1 : cadence === "six_hour" ? 6 : 24;
+  const elapsedHours = lastSuccessAt ? (now.getTime() - lastSuccessAt.getTime()) / 3_600_000 : Number.POSITIVE_INFINITY;
+  return { cadence, intervalHours, due: elapsedHours >= intervalHours, votingTodayCount: votingToday.length, nearTermCount: nearTerm.length };
+}
 
 function parseDate(value: string | null | undefined) {
   if (!value) return null;
@@ -68,6 +88,13 @@ function inRefreshWindow(election: typeof worldElections.$inferSelect, now: Date
   return days >= -30 && days <= REFRESH_WINDOW_DAYS;
 }
 
+function refreshPriority(election: WorldElectionRecord, now: Date) {
+  if (election.status === "Voting Today") return 3;
+  const date = parseDate(election.electionDate);
+  if (election.status === "Upcoming" && date && (date.getTime() - now.getTime()) / 86_400_000 <= NEAR_TERM_WINDOW_DAYS) return 2;
+  return 1;
+}
+
 /**
  * Review-only source refresh. It fingerprints listed sources and produces
  * Agent Desk recommendations when evidence changes; it never updates a public
@@ -82,7 +109,12 @@ export async function runDatedWorldElectionRefresh(taskUid?: string) {
 
   const now = new Date();
   const allElections = await db.select().from(worldElections).orderBy(worldElections.electionDate, worldElections.country);
-  const candidates = allElections.filter((election) => inRefreshWindow(election, now)).slice(0, MAX_RECORDS_PER_RUN);
+  const monitoring = getWorldRefreshMonitoring(allElections, settings.lastSuccessAt, now);
+  if (taskUid && !monitoring.due) return { ok: true, skipped: "cadence-not-due", monitoring };
+  const candidates = allElections
+    .filter((election) => inRefreshWindow(election, now))
+    .sort((left, right) => refreshPriority(right, now) - refreshPriority(left, now) || left.electionDate.localeCompare(right.electionDate) || left.country.localeCompare(right.country))
+    .slice(0, MAX_RECORDS_PER_RUN);
   await db.insert(agentRuns).values({ trigger: taskUid ? "scheduled" : "admin", mode: "routine", model: "dated-world-source-refresh", sourceSnapshot: JSON.stringify({ checkedAt: now.toISOString(), records: candidates.map((item) => ({ id: item.id, country: item.country, date: item.electionDate, status: item.status })) }) });
   const [run] = await db.select().from(agentRuns).orderBy(desc(agentRuns.id)).limit(1);
   if (!run) throw new Error("Unable to create World Elections refresh run");
@@ -138,7 +170,7 @@ export async function runDatedWorldElectionRefresh(taskUid?: string) {
     const summary = `Checked ${candidates.length} dated World Elections records: ${baselineCount} baselined, ${changedCount} source changes awaiting review, ${missingSourceCount} missing source links.`;
     await db.update(agentRuns).set({ status: "success", summary, recommendationCount: recommendations.length, completedAt: now }).where(eq(agentRuns.id, run.id));
     await db.update(worldElectionRefreshSettings).set({ lastRunAt: now, lastSuccessAt: now, lastSummary: summary, lastError: null }).where(eq(worldElectionRefreshSettings.id, 1));
-    return { ok: true, candidates: candidates.length, baselineCount, changedCount, missingSourceCount, recommendationCount: recommendations.length, summary };
+    return { ok: true, candidates: candidates.length, baselineCount, changedCount, missingSourceCount, recommendationCount: recommendations.length, summary, monitoring };
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown World Elections refresh failure";
     await db.update(agentRuns).set({ status: "failed", errorMessage: message, completedAt: new Date() }).where(eq(agentRuns.id, run.id));
@@ -151,9 +183,10 @@ export async function getWorldElectionRefreshOperations() {
   const db = await getDb();
   if (!db) return { settings: null, items: [], recentRuns: [] };
   const settings = await ensureSettings();
-  const [items, recentRuns] = await Promise.all([
+  const [items, recentRuns, elections] = await Promise.all([
     db.select().from(worldElectionRefreshItems).orderBy(desc(worldElectionRefreshItems.lastCheckedAt)).limit(20),
     db.select().from(agentRuns).where(eq(agentRuns.model, "dated-world-source-refresh")).orderBy(desc(agentRuns.startedAt)).limit(10),
+    db.select().from(worldElections),
   ]);
-  return { settings, items, recentRuns };
+  return { settings, items, recentRuns, monitoring: { ...getWorldRefreshMonitoring(elections, settings.lastSuccessAt), scheduleActive: Boolean(settings.scheduleCronTaskUid) } };
 }
