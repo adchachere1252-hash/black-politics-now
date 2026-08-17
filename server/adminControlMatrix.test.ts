@@ -13,8 +13,9 @@ function createContext(role: "admin" | "user"): TrpcContext {
 describe("strict Admin control matrix", () => {
   it("loads every safe Admin workspace query and every portrait batch filter", async () => {
     const caller = appRouter.createCaller(createContext("admin"));
-    const [podcast, commandCenter, worldOperations, batch, targets, pendingPortraits, recommendations, runs, settings, tasks, changes, queued, inProgress, ready, blocked, skipped] = await Promise.all([
+    const [podcast, qaScorecard, commandCenter, worldOperations, batch, targets, pendingPortraits, recommendations, runs, settings, tasks, changes, queued, inProgress, ready, blocked, skipped] = await Promise.all([
       caller.podcast.operations(),
+      caller.podcast.qaScorecard(),
       caller.electionDay.commandCenter(),
       caller.world.refreshOperations(),
       caller.portraits.latestResearchBatch(),
@@ -33,6 +34,7 @@ describe("strict Admin control matrix", () => {
     ]);
 
     expect(podcast).toBeDefined();
+    expect(Array.isArray(qaScorecard.scores)).toBe(true);
     expect(commandCenter).toBeTruthy();
     expect(worldOperations).toBeDefined();
     expect(batch === null || typeof batch === "object").toBe(true);
@@ -71,5 +73,10 @@ describe("strict Admin control matrix", () => {
     await expect(caller.agent.executeTask({ id: 1 })).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(caller.agent.reviewChangeProposal({ id: 1, status: "approved" })).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(caller.agent.setPriorityMode({ enabled: true, durationHours: 4 })).rejects.toMatchObject({ code: "FORBIDDEN" });
+  });
+
+  it("keeps the Daily Brief QA Scorecard inside the protected Admin boundary", async () => {
+    const caller = appRouter.createCaller(createContext("user"));
+    await expect(caller.podcast.qaScorecard()).rejects.toMatchObject({ code: "FORBIDDEN" });
   });
 });

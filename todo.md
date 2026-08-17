@@ -970,6 +970,13 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Compare findings to the original repository contract, correct only confirmed evidence-backed defects, and produce a dated audit report
 - [x] Replace the misleading public “Audio preparation” wording on structurally incomplete post-July archive drafts with an explicit archive-integrity hold disclosure
 
+## Daily Brief Benchmark Standard and Editorial QA Scorecard (Aug 17)
+- [x] Formalize the original pre-July episode contract as measurable structure, topic, source, flow, duration, and dual-voice quality gates
+- [x] Score every post-July episode against the benchmark without rewriting source-incomplete history
+- [x] Surface a protected Editorial QA Scorecard in Podcast Ops with episode-level gate evidence and clear hold reasons
+- [x] Require the benchmark standard in future Daily Brief publication and recovery safeguards
+- [x] Test the scorecard, future-publication gate, and responsive Admin presentation
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade

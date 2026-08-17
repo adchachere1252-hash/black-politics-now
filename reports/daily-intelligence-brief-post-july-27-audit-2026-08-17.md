@@ -82,6 +82,14 @@ The live Daily Brief automation now requires an opening greeting, at least 13 ed
 
 The July 28–August 11 warning records predate the strengthened dual-voice and source-preflight publication workflow. They remain held rather than rewritten because the historical source packages required for a defensible rebuild are absent.
 
+## Enforced Benchmark and Editorial QA Scorecard
+
+The original pre-July archive is now treated as a **preserved editorial baseline**, not as historical material to be rewritten. Every later record is measured in Podcast Ops against that baseline plus the stronger current publication protections. A post-July release receives a 100-point benchmark score only when it has a greeting-first/closing-last flow, at least 13 editorial segments, a required Monday or Friday special where applicable, unique topic keys, source evidence for every editorial segment, audible script length, reconciled segment and episode duration, paired Andrew/Jenny segment assets, and verified Andrew/Jenny continuous mixes.
+
+The protected **Editorial QA Scorecard** shows each episode’s score, source-backed editorial count, preserved-baseline status, and the first explicit hold reason. It does not rewrite source-incomplete history. The autonomous publication guard now requires the same unique-key, duration-reconciliation, weekday-special, source, structure, and dual-voice checks before it calls a future Daily Brief published.
+
+The benchmark scorer and protected Admin path were checked alongside the full application suite: **110 regression tests across 33 files** passed, and the production build completed successfully. A safe August 17 guard run confirmed that the current verified briefing continues to satisfy the strengthened requirements.
+
 ## References
 
 [1]: https://github.com/adchachere1252-hash/daily-podcast/blob/main/shared/sourceTiers.ts "Daily Intelligence Brief source-tier contract"

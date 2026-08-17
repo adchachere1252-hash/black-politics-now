@@ -38,6 +38,7 @@ import { getArchiveEpisodesFormatted, getEpisodesFormatted, subscribeEmail, unsu
 import { queuePodcastRecoveryRequest } from "./podcastRecovery";
 import { getEasternDate } from "./dailyBriefSafeguards";
 import { buildPodcastShowNotes, getPodcastAnalytics, getPodcastShowNotes, recordPodcastPlay, savePodcastShowNotes } from "./podcastLegacy";
+import { getDailyBriefQAScorecard } from "./dailyBriefBenchmark";
 import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getPublicElectionFreshness, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateReferendum } from "./electionDb";
 import { fetchWithCache, getPersistedWordPressNews } from "./newsCache";
 import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
@@ -93,6 +94,7 @@ export const appRouter = router({
     analytics: adminProcedure
       .input(z.object({ days: z.union([z.literal(7), z.literal(30)]).default(30) }).optional())
       .query(async ({ input }) => getPodcastAnalytics(input?.days ?? 30)),
+    qaScorecard: adminProcedure.query(async () => getDailyBriefQAScorecard()),
     getShowNotes: publicProcedure
       .input(z.object({ episodeDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/) }))
       .query(async ({ input }) => getPodcastShowNotes(input.episodeDate)),
