@@ -900,6 +900,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Confirm the public episode, both full voice files, and the durable Admin operational snapshot are current
 - [x] Record the cause and prevention status for the missed scheduled run
 
+## Daily Intelligence Brief Safeguards (Aug 17)
+- [x] Send an owner alert when the Daily Brief has not passed its full publication gate by 6:30 AM ET
+- [x] Persist and display the latest source-preflight readiness state in Admin Podcast Ops
+- [x] Add a protected one-click current-date recovery control that only queues the existing guarded recovery workflow
+- [x] Verify alert idempotency, role protection, recovery queue safety, and responsive Podcast Ops presentation
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade

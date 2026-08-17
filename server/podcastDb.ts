@@ -1,8 +1,9 @@
 import { eq, desc } from "drizzle-orm";
 import { getDb } from "./db";
-import { episodes, episodeSegments, emailSubscribers, pipelineRuns, podcastPreflights } from "../drizzle/schema";
+import { episodes, episodeSegments, emailSubscribers, pipelineRuns, podcastGateAlerts, podcastPreflights } from "../drizzle/schema";
 import { getPodcastRecoveryRequests } from "./podcastRecovery";
 import type { Episode, EpisodeSegment } from "../drizzle/schema";
+import { assessDailyBriefGate, getEasternDate } from "./dailyBriefSafeguards";
 
 const TOPIC_ACCENTS: Record<string, { color: string; bg: string; label: string; emoji: string }> = {
   "_greeting": { color: "#94a3b8", bg: "rgba(148,163,184,0.12)", label: "Greeting", emoji: "🎙️" },
@@ -134,7 +135,7 @@ export async function getPipelineRuns() {
 
 export async function getPodcastOperations() {
   const db = await getDb();
-  if (!db) return { latest: null, recentEpisodes: [], recentRuns: [], preflights: [], recoveryRequests: [] };
+  if (!db) return { latest: null, recentEpisodes: [], recentRuns: [], preflights: [], recoveryRequests: [], today: null };
 
   const [recentEpisodes, recentRuns, preflights, recoveryRequests] = await Promise.all([
     db.select().from(episodes).orderBy(desc(episodes.date)).limit(7),
@@ -143,7 +144,13 @@ export async function getPodcastOperations() {
     getPodcastRecoveryRequests(),
   ]);
   const latest = recentEpisodes[0] ?? null;
-  if (!latest) return { latest: null, recentEpisodes, recentRuns, preflights, recoveryRequests };
+  const todayDate = getEasternDate();
+  const [[todayEpisode], [todayPreflightForDate], [todayAlert]] = await Promise.all([
+    db.select().from(episodes).where(eq(episodes.date, todayDate)).limit(1),
+    db.select().from(podcastPreflights).where(eq(podcastPreflights.episodeDate, todayDate)).limit(1),
+    db.select().from(podcastGateAlerts).where(eq(podcastGateAlerts.episodeDate, todayDate)).limit(1),
+  ]);
+  if (!latest) return { latest: null, recentEpisodes, recentRuns, preflights, recoveryRequests, today: { date: todayDate, preflight: todayPreflightForDate ?? null, alert: todayAlert ?? null } };
 
   const segments = await db.select().from(episodeSegments).where(eq(episodeSegments.episodeDate, latest.date)).orderBy(episodeSegments.sortOrder);
   const keyCounts = new Map<string, number>();
@@ -157,6 +164,12 @@ export async function getPodcastOperations() {
   const jennyFullAudioReady = Boolean(latest.jennyFullEpisodeCdnUrl);
   const fullAudioReady = latest.verificationStatus === "passed" && andrewFullAudioReady && jennyFullAudioReady;
   const todayPreflight = preflights.find((preflight) => preflight.episodeDate === latest.date) ?? null;
+  const todayGate = assessDailyBriefGate({
+    verificationStatus: todayEpisode?.verificationStatus,
+    andrewFullReady: Boolean(todayEpisode?.fullEpisodeCdnUrl),
+    jennyFullReady: Boolean(todayEpisode?.jennyFullEpisodeCdnUrl),
+    preflightStatus: todayPreflightForDate?.status,
+  });
 
   return {
     latest: {
@@ -208,6 +221,7 @@ export async function getPodcastOperations() {
     recoveryRequests: recoveryRequests.map((request) => ({
       id: request.id,
       episodeDate: request.episodeDate,
+      recoveryMode: request.recoveryMode,
       status: request.status,
       requestedBy: request.requestedBy,
       note: request.note,
@@ -223,5 +237,11 @@ export async function getPodcastOperations() {
       report: todayPreflight.report,
       checkedAt: todayPreflight.checkedAt,
     } : null,
+    today: {
+      date: todayDate,
+      gate: todayGate,
+      preflight: todayPreflightForDate ? { status: todayPreflightForDate.status, topicCount: todayPreflightForDate.topicCount, readyCount: todayPreflightForDate.readyCount, checkedAt: todayPreflightForDate.checkedAt } : null,
+      alert: todayAlert ? { gateStatus: todayAlert.gateStatus, message: todayAlert.message, notificationSent: todayAlert.notificationSent, notifiedAt: todayAlert.notifiedAt, checkedAt: todayAlert.checkedAt } : null,
+    },
   };
 }

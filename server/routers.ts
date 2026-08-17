@@ -36,6 +36,7 @@ function publicNewsListPost(post: any) {
 }
 import { getArchiveEpisodesFormatted, getEpisodesFormatted, subscribeEmail, unsubscribeEmail, getPipelineRuns, getPodcastOperations } from "./podcastDb";
 import { queuePodcastRecoveryRequest } from "./podcastRecovery";
+import { getEasternDate } from "./dailyBriefSafeguards";
 import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getPublicElectionFreshness, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateReferendum } from "./electionDb";
 import { fetchWithCache, getPersistedWordPressNews } from "./newsCache";
 import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
@@ -90,6 +91,13 @@ export const appRouter = router({
     requestRecovery: adminProcedure
       .input(z.object({ episodeDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/), note: z.string().max(500).optional() }))
       .mutation(async ({ input, ctx }) => queuePodcastRecoveryRequest({ episodeDate: input.episodeDate, note: input.note, requestedBy: ctx.user.name ?? "Administrator" })),
+    requestCurrentGuardedRecovery: adminProcedure
+      .mutation(async ({ ctx }) => queuePodcastRecoveryRequest({
+        episodeDate: getEasternDate(),
+        recoveryMode: "full_guard",
+        requestedBy: ctx.user.name ?? "Administrator",
+        note: "Admin requested the current-date guarded recovery from Podcast Ops.",
+      })),
   }),
 
   // ─── Election ────────────────────────────────────────────────────────────────

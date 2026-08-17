@@ -292,6 +292,7 @@ export type InsertEpisode = typeof episodes.$inferInsert;
 export const podcastRecoveryRequests = mysqlTable("podcast_recovery_requests", {
   id: int("id").autoincrement().primaryKey(),
   episodeDate: varchar("episode_date", { length: 10 }).notNull(),
+  recoveryMode: mysqlEnum("recovery_mode", ["audio_repair", "full_guard"]).notNull().default("audio_repair"),
   status: mysqlEnum("status", ["queued", "running", "completed", "held", "failed"]).default("queued").notNull(),
   requestedBy: varchar("requested_by", { length: 128 }).notNull(),
   note: text("note"),
@@ -356,6 +357,22 @@ export const podcastPreflights = mysqlTable("podcast_preflights", {
 });
 
 export type PodcastPreflight = typeof podcastPreflights.$inferSelect;
+
+// ─── Daily Brief Missed-Gate Alerts ──────────────────────────────────────────
+// One durable row per date makes the 6:30 AM owner alert idempotent and gives
+// Podcast Ops a trustworthy record of the most recent gate assessment.
+export const podcastGateAlerts = mysqlTable("podcast_gate_alerts", {
+  id: int("id").autoincrement().primaryKey(),
+  episodeDate: varchar("episode_date", { length: 10 }).notNull().unique(),
+  gateStatus: mysqlEnum("gate_status", ["passed", "alert_sent", "alert_failed"]).notNull(),
+  preflightStatus: varchar("preflight_status", { length: 16 }),
+  message: text("message").notNull(),
+  notificationSent: boolean("notification_sent").default(false).notNull(),
+  notifiedAt: timestamp("notified_at"),
+  checkedAt: timestamp("checked_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PodcastGateAlert = typeof podcastGateAlerts.$inferSelect;
 
 // ─── Podcast Play Analytics ──────────────────────────────────────────────────
 export const podcastPlays = mysqlTable("podcast_plays", {
