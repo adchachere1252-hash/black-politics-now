@@ -894,6 +894,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Surface the schedule cadence, last run, and review-only recommendations in Admin Atlas & World operations
 - [x] Verify the schedule registration, public-data safeguards, and Admin visibility after deployment
 
+## Daily Intelligence Brief Recovery (Aug 17)
+- [x] Diagnose why the August 17 guarded Daily Brief run did not publish
+- [x] Run the existing lock-safe recovery guard and require the full sourced Andrew/Jenny publication gate
+- [x] Confirm the public episode, both full voice files, and the durable Admin operational snapshot are current
+- [x] Record the cause and prevention status for the missed scheduled run
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
