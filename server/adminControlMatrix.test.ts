@@ -62,6 +62,7 @@ describe("strict Admin control matrix", () => {
     await expect(caller.election.updateCbc({ id: 1, data: { notes: "Updated" } })).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(caller.election.updateBlackRepresentationElection({ id: 1, data: { notes: "Updated" } })).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(caller.world.runRefreshNow()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(caller.podcast.requestCurrentGuardedRecovery()).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(caller.electionDay.runAgentResearch({})).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(caller.agent.reviewRecommendation({ id: 1, status: "approved" })).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(caller.agent.assignRecommendation({ id: 1, owner: "Data Desk" })).rejects.toMatchObject({ code: "FORBIDDEN" });
