@@ -889,10 +889,10 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Test the anonymous tracking pipeline and visually verify responsive Admin analytics views
 
 ## Autonomous World Elections Source Monitoring (Aug 16)
-- [ ] Add a scheduled, authenticated source-monitoring endpoint for World Elections that cannot alter public records
-- [ ] Schedule daily baseline monitoring with a higher-frequency check for the rolling 30-day election window and voting-day records
-- [ ] Surface the schedule cadence, last run, and review-only recommendations in Admin Atlas & World operations
-- [ ] Verify the schedule registration, public-data safeguards, and Admin visibility after deployment
+- [x] Add a scheduled, authenticated source-monitoring endpoint for World Elections that cannot alter public records
+- [x] Schedule daily baseline monitoring with a higher-frequency check for the rolling 30-day election window and voting-day records
+- [x] Surface the schedule cadence, last run, and review-only recommendations in Admin Atlas & World operations
+- [x] Verify the schedule registration, public-data safeguards, and Admin visibility after deployment
 
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
