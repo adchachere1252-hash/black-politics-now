@@ -939,6 +939,26 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify material repository-grounded gaps and prioritize safe improvements without inventing unsupported data
 - [x] Deliver a clear parity matrix and recommended implementation order
 
+## Full Legacy-Surface Repository Parity Program (Aug 17)
+- [ ] Create a complete legacy-surface inventory for both selected repositories and map each item to an integrated platform destination
+- [ ] Build dedicated source-backed World Results and World Referendums views
+- [ ] Port the original World Elections alert and remaining deterministic explorer surfaces
+- [ ] Port remaining Daily Intelligence Brief listener, editorial, quality, search, and Admin operations surfaces
+- [ ] Backfill historical Jenny full episodes only when verified source scripts and paired audio assets support a guarded rebuild
+- [ ] Implement the legacy subscriber digest only after choosing a compliant outbound delivery configuration
+- [ ] Run code, data, responsive visual, operational, and repository-parity acceptance checks across both repositories
+
+## Historical Atlas Repository Parity (Aug 17)
+- [ ] Inventory the Historical Atlas repository’s map frames, timeline, state-detail, comparison, and source surfaces against the live Atlas
+- [ ] Correct any confirmed Atlas repository gap without weakening the verified UCLA boundary and legal-event provenance
+- [ ] Verify all 50 states, all 31 VRA-era frames, playback controls, comparison URLs, and responsive source context before final acceptance
+
+## Mobile App and Election Banner Verification (Aug 17)
+- [x] Confirm whether the mobile election banner has motion, reduced-motion behavior, and accessible interaction states
+- [x] Verify responsive public routes: home, election map, World Elections, Historical Atlas, podcast, archive, and Research Desk
+- [x] Verify protected Admin routes and safe mobile controls without publishing or changing production records
+- [x] Correct confirmed mobile defects and document the final app acceptance result
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade

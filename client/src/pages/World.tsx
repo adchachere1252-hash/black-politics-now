@@ -4,6 +4,7 @@ import { trpc } from "@/lib/trpc";
 import { rankedWorldSignals, worldSignalLabel } from "@/lib/worldElectionDisplay";
 import { getWorldGlobeCountryIndex, type WorldGlobeLabelDensity } from "@/lib/worldGlobeLabels";
 import WorldGlobe from "@/components/WorldGlobe";
+import { WorldReferendumsView, WorldResultsTicker, WorldResultsView, WorldTimelineView } from "@/components/WorldLegacyViews";
 
 const statusTone: Record<string, string> = {
   "Upcoming": "bg-primary/15 text-primary border-primary/30",
@@ -44,6 +45,10 @@ export default function World() {
   const [labelDensity, setLabelDensity] = useState<WorldGlobeLabelDensity>("full");
   const [focusedCountryCode, setFocusedCountryCode] = useState<string | null>(null);
   const [countryQuery, setCountryQuery] = useState("");
+  const [worldView, setWorldView] = useState<"globe" | "timeline" | "results" | "referendums">(() => {
+    const requested = typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("view");
+    return requested === "timeline" || requested === "results" || requested === "referendums" ? requested : "globe";
+  });
   const thirtyDayWindow = useMemo(() => {
     const now = new Date();
     const start = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
@@ -71,12 +76,34 @@ export default function World() {
     }));
     return latestMs ? new Date(latestMs).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : null;
   }, [elections]);
+  const electionAlert = useMemo(() => {
+    const now = new Date();
+    const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())).toISOString().slice(0, 10);
+    const tomorrow = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1)).toISOString().slice(0, 10);
+    const active = (elections as any[]).filter((election) => election.electionDate === today && election.status !== "Completed");
+    if (active.length) return { kind: "today" as const, elections: active };
+    const upcoming = (elections as any[]).filter((election) => election.electionDate === tomorrow && election.status !== "Completed");
+    return upcoming.length ? { kind: "tomorrow" as const, elections: upcoming } : null;
+  }, [elections]);
   const focusCountry = (countryCode: string, openTrackedElection = false) => {
     setFocusedCountryCode(countryCode);
     if (openTrackedElection) {
       const election = elections.find((item: any) => item.countryCode === countryCode);
       if (election) setSelected(election);
     }
+  };
+  const selectWorldView = (nextView: "globe" | "timeline" | "results" | "referendums") => {
+    setWorldView(nextView);
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    if (nextView === "globe") params.delete("view"); else params.set("view", nextView);
+    const query = params.toString();
+    window.history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}`);
+  };
+  const openElectionContext = (election: any) => {
+    setSelected(election);
+    setFocusedCountryCode(election.countryCode);
+    selectWorldView("globe");
   };
 
   if (isLoading) return <div className="min-h-[70vh] grid place-items-center"><div className="w-9 h-9 rounded-full border-2 border-primary border-t-transparent animate-spin" /></div>;
@@ -85,9 +112,11 @@ export default function World() {
     <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_20%_10%,rgba(212,165,82,.16),transparent_27%),radial-gradient(circle_at_80%_0%,rgba(77,118,181,.16),transparent_30%)] pointer-events-none" />
     <section className="relative container pt-10 pb-6">
       <p className="text-primary text-xs font-semibold tracking-[0.28em] uppercase">Global democratic calendar</p>
-      <div className="mt-3"><h1 className="font-display text-4xl sm:text-5xl font-bold">World Elections</h1><p className="text-muted-foreground mt-2 max-w-2xl">Track the elections shaping governments, parliaments, and referendums around the world.</p>{lastUpdated && <p className="mt-2 text-xs font-medium text-primary/85">Calendar data last reviewed {lastUpdated}</p>}</div>
+      <div className="mt-3"><h1 className="font-display text-4xl sm:text-5xl font-bold">World Elections</h1><p className="text-muted-foreground mt-2 max-w-2xl">Track the elections shaping governments, parliaments, and referendums around the world.</p>{lastUpdated && <p className="mt-2 text-xs font-medium text-primary/85">Calendar data last reviewed {lastUpdated}</p>}<div className="mt-5 inline-flex max-w-full gap-1 overflow-x-auto rounded-xl border border-border bg-card/70 p-1" aria-label="World Elections views"><button onClick={() => selectWorldView("globe")} className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-semibold ${worldView === "globe" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}>Globe & calendar</button><button onClick={() => selectWorldView("timeline")} className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-semibold ${worldView === "timeline" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}>Timeline</button><button onClick={() => selectWorldView("results")} className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-semibold ${worldView === "results" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}>World Results</button><button onClick={() => selectWorldView("referendums")} className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-semibold ${worldView === "referendums" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}>Referendums</button></div></div>
     </section>
-    <section className="relative container pb-6 grid gap-4 xl:grid-cols-[minmax(0,1fr)_290px]">
+    {electionAlert && <section className="relative container pb-3"><div className={`flex flex-wrap items-center justify-between gap-3 rounded-xl border px-4 py-3 ${electionAlert.kind === "today" ? "border-amber-500/30 bg-amber-500/[0.09]" : "border-primary/30 bg-primary/[0.07]"}`}><div><p className={`text-[10px] font-bold uppercase tracking-[0.16em] ${electionAlert.kind === "today" ? "text-amber-700 dark:text-amber-300" : "text-primary"}`}>{electionAlert.kind === "today" ? "Voting today" : "Voting tomorrow"}</p><p className="mt-1 text-sm font-semibold text-foreground">{electionAlert.elections.map((election) => election.country).join(", ")}</p></div><div className="flex flex-wrap gap-2">{electionAlert.elections.map((election) => <button key={election.id} onClick={() => openElectionContext(election)} className="rounded-md border border-primary/30 bg-background/75 px-3 py-1.5 text-xs font-semibold text-primary hover:bg-primary/10">View {election.country}</button>)}</div></div></section>}
+    <WorldResultsTicker elections={elections as any[]} onSelect={openElectionContext} />
+    {worldView === "globe" && <><section className="relative container pb-6 grid gap-4 xl:grid-cols-[minmax(0,1fr)_290px]">
       <div className="rounded-[2rem] border border-cyan-200/20 bg-[radial-gradient(circle_at_50%_42%,rgba(46,157,206,.18),transparent_32%),linear-gradient(145deg,rgba(7,19,34,.96),rgba(5,10,20,.98))] overflow-hidden shadow-[0_32px_100px_rgba(4,12,24,.46)] relative">
         <WorldGlobe elections={elections} onElectionSelect={setSelected} immersive labelDensity={labelDensity} focusCountryCode={focusedCountryCode} />
         <div className="absolute left-4 top-4 max-w-[280px] rounded-2xl border border-cyan-100/20 bg-slate-950/60 px-4 py-3 backdrop-blur-md sm:left-7 sm:top-7"><p className="text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-100">Democracy is moving</p><p className="mt-1.5 text-sm leading-relaxed text-cyan-50/85">Search or select any country from the index to bring it into focus. Tracked election labels open their country record.</p></div>
@@ -106,7 +135,10 @@ export default function World() {
         <div className="p-4 border-b border-border"><div className="relative"><Search size={15} className="absolute left-3 top-3 text-muted-foreground" /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search countries" className="w-full rounded-lg border border-border bg-background pl-9 pr-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/30" /></div><div className="flex gap-1 flex-wrap mt-3">{["All", "Upcoming", "Voting Today", "Completed"].map((item) => <button key={item} onClick={() => setFilter(item)} className={`px-2.5 py-1 rounded-md text-xs ${filter === item ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}>{item === "Voting Today" ? "Live" : item}</button>)}</div><div className="mt-3 flex items-center gap-2"><button onClick={() => setTimeframe(timeframe === "next30" ? "all" : "next30")} className={`rounded-md border px-2.5 py-1 text-xs ${timeframe === "next30" ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:bg-muted"}`}>Next 30 days</button><select value={region} onChange={(event) => setRegion(event.target.value)} className="min-w-0 flex-1 rounded-md border border-border bg-background px-2 py-1 text-xs text-foreground">{regionOptions.map((option) => <option key={option}>{option}</option>)}</select></div></div>
         <div className="overflow-y-auto divide-y divide-border">{visible.map((e: any) => <button key={e.id} onClick={() => setSelected(e)} className="w-full text-left p-4 hover:bg-muted/50 transition-colors"><div className="flex items-start gap-3"><img src={`https://flagcdn.com/w40/${e.countryCode.toLowerCase()}.png`} className="w-7 h-7 rounded-full object-cover mt-0.5" alt="" /><div className="min-w-0 flex-1"><div className="flex justify-between gap-2"><span className="font-medium truncate">{e.country}</span><ChevronRight size={16} className="text-muted-foreground shrink-0" /></div><p className="text-xs text-muted-foreground truncate mt-0.5">{e.electionName}</p><div className="mt-2 flex items-center gap-2"><span className="text-xs text-muted-foreground">{displayDate(e.electionDate)}</span><span className={`border rounded-full px-2 py-0.5 text-[10px] ${statusTone[e.status] || statusTone.Upcoming}`}>{e.status}</span></div></div></div></button>)}</div>
       </aside>
-    </section>
+    </section></>}
+    {worldView === "results" && <WorldResultsView elections={elections as any[]} onSelect={setSelected} />}
+    {worldView === "referendums" && <WorldReferendumsView elections={elections as any[]} onSelect={setSelected} />}
+    {worldView === "timeline" && <WorldTimelineView elections={elections as any[]} onSelect={openElectionContext} />}
     {selected && <div className="fixed inset-0 z-50 bg-black/55 backdrop-blur-sm flex justify-end" onClick={() => setSelected(null)}><section className="w-full max-w-lg h-full overflow-y-auto bg-background border-l border-border p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}><div className="flex items-start justify-between"><div className="flex gap-3"><img src={`https://flagcdn.com/w80/${selected.countryCode.toLowerCase()}.png`} className="w-11 h-11 rounded-full object-cover" alt=""/><div><p className="text-primary text-xs uppercase tracking-widest">{selected.electionType}</p><h2 className="text-2xl font-display font-bold">{selected.country}</h2></div></div><button onClick={() => setSelected(null)} className="p-2 rounded-md hover:bg-muted"><X size={18}/></button></div><div className="mt-6 rounded-xl border border-border bg-card p-4"><div className="flex justify-between gap-3"><div><h3 className="font-semibold">{selected.electionName}</h3><p className="text-sm text-muted-foreground mt-1 flex items-center gap-1"><Calendar size={14}/>{displayDate(selected.electionDate)}</p></div><span className={`h-fit border rounded-full px-2 py-1 text-xs ${statusTone[selected.status] || statusTone.Upcoming}`}>{selected.status}</span></div>{selected.incumbent && <p className="mt-4 text-sm"><span className="text-muted-foreground">Incumbent:</span> {selected.incumbent}{selected.incumbentParty ? ` (${selected.incumbentParty})` : ""}</p>}{selected.winner && <p className="mt-3 rounded-lg bg-emerald-500/10 border border-emerald-500/25 px-3 py-2 text-sm text-emerald-700 dark:text-emerald-300"><Landmark size={14} className="inline mr-1"/> Winner: <strong>{selected.winner}</strong>{selected.winnerParty ? ` · ${selected.winnerParty}` : ""}</p>}</div><DetailList title="Candidates" items={parseList(selected.candidates)} /><DetailList title="Key issues" items={parseList(selected.keyIssues)} /><p className="mt-5 text-sm leading-relaxed text-muted-foreground">{selected.notes}</p><SourceLinks links={toSourceLinks(selected.sourceUrls, selected.notes)} /></section></div>}
   </div>;
 }

@@ -40,13 +40,13 @@ export function ResultsTicker({ senateRaces, houseRaces }: ResultsTickerProps) {
   }
 
   return (
-    <div className="w-full overflow-hidden bg-muted/30 border border-border/50 rounded-lg py-2 relative">
+    <div className="w-full overflow-hidden bg-muted/30 border border-border/50 rounded-lg py-2 relative" role="region" aria-label="Final Senate and House election results ticker">
       <div className="flex items-center">
         <span className="inline-flex items-center gap-1 px-3 py-0.5 whitespace-nowrap z-10 bg-muted/80 border-r border-border/50">
           <span className="w-1.5 h-1.5 rounded-full bg-destructive animate-pulse" />
           <span className="text-[10px] font-black text-destructive uppercase tracking-widest">RESULTS</span>
         </span>
-        <div className="ticker-scroll flex gap-6">
+        <div className="ticker-scroll flex gap-6" tabIndex={0} aria-label="Scrolling final election outcomes. Hover or focus to pause movement.">
           {[...calledRaces, ...calledRaces].map((race, i) => (
             <span key={i} className="whitespace-nowrap text-xs">
               <span className="font-medium text-foreground">{race.state}</span>

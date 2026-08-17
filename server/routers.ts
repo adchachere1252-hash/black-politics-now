@@ -37,6 +37,7 @@ function publicNewsListPost(post: any) {
 import { getArchiveEpisodesFormatted, getEpisodesFormatted, subscribeEmail, unsubscribeEmail, getPipelineRuns, getPodcastOperations } from "./podcastDb";
 import { queuePodcastRecoveryRequest } from "./podcastRecovery";
 import { getEasternDate } from "./dailyBriefSafeguards";
+import { buildPodcastShowNotes, getPodcastAnalytics, getPodcastShowNotes, recordPodcastPlay, savePodcastShowNotes } from "./podcastLegacy";
 import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getPublicElectionFreshness, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateReferendum } from "./electionDb";
 import { fetchWithCache, getPersistedWordPressNews } from "./newsCache";
 import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
@@ -86,6 +87,21 @@ export const appRouter = router({
     unsubscribe: publicProcedure
       .input(z.object({ email: z.string().email() }))
       .mutation(async ({ input }) => { await unsubscribeEmail(input.email); return { success: true }; }),
+    trackPlay: publicProcedure
+      .input(z.object({ episodeDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/), segmentKey: z.string().max(64).nullable().optional(), segmentLabel: z.string().max(128).nullable().optional(), playbackKind: z.enum(["episode", "segment"]), voice: z.enum(["andrew", "jenny"]), sessionToken: z.string().min(16).max(128) }))
+      .mutation(async ({ input }) => recordPodcastPlay(input)),
+    analytics: adminProcedure
+      .input(z.object({ days: z.union([z.literal(7), z.literal(30)]).default(30) }).optional())
+      .query(async ({ input }) => getPodcastAnalytics(input?.days ?? 30)),
+    getShowNotes: publicProcedure
+      .input(z.object({ episodeDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/) }))
+      .query(async ({ input }) => getPodcastShowNotes(input.episodeDate)),
+    buildShowNotes: adminProcedure
+      .input(z.object({ episodeDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/) }))
+      .mutation(async ({ input, ctx }) => buildPodcastShowNotes(input.episodeDate, ctx.user.name ?? "Administrator")),
+    saveShowNotes: adminProcedure
+      .input(z.object({ episodeDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/), title: z.string().min(1).max(256), summary: z.string().min(1).max(2000), showNotes: z.string().min(1).max(12000), keywords: z.string().max(2000) }))
+      .mutation(async ({ input, ctx }) => savePodcastShowNotes({ ...input, updatedBy: ctx.user.name ?? "Administrator" })),
     pipelineRuns: protectedProcedure.query(async () => getPipelineRuns()),
     operations: adminProcedure.query(async () => getPodcastOperations()),
     requestRecovery: adminProcedure

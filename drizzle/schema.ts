@@ -374,6 +374,43 @@ export const podcastGateAlerts = mysqlTable("podcast_gate_alerts", {
 
 export type PodcastGateAlert = typeof podcastGateAlerts.$inferSelect;
 
+// ─── Podcast Publishing Kit ──────────────────────────────────────────────────
+// These records are human-reviewable drafts derived only from an episode's stored
+// segments and source links. They do not publish or alter editorial content.
+export const podcastShowNotes = mysqlTable("podcast_show_notes", {
+  id: int("id").autoincrement().primaryKey(),
+  episodeDate: varchar("episode_date", { length: 10 }).notNull().unique(),
+  title: varchar("title", { length: 256 }).notNull(),
+  summary: text("summary").notNull(),
+  showNotes: text("show_notes").notNull(),
+  keywords: text("keywords").notNull(),
+  updatedBy: varchar("updated_by", { length: 128 }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PodcastShowNote = typeof podcastShowNotes.$inferSelect;
+
+// ─── Privacy-limited Podcast Playback Events ─────────────────────────────────
+// Keeps the original repository's plays analytics without retaining IP address,
+// raw user agent, account identity, or an unhashed browser session identifier.
+export const podcastPlayEvents = mysqlTable("podcast_play_events", {
+  id: int("id").autoincrement().primaryKey(),
+  episodeDate: varchar("episode_date", { length: 10 }).notNull(),
+  segmentKey: varchar("segment_key", { length: 64 }),
+  segmentLabel: varchar("segment_label", { length: 128 }),
+  playbackKind: mysqlEnum("playback_kind", ["episode", "segment"]).notNull(),
+  voice: mysqlEnum("voice", ["andrew", "jenny"]).notNull(),
+  sessionHash: varchar("session_hash", { length: 64 }).notNull(),
+  playedAt: timestamp("played_at").defaultNow().notNull(),
+}, (table) => [
+  index("podcast_play_events_played_at_idx").on(table.playedAt),
+  index("podcast_play_events_episode_idx").on(table.episodeDate),
+  index("podcast_play_events_segment_idx").on(table.segmentKey),
+]);
+
+export type PodcastPlayEvent = typeof podcastPlayEvents.$inferSelect;
+
 // ─── Podcast Play Analytics ──────────────────────────────────────────────────
 export const podcastPlays = mysqlTable("podcast_plays", {
   id: int("id").autoincrement().primaryKey(),

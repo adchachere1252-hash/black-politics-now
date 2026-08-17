@@ -13,6 +13,7 @@ import { usePageTracking } from "./hooks/usePageTracking";
 
 const Elections = lazy(() => import("./pages/Elections"));
 const Podcast = lazy(() => import("./pages/Podcast"));
+const PodcastEmbed = lazy(() => import("./pages/PodcastEmbed"));
 const ArchivePage = lazy(() => import("./pages/Archive"));
 const AdminPage = lazy(() => import("./pages/Admin"));
 const SearchPage = lazy(() => import("./pages/Search"));
@@ -39,6 +40,9 @@ function Router() {
       </Route>
       <Route path={"/podcast"}>
         <Suspense fallback={<PageLoader />}><Podcast /></Suspense>
+      </Route>
+      <Route path={"/embed"}>
+        <Suspense fallback={<PageLoader />}><PodcastEmbed /></Suspense>
       </Route>
       <Route path={"/archive"}>
         <Suspense fallback={<PageLoader />}><ArchivePage /></Suspense>
@@ -87,17 +91,18 @@ function App() {
   const [location] = useLocation();
   usePageTracking();
   const usesOriginalNewsroomShell = location === "/newsroom";
+  const usesEmbedShell = location === "/embed";
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light" switchable>
         <AudioProvider>
           <TooltipProvider>
             <Toaster />
-            {!usesOriginalNewsroomShell && <SiteHeader />}
-            <main className="pb-20">
+            {!usesOriginalNewsroomShell && !usesEmbedShell && <SiteHeader />}
+            <main className={usesEmbedShell ? "" : "pb-20"}>
               <Router />
             </main>
-            <StickyPlayer />
+            {!usesEmbedShell && <StickyPlayer />}
           </TooltipProvider>
         </AudioProvider>
       </ThemeProvider>

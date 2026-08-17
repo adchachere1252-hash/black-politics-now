@@ -49,6 +49,7 @@ export default function Atlas() {
     const value = new URLSearchParams(window.location.search).get("overlay");
     return value === "party" || value === "member" ? value : "boundary";
   });
+  const [mobileStateDetailOpen, setMobileStateDetailOpen] = useState(false);
   const historicalStates = useMemo(() => Object.keys(APPORTIONMENT_HISTORY).sort().map((stateName) => ({ stateCode: STATE_CODES[stateName], stateName })), []);
   const selected = useMemo(() => historicalStates.find((state: any) => state.stateCode === selectedCode) ?? historicalStates[0], [historicalStates, selectedCode]);
   const history = selected ? APPORTIONMENT_HISTORY[selected.stateName] ?? [1, 1, 1, 1, 1, 1, 1] : [];
@@ -69,6 +70,10 @@ export default function Atlas() {
   const archiveNote = selected ? sourceCheckedBoundaryNote(selected.stateName, selectedCongress, selectedBoundaryEra?.name) : null;
   const boundaryStates = Object.keys(LEWIS_MANIFEST).length;
   const visibleStates = historicalStates.filter((state: any) => state.stateName.toLowerCase().includes(stateQuery.trim().toLowerCase()) || state.stateCode.toLowerCase().includes(stateQuery.trim().toLowerCase()));
+  const selectAtlasState = (stateCode: string) => {
+    setSelectedCode(stateCode);
+    if (typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches) setMobileStateDetailOpen(true);
+  };
 
   useEffect(() => {
     if (!selected?.stateCode || typeof window === "undefined") return;
@@ -87,6 +92,18 @@ export default function Atlas() {
     const timer = window.setTimeout(() => setSelectedCongress((congress) => nextPlaybackCongress(congress)), PLAYBACK_SPEEDS[playbackSpeed].duration);
     return () => window.clearTimeout(timer);
   }, [frameStatus, isPlaying, playbackSpeed, selectedCongress]);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target?.closest("input, textarea, select, button, a")) return;
+      if (event.key === "ArrowLeft") { event.preventDefault(); setIsPlaying(false); setSelectedCongress((value) => Math.max(89, value - 1)); }
+      if (event.key === "ArrowRight") { event.preventDefault(); setIsPlaying(false); setSelectedCongress((value) => Math.min(119, value + 1)); }
+      if (event.key.toLowerCase() === "s" && selected?.stateCode) { event.preventDefault(); setMobileStateDetailOpen(true); }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [selected?.stateCode]);
 
   const copyComparisonLink = async () => {
     if (typeof window === "undefined") return;
@@ -138,11 +155,20 @@ export default function Atlas() {
         <div className="rounded-2xl border border-border bg-card p-5 sm:p-7"><div className="flex flex-wrap items-end justify-between gap-3"><div><h3 className="font-display text-xl font-bold">Boundary-era archive</h3><p className="mt-1 text-sm text-muted-foreground">Original repository district-file eras for {selected.stateName}, indexed by Congress. Select an era to update the boundary viewer.</p></div><span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">{boundaryEras.length} eras</span></div>{boundaryEras.length ? <div className="mt-5 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">{boundaryEras.map((era) => <button onClick={() => setSelectedCongress(era.end)} key={era.name} className={`rounded-lg border p-3 text-left transition-colors ${selectedCongress >= era.start && selectedCongress <= era.end ? "border-primary/60 bg-primary/10" : "border-border bg-background hover:border-primary/35"}`}><p className="text-sm font-medium">{era.start}th–{era.end}th Congress</p><p className="mt-1 break-all text-xs text-muted-foreground">{era.name}</p></button>)}</div> : <p className="mt-5 text-sm text-muted-foreground">No boundary-era manifest entry is currently available for this state.</p>}</div>
       </main>}
     </section>
+    {mobileStateDetailOpen && selected && <div className="fixed inset-0 z-50 flex items-end bg-slate-950/55 p-3 sm:hidden" role="dialog" aria-modal="true" aria-label={`${selected.stateName} historical detail`} onClick={() => setMobileStateDetailOpen(false)}><div className="w-full rounded-2xl border border-primary/30 bg-card p-5 shadow-2xl" onClick={(event) => event.stopPropagation()}><div className="flex items-start justify-between gap-3"><div><p className="text-[10px] font-bold uppercase tracking-[.15em] text-primary">Selected state · historical detail</p><h2 className="mt-1 text-2xl font-bold">{selected.stateName}</h2><p className="mt-1 text-sm text-muted-foreground">{selectedCongress}th Congress · {congressYears(selectedCongress)[0]}–{congressYears(selectedCongress)[1]} · {selectedSeatCount} House seat{selectedSeatCount === 1 ? "" : "s"}</p></div><button type="button" onClick={() => setMobileStateDetailOpen(false)} className="rounded-md border border-border px-3 py-2 text-xs font-semibold">Close</button></div><div className="mt-4 grid grid-cols-2 gap-2 text-xs"><div className="rounded-lg border border-border bg-background p-3"><span className="block text-[9px] font-bold uppercase tracking-[.12em] text-primary">Boundary era</span><strong className="mt-1 block break-all text-foreground">{selectedBoundaryEra?.name || "Not catalogued"}</strong></div><div className="rounded-lg border border-border bg-background p-3"><span className="block text-[9px] font-bold uppercase tracking-[.12em] text-primary">Archive record</span><strong className="mt-1 block text-foreground">{boundaryEras.length} repository era{boundaryEras.length === 1 ? "" : "s"}</strong></div></div><p className="mt-4 text-xs leading-5 text-muted-foreground">{archiveNote || "No repository boundary file is currently identified for this selection."}</p><button type="button" onClick={() => setMobileStateDetailOpen(false)} className="mt-4 w-full rounded-md bg-primary px-3 py-2 text-xs font-bold text-primary-foreground">Return to map</button></div></div>}
   </div>;
 }
 
 function CongressComparisonPanel({ label, congress, onCongressChange, selectedState, onStateSelect, overlayMode }: { label: string; congress: number; onCongressChange: (congress: number) => void; selectedState?: string | null; onStateSelect: (stateCode: string) => void; overlayMode: AtlasOverlayMode }) {
-  return <div className="rounded-xl border border-border bg-background p-3"><div className="flex items-center justify-between gap-3"><div><p className="text-[10px] font-semibold uppercase tracking-[.14em] text-primary">{label}</p><p className="font-display mt-1 text-lg font-bold">{congress}th Congress · {congressYears(congress)[0]}–{congressYears(congress)[1]}</p></div><select aria-label={`${label} Congress`} value={congress} onChange={(event) => onCongressChange(Number(event.target.value))} className="h-9 rounded-md border border-border bg-card px-2 text-xs font-semibold text-foreground">{CONGRESSES.map((value) => <option value={value} key={value}>{value}th · {congressYears(value)[0]}</option>)}</select></div><input aria-label={`${label} historical map Congress`} type="range" min="89" max="119" step="1" value={congress} onChange={(event) => onCongressChange(Number(event.target.value))} className="mt-4 w-full accent-primary"/><div className="mt-4"><HistoricalUSMap congress={congress} selectedState={selectedState} onStateSelect={onStateSelect} overlayMode={overlayMode} label={label}/></div></div>;
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [frameStatus, setFrameStatus] = useState<AtlasFrameStatus | null>(null);
+  useEffect(() => {
+    if (!isPlaying || !frameStatus?.ready || frameStatus.congress !== congress) return;
+    if (congress >= 119) { setIsPlaying(false); return; }
+    const timer = window.setTimeout(() => onCongressChange(nextPlaybackCongress(congress)), PLAYBACK_SPEEDS.standard.duration);
+    return () => window.clearTimeout(timer);
+  }, [congress, frameStatus, isPlaying, onCongressChange]);
+  return <div className="rounded-xl border border-border bg-background p-3"><div className="flex items-center justify-between gap-3"><div><p className="text-[10px] font-semibold uppercase tracking-[.14em] text-primary">{label}</p><p className="font-display mt-1 text-lg font-bold">{congress}th Congress · {congressYears(congress)[0]}–{congressYears(congress)[1]}</p></div><div className="flex items-center gap-2"><button type="button" onClick={() => { if (!isPlaying && congress >= 119) onCongressChange(89); setIsPlaying((value) => !value); }} className="inline-flex h-9 items-center gap-1 rounded-md border border-primary/35 px-2.5 text-xs font-semibold text-primary hover:bg-primary/10">{isPlaying ? <Pause size={13}/> : <Play size={13} fill="currentColor"/>}{isPlaying ? "Pause" : "Play"}</button><select aria-label={`${label} Congress`} value={congress} onChange={(event) => { setIsPlaying(false); onCongressChange(Number(event.target.value)); }} className="h-9 rounded-md border border-border bg-card px-2 text-xs font-semibold text-foreground">{CONGRESSES.map((value) => <option value={value} key={value}>{value}th · {congressYears(value)[0]}</option>)}</select></div></div><input aria-label={`${label} historical map Congress`} type="range" min="89" max="119" step="1" value={congress} onChange={(event) => { setIsPlaying(false); onCongressChange(Number(event.target.value)); }} className="mt-4 w-full accent-primary"/><div className="mt-4"><HistoricalUSMap congress={congress} selectedState={selectedState} onStateSelect={onStateSelect} overlayMode={overlayMode} label={label} onFrameStatus={setFrameStatus}/></div></div>;
 }
 
 function VraTimeline({ onSelectCongress }: { onSelectCongress: (congress: number) => void }) {

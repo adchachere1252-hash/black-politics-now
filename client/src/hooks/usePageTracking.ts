@@ -1,19 +1,9 @@
 import { useEffect } from "react";
 import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
+import { getAnonymousSessionToken } from "@/lib/anonymousSession";
 
-const SESSION_STORAGE_KEY = "bpn_anonymous_visit_session";
 const EXCLUDED_PATHS = new Set(["/admin", "/colors", "/homepage-example", "/news-mockup", "/news-concept", "/intelligence-example"]);
-
-function anonymousSessionToken() {
-  const existing = window.sessionStorage.getItem(SESSION_STORAGE_KEY);
-  if (existing) return existing;
-  const token = typeof crypto.randomUUID === "function"
-    ? crypto.randomUUID()
-    : `${Date.now()}-${crypto.getRandomValues(new Uint32Array(2)).join("")}`;
-  window.sessionStorage.setItem(SESSION_STORAGE_KEY, token);
-  return token;
-}
 
 function deviceType(): "desktop" | "tablet" | "mobile" {
   if (window.matchMedia("(max-width: 767px)").matches) return "mobile";
@@ -40,7 +30,7 @@ export function usePageTracking() {
     if (EXCLUDED_PATHS.has(location)) return;
     mutate({
       pagePath: location,
-      sessionToken: anonymousSessionToken(),
+      sessionToken: getAnonymousSessionToken(),
       deviceType: deviceType(),
       referrerHost: externalReferrerHost(),
     });

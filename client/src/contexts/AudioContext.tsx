@@ -1,5 +1,7 @@
 import { createContext, useContext, useRef, useState, useCallback, type ReactNode } from "react";
 import { switchVoiceTrack, type BriefVoice } from "@/lib/audioVoice";
+import { getAnonymousSessionToken } from "@/lib/anonymousSession";
+import { trpc } from "@/lib/trpc";
 
 export interface AudioTrack {
   url: string;
@@ -41,6 +43,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     () => (localStorage.getItem("bpn-voice") as BriefVoice) || "andrew"
   );
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const playAnalytics = trpc.podcast.trackPlay.useMutation();
 
   const play = useCallback((track: AudioTrack) => {
     setCurrentTrack(track);
@@ -52,7 +55,15 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       audioRef.current.volume = volume;
       audioRef.current.play().catch(() => {});
     }
-  }, [volume]);
+    playAnalytics.mutate({
+      episodeDate: track.episodeDate,
+      segmentKey: track.segmentKey ?? null,
+      segmentLabel: track.segmentKey ? track.title.slice(0, 128) : null,
+      playbackKind: track.segmentKey ? "segment" : "episode",
+      voice: track.voice ?? voicePreference,
+      sessionToken: getAnonymousSessionToken(),
+    });
+  }, [volume, voicePreference, playAnalytics]);
 
   const pause = useCallback(() => {
     setIsPlaying(false);
