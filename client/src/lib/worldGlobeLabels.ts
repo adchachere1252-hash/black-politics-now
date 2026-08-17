@@ -1,62 +1,34 @@
 export type GlobeElectionLabelSource = { countryCode: string; country?: string | null; status: string };
+type Centroid = { lon: number; lat: number };
 
-export const WORLD_ELECTION_COORDINATES: Record<string, [number, number]> = {
-  DZ: [28, 3], AM: [40, 45], BD: [24, 90], BA: [44, 18], BR: [-10, -55], BG: [43, 25],
-  CV: [16, -24], CO: [4, -72], CK: [-21, -159], CZ: [49, 15], ET: [9, 40], DE: [51, 10],
-  GW: [12, -15], HT: [19, -72], HU: [47, 20], IN: [22, 79], IL: [31, 35], JP: [36, 138],
-  KZ: [48, 68], MA: [32, -6], MX: [24, -102], MM: [21, 96], NL: [52, 5], NZ: [-41, 174],
-  PE: [-10, -76], PH: [13, 122], PT: [39, -8], RO: [46, 25], RS: [44, 21], SG: [1, 104],
-  SK: [49, 20], SO: [6, 46], KR: [36, 128], SE: [62, 15], TW: [24, 121], UG: [1, 32],
-  US: [39, -98], VN: [16, 108], ZM: [-14, 28], TH: [15, 101], NP: [28, 84], CH: [47, 8],
-  ST: [0, 6], RU: [61, 105], NI: [13, -85], PS: [32, 35], GM: [13, -16], SS: [7, 30], GB: [55, -3],
+// Ported from the original repository’s Globe.tsx country-label catalog. It
+// covers the country geometry used by the globe rather than only the records
+// presently in the election tracker.
+export const FULL_COUNTRY_CENTROIDS: Record<string, Centroid> = {
+  CO:{lon:-74,lat:4},GB:{lon:-2,lat:54},DE:{lon:10,lat:51},FR:{lon:3,lat:46},BR:{lon:-53,lat:-10},AU:{lon:134,lat:-25},IN:{lon:79,lat:22},JP:{lon:138,lat:36},KR:{lon:128,lat:36},MX:{lon:-102,lat:23},CA:{lon:-106,lat:56},NG:{lon:8,lat:10},ZA:{lon:25,lat:-29},EG:{lon:30,lat:27},SA:{lon:45,lat:24},TR:{lon:35,lat:39},PL:{lon:20,lat:52},NL:{lon:5,lat:52},CL:{lon:-72,lat:-36},AR:{lon:-64,lat:-34},PH:{lon:122.8,lat:12},ID:{lon:113,lat:-2},TH:{lon:101,lat:15},VN:{lon:106,lat:16},MY:{lon:102,lat:4},SG:{lon:104,lat:1},NO:{lon:9,lat:61},SE:{lon:16,lat:62},DK:{lon:10,lat:56},FI:{lon:26,lat:64},PT:{lon:-8,lat:40},ES:{lon:-4,lat:40},IT:{lon:12,lat:43},GR:{lon:22,lat:39},RO:{lon:25,lat:46},CZ:{lon:16,lat:50},AT:{lon:14,lat:47},CH:{lon:8,lat:47},BE:{lon:4,lat:51},IE:{lon:-8,lat:53},NZ:{lon:172,lat:-42},HU:{lon:19,lat:47},SK:{lon:19,lat:49},ST:{lon:7,lat:1},CK:{lon:-160,lat:-21},IS:{lon:-19,lat:65},LV:{lon:25,lat:57},BA:{lon:18,lat:44},CV:{lon:-24,lat:16},BG:{lon:25,lat:43},GM:{lon:-15.3,lat:13.5},SS:{lon:30,lat:8},AM:{lon:45,lat:40},KE:{lon:38,lat:1},GH:{lon:-2,lat:8},TZ:{lon:35,lat:-6},ET:{lon:39,lat:9},UG:{lon:32,lat:1},ZM:{lon:28,lat:-13},MW:{lon:34,lat:-14},HT:{lon:-72,lat:19},DO:{lon:-70,lat:19},JM:{lon:-77,lat:18},TT:{lon:-61.5,lat:10.5},PE:{lon:-76,lat:-10},EC:{lon:-78,lat:-2},BO:{lon:-65,lat:-17},PY:{lon:-58,lat:-23},UY:{lon:-56,lat:-33},VE:{lon:-66,lat:8},CU:{lon:-79,lat:22},PA:{lon:-80,lat:9},CR:{lon:-84,lat:10},GT:{lon:-90,lat:15},HN:{lon:-87,lat:15},SV:{lon:-89,lat:14},NI:{lon:-85,lat:13},BZ:{lon:-89,lat:17},PK:{lon:69,lat:30},BD:{lon:90,lat:24},LK:{lon:81,lat:8},MM:{lon:96,lat:20},KH:{lon:105,lat:13},LA:{lon:103,lat:18},NP:{lon:84,lat:28},AF:{lon:67,lat:33},IQ:{lon:44,lat:33},IR:{lon:53,lat:32},SY:{lon:38,lat:35},JO:{lon:36,lat:31},LB:{lon:36,lat:34},IL:{lon:35,lat:31},AE:{lon:54,lat:24},QA:{lon:51,lat:25},KW:{lon:48,lat:29},BH:{lon:51,lat:26},OM:{lon:57,lat:21},YE:{lon:48,lat:15},UA:{lon:32,lat:49},RU:{lon:105,lat:62},CN:{lon:105,lat:35},MN:{lon:104,lat:47},KZ:{lon:67,lat:48},UZ:{lon:64,lat:41},TM:{lon:59,lat:39},KG:{lon:75,lat:41},TJ:{lon:69,lat:39},GE:{lon:44,lat:42},AZ:{lon:48,lat:41},LY:{lon:17,lat:27},TN:{lon:9,lat:34},DZ:{lon:3,lat:30},MA:{lon:-7,lat:31},SD:{lon:30,lat:15},CD:{lon:24,lat:-3},AO:{lon:18,lat:-12},MZ:{lon:35,lat:-18},MG:{lon:47,lat:-19},CM:{lon:12,lat:6},CI:{lon:-5,lat:7},SN:{lon:-14,lat:14},ML:{lon:-4,lat:17},BF:{lon:-2,lat:12},NE:{lon:8,lat:17},TD:{lon:19,lat:15},SO:{lon:46,lat:6},ER:{lon:39,lat:15},DJ:{lon:43,lat:12},RW:{lon:30,lat:-2},BI:{lon:30,lat:-3},TW:{lon:121,lat:24},HK:{lon:114,lat:22},US:{lon:-98,lat:40},AL:{lon:20,lat:41},AQ:{lon:0,lat:-82},BJ:{lon:2,lat:10},BN:{lon:115,lat:5},BS:{lon:-77.9,lat:25.8},BT:{lon:90,lat:27},BW:{lon:24,lat:-22},BY:{lon:28,lat:53},CF:{lon:21,lat:7},CG:{lon:16,lat:-1},CY:{lon:33,lat:35},EE:{lon:26,lat:59},EH:{lon:-13,lat:24},FJ:{lon:178,lat:-18},FK:{lon:-59,lat:-52},GA:{lon:12,lat:-1},GL:{lon:-42,lat:72},GN:{lon:-10,lat:10},GQ:{lon:10,lat:2},GW:{lon:-15,lat:12},GY:{lon:-59,lat:5},HR:{lon:16.4,lat:44.9},KP:{lon:127,lat:40},LR:{lon:-10,lat:6},LS:{lon:29,lat:-30},LT:{lon:24,lat:56},LU:{lon:6,lat:50},MD:{lon:29,lat:47},ME:{lon:19,lat:43},MK:{lon:22,lat:41},MR:{lon:-11,lat:20},NA:{lon:17,lat:-22},NC:{lon:165,lat:-22},PG:{lon:147,lat:-6},PR:{lon:-66,lat:18},PS:{lon:35,lat:32},RS:{lon:21,lat:44},SB:{lon:160,lat:-9},SI:{lon:15,lat:46},SL:{lon:-12,lat:9},SR:{lon:-56,lat:4},SZ:{lon:31,lat:-27},TF:{lon:69,lat:-49},TG:{lon:1,lat:8},TL:{lon:126,lat:-9},VU:{lon:167,lat:-16},ZW:{lon:30,lat:-20},
 };
 
-type LabelOffset = { latitude: number; longitude: number; altitude?: number };
+export const WORLD_ELECTION_COORDINATES: Record<string, [number, number]> = Object.fromEntries(Object.entries(FULL_COUNTRY_CENTROIDS).map(([code, value]) => [code, [value.lat, value.lon]]));
 
-// Repository-style callouts keep the dense European, Caribbean, African, and
-// Asia-Pacific labels legible without silently omitting tracked countries.
-const LABEL_OFFSETS: Record<string, LabelOffset> = {
-  BA: { latitude: -5, longitude: 6 }, BG: { latitude: -4, longitude: 7 }, CH: { latitude: -5, longitude: -8 },
-  CZ: { latitude: 4, longitude: 8 }, DE: { latitude: 5, longitude: -4 }, HU: { latitude: 5, longitude: 2 },
-  NL: { latitude: 6, longitude: -5 }, PT: { latitude: -4, longitude: -7 }, RO: { latitude: 5, longitude: 6 },
-  RS: { latitude: -5, longitude: 5 }, SK: { latitude: -3, longitude: 10 }, ST: { latitude: -5, longitude: -7 },
-  CO: { latitude: -7, longitude: -12 }, SG: { latitude: -4, longitude: 5 }, PS: { latitude: -4, longitude: -7 }, IL: { latitude: 4, longitude: 5 },
-  NP: { latitude: 5, longitude: -6 }, TW: { latitude: -3, longitude: 5 }, VN: { latitude: 0, longitude: 6 },
-  JP: { latitude: 5, longitude: 7 }, PH: { latitude: -5, longitude: 7 }, NZ: { latitude: -7, longitude: 6 },
-  CK: { latitude: -7, longitude: 0 }, CV: { latitude: 8, longitude: -16 }, GM: { latitude: -9, longitude: -16 },
-  GW: { latitude: -3, longitude: -8 }, SO: { latitude: 0, longitude: 7 }, SS: { latitude: 4, longitude: 6 },
-  HT: { latitude: 5, longitude: -5 }, NI: { latitude: -5, longitude: -5 },
-};
+const CONTEXT_LABEL_EXCLUSIONS = new Set(["FR","DE","ES","LU","NL","BE","IE","PT","AT","IT","NO","FI","DK","IS","PL","UA","RO","MD","BY","EE","LT","LV","SI","HR","RS","ME","AL","MK","GR","CY","GE","AZ","BH","SO","GB","GT","HN","SV","BZ","NI","CR","PA","JM","DO","PR","TT","BS","BB"]);
+const NAME_OVERRIDES: Record<string, string> = { US:"United States",GB:"United Kingdom",KR:"South Korea",KP:"North Korea",CZ:"Czech Republic",BA:"Bosnia & Herzegovina",CD:"Dem. Rep. Congo",CG:"Congo",PS:"Palestine",ST:"São Tomé",CV:"Cabo Verde",CK:"Cook Islands",TW:"Taiwan",AQ:"Antarctica",EH:"W. Sahara",NC:"New Caledonia",TF:"French S. Territories" };
+const LABEL_OFFSETS: Record<string, { latitude: number; longitude: number; altitude?: number }> = { BA:{latitude:-5,longitude:6},BG:{latitude:-4,longitude:7},CH:{latitude:-5,longitude:-8},CZ:{latitude:4,longitude:8},HU:{latitude:5,longitude:2},NL:{latitude:6,longitude:-5},PT:{latitude:-4,longitude:-7},RO:{latitude:5,longitude:6},RS:{latitude:-5,longitude:5},SK:{latitude:-3,longitude:10},ST:{latitude:-5,longitude:-7},CO:{latitude:-7,longitude:-12},SG:{latitude:-4,longitude:5},PS:{latitude:-4,longitude:-7},IL:{latitude:4,longitude:5},NP:{latitude:5,longitude:-6},TW:{latitude:-3,longitude:5},VN:{latitude:0,longitude:6},JP:{latitude:5,longitude:7},PH:{latitude:-5,longitude:7},NZ:{latitude:-7,longitude:6},CK:{latitude:-7,longitude:0},CV:{latitude:8,longitude:-16},GM:{latitude:-9,longitude:-16},GW:{latitude:-3,longitude:-8},SS:{latitude:4,longitude:6},HT:{latitude:5,longitude:-5},NI:{latitude:-5,longitude:-5},JO:{latitude:-7,longitude:-6},LB:{latitude:4,longitude:-6},QA:{latitude:0,longitude:6},AE:{latitude:-4,longitude:6},BJ:{latitude:5,longitude:4},TG:{latitude:-5,longitude:4},GQ:{latitude:5,longitude:5},DJ:{latitude:4,longitude:5},RW:{latitude:4,longitude:-5},BI:{latitude:-4,longitude:-5},SZ:{latitude:4,longitude:5},LS:{latitude:-5,longitude:5},BN:{latitude:5,longitude:5},TL:{latitude:-5,longitude:5} };
 
-export type WorldGlobeLabel = {
-  countryCode: string;
-  country: string;
-  status: string;
-  latitude: number;
-  longitude: number;
-  labelLatitude: number;
-  labelLongitude: number;
-  altitude: number;
-};
+export type WorldGlobeLabel = { countryCode:string; country:string; status:string; latitude:number; longitude:number; labelLatitude:number; labelLongitude:number; altitude:number; tracked:boolean };
+const regionNames = typeof Intl !== "undefined" ? new Intl.DisplayNames(["en"], { type:"region" }) : null;
+const countryName = (code: string) => NAME_OVERRIDES[code] ?? regionNames?.of(code) ?? code;
+const statusWeight: Record<string, number> = { "Voting Today": 4, Upcoming: 3, Completed: 2, Postponed: 1, Cancelled: 0 };
 
 export function getWorldGlobeLabels(elections: GlobeElectionLabelSource[]): WorldGlobeLabel[] {
-  const seen = new Set<string>();
-  return elections.flatMap((election) => {
-    if (seen.has(election.countryCode)) return [];
-    seen.add(election.countryCode);
-    const coordinates = WORLD_ELECTION_COORDINATES[election.countryCode];
-    if (!coordinates || !election.country?.trim()) return [];
-    const [latitude, longitude] = coordinates;
-    const offset = LABEL_OFFSETS[election.countryCode] ?? { latitude: 2.4, longitude: 0 };
-    return [{
-      countryCode: election.countryCode,
-      country: election.country.trim(),
-      status: election.status,
-      latitude,
-      longitude,
-      labelLatitude: latitude + offset.latitude,
-      labelLongitude: longitude + offset.longitude,
-      altitude: offset.altitude ?? 1.15,
-    }];
+  const tracked = new Map<string, GlobeElectionLabelSource>();
+  elections.forEach((election) => {
+    const prior = tracked.get(election.countryCode);
+    if (!prior || (statusWeight[election.status] ?? 0) > (statusWeight[prior.status] ?? 0)) tracked.set(election.countryCode, election);
+  });
+  return Object.entries(FULL_COUNTRY_CENTROIDS).flatMap(([countryCode, centroid]) => {
+    const election = tracked.get(countryCode);
+    if (!election && CONTEXT_LABEL_EXCLUSIONS.has(countryCode)) return [];
+    const offset = election ? (LABEL_OFFSETS[countryCode] ?? { latitude: 2.4, longitude: 0 }) : { latitude: 0, longitude: 0, altitude: 1.025 };
+    return [{ countryCode, country: election?.country?.trim() || countryName(countryCode), status: election?.status || "Context", latitude:centroid.lat, longitude:centroid.lon, labelLatitude:centroid.lat + offset.latitude, labelLongitude:centroid.lon + offset.longitude, altitude:offset.altitude ?? 1.15, tracked:Boolean(election) }];
   });
 }

@@ -40,18 +40,18 @@ function makeGlowTexture() {
   return new THREE.CanvasTexture(canvas);
 }
 
-function makeCountryLabel(country: string, status: string) {
+function makeCountryLabel(country: string, status: string, tracked: boolean) {
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
   if (!context) return null;
-  const fontSize = 24;
+  const fontSize = tracked ? 24 : 15;
   context.font = `700 ${fontSize}px Inter, Arial, sans-serif`;
-  const width = Math.max(100, Math.ceil(context.measureText(country).width) + 28);
-  const height = 42;
+  const width = Math.max(tracked ? 100 : 72, Math.ceil(context.measureText(country).width) + (tracked ? 28 : 20));
+  const height = tracked ? 42 : 30;
   canvas.width = width;
   canvas.height = height;
   context.font = `700 ${fontSize}px Inter, Arial, sans-serif`;
-  context.fillStyle = status === "Voting Today" ? "#fff4b8" : status === "Completed" ? "#b8f5d3" : "#ffffff";
+  context.fillStyle = !tracked ? "#9ab0c3" : status === "Voting Today" ? "#fff4b8" : status === "Completed" ? "#b8f5d3" : "#ffffff";
   context.shadowColor = "rgba(0, 0, 0, 0.95)";
   context.shadowBlur = 8;
   context.shadowOffsetY = 2;
@@ -61,7 +61,8 @@ function makeCountryLabel(country: string, status: string) {
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
   const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false, depthTest: false }));
-  sprite.scale.set(width * 0.0041, height * 0.0041, 1);
+  const scale = tracked ? 0.0041 : 0.00235;
+  sprite.scale.set(width * scale, height * scale, 1);
   return sprite;
 }
 
@@ -144,43 +145,38 @@ export default function WorldGlobe({ elections, onElectionSelect, immersive = fa
 
     const interactiveMarkers: THREE.Object3D[] = [];
     const markerGroups: THREE.Group[] = [];
-    const labelSprites: THREE.Sprite[] = [];
-    const labelLeaderLines: THREE.Line[] = [];
-    const labels = getWorldGlobeLabels(elections).slice(0, immersive ? undefined : 18);
+    const labelOverlays: Array<{ sprite: THREE.Sprite; leader?: THREE.Line }> = [];
+    const labels = getWorldGlobeLabels(elections);
     labels.forEach((label, index) => {
-      const election = elections.find((item) => item.countryCode === label.countryCode);
-      if (!election) return;
-      const coords = WORLD_ELECTION_COORDINATES[election.countryCode];
-      if (!coords) return;
-      const markerGroup = new THREE.Group();
-      markerGroup.userData = { election, pulseOffset: index * 0.43 };
-      markerGroup.position.copy(coordinateToVector(coords[0], coords[1], 2.22));
-      const marker = new THREE.Mesh(
-        new THREE.SphereGeometry(election.status === "Voting Today" ? 0.075 : 0.052, 14, 14),
-        new THREE.MeshBasicMaterial({ color: statusColor(election.status), transparent: true, opacity: 0.96 }),
-      );
-      const pulse = new THREE.Mesh(
-        new THREE.RingGeometry(election.status === "Voting Today" ? 0.084 : 0.062, election.status === "Voting Today" ? 0.11 : 0.084, 24),
-        new THREE.MeshBasicMaterial({ color: statusColor(election.status), transparent: true, opacity: 0.55, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending }),
-      );
-      pulse.lookAt(markerGroup.position.clone().multiplyScalar(2));
-      markerGroup.add(marker, pulse);
-      interactiveMarkers.push(marker);
-      markerGroups.push(markerGroup);
-      globe.add(markerGroup);
+      const election = label.tracked ? elections.find((item) => item.countryCode === label.countryCode) : undefined;
+      const coords = election ? WORLD_ELECTION_COORDINATES[election.countryCode] : undefined;
+      if (election && coords) {
+        const markerGroup = new THREE.Group();
+        markerGroup.userData = { election, pulseOffset: index * 0.43 };
+        markerGroup.position.copy(coordinateToVector(coords[0], coords[1], 2.22));
+        const marker = new THREE.Mesh(new THREE.SphereGeometry(election.status === "Voting Today" ? 0.075 : 0.052, 14, 14), new THREE.MeshBasicMaterial({ color: statusColor(election.status), transparent: true, opacity: 0.96 }));
+        const pulse = new THREE.Mesh(new THREE.RingGeometry(election.status === "Voting Today" ? 0.084 : 0.062, election.status === "Voting Today" ? 0.11 : 0.084, 24), new THREE.MeshBasicMaterial({ color: statusColor(election.status), transparent: true, opacity: 0.55, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending }));
+        pulse.lookAt(markerGroup.position.clone().multiplyScalar(2));
+        markerGroup.add(marker, pulse);
+        interactiveMarkers.push(marker);
+        markerGroups.push(markerGroup);
+        globe.add(markerGroup);
+      }
 
-      const countryLabel = makeCountryLabel(label.country, election.status);
+      const countryLabel = makeCountryLabel(label.country, label.status, label.tracked);
       if (!countryLabel) return;
       const surface = coordinateToVector(label.latitude, label.longitude, 2.205);
       const calloutPosition = coordinateToVector(label.labelLatitude, label.labelLongitude, 2.15 * label.altitude);
       countryLabel.position.copy(calloutPosition);
       countryLabel.userData = { election, countryLabel: label.country, isCountryLabel: true };
-      const leader = makeLeaderLine(surface, calloutPosition, statusColor(election.status));
-      leader.userData = { isCountryLeader: true };
-      interactiveMarkers.push(countryLabel);
-      labelSprites.push(countryLabel);
-      labelLeaderLines.push(leader);
-      globe.add(leader, countryLabel);
+      const leader = label.tracked ? makeLeaderLine(surface, calloutPosition, statusColor(label.status)) : undefined;
+      if (leader) {
+        leader.userData = { isCountryLeader: true };
+        interactiveMarkers.push(countryLabel);
+        globe.add(leader);
+      }
+      labelOverlays.push({ sprite: countryLabel, leader });
+      globe.add(countryLabel);
     });
 
     const stars = new THREE.BufferGeometry();
@@ -243,11 +239,11 @@ export default function WorldGlobe({ elections, onElectionSelect, immersive = fa
       });
       globe.updateMatrixWorld(true);
       const cameraDirection = camera.position.clone().normalize();
-      labelSprites.forEach((label, index) => {
-        const labelDirection = label.getWorldPosition(new THREE.Vector3()).normalize();
+      labelOverlays.forEach(({ sprite, leader }) => {
+        const labelDirection = sprite.getWorldPosition(new THREE.Vector3()).normalize();
         const visible = labelDirection.dot(cameraDirection) > 0.12;
-        label.visible = visible;
-        labelLeaderLines[index].visible = visible;
+        sprite.visible = visible;
+        if (leader) leader.visible = visible;
       });
       if (beaconGlow) beaconGlow.material.opacity = 0.57 + Math.sin(time * 0.3) * 0.09;
       renderer.render(scene, camera);
@@ -276,14 +272,14 @@ export default function WorldGlobe({ elections, onElectionSelect, immersive = fa
         mesh.geometry?.dispose();
         (mesh.material as THREE.Material | undefined)?.dispose();
       }));
-      labelSprites.forEach((label) => {
-        const material = label.material as THREE.SpriteMaterial;
+      labelOverlays.forEach(({ sprite, leader }) => {
+        const material = sprite.material as THREE.SpriteMaterial;
         material.map?.dispose();
         material.dispose();
-      });
-      labelLeaderLines.forEach((line) => {
-        line.geometry.dispose();
-        (line.material as THREE.Material).dispose();
+        if (leader) {
+          leader.geometry.dispose();
+          (leader.material as THREE.Material).dispose();
+        }
       });
       renderer.dispose();
       container.removeChild(renderer.domElement);

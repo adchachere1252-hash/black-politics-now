@@ -917,6 +917,16 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add repository-grounded country labels and selected-country explorer context without obscuring globe interaction
 - [x] Verify label coverage and responsive desktop/mobile readability for the World Elections experience
 
+## World Elections Label Strict Acceptance Check (Aug 17)
+- [x] Compare original repository label coverage and interaction expectations with the deployed globe implementation
+- [x] Revalidate all live country labels, marker selection, and drawer behavior without relying only on static tests
+- [x] Correct the confirmed full-catalog implementation gap and retest the globe
+
+## World Elections Full Country-Label Parity (Aug 17)
+- [x] Port the original repository’s full 180-country centroid and short-label catalog to the World Elections globe
+- [x] Apply the original decluttering and callout policy while preserving bright tracked-election labels and subdued contextual labels
+- [x] Verify full-catalog coverage, clickable tracked-country labels, and desktop/mobile readability before publishing
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
