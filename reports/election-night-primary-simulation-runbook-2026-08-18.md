@@ -35,3 +35,9 @@ Pause the rehearsal and use the Command Center’s triage lane if the active hea
 ## Rollback and evidence
 
 The rehearsal has no public writes to roll back. Its only durable artifact is the private rehearsal record, which documents the completed steps and any optional note. Keep the current Admin status, the `election_day_status` heartbeat, and the guard/poll logs as the evidence package for the session.
+
+## Completed rehearsal evidence
+
+At **21:18 EDT**, the user-authorized protected rehearsal was completed as private record **#30001**. All four steps—heartbeat, triage, research, and review—were marked complete. The record documents that the exercise used read-only command-center, mapping, heartbeat, and log checks only; it did not invoke DDHQ polling, alter a race or source record, publish a result, or send an owner notification.
+
+Immediately after the private record was saved, the existing guarded poller remained present. Its latest completed polling pass had updated all 65 mapped races with zero errors and zero new calls; the next ordinary polling pass had started normally. The race-call log did not receive a new entry from the rehearsal.

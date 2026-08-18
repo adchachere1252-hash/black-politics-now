@@ -1028,9 +1028,10 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify congressional district geometry, accessibility, interactions, and desktop/mobile rendering after the visual alignment
 - [x] Define the simulation date, race scope, no-public-write guardrails, success criteria, and rollback path
 - [x] Validate the election guard, DDHQ mapping, database heartbeat, logs, and owner-alert path in review-safe simulation mode
-- [ ] Run the controlled election-night simulation without changing public results or sending unintended notifications
-- [ ] Publish the completed simulation checklist, manual operator steps, and exception-handling instructions
-- [ ] Verify the completed UCLA geometry, layout, and simulation-readiness changes are committed and synchronized to the selected private GitHub repository
+- [x] Execute the protected four-step rehearsal directly with a durable private record and no public race, source, alert, or publishing action
+- [x] Run the controlled election-night simulation without changing public results or sending unintended notifications
+- [x] Publish the completed simulation checklist, manual operator steps, and exception-handling instructions
+- [x] Verify the completed UCLA geometry, layout, and simulation-readiness changes are committed and synchronized to the selected private GitHub repository
 
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
