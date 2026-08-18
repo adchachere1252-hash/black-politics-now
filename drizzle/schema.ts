@@ -11,6 +11,7 @@ import {
   bigint,
   float,
   index,
+  uniqueIndex,
 } from "drizzle-orm/mysql-core";
 
 /**
@@ -261,6 +262,49 @@ export const referendums = mysqlTable("referendums", {
 
 export type Referendum = typeof referendums.$inferSelect;
 export type InsertReferendum = typeof referendums.$inferInsert;
+
+// ─── Certified Results Archive ────────────────────────────────────────────────
+/**
+ * A published, immutable-in-application snapshot of results confirmed by an
+ * election authority. The application intentionally exposes no update or
+ * delete procedure for this ledger.
+ */
+export const certifiedResultArchives = mysqlTable("certified_result_archives", {
+  id: int("id").autoincrement().primaryKey(),
+  archiveKey: varchar("archive_key", { length: 96 }).notNull().unique(),
+  title: varchar("title", { length: 256 }).notNull(),
+  certificationAuthority: varchar("certification_authority", { length: 256 }).notNull(),
+  certificationSourceUrl: varchar("certification_source_url", { length: 2048 }).notNull(),
+  certificationStatement: text("certification_statement").notNull(),
+  certifiedAt: timestamp("certified_at").notNull(),
+  certifiedBy: varchar("certified_by", { length: 128 }).notNull(),
+  snapshotDigest: varchar("snapshot_digest", { length: 64 }).notNull(),
+  entryCount: int("entry_count").notNull().default(0),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [index("certified_results_archive_certified_at_idx").on(table.certifiedAt)]);
+
+export type CertifiedResultArchive = typeof certifiedResultArchives.$inferSelect;
+
+/** Exact result payloads captured at certification time, never re-read from live race tables for public archive detail. */
+export const certifiedResultArchiveEntries = mysqlTable("certified_result_archive_entries", {
+  id: int("id").autoincrement().primaryKey(),
+  archiveId: int("archive_id").notNull(),
+  chamber: mysqlEnum("chamber", ["Senate", "House", "Governor", "Referendum"]).notNull(),
+  sourceRecordId: int("source_record_id").notNull(),
+  contestKey: varchar("contest_key", { length: 128 }).notNull(),
+  jurisdiction: varchar("jurisdiction", { length: 128 }).notNull(),
+  resultLabel: varchar("result_label", { length: 256 }).notNull(),
+  winnerOrResult: varchar("winner_or_result", { length: 256 }).notNull(),
+  partyOrSide: varchar("party_or_side", { length: 32 }),
+  sourceUrl: varchar("source_url", { length: 2048 }).notNull(),
+  snapshotJson: text("snapshot_json").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  uniqueIndex("certified_results_archive_entry_unique").on(table.archiveId, table.chamber, table.sourceRecordId),
+  index("certified_results_archive_entry_archive_idx").on(table.archiveId, table.chamber),
+]);
+
+export type CertifiedResultArchiveEntry = typeof certifiedResultArchiveEntries.$inferSelect;
 
 // ═══════════════════════════════════════════════════════════════════════════
 // PODCAST TABLES (ported from daily-podcast)

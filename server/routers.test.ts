@@ -349,6 +349,15 @@ describe("Autonomous Research Desk router", () => {
     await expect(adminCaller.electionDay.sourceConflicts()).resolves.toEqual(expect.any(Array));
     await expect(adminCaller.electionDay.reconciliation()).resolves.toMatchObject({ chambers: expect.any(Array), sourceConflicts: expect.any(Object), nextAction: expect.any(String) });
   });
+
+  it("keeps certification archive creation private while preserving public read-only discovery", async () => {
+    const publicCaller = appRouter.createCaller(createPublicContext());
+    const adminCaller = appRouter.createCaller(createAdminContext());
+    await expect(publicCaller.certifiedResultsArchive.list()).resolves.toEqual(expect.any(Array));
+    await expect(publicCaller.certifiedResultsArchive.preview()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(publicCaller.certifiedResultsArchive.create({ archiveKey: "test-archive", title: "Test archive", certificationAuthority: "Election authority", certificationSourceUrl: "https://example.gov/results", certificationStatement: "Authority certification for isolated test coverage.", certifiedAt: new Date() })).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(adminCaller.certifiedResultsArchive.preview()).resolves.toMatchObject({ eligible: expect.any(Object), blockers: expect.any(Array) });
+  });
 });
 
 describe("portrait review router", () => {

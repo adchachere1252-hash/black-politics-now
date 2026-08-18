@@ -50,6 +50,7 @@ import { getLatestPortraitResearchItems } from "./agentDesk";
 import { getLatestDailyOperationalSnapshot } from "./agentDailySummary";
 import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, executeAgentTaskWithChangeSet, getAgentChangeProposals, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, getLatestPortraitResearchBatch, reviewAgentChangeProposal, reviewAgentRecommendation, runAgentTaskResearchNow, runElectionDayCommandResearch, runPortraitResearchTask, runResearchDesk, setAgentDefaultOwners, setAgentPriorityMode, startAllPortraitResearch, updateAgentTask } from "./agentDesk";
 import { getEngagementSummary, recordAnonymousPageView } from "./siteAnalytics";
+import { createCertificationArchive, getCertificationArchivePreview, getCertifiedResultArchiveDetail, getCertifiedResultArchives } from "./certifiedResultsArchive";
 
 export const appRouter = router({
   system: systemRouter,
@@ -170,6 +171,24 @@ export const appRouter = router({
     advanceRehearsal: adminProcedure
       .input(z.object({ id: z.number().int(), step: z.enum(["heartbeat", "triage", "research", "review"]), notes: z.string().max(500).optional() }))
       .mutation(async ({ input }) => advanceElectionDayRehearsal(input.id, input.step, input.notes)),
+  }),
+
+  certifiedResultsArchive: router({
+    list: publicProcedure.query(async () => getCertifiedResultArchives()),
+    detail: publicProcedure
+      .input(z.object({ archiveKey: z.string().min(3).max(96) }))
+      .query(async ({ input }) => getCertifiedResultArchiveDetail(input.archiveKey)),
+    preview: adminProcedure.query(async () => getCertificationArchivePreview()),
+    create: adminProcedure
+      .input(z.object({
+        archiveKey: z.string().min(3).max(96),
+        title: z.string().min(3).max(256),
+        certificationAuthority: z.string().min(3).max(256),
+        certificationSourceUrl: z.string().url().max(2048),
+        certificationStatement: z.string().min(12).max(4000),
+        certifiedAt: z.date(),
+      }))
+      .mutation(async ({ input, ctx }) => createCertificationArchive({ ...input, certifiedBy: ctx.user.name ?? "Administrator" })),
   }),
 
   // ─── World Elections ─────────────────────────────────────────────────────────

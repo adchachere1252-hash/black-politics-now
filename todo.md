@@ -1043,6 +1043,14 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add regression coverage and verify desktop/mobile public and Admin rendering for the new election operations surfaces
 - [x] Run production checks, save the published checkpoint, synchronize the selected private GitHub repository, and deliver the completed checklist
 
+## Post-Certification Results Archive (Aug 18)
+- [x] Inventory final-result fields, existing source-evidence controls, and public archive routes before defining the certification archive contract
+- [x] Add immutable archive tables and a protected Admin certification workflow that requires an authority source and cannot archive preliminary returns
+- [x] Implement certified Senate, House, Governor, and referendum ledger snapshots with source evidence and certification metadata; no live snapshot was created because no current records are Certified
+- [x] Add public archive discovery and a responsive archive detail view that clearly distinguishes certified records from live or preliminary election data
+- [x] Add regression coverage for public-safe reads, Admin-only certification, certification-source requirements, and immutable archive snapshots
+- [x] Run responsive verification, full release checks, publish the checkpoint, synchronize private GitHub, and deliver the completed archive checklist
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
