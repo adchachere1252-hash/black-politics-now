@@ -1020,6 +1020,18 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add the requested Manus recognition mark at the lower-right screen edge without obscuring content
 - [x] Run and publish desktop/mobile Election Night launch-readiness checks and checklist
 
+## UCLA District Geometry & Election Night Simulation (Aug 18)
+- [x] Inventory the validated UCLA Congress-by-Congress geometry source, current Historical Atlas renderer, and homepage House-map color tokens
+- [x] Document the exact visual mismatch between the district geometry and homepage House election map
+- [x] Identify and tighten unused lower-page whitespace without breaking the desktop single-screen dashboard or mobile stacked layout
+- [x] Apply the shared House-map rating palette and legend semantics to the UCLA district-geometry display without changing verified boundaries
+- [x] Verify congressional district geometry, accessibility, interactions, and desktop/mobile rendering after the visual alignment
+- [x] Define the simulation date, race scope, no-public-write guardrails, success criteria, and rollback path
+- [x] Validate the election guard, DDHQ mapping, database heartbeat, logs, and owner-alert path in review-safe simulation mode
+- [ ] Run the controlled election-night simulation without changing public results or sending unintended notifications
+- [ ] Publish the completed simulation checklist, manual operator steps, and exception-handling instructions
+- [ ] Verify the completed UCLA geometry, layout, and simulation-readiness changes are committed and synchronized to the selected private GitHub repository
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade

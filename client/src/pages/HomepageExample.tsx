@@ -207,7 +207,7 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
   }, [mapSearch, mapMode, senateRaces, houseRaces, governors, cbcMembers, blackRepresentationElections]);
 
   return (
-    <div className="homepage-editorial-home homepage-atlas-shell hidden h-[calc(100dvh-64px)] overflow-hidden bg-background p-2 lg:block">
+    <div className="homepage-editorial-home homepage-atlas-shell hidden h-[calc(100dvh-64px)] overflow-hidden bg-background px-2 pb-0 pt-2 lg:block">
       <main className="homepage-atlas-main mx-auto flex h-full max-w-[1640px] min-h-0 flex-col overflow-hidden rounded-xl border border-border bg-card p-2 shadow-[0_18px_70px_rgba(17,24,39,0.12)] dark:shadow-black/35">
         {mode === "preview" && <div className="mb-2 flex shrink-0 items-center justify-between border-b border-border pb-1.5"><span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-primary">Black Politics Now · Homepage direction</span><span className="text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Reference-aligned visual example</span></div>}
         <div className="mb-2 shrink-0"><ResultsTicker senateRaces={senateRaces as any[] ?? []} houseRaces={houseRaces as any[] ?? []} /></div>
