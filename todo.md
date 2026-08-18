@@ -1010,6 +1010,16 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify label visibility at desktop globe size without obscuring navigation or country selection
 - [x] Verify the lighter label treatment at mobile globe size before publication
 
+## Election Night Launch Readiness (Aug 18)
+- [x] Verify real-time DDHQ polling, tracker heartbeat, live race coverage, and autonomous election-night behavior
+- [x] Verify and refresh Zambia’s World Elections result from authoritative sources and approved record workflow
+- [x] Reduce World Elections globe size so desktop and mobile layouts fit without clipping
+- [x] Remove the U.S. Election Map from the mobile app while retaining website-only U.S. map access
+- [x] Improve Black Representation map naming and audit ratings so no race is misleadingly shown as Toss-up
+- [x] Verify the reconstructed August 17 Daily Intelligence Brief remains fully published in both voices
+- [x] Add the requested Manus recognition mark at the lower-right screen edge without obscuring content
+- [x] Run and publish desktop/mobile Election Night launch-readiness checks and checklist
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade

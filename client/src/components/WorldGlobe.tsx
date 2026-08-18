@@ -301,5 +301,5 @@ export default function WorldGlobe({ elections, onElectionSelect, immersive = fa
     };
   }, [elections, focusCountryCode, labelDensity, onElectionSelect]);
 
-  return <div ref={containerRef} className={immersive ? "aspect-square h-auto w-full sm:aspect-auto sm:h-[610px]" : "aspect-square h-auto w-full sm:aspect-auto sm:h-[440px]"} aria-label="Animated luminous Earth globe; select an election beacon to open country details" />;
+  return <div ref={containerRef} className={immersive ? "h-[min(76vw,300px)] w-full sm:h-[540px] lg:h-[560px]" : "h-[min(76vw,280px)] w-full sm:h-[420px]"} aria-label="Animated luminous Earth globe; select an election beacon to open country details" />;
 }

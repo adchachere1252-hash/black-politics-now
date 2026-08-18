@@ -7,6 +7,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { AudioProvider } from "./contexts/AudioContext";
 import SiteHeader from "./components/SiteHeader";
 import StickyPlayer from "./components/StickyPlayer";
+import ManusRecognition from "./components/ManusRecognition";
 import Home from "./pages/Home";
 import { lazy, Suspense } from "react";
 import { usePageTracking } from "./hooks/usePageTracking";
@@ -102,6 +103,7 @@ function App() {
             <main className={usesEmbedShell ? "" : "pb-20"}>
               <Router />
             </main>
+            {!usesEmbedShell && <ManusRecognition />}
             {!usesEmbedShell && <StickyPlayer />}
           </TooltipProvider>
         </AudioProvider>

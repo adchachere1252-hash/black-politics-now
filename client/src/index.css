@@ -52,10 +52,12 @@
   --color-likely-r: #c04040;
   --color-solid-r: #b22222;
   --color-no-data: #d0d4dc;
+  --color-representation: #a96a13;
 }
 
 .dark {
   --color-no-data: #2a2f3a;
+  --color-representation: #e6b153;
 }
 
 :root {

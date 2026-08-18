@@ -2,12 +2,12 @@ import { trpc } from "@/lib/trpc";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { Search, Star, Users, Scale, MapPin, AlertTriangle, ExternalLink, Trophy } from "lucide-react";
-import { USMap } from "@/components/USMap";
 import { USMapFull } from "@/components/USMapFull";
 import { ResultsTicker } from "@/components/ResultsTicker";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { buildElectionMapFreshnessPresentation } from "@/lib/electionFreshness";
+import { buildBlackPoliticalRepresentationMapData } from "@/lib/representationMap";
 
 const RATINGS = ["All", "Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R"] as const;
 type ViewTab = "house" | "senate" | "governors" | "cbc" | "redistricting";
@@ -205,22 +205,7 @@ export default function Elections() {
         };
       });
     } else if (tab === "cbc") {
-      // Show CBC member states highlighted in blue
-      const cbcStates: Record<string, number> = {};
-      (cbcMembers as any[]).forEach((m: any) => {
-        const stateCode = getStateCodeFromName(m.state);
-        if (stateCode) {
-          cbcStates[stateCode] = (cbcStates[stateCode] || 0) + 1;
-        }
-      });
-      Object.entries(cbcStates).forEach(([code, count]) => {
-        data[code] = {
-          rating: "Toss-up", // Neutral purple: presence indicator, not a party rating
-          candidate1: `${count} Black member${count > 1 ? "s" : ""}`,
-          candidate2: "Black Representation",
-          calledWinner: null,
-        };
-      });
+      Object.assign(data, buildBlackPoliticalRepresentationMapData(cbcMembers as any[], (member) => member.stateCode ?? getStateCodeFromName(member.state ?? "")));
     } else if (tab === "redistricting") {
       // Show redistricting states
       (redistrictingStates as any[]).forEach((s: any) => {
@@ -328,7 +313,7 @@ export default function Elections() {
   }, [redistrictingStates, searchQuery, selectedState]);
 
   const tabs: { id: ViewTab; label: string; icon: any }[] = [
-    { id: "cbc", label: "Black Rep", icon: Star },
+    { id: "cbc", label: "Black Reps", icon: Star },
     { id: "governors", label: "Governor", icon: MapPin },
     { id: "house", label: "House", icon: Users },
     { id: "redistricting", label: "Redistricting", icon: AlertTriangle },
@@ -397,8 +382,8 @@ export default function Elections() {
           </div>
         </div>
 
-        {/* Interactive Map */}
-        <div className="glass-card rounded-xl p-4 mb-6">
+        {/* Interactive U.S. map remains a desktop website experience. */}
+        <div className="glass-card mb-6 hidden rounded-xl p-4 lg:block">
           <div className="flex items-center justify-between gap-3 mb-3">
             <div><h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Interactive Election Map</h2><p className={`mt-0.5 text-[11px] font-semibold ${mapFreshness.status === "warning" ? "text-amber-700 dark:text-amber-300" : mapFreshness.status === "live" ? "text-emerald-700 dark:text-emerald-300" : "text-muted-foreground"}`}>{mapFreshness.primary}</p><p className="mt-0.5 text-[11px] text-muted-foreground">{mapFreshness.detail}</p></div>
             {selectedState && (
@@ -407,17 +392,8 @@ export default function Elections() {
               </button>
             )}
           </div>
-          {/* Full geographic map on desktop, simplified on mobile */}
-          <div className="hidden md:block">
+          <div>
             <USMapFull
-              raceData={mapData}
-              onStateClick={handleStateClick}
-              selectedState={selectedState}
-              showLegend={false}
-            />
-          </div>
-          <div className="md:hidden">
-            <USMap
               raceData={mapData}
               onStateClick={handleStateClick}
               selectedState={selectedState}
@@ -426,14 +402,20 @@ export default function Elections() {
           </div>
           {/* Legend */}
           <div className="flex flex-wrap gap-3 mt-4 justify-center">
-            {(tab === "cbc" ? ["Black Representation presence"] : ["Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R"]).map(r => (
+            {(tab === "cbc" ? ["Black Political Representation presence"] : ["Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R"]).map(r => (
               <div key={r} className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: tab === "cbc" ? getRatingColor("Toss-up") : getRatingColor(r) }} />
+                <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: tab === "cbc" ? "var(--color-representation)" : getRatingColor(r) }} />
                 <span className="text-xs text-muted-foreground">{r}</span>
               </div>
             ))}
           </div>
         </div>
+
+        <section className="mb-6 rounded-xl border border-primary/25 bg-primary/[0.045] p-4 lg:hidden">
+          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary">Desktop Website Feature</p>
+          <h2 className="mt-1 text-base font-bold text-foreground">Interactive U.S. map</h2>
+          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">The state-by-state map is reserved for larger desktop screens. Race filters, live results, and the full list below remain available here without a map that is difficult to use on a phone.</p>
+        </section>
 
         {/* Scoreboard */}
         <TabScoreboard tab={tab} senateRaces={senateRaces as any[]} houseRaces={houseRaces as any[]} governors={governors as any[]} cbcMembers={cbcMembers as any[]} blackRepresentationElections={blackRepresentationElections as any[]} redistrictingStates={redistrictingStates as any[]} />

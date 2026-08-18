@@ -149,5 +149,5 @@ export default function MiniRepositoryGlobe({ theme = "dark", vibrant = false }:
     };
   }, [theme, vibrant]);
 
-  return <div ref={containerRef} className="h-full w-full" aria-label="Slowly rotating geographic political globe with country boundaries" />;
+  return <div ref={containerRef} className="h-full w-full scale-[0.86]" aria-label="Slowly rotating geographic political globe with country boundaries" />;
 }

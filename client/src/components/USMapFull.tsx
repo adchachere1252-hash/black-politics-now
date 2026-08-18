@@ -132,12 +132,14 @@ export function USMapFull({ raceData, onStateClick, selectedState, showLegend = 
       case "Lean R": return "var(--color-lean-r)";
       case "Likely R": return "var(--color-likely-r)";
       case "Solid R": return "var(--color-solid-r)";
+      case "Black Political Representation": return "var(--color-representation)";
       default: return "var(--color-no-data)";
     }
   };
 
   const hoveredData = hoveredState ? raceData[hoveredState] : null;
   const hoveredName = hoveredState ? STATE_NAMES[hoveredState] : null;
+  const representationView = hoveredData?.rating === "Black Political Representation";
   const boundedTooltipPos = getBoundedMapTooltipPosition(tooltipPos);
 
   return (
@@ -183,8 +185,8 @@ export function USMapFull({ raceData, onStateClick, selectedState, showLegend = 
           <p className="text-sm font-bold text-foreground">{hoveredName}</p>
           <p className="text-xs text-muted-foreground mt-0.5">{hoveredData.rating ?? "No Rating"}</p>
           <div className="mt-1.5 text-xs">
-            <p className="text-[color:var(--color-solid-d)]">{hoveredData.candidate1 || "—"}</p>
-            <p className="text-[color:var(--color-solid-r)]">{hoveredData.candidate2 || "—"}</p>
+            <p className={representationView ? "text-primary" : "text-[color:var(--color-solid-d)]"}>{hoveredData.candidate1 || "—"}</p>
+            <p className={representationView ? "text-primary" : "text-[color:var(--color-solid-r)]"}>{hoveredData.candidate2 || "—"}</p>
           </div>
           {hoveredData.calledWinner && (
             <p className="text-xs text-primary font-medium mt-1">Winner: {hoveredData.calledWinner}</p>
@@ -194,7 +196,10 @@ export function USMapFull({ raceData, onStateClick, selectedState, showLegend = 
 
       {/* Legend */}
       {showLegend && <div className="flex flex-wrap justify-center gap-3 mt-4">
-        {[
+        {(Object.values(raceData).some((race) => race.rating === "Black Political Representation") ? [
+          { label: "Black Political Representation", color: "var(--color-representation)" },
+          { label: "No Data", color: "var(--color-no-data)" },
+        ] : [
           { label: "Solid D", color: "var(--color-solid-d)" },
           { label: "Likely D", color: "var(--color-likely-d)" },
           { label: "Lean D", color: "var(--color-lean-d)" },
@@ -203,7 +208,7 @@ export function USMapFull({ raceData, onStateClick, selectedState, showLegend = 
           { label: "Likely R", color: "var(--color-likely-r)" },
           { label: "Solid R", color: "var(--color-solid-r)" },
           { label: "No Data", color: "var(--color-no-data)" },
-        ].map(({ label, color }) => (
+        ]).map(({ label, color }) => (
           <div key={label} className="flex items-center gap-1.5">
             <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: color }} />
             <span className="text-xs text-muted-foreground">{label}</span>
