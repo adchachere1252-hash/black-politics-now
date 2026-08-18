@@ -983,22 +983,27 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Deliver the verified distinction without claiming a held historical draft was remediated
 
 ## Dated Daily Brief Reconstruction and Autonomous Quality Program (Aug 17)
-- [ ] Snapshot the July 28–August 17 archive records and preserve a reversible audit trail before historical reconstruction
-- [ ] Collect date-appropriate source packages for every held historical Daily Brief and exclude dates that cannot meet the sourcing standard
-- [ ] Rebuild held briefs in guarded batches with complete scripts, topic flow, paired Andrew/Jenny segments, and verified full mixes
-- [ ] Audit every reconstructed release against the 100-point benchmark and retain explicit holds for any date that cannot pass
-- [ ] Harden daily preflight, publication, alert, recovery, and QA monitoring so future briefs cannot publish below the benchmark
-- [ ] Deliver the reconstructed-archive coverage and remaining evidence-gap report
+- [x] Snapshot the July 28–August 17 archive records and preserve a reversible audit trail before historical reconstruction
+- [x] Collect date-appropriate source packages for every held historical Daily Brief and exclude dates that cannot meet the sourcing standard
+- [x] Rebuild held briefs in guarded batches with complete scripts, topic flow, paired Andrew/Jenny segments, and verified full mixes
+- [x] Audit every reconstructed release against the 100-point benchmark and retain explicit holds for any date that cannot pass
+- [x] Harden daily preflight, publication, alert, recovery, and QA monitoring so future briefs cannot publish below the benchmark
+- [x] Deliver the reconstructed-archive coverage and remaining evidence-gap report
 
 ## Historical Reconstruction Audio-Gate Propagation (Aug 18)
-- [ ] Ensure a paired-audio synthesis failure causes the reconstruction runner to hold the date rather than reporting it complete
-- [ ] Repair and re-run the held August 10 audio path only after the source and script package remain intact
-- [ ] Verify the reconstruction report distinguishes fully rebuilt dates from source-passed records still awaiting audio completion
+- [x] Ensure a paired-audio synthesis failure causes the reconstruction runner to hold the date rather than reporting it complete
+- [x] Repair and re-run the held August 10 audio path only after the source and script package remain intact
+- [x] Verify the reconstruction report distinguishes fully rebuilt dates from source-passed records still awaiting audio completion
 
 ## Historical Reconstruction Generation Timeout (Aug 18)
-- [ ] Ensure a stalled sourced-script generation cannot block a serialized reconstruction batch indefinitely
-- [ ] Hold and preserve the stalled July 28 date until its bounded generation retry can complete with the frozen source package
-- [ ] Resume only verified remaining dates after the runner reports an explicit pass or hold outcome
+- [x] Ensure a stalled sourced-script generation cannot block a serialized reconstruction batch indefinitely
+- [x] Hold and preserve the stalled July 28 date until its bounded generation retry can complete with the frozen source package
+- [x] Resume only verified remaining dates after the runner reports an explicit pass or hold outcome
+
+## Historical Reconstruction Frozen-Source Recheck (Aug 18)
+- [x] Ensure a retry uses its persisted passed source package instead of re-querying and invalidating dated evidence
+- [x] Re-run the held August 14 reconstruction only after the frozen source-package guard is enforced
+- [x] Verify retries retain the exact reviewed source evidence that passed the initial preflight
 
 ## World Elections Globe Label Visibility (Aug 17)
 - [x] Increase country-label contrast and small-country callout readability while retaining tracked-election visual priority
