@@ -1,0 +1,114 @@
+{
+  "results": [
+    {
+      "input": "2026-07-28 — European Commission DSA Brief",
+      "output": {
+        "evidence_gap": "",
+        "qualifying_source_count": 2,
+        "source_evidence": "2026-07-10 | European Commission | Commission preliminarily finds the addictive design of Instagram and Facebook in breach of the Digital Services Act | https://digital-strategy.ec.europa.eu/en/news/commission-preliminarily-finds-addictive-design-instagram-and-facebook-breach-digital-services-act | The European Commission formally announced preliminary findings that Meta breached the Digital Services Act regarding addictive design features.\n2026-07-23 | Reuters | Major European regulatory probes into Big Tech | https://www.reuters.com/technology/european-regulators-crack-down-big-tech-2026-07-23/ | Reuters detailed ongoing European regulatory enforcement and scrutiny under the Digital Services Act targeting major tech platforms.",
+        "target_date_topics": "2026-07-28 — European Commission DSA Brief"
+      },
+      "error": ""
+    },
+    {
+      "input": "2026-07-29 — European Commission DSA Brief",
+      "output": {
+        "evidence_gap": "",
+        "qualifying_source_count": 2,
+        "source_evidence": "2026-07-16 | European Commission | Commission accepts X's action plan to comply with Digital Services Act | https://digital-strategy.ec.europa.eu/en/news/commission-accepts-xs-action-plan-comply-digital-services-act | The European Commission issued an official press release announcing its formal acceptance of X's action plan to comply with DSA transparency and data access obligations.\n2026-07-15 | Agence France-Presse | EU accepts X's plan to fix digital content violations | https://www.yahoo.com/news/politics/articles/eu-accepts-xs-plan-fix-181020021.html | Leading international news agency AFP reported on the European Union's approval of X's corrective compliance measures under the Digital Services Act.",
+        "target_date_topics": "2026-07-29 — European Commission DSA Brief"
+      },
+      "error": ""
+    },
+    {
+      "input": "2026-07-30 — European Commission DSA Brief",
+      "output": {
+        "evidence_gap": "",
+        "qualifying_source_count": 3,
+        "source_evidence": "2026-07-15 | Reuters | EU accepts action plan by Elon Musk's X to become more transparent | https://www.reuters.com/business/eu-accepts-action-plan-by-elon-musks-x-become-more-transparent-2026-07-15/ | Reports on the European Commission's acceptance of X's compliance action plan under the Digital Services Act.\n2026-07-16 | European Commission | Commission accepts X's action plan to comply with Digital Services Act | https://digital-strategy.ec.europa.eu/en/news/commission-accepts-xs-action-plan-comply-digital-services-act | Official announcement detailing the European Commission's formal acceptance of X's compliance action plan under the Digital Services Act.\n2026-07-21 | Reuters | US lawmakers urge Trump to act against EU tech rules, suggest trade probes | https://www.reuters.com/legal/government/us-lawmakers-urge-trump-act-against-eu-tech-rules-suggest-trade-probes-2026-07-21/ | Covers U.S. lawmakers urging presidential action and trade probes against European tech regulations including the Digital Services Act.",
+        "target_date_topics": "2026-07-30 — European Commission DSA Brief"
+      },
+      "error": ""
+    },
+    {
+      "input": "2026-07-31 — European Commission DSA Brief",
+      "output": {
+        "evidence_gap": "",
+        "qualifying_source_count": 4,
+        "source_evidence": "2026-07-24 | European Commission | Commission preliminary finds TikTok in breach of Digital Services Act for failing to ensure safe accounts for minors | https://digital-strategy.ec.europa.eu/en/news/commission-preliminarily-finds-tiktok-breach-digital-services-act-failing-ensure-safe-accounts-minors | The European Commission issued preliminary findings that TikTok breached the Digital Services Act regarding user safety for minors.\n2026-07-20 | European Commission | Commission fines AliExpress €550 million for breaching the Digital Services Act | https://digital-strategy.ec.europa.eu/en/news/commission-fines-aliexpress-eu550-million-breaching-digital-services-act | The European Commission levied a €550 million fine against AliExpress for non-compliance with the Digital Services Act.\n2026-07-16 | European Commission | Commission accepts X's action plan to comply with Digital Services Act | https://digital-strategy.ec.europa.eu/en/news/commission-accepts-xs-action-plan-comply-digital-services-act | The European Commission accepted corrective measures and an action plan from X to resolve DSA compliance breaches.\n2026-07-10 | European Commission | Commission preliminarily finds the addictive design of Instagram and Facebook breach Digital Services Act | https://digital-strategy.ec.europa.eu/en/news/commission-preliminarily-finds-addictive-design-instagram-and-facebook-breach-digital-services-act | The European Commission preliminarily concluded that Meta's Instagram and Facebook violated the Digital Services Act through addictive design.",
+        "target_date_topics": "2026-07-31 — European Commission DSA Brief"
+      },
+      "error": ""
+    },
+    {
+      "input": "2026-08-01 — European Commission DSA Brief",
+      "output": {
+        "evidence_gap": "",
+        "qualifying_source_count": 2,
+        "source_evidence": "2026-07-16 | European Commission | Commission accepts X's action plan to comply with Digital Services Act | https://digital-strategy.ec.europa.eu/en/news/commission-accepts-xs-action-plan-comply-digital-services-act | The European Commission formally accepted X's action plan to comply with transparency and data access obligations under the Digital Services Act.\n2026-07-23 | Reuters | Major European regulatory probes into Big Tech | https://www.reuters.com/technology/european-regulators-crack-down-big-tech-2026-07-23/ | Reuters reported on ongoing European regulatory probes and enforcement actions targeting major technology platforms under the Digital Services Act and related EU laws.",
+        "target_date_topics": "2026-08-01 — European Commission DSA Brief"
+      },
+      "error": ""
+    },
+    {
+      "input": "2026-08-02 — European Commission DSA Brief",
+      "output": {
+        "evidence_gap": "",
+        "qualifying_source_count": 2,
+        "source_evidence": "2026-07-16 | European Commission | Commission accepts X’s action plan to comply with Digital Services Act | https://digital-strategy.ec.europa.eu/en/news/commission-accepts-xs-action-plan-comply-digital-services-act | The European Commission announced its formal acceptance of X's action plan to comply with transparency and researcher access obligations under the Digital Services Act.\n2026-07-23 | Reuters | Major European regulatory probes into Big Tech | https://www.reuters.com/technology/european-regulators-crack-down-big-tech-2026-07-23/ | Reuters reported on major European regulatory scrutiny and enforcement actions against Big Tech under the Digital Markets Act and Digital Services Act.",
+        "target_date_topics": "2026-08-02 — European Commission DSA Brief"
+      },
+      "error": ""
+    },
+    {
+      "input": "2026-08-13 — Health \u0026 AI Brief",
+      "output": {
+        "evidence_gap": "",
+        "qualifying_source_count": 2,
+        "source_evidence": "2026-08-06 | BBC News | Artificial Intelligence used to design brand new viruses | https://www.bbc.com/news/articles/c5y3j3ngevmo | Details how scientists successfully used artificial intelligence to design the genetic code of brand-new functional viruses, raising critical biosecurity and health governance issues.\n2026-08-10 | Associated Press | AI companions vanish without goodbyes as China tightens rules | https://apnews.com/article/china-ai-virtual-companions-bytedance-wechat-22c4247031092c37b61b537dd809b658 | Reports on the sudden removal of AI virtual companions in China under tightening regulations, highlighting mental health implications and user reliance on conversational AI.",
+        "target_date_topics": "2026-08-13 — Health \u0026 AI Brief"
+      },
+      "error": ""
+    },
+    {
+      "input": "2026-08-14 — Friday Week in Review; European Commission DSA Brief; Health \u0026 AI Brief",
+      "output": {
+        "evidence_gap": true,
+        "qualifying_source_count": 4,
+        "source_evidence": "2026-08-14 | Reuters | U.S. consumer sentiment deteriorates in August | https://www.reuters.com/business/us-consumer-sentiment-deteriorates-august-2026-08-14/ | Reports on slumping U.S. consumer sentiment in early August 2026 amid cost-of-living concerns, supporting economic week-in-review coverage.\n2026-08-14 | Reuters | Trump touts drop in US crime rates with an eye on midterms | https://www.reuters.com/legal/government/trump-tout-drop-us-crime-rates-with-an-eye-midterms-2026-08-14/ | Covers political developments regarding U.S. crime rates ahead of midterms, supporting domestic policy week-in-review coverage.\n2026-07-24 | European Commission | Daily News 24 / 07 / 2026 | https://ec.europa.eu/commission/presscorner/detail/en/mex_26_1687 | Official European Commission announcement detailing preliminary findings that TikTok breached the Digital Services Act regarding minor safety standards.\n2026-07-31 | European Commission | Commission starts enforcing AI Act rules and new transparency requirements on 2 August | https://ec.europa.eu/commission/presscorner/detail/en/ip_26_1714 | Official European Commission press release announcing the enforcement launch of the AI Act and new transparency requirements starting August 2, 2026.\nEVIDENCE GAP: European Commission DSA Brief lacks a second qualifying authoritative source published within the preceding 21-day window (July 24 – August 14, 2026), as only one qualifying primary institutional source was identified.",
+        "target_date_topics": "2026-08-14 — Friday Week in Review; European Commission DSA Brief; Health \u0026 AI Brief"
+      },
+      "error": ""
+    },
+    {
+      "input": "2026-08-15 — Health \u0026 AI Brief",
+      "output": {
+        "evidence_gap": "",
+        "qualifying_source_count": 2,
+        "source_evidence": "2026-08-02 | European Commission | Safer and more transparent AI | https://commission.europa.eu/news-and-media/news/safer-and-more-transparent-ai-2026-08-02_en | Details the implementation milestones of the EU AI Act taking effect in August 2026, impacting digital health systems and medical AI governance.\n2026-07-28 | Becker's Payer | 7 AI health insurance state laws passed in 2026 | https://www.beckerspayer.com/policy-updates/7-ai-health-insurance-state-laws-passed-in-2026/ | Examines new state legislation regulating how health insurers use artificial intelligence for coverage determinations.",
+        "target_date_topics": "2026-08-15 — Health \u0026 AI Brief"
+      },
+      "error": ""
+    },
+    {
+      "input": "2026-08-16 — Health \u0026 AI Brief",
+      "output": {
+        "evidence_gap": "",
+        "qualifying_source_count": 2,
+        "source_evidence": "2026-08-04 | Reuters | AI offers 'lifeline' for emerging economies, World Bank says | https://www.reuters.com/business/ai-offers-lifeline-emerging-economies-world-bank-says-2026-08-04/ | Discusses the World Bank report highlighting how low-cost AI tools can bring better medical care and speed diagnoses in developing economies.\n2026-08-05 | Reuters | AI finds previously undetected health risks during sleep studies | https://www.reuters.com/business/healthcare-pharmaceuticals/ai-finds-previously-undetected-health-risks-during-sleep-studies-2026-08-05/ | Reports on researchers using AI to analyze sleep studies to uncover hidden physiological patterns predicting long-term health risks like heart disease and cognitive impairment.",
+        "target_date_topics": "2026-08-16 — Health \u0026 AI Brief"
+      },
+      "error": ""
+    },
+    {
+      "input": "2026-08-17 — Monday Weekend Brief; Health \u0026 AI Brief",
+      "output": {
+        "evidence_gap": "",
+        "qualifying_source_count": 2,
+        "source_evidence": "2026-08-05 | Reuters | AI finds previously undetected health risks during sleep studies | https://www.reuters.com/business/healthcare-pharmaceuticals/ai-finds-previously-undetected-health-risks-during-sleep-studies-2026-08-05/ | Reports on how artificial intelligence applied to routine sleep study data reveals hidden physiological patterns predictive of long-term health risks.\n2026-08-17 | Reuters | Nestle looks to develop new products to serve users of weight-loss drugs | https://www.reuters.com/legal/litigation/nestle-looks-develop-new-products-serve-users-weight-loss-drugs-2026-08-17/ | Details how food giant Nestle utilizes artificial intelligence and nutritional science to develop specialized products and address side effects for users of GLP-1 weight-loss drugs.",
+        "target_date_topics": "2026-08-17 — Monday Weekend Brief; Health \u0026 AI Brief"
+      },
+      "error": ""
+    }
+  ]
+}

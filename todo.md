@@ -977,6 +977,34 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Require the benchmark standard in future Daily Brief publication and recovery safeguards
 - [x] Test the scorecard, future-publication gate, and responsive Admin presentation
 
+## Daily Brief Preservation and Remediation Clarification (Aug 17)
+- [x] Reconfirm the original pre-July archive records remain metadata- and URL-identical to the source repository baseline
+- [x] Separate post-July releases actually rebuilt to the standard from records only classified as integrity holds
+- [x] Deliver the verified distinction without claiming a held historical draft was remediated
+
+## Dated Daily Brief Reconstruction and Autonomous Quality Program (Aug 17)
+- [ ] Snapshot the July 28–August 17 archive records and preserve a reversible audit trail before historical reconstruction
+- [ ] Collect date-appropriate source packages for every held historical Daily Brief and exclude dates that cannot meet the sourcing standard
+- [ ] Rebuild held briefs in guarded batches with complete scripts, topic flow, paired Andrew/Jenny segments, and verified full mixes
+- [ ] Audit every reconstructed release against the 100-point benchmark and retain explicit holds for any date that cannot pass
+- [ ] Harden daily preflight, publication, alert, recovery, and QA monitoring so future briefs cannot publish below the benchmark
+- [ ] Deliver the reconstructed-archive coverage and remaining evidence-gap report
+
+## Historical Reconstruction Audio-Gate Propagation (Aug 18)
+- [ ] Ensure a paired-audio synthesis failure causes the reconstruction runner to hold the date rather than reporting it complete
+- [ ] Repair and re-run the held August 10 audio path only after the source and script package remain intact
+- [ ] Verify the reconstruction report distinguishes fully rebuilt dates from source-passed records still awaiting audio completion
+
+## Historical Reconstruction Generation Timeout (Aug 18)
+- [ ] Ensure a stalled sourced-script generation cannot block a serialized reconstruction batch indefinitely
+- [ ] Hold and preserve the stalled July 28 date until its bounded generation retry can complete with the frozen source package
+- [ ] Resume only verified remaining dates after the runner reports an explicit pass or hold outcome
+
+## World Elections Globe Label Visibility (Aug 17)
+- [x] Increase country-label contrast and small-country callout readability while retaining tracked-election visual priority
+- [x] Verify label visibility at desktop globe size without obscuring navigation or country selection
+- [x] Verify the lighter label treatment at mobile globe size before publication
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
