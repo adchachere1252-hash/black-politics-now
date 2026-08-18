@@ -92,6 +92,10 @@ export async function getPublicElectionFreshness() {
       sourceHealth: electionDayStatus.sourceHealth,
       heartbeatAt: electionDayStatus.heartbeatAt,
       lastPollAt: electionDayStatus.lastPollAt,
+      mappedRaces: electionDayStatus.mappedRaces,
+      updatedRaces: electionDayStatus.updatedRaces,
+      failedPolls: electionDayStatus.failedPolls,
+      newCalls: electionDayStatus.newCalls,
     })
     .from(electionDayStatus)
     .orderBy(desc(electionDayStatus.updatedAt))

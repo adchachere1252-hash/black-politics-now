@@ -339,11 +339,15 @@ describe("Autonomous Research Desk router", () => {
     const adminCaller = appRouter.createCaller(createAdminContext());
 
     await expect(publicCaller.electionDay.commandCenter()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(publicCaller.electionDay.sourceConflicts()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(publicCaller.electionDay.reconciliation()).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(publicCaller.electionDay.runAgentResearch({ triageIndex: 0 })).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(publicCaller.electionDay.startRehearsal()).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(publicCaller.electionDay.advanceRehearsal({ id: 1, step: "heartbeat" })).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(publicCaller.portraits.researchNow({ targetType: "senate", targetRecordId: 1, targetPhotoField: "candidate1", candidateName: "Example Candidate" })).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(adminCaller.electionDay.commandCenter()).resolves.toMatchObject({ coverage: expect.any(Object), candidatePerformance: expect.any(Array), triage: expect.any(Array), runbook: expect.any(Array), rehearsal: expect.anything() });
+    await expect(adminCaller.electionDay.sourceConflicts()).resolves.toEqual(expect.any(Array));
+    await expect(adminCaller.electionDay.reconciliation()).resolves.toMatchObject({ chambers: expect.any(Array), sourceConflicts: expect.any(Object), nextAction: expect.any(String) });
   });
 });
 

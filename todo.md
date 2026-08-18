@@ -1033,6 +1033,16 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Publish the completed simulation checklist, manual operator steps, and exception-handling instructions
 - [x] Verify the completed UCLA geometry, layout, and simulation-readiness changes are committed and synchronized to the selected private GitHub repository
 
+## Election Night Visibility and Reconciliation (Aug 18)
+- [x] Inventory the live heartbeat, race, triage, and source-review fields available for public-safe and Admin-only operations views
+- [x] Audit the homepage results ticker’s eligibility, data refresh, animation, pause control, and responsive website/mobile rendering
+- [x] Repair any confirmed ticker-banner defects and verify reliable website and mobile-app behavior without showing primary outcomes
+- [x] Add a compact public Election Night status strip that exposes source health, polling cadence, coverage, and result-call status without disclosing private operations
+- [x] Add a compact protected source-conflict review queue that prioritizes discrepancies while preserving human approval before any public correction
+- [x] Generate a source-grounded post-election reconciliation report with coverage, calls, exceptions, and follow-up actions
+- [x] Add regression coverage and verify desktop/mobile public and Admin rendering for the new election operations surfaces
+- [ ] Run production checks, save the published checkpoint, synchronize the selected private GitHub repository, and deliver the completed checklist
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade

@@ -1,4 +1,4 @@
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, inArray } from "drizzle-orm";
 import { agentChangeProposals, agentRecommendations, electionDayRehearsals, electionDayStatus, governorRaces, houseRaces, senateRaces } from "../drizzle/schema";
 import { getDb } from "./db";
 
@@ -146,5 +146,60 @@ export async function getElectionDayCommandCenter() {
       { step: "Verify", title: "Review proposed corrections", detail: "Use before/after evidence and a second source before any public correction." },
       { step: "Close", title: "Reconcile and archive", detail: "Compare final official outcomes, document exceptions, and retain the review log." },
     ],
+  };
+}
+
+/**
+ * Private, review-first source-conflict queue. It surfaces only durable
+ * heartbeat signals and pending source/data recommendations. It cannot alter
+ * a race, publish a result, or invoke an alert.
+ */
+export async function getElectionSourceConflictQueue() {
+  const db = await getDb();
+  if (!db) return [];
+  const [heartbeatRows, recommendations] = await Promise.all([
+    db.select().from(electionDayStatus).where(eq(electionDayStatus.id, 1)).limit(1),
+    db.select().from(agentRecommendations)
+      .where(and(eq(agentRecommendations.status, "pending"), inArray(agentRecommendations.category, ["source_watch", "data_quality"])))
+      .orderBy(desc(agentRecommendations.createdAt))
+      .limit(12),
+  ]);
+  const heartbeat = heartbeatRows[0];
+  const sourceSignal = heartbeat && (heartbeat.sourceHealth === "degraded" || heartbeat.mode === "degraded" || Number(heartbeat.failedPolls) > 0)
+    ? [{ id: "heartbeat", priority: "high", title: "DDHQ source health needs review", summary: heartbeat.lastSummary ?? "The election engine reported a degraded source signal.", evidence: `Source: ${heartbeat.sourceName}; failed polls: ${heartbeat.failedPolls}; heartbeat: ${heartbeat.heartbeatAt?.toISOString() ?? "unavailable"}.`, proposedAction: "Confirm the source condition before any manual result correction.", createdAt: heartbeat.updatedAt, origin: "engine" }]
+    : [];
+  const recommendationItems = recommendations.map((item) => ({ id: `recommendation-${item.id}`, priority: item.priority, title: item.title, summary: item.summary, evidence: item.evidence, proposedAction: item.proposedAction, createdAt: item.createdAt, origin: "review" }));
+  const priorityWeight: Record<string, number> = { high: 0, medium: 1, low: 2 };
+  return [...sourceSignal, ...recommendationItems].sort((a, b) => (priorityWeight[a.priority] ?? 3) - (priorityWeight[b.priority] ?? 3) || new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 8);
+}
+
+function reconcileChamber(chamber: string, rows: Array<{ status: string; calledWinner: string | null }>) {
+  const byStatus = rows.reduce<Record<string, number>>((counts, row) => ({ ...counts, [row.status]: (counts[row.status] ?? 0) + 1 }), {});
+  return { chamber, total: rows.length, called: rows.filter((row) => Boolean(row.calledWinner)).length, unresolved: rows.filter((row) => !row.calledWinner).length, byStatus };
+}
+
+/**
+ * A protected live reconciliation view. It is intentionally a status report,
+ * not a results-writing workflow: the source conflict queue remains private
+ * and every public correction still requires evidence and an Admin decision.
+ */
+export async function getPostElectionReconciliationReport() {
+  const db = await getDb();
+  if (!db) return null;
+  const [heartbeatRows, senate, house, governors, conflicts] = await Promise.all([
+    db.select().from(electionDayStatus).where(eq(electionDayStatus.id, 1)).limit(1),
+    db.select({ status: senateRaces.status, calledWinner: senateRaces.calledWinner }).from(senateRaces),
+    db.select({ status: houseRaces.status, calledWinner: houseRaces.calledWinner }).from(houseRaces),
+    db.select({ status: governorRaces.status, calledWinner: governorRaces.calledWinner }).from(governorRaces),
+    getElectionSourceConflictQueue(),
+  ]);
+  const heartbeat = heartbeatRows[0] ?? null;
+  return {
+    generatedAt: new Date(),
+    state: heartbeat?.mode === "active" ? "live_reconciliation" : heartbeat?.mode === "degraded" ? "source_review_needed" : "standing_reconciliation",
+    heartbeat: heartbeat ? { mode: heartbeat.mode, sourceName: heartbeat.sourceName, sourceHealth: heartbeat.sourceHealth, lastPollAt: heartbeat.lastPollAt, mappedRaces: heartbeat.mappedRaces, updatedRaces: heartbeat.updatedRaces, failedPolls: heartbeat.failedPolls, newCalls: heartbeat.newCalls } : null,
+    chambers: [reconcileChamber("Senate", senate), reconcileChamber("House", house), reconcileChamber("Governor", governors)],
+    sourceConflicts: { open: conflicts.length, highPriority: conflicts.filter((item) => item.priority === "high").length },
+    nextAction: conflicts.length ? "Review the cited source-conflict queue before any correction is approved." : "Continue ordinary source monitoring until final reconciliation can be closed.",
   };
 }

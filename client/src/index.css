@@ -232,18 +232,25 @@
 .ticker-scroll {
   animation: ticker-scroll 30s linear infinite;
   will-change: transform;
+  width: max-content;
 }
+.ticker-viewport { overflow: hidden; }
+.ticker-scroll--paused { animation-play-state: paused; }
 .ticker-scroll:hover,
 .ticker-scroll:focus-visible,
 .ticker-scroll:focus-within {
   animation-play-state: paused;
 }
+@media (max-width: 640px) {
+  .ticker-scroll { animation-duration: 42s; gap: 1rem; }
+}
 @media (prefers-reduced-motion: reduce) {
   .ticker-scroll {
     animation: none;
-    overflow-x: auto;
+    min-width: max-content;
     scrollbar-width: thin;
   }
+  .ticker-viewport { overflow-x: auto; scrollbar-width: thin; }
 }
 
 /* A restrained brand-only glimmer. Election map and rating colors intentionally

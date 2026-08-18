@@ -44,7 +44,7 @@ import { fetchWithCache, getPersistedWordPressNews } from "./newsCache";
 import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
 import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
 import { getWorldElectionRefreshOperations, runDatedWorldElectionRefresh } from "./worldElectionRefresh";
-import { advanceElectionDayRehearsal, getElectionDayCommandCenter, startElectionDayRehearsal } from "./electionDayCommandCenter";
+import { advanceElectionDayRehearsal, getElectionDayCommandCenter, getElectionSourceConflictQueue, getPostElectionReconciliationReport, startElectionDayRehearsal } from "./electionDayCommandCenter";
 import { getPortraitSubmissionTargets, getPortraitSubmissions, portraitPhotoFields, portraitProvenanceTypes, portraitTargetTypes, reviewPortraitSubmission, submitPortraitSubmission } from "./portraitReview";
 import { getLatestPortraitResearchItems } from "./agentDesk";
 import { getLatestDailyOperationalSnapshot } from "./agentDailySummary";
@@ -161,6 +161,8 @@ export const appRouter = router({
 
   electionDay: router({
     commandCenter: adminProcedure.query(async () => getElectionDayCommandCenter()),
+    sourceConflicts: adminProcedure.query(async () => getElectionSourceConflictQueue()),
+    reconciliation: adminProcedure.query(async () => getPostElectionReconciliationReport()),
     runAgentResearch: adminProcedure
       .input(z.object({ triageIndex: z.number().int().min(0).max(11).optional() }).optional())
       .mutation(async ({ input, ctx }) => runElectionDayCommandResearch(input?.triageIndex, ctx.user.name ?? "Administrator")),

@@ -4,6 +4,7 @@ import { Link } from "wouter";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, Play, Download, Globe2, Landmark, ArrowUpRight } from "lucide-react";
 import { ResultsTicker } from "@/components/ResultsTicker";
+import { ElectionNightStatusStrip } from "@/components/ElectionNightStatusStrip";
 import HomepageExample from "@/pages/HomepageExample";
 import { rankedWorldSignals, worldSignalLabel } from "@/lib/worldElectionDisplay";
 import { homepageContentQueryOptions, homepageElectionQueryOptions } from "@/lib/homepageRefresh";
@@ -43,7 +44,7 @@ function MobileHome({ showDiscoveryRail = false, previewMode = false }: { showDi
           Homepage enhancement example · current dashboard retained above
         </div>
       )}
-      <div className="border-b border-border/30 px-3 py-2"><ResultsTicker senateRaces={senateRaces as any[] ?? []} houseRaces={houseRaces as any[] ?? []} /></div>
+      <div className="space-y-1 border-b border-border/30 px-3 py-2"><ResultsTicker senateRaces={senateRaces as any[] ?? []} houseRaces={houseRaces as any[] ?? []} /><ElectionNightStatusStrip compact /></div>
 
       {/* Three-column dashboard */}
       <div className="grid grid-cols-1 md:grid-cols-[280px_1fr_300px] lg:grid-cols-[320px_1fr_340px] gap-0 min-h-[calc(100vh-120px)]">
