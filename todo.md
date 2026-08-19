@@ -1070,6 +1070,11 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Reconcile reported outcomes against the platform’s primary winner fields without publishing primary outcomes to general-election-only surfaces
 - [x] Write and deliver a clearly sourced public recap that separates confirmed winners, ongoing counts, and platform operations
 
+## Public Map Verification (Aug 19)
+- [x] Verify current homepage U.S. map ratings, results timestamp, and the intentional exclusion of primary outcomes from general-election surfaces
+- [x] Verify current homepage World Elections card data, Cook Islands completed context, and Bangladesh next-election context
+- [x] Correct any confirmed freshness or display defect without representing primary returns as general-election calls, then deliver the completed map checklist
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
