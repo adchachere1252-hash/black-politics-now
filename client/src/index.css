@@ -232,7 +232,11 @@
 .ticker-scroll {
   display: flex;
   align-items: center;
-  animation: ticker-scroll 46s linear infinite;
+  animation-name: ticker-scroll !important;
+  animation-duration: 24s !important;
+  animation-timing-function: linear !important;
+  animation-iteration-count: infinite !important;
+  animation-play-state: running !important;
   will-change: transform;
   width: max-content;
 }
@@ -245,12 +249,12 @@
   padding-right: 1.5rem;
 }
 @media (max-width: 640px) {
-  .ticker-scroll { animation-duration: 58s; }
+  .ticker-scroll { animation-duration: 30s !important; }
   .ticker-sequence { gap: 1rem; padding-right: 1rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .ticker-scroll {
-    animation: none;
+    animation: none !important;
     min-width: max-content;
     scrollbar-width: thin;
   }

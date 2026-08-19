@@ -405,7 +405,7 @@ describe("world elections router", () => {
     }
   });
 
-  it("returns a source-enriched 48-record calendar with current Cook Islands voting status", async () => {
+  it("returns a source-enriched 48-record calendar with completed Cook Islands voting context", async () => {
     const caller = appRouter.createCaller(createPublicContext());
     const elections = await caller.world.elections() as any[];
     const cookIslands = elections.find((election) => election.countryCode === "CK");
@@ -420,7 +420,7 @@ describe("world elections router", () => {
       }
     }).map((election) => ({ id: election.id, country: election.country, keyIssues: election.keyIssues }));
     expect(missingIssues).toEqual([]);
-    expect(cookIslands).toMatchObject({ status: "Voting Today", electionDate: "2026-08-12" });
+    expect(cookIslands).toMatchObject({ status: "Completed", electionDate: "2026-08-12" });
     expect(cookIslands.winner).toBeFalsy();
   });
 

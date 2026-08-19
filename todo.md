@@ -1057,6 +1057,13 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Remove the ticker’s visible pause/resume button and repair the motion track for smooth, continuous, organic flow on website and mobile app
 - [x] Verify the refined homepage map and ticker behavior across desktop and mobile, then run regression checks, publish, synchronize GitHub, and deliver the completed checklist
 
+## Daily Operations and Primary-Election Recap (Aug 19)
+- [x] Audit today’s Daily Intelligence Brief source preflight, full Andrew/Jenny publication state, and automation logs
+- [x] Diagnose why the results ticker appears stationary despite the continuous-flow release and repair any confirmed desktop/mobile issue
+- [x] Verify the homepage World Elections card identifies the correct next election and country from current reviewed records, then refresh only through safeguarded review workflows if stale
+- [x] Reconcile last night’s primary-election guard, race mapping, heartbeat, update, call, error, and notification records without treating primary outcomes as public general-election results
+- [x] Produce an evidence-based operational recap and complete the public/Admin validation, release checks, publication, GitHub sync, and checklist
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
