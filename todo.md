@@ -1064,6 +1064,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Reconcile last night’s primary-election guard, race mapping, heartbeat, update, call, error, and notification records without treating primary outcomes as public general-election results
 - [x] Produce an evidence-based operational recap and complete the public/Admin validation, release checks, publication, GitHub sync, and checklist
 
+## August 18 Primary-Election Outcomes Recap (Aug 19)
+- [x] Identify all jurisdictions and contests that held August 18 primaries, special primaries, or runoffs
+- [x] Gather official election-authority results and independent reporting for each confirmed notable outcome
+- [x] Reconcile reported outcomes against the platform’s primary winner fields without publishing primary outcomes to general-election-only surfaces
+- [x] Write and deliver a clearly sourced public recap that separates confirmed winners, ongoing counts, and platform operations
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
