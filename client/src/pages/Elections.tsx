@@ -1,13 +1,14 @@
 import { trpc } from "@/lib/trpc";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
-import { Search, Star, Users, Scale, MapPin, AlertTriangle, ExternalLink, Trophy } from "lucide-react";
+import { Search, Star, Users, Scale, MapPin, AlertTriangle, ExternalLink, Trophy, BadgeCheck, Clock3, FileSearch, GitCompareArrows } from "lucide-react";
 import { USMapFull } from "@/components/USMapFull";
 import { ResultsTicker } from "@/components/ResultsTicker";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { buildElectionMapFreshnessPresentation } from "@/lib/electionFreshness";
 import { buildBlackPoliticalRepresentationMapData } from "@/lib/representationMap";
+import { buildRepresentationTimeline, buildStateComparisons, getSourceReviewBadge, type SourceReviewBadge } from "@/lib/blackRepresentationInsights";
 
 const RATINGS = ["All", "Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R"] as const;
 type ViewTab = "house" | "senate" | "governors" | "cbc" | "redistricting";
@@ -139,8 +140,8 @@ export default function Elections() {
   const { data: senateRaces = [] } = trpc.election.senate.useQuery(undefined, { refetchInterval });
   const { data: houseRaces = [] } = trpc.election.house.useQuery(undefined, { refetchInterval });
   const { data: governors = [] } = trpc.election.governors.useQuery(undefined, { refetchInterval });
-  const { data: cbcMembers = [] } = trpc.election.cbc.useQuery();
-  const { data: blackRepresentationElections = [] } = trpc.election.blackRepresentationElections.useQuery();
+  const { data: cbcMembers = [] } = trpc.election.cbc.useQuery(undefined, { refetchInterval });
+  const { data: blackRepresentationElections = [] } = trpc.election.blackRepresentationElections.useQuery(undefined, { refetchInterval });
   const { data: redistrictingStates = [] } = trpc.election.redistricting.useQuery();
   const { data: scoreboard } = trpc.election.scoreboard.useQuery(undefined, { refetchInterval });
   const { data: electionFreshness } = trpc.election.freshness.useQuery(undefined, { refetchInterval });
@@ -424,7 +425,7 @@ export default function Elections() {
         {tab === "senate" && <RaceGrid races={filteredSenate} chamber="senate" />}
         {tab === "house" && <RaceGrid races={filteredHouse} chamber="house" />}
         {tab === "governors" && <GovernorGrid races={filteredGovs} />}
-        {tab === "cbc" && <CbcGrid members={filteredCbc} elections={(blackRepresentationElections as any[]).filter((r: any) => (!selectedState || r.stateCode === selectedState) && (!searchQuery || `${r.state} ${r.district} ${r.winnerName} ${r.runnerUpName}`.toLowerCase().includes(searchQuery.toLowerCase())))} />}
+        {tab === "cbc" && <CbcGrid members={filteredCbc} allMembers={cbcMembers as any[]} elections={(blackRepresentationElections as any[]).filter((r: any) => (!selectedState || r.stateCode === selectedState) && (!searchQuery || `${r.state} ${r.district} ${r.winnerName} ${r.runnerUpName}`.toLowerCase().includes(searchQuery.toLowerCase())))} allElections={blackRepresentationElections as any[]} selectedState={selectedState} onSelectState={setSelectedState} />}
         {tab === "redistricting" && <RedistrictingGrid states={filteredRedistricting} />}
 
         {/* State popup dialog showing tab-specific data */}
@@ -754,7 +755,7 @@ function GovernorGrid({ races }: { races: any[] }) {
   );
 }
 
-function CbcGrid({ members, elections }: { members: any[]; elections: any[] }) {
+function CbcGrid({ members, allMembers, elections, allElections, selectedState, onSelectState }: { members: any[]; allMembers: any[]; elections: any[]; allElections: any[]; selectedState: string | null; onSelectState: (stateCode: string | null) => void }) {
   if (members.length === 0) return <p className="text-center text-muted-foreground py-8">No members match your search.</p>;
   const [selectedMember, setSelectedMember] = useState<any | null>(null);
 
@@ -790,6 +791,7 @@ function CbcGrid({ members, elections }: { members: any[]; elections: any[] }) {
 
   return (
     <div>
+      <StateComparisonDashboard members={allMembers} elections={allElections} selectedState={selectedState} onSelectState={onSelectState} />
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
         {members.map((m) => (
           <button
@@ -807,6 +809,7 @@ function CbcGrid({ members, elections }: { members: any[]; elections: any[] }) {
                 <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColors[m.status] ?? "bg-muted text-muted-foreground"}`}>
                   {statusLabels[m.status] ?? formatBlackRepStatus(m.status)}
                 </span>
+                <SourceReviewBadge badge={getSourceReviewBadge(m)} />
                 <span className="text-xs font-semibold text-primary">Details</span>
               </div>
             </div>
@@ -843,7 +846,7 @@ function CbcGrid({ members, elections }: { members: any[]; elections: any[] }) {
                     <p className="text-sm font-bold">{race.district}</p>
                     <p className="text-xs text-muted-foreground">{race.state} · {race.electionType} {race.partyContest ? `· ${race.partyContest}` : ""}</p>
                   </div>
-                  <span className={`shrink-0 text-[10px] uppercase tracking-wide px-2 py-0.5 rounded-full ${race.resultStatus === "called" || race.resultStatus === "uncontested" ? "bg-green-500/20 text-green-400" : "bg-amber-500/20 text-amber-400"}`}>{race.resultStatus?.replaceAll("_", " ")}</span>
+                  <div className="flex flex-wrap justify-end gap-1.5"><span className={`shrink-0 text-[10px] uppercase tracking-wide px-2 py-0.5 rounded-full ${race.resultStatus === "called" || race.resultStatus === "uncontested" ? "bg-green-500/20 text-green-400" : "bg-amber-500/20 text-amber-400"}`}>{race.resultStatus?.replaceAll("_", " ")}</span><SourceReviewBadge badge={getSourceReviewBadge(race)} /></div>
                 </div>
                 <div className="mt-3 space-y-1 text-xs">
                   <p className="font-semibold text-foreground">{race.winnerName ?? "Result pending"}{race.winnerParty ? ` (${race.winnerParty})` : ""}</p>
@@ -859,6 +862,7 @@ function CbcGrid({ members, elections }: { members: any[]; elections: any[] }) {
           </div>
         )}
       </div>
+      <PrimaryGeneralTimeline members={allMembers} elections={allElections} selectedState={selectedState} />
     </div>
   );
 }
@@ -870,7 +874,7 @@ function CbcProfileDrawer({ member, statusLabel }: { member: any; statusLabel: s
   return <>
     <SheetHeader className="border-b border-border pr-10"><div className="flex items-center gap-3">{member.photo && <img src={member.photo} alt="" className="h-12 w-12 rounded-full object-cover border border-border" />}<div><SheetTitle>{member.member}</SheetTitle><SheetDescription>{member.district} · {member.state} · {member.party}</SheetDescription></div></div></SheetHeader>
     <div className="space-y-4 p-4 text-sm">
-      <div className="rounded-lg border border-primary/25 bg-primary/5 p-3"><p className="text-[10px] font-bold uppercase tracking-[0.13em] text-primary">2026 status</p><p className="mt-1 font-semibold text-foreground">{statusLabel}</p></div>
+      <div className="rounded-lg border border-primary/25 bg-primary/5 p-3"><div className="flex items-center justify-between gap-2"><p className="text-[10px] font-bold uppercase tracking-[0.13em] text-primary">2026 status</p><SourceReviewBadge badge={getSourceReviewBadge(member)} /></div><p className="mt-1 font-semibold text-foreground">{statusLabel}</p></div>
       <DrawerField label="Chamber" value={member.chamber ? `${member.chamber.charAt(0).toUpperCase()}${member.chamber.slice(1)}` : null} />
       <DrawerField label="Up in 2026" value={member.upIn2026 ? "Yes" : "No"} />
       <DrawerField label="Primary result" value={member.primaryResult} accent />
@@ -883,6 +887,45 @@ function CbcProfileDrawer({ member, statusLabel }: { member: any; statusLabel: s
       {member.sourceUrl && <a href={member.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">View source reporting <ExternalLink size={13} /></a>}
     </div>
   </>;
+}
+
+function SourceReviewBadge({ badge }: { badge: SourceReviewBadge }) {
+  const styles = badge.tone === "verified"
+    ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
+    : badge.tone === "article"
+      ? "border-sky-500/30 bg-sky-500/10 text-sky-700 dark:text-sky-300"
+      : "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300";
+  const Icon = badge.tone === "verified" ? BadgeCheck : badge.tone === "article" ? FileSearch : Clock3;
+  return <span title={badge.detail} className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-1.5 py-0.5 text-[10px] font-bold ${styles}`}><Icon size={11} />{badge.label}</span>;
+}
+
+function StateComparisonDashboard({ members, elections, selectedState, onSelectState }: { members: any[]; elections: any[]; selectedState: string | null; onSelectState: (stateCode: string | null) => void }) {
+  const comparisons = useMemo(() => buildStateComparisons(members, elections), [members, elections]);
+  const visible = comparisons.slice(0, 12);
+  const formatDate = (value: number | null) => value ? new Date(value).toLocaleDateString(undefined, { month: "short", day: "numeric" }) : "No timestamp";
+  return <section className="mb-6 rounded-xl border border-primary/20 bg-primary/[0.035] p-4">
+    <div className="flex flex-wrap items-start justify-between gap-3">
+      <div><div className="flex items-center gap-2"><GitCompareArrows size={16} className="text-primary" /><h2 className="text-sm font-bold uppercase tracking-wider">State comparison</h2></div><p className="mt-1 text-xs text-muted-foreground">Compare people, contest transitions, evidence coverage, and review needs. Select a state to focus the map, record cards, and timeline.</p></div>
+      {selectedState && <button onClick={() => onSelectState(null)} className="text-xs font-semibold text-primary hover:underline">Clear state focus</button>}
+    </div>
+    <div className="mt-4 grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3">
+      {visible.map((state) => <button type="button" key={state.stateCode} onClick={() => onSelectState(state.stateCode)} className={`rounded-lg border p-3 text-left transition-colors ${selectedState === state.stateCode ? "border-primary bg-primary/10" : "border-border bg-background/50 hover:border-primary/35"}`}>
+        <div className="flex items-start justify-between gap-2"><div><p className="text-sm font-bold">{state.stateName}</p><p className="text-[11px] text-muted-foreground">{state.trackedPeople} people · {state.contests} contests</p></div><span className="text-xs font-bold text-primary">{state.stateCode}</span></div>
+        <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-[11px]"><span className="text-emerald-700 dark:text-emerald-300">{state.advanced} advanced</span><span className="text-amber-700 dark:text-amber-300">{state.transitions} transitions</span><span className="text-muted-foreground">{state.sourceReviewed} sourced</span>{state.needsReview > 0 && <span className="text-amber-700 dark:text-amber-300">{state.needsReview} review</span>}</div>
+        <p className="mt-2 text-[10px] text-muted-foreground">Updated: {formatDate(state.latestAt)}</p>
+      </button>)}
+    </div>
+  </section>;
+}
+
+function PrimaryGeneralTimeline({ members, elections, selectedState }: { members: any[]; elections: any[]; selectedState: string | null }) {
+  const items = useMemo(() => buildRepresentationTimeline(members, elections, selectedState).slice(0, 16), [members, elections, selectedState]);
+  const stageStyles: Record<string, string> = { primary: "bg-teal-500/15 text-teal-700 dark:text-teal-300", runoff: "bg-purple-500/15 text-purple-700 dark:text-purple-300", general: "bg-primary/15 text-primary", certified: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300", review: "bg-amber-500/15 text-amber-700 dark:text-amber-300" };
+  const title = selectedState ? `${selectedState} primary-to-general timeline` : "Primary-to-general timeline";
+  return <section className="mt-8 rounded-xl border border-border bg-card/70 p-4">
+    <div className="flex items-center gap-2"><Clock3 size={16} className="text-primary" /><div><h2 className="text-sm font-bold uppercase tracking-wider">{title}</h2><p className="mt-1 text-xs text-muted-foreground">A record-stage trail. A primary nomination is never presented as a general-election call or certified result.</p></div></div>
+    {items.length === 0 ? <p className="py-6 text-sm text-muted-foreground">No timeline entries match the current state focus.</p> : <ol className="mt-4 space-y-3 border-l border-primary/25 pl-4">{items.map((item) => <li key={item.id} className="relative"><span className="absolute -left-[21px] top-1 h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-background" /><div className="flex flex-wrap items-center gap-2"><span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase ${stageStyles[item.stage]}`}>{item.stage}</span><span className="text-xs text-muted-foreground">{item.date ? new Date(item.date).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) : "Date pending"}</span><SourceReviewBadge badge={item.sourceBadge} /></div><p className="mt-1 text-sm font-semibold">{item.district} · {item.headline}</p><p className="mt-0.5 text-xs text-muted-foreground">{item.detail}</p>{item.sourceUrl && <a href={item.sourceUrl} target="_blank" rel="noreferrer" className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline">Open source <ExternalLink size={11} /></a>}</li>)}</ol>}
+  </section>;
 }
 
 function DrawerField({ label, value, accent = false }: { label: string; value: string | null | undefined; accent?: boolean }) {

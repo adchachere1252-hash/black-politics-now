@@ -1100,6 +1100,13 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Apply only evidence-supported Black Representation map updates with status, source, and timestamp context
 - [x] Validate the desktop primary and Black Reps map views, run checks, publish, synchronize GitHub, and deliver the comparative audit checklist
 
+## Black Representation State Comparison and Timeline (Aug 19)
+- [x] Inventory existing Black Representation views, public data contracts, and source-status fields
+- [x] Add a state-level comparison dashboard for tracked people, contest transitions, source coverage, review needs, and recent activity
+- [x] Add visible Source reviewed, Article reference, and Source review badges to Black Representation records and profile detail
+- [x] Add a primary-to-general record timeline with stage labels, dates, state focus, and source links
+- [x] Verify responsive public views and source safeguards, run regression checks, publish, synchronize GitHub, and document the completed feature checklist
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
