@@ -1107,6 +1107,11 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add a primary-to-general record timeline with stage labels, dates, state focus, and source links
 - [x] Verify responsive public views and source safeguards, run regression checks, publish, synchronize GitHub, and document the completed feature checklist
 
+## Launch Cleanup: Remove Public Primary Map (Aug 19)
+- [x] Identify every public Primary Results map tab, legend, summary, source panel, and related launch-facing copy
+- [x] Remove the public Primary Results layer while preserving the general-election map, Black Representation records, and internal primary evidence
+- [x] Verify desktop/mobile launch surfaces no longer expose a primary map, run checks, publish, synchronize GitHub, and document the completed cleanup
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
