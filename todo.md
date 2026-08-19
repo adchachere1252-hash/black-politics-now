@@ -1131,6 +1131,18 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Repair the assembly and generation path so both full voices include audible structural breaks rather than a continuous monologue
 - [x] Validate transcript, segment order, Andrew/Jenny full mixes, duration, and public playback; run checks, publish, synchronize GitHub, and document the editorial repair
 
+## Comprehensive Launch Reliability Pass (Aug 19)
+- [x] Re-verify the Admin Research Desk action end-to-end and confirm its deterministic evidence-package method creates a reviewable result without unavailable AI dependencies
+- [x] Re-verify that relevant Admin save actions persist to the public homepage data surfaces and correct any confirmed disconnect
+- [x] Remove the launch-facing Election Watch strip and reclaim its homepage space without changing the underlying election monitor or Admin Command Center
+- [x] Diagnose and remove the Africa globe black artifact while preserving live World Elections data, country outlines, and globe interactions
+- [x] Add accurate text-to-speech pronunciation guidance for Anthropic in Daily Intelligence Brief scripts and voice generation
+- [x] Remove unfulfillable listener requests from Daily Intelligence Brief segment endings and preserve only editorial transitions or closings
+- [x] Separate Global Political Briefs from American Political Briefs with a source-grounded non-U.S. editorial requirement and remove misplaced American-only reporting
+- [x] Audit the University of Texas item in today’s Daily Brief, remove it if it is not directly relevant, and retain source-grounded replacement coverage
+- [x] Analyze every August 19 Daily Intelligence Brief segment against the Natural Disaster and Extreme Weather standard for sourcing, structure, global relevance, transitions, and listener utility
+- [x] Validate desktop/mobile homepage and protected Admin behavior, both full voices, tests, build, checkpoint, GitHub sync, and completed analysis checklist
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

@@ -101,9 +101,9 @@ export default function MiniRepositoryGlobe({ theme = "dark", vibrant = false }:
         countryGeometry.setIndex(indices);
         countryGeometry.computeVertexNormals();
         // The satellite texture contains near-black land pixels across parts of Africa.
-        // Render a restrained normal-blended country surface above it so geography stays
-        // visible without altering the source topology, borders, or country interaction data.
-        countryMaterial = new THREE.MeshBasicMaterial({ color: isLight ? 0x2f91bc : 0x71cde6, transparent: true, opacity: vibrant ? 0.38 : 0.24, side: THREE.DoubleSide, blending: THREE.NormalBlending, depthWrite: false });
+        // A stronger normal-blended country surface keeps the land mass geographic and
+        // readable without altering the source topology, borders, or interaction data.
+        countryMaterial = new THREE.MeshBasicMaterial({ color: isLight ? 0x58b6d8 : 0x8bddf1, transparent: true, opacity: vibrant ? 0.68 : 0.56, side: THREE.DoubleSide, blending: THREE.NormalBlending, depthWrite: false });
         globe.add(new THREE.Mesh(countryGeometry, countryMaterial));
 
         borderGeometry = new THREE.BufferGeometry();

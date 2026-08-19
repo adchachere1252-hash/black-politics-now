@@ -29,6 +29,20 @@ describe("scoreDailyBriefAgainstBenchmark", () => {
     expect(score.holdReasons.join(" ")).toContain("audible topic introduction");
   });
 
+  it("holds an editorial segment that ends with an unfulfillable listener request", () => {
+    const score = scoreDailyBriefAgainstBenchmark({ date: "2026-08-19", day: "Wednesday", verificationStatus: "passed", totalDurationSec: 800, hasAndrewFull: true, hasJennyFull: true, segments: verifiedSegments.map((segment, index) => index === 1 ? { ...segment, script: `${segment.script} Please share this with a friend.` } : segment) });
+    expect(score.status).toBe("held");
+    expect(score.checks.editorialBoundaries).toBe(false);
+  });
+
+  it("holds a Global Political Brief that is American-only", () => {
+    const segments = verifiedSegments.map((segment) => ({ ...segment }));
+    segments[7] = { ...segments[7], key: "07_global_political_briefs", script: `Next, Global Political Briefs. Florida primary results and U.S. Congress developments are the only focus today. ${"Source-backed editorial reporting ".repeat(20)}[REF: Source | https://example.com/global]` };
+    const score = scoreDailyBriefAgainstBenchmark({ date: "2026-08-19", day: "Wednesday", verificationStatus: "passed", totalDurationSec: 800, hasAndrewFull: true, hasJennyFull: true, segments });
+    expect(score.status).toBe("held");
+    expect(score.checks.globalPoliticalScope).toBe(false);
+  });
+
   it("identifies original pre-July records as preserved baselines rather than scoring them under later voice requirements", () => {
     const score = scoreDailyBriefAgainstBenchmark({ date: "2026-07-27", day: "Monday", verificationStatus: "warnings", totalDurationSec: 800, hasAndrewFull: true, segments: verifiedSegments });
     expect(score.baseline).toBe(true);

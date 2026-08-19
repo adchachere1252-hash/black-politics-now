@@ -30,6 +30,8 @@ export type DailyBriefBenchmarkScore = {
   checks: {
     flow: boolean;
     spokenStructure: boolean;
+    editorialBoundaries: boolean;
+    globalPoliticalScope: boolean;
     topics: boolean;
     sources: boolean;
     scripts: boolean;
@@ -74,6 +76,18 @@ function hasSpokenEditorialLead(script?: string | null) {
   return /^(We begin with|Next,|Our next briefing is|This is your)/i.test((script || "").trim());
 }
 
+function hasUnfulfillableListenerRequest(script?: string | null) {
+  return /\b(please (?:share|subscribe|follow|like)|share this|subscribe|follow us|let us know|send us|i(?:'|’)ll be back|we(?:'|’)ll be back)\b/i.test(script || "");
+}
+
+function hasGlobalPoliticalScope(segment?: BenchmarkSegment) {
+  const script = segment?.script || "";
+  if (!segment?.key.includes("global_political")) return true;
+  const domesticOnlyTerms = /\b(florida|u\.?s\.? congress|american primary|senate primary|house primary)\b/i;
+  const nonUsCoverage = /\b(zambia|africa|europe|european union|iran|gaza|israel|palestine|asia|ukraine|middle east|latin america|canada|mexico|india|china|australia)\b/i;
+  return !domesticOnlyTerms.test(script) && nonUsCoverage.test(script) && sourcePackagePresent(segment);
+}
+
 export function scoreDailyBriefAgainstBenchmark(episode: BenchmarkEpisode): DailyBriefBenchmarkScore {
   const segments = [...episode.segments];
   const editorial = segments.filter(isEditorial);
@@ -81,6 +95,8 @@ export function scoreDailyBriefAgainstBenchmark(episode: BenchmarkEpisode): Dail
   const lastIsClosing = segments.at(-1)?.key.includes("closing") ?? false;
   const flow = firstIsGreeting && lastIsClosing && editorial.length >= 13;
   const spokenStructure = hasDetailedGreeting(segments[0]?.script) && editorial.length >= 13 && editorial.every((segment) => hasSpokenEditorialLead(segment.script));
+  const editorialBoundaries = editorial.every((segment) => !hasUnfulfillableListenerRequest(segment.script));
+  const globalPoliticalScope = editorial.every((segment) => hasGlobalPoliticalScope(segment));
   const keys = segments.map((segment) => segment.key);
   const hasDuplicates = new Set(keys).size !== keys.length;
   const weekdaySpecial = episode.day === "Monday"
@@ -98,10 +114,12 @@ export function scoreDailyBriefAgainstBenchmark(episode: BenchmarkEpisode): Dail
   const duration = recordedDuration > 0 && summedDuration > 0 && Math.abs(recordedDuration - summedDuration) <= 20;
   const fullVoices = episode.verificationStatus === "passed" && Boolean(episode.hasAndrewFull) && Boolean(episode.hasJennyFull);
   const baseline = episode.date < BASELINE_CUTOFF;
-  const checks = { flow, spokenStructure, topics, sources, scripts, duration, pairedSegments, fullVoices };
+  const checks = { flow, spokenStructure, editorialBoundaries, globalPoliticalScope, topics, sources, scripts, duration, pairedSegments, fullVoices };
   const holdReasons = [
     !flow ? "opening, closing, or editorial count does not meet the benchmark" : null,
     !spokenStructure ? "full episode requires a detailed greeting and an audible topic introduction for every editorial segment" : null,
+    !editorialBoundaries ? "editorial segments cannot end with an unfulfillable listener request or return promise" : null,
+    !globalPoliticalScope ? "Global Political Brief requires source-backed non-U.S. political coverage rather than American-only reporting" : null,
     !topics ? "topic sequence has a duplicate or is missing its weekday special" : null,
     !sources ? "one or more editorial segments lack source evidence" : null,
     !scripts ? "one or more editorial scripts are too short for the benchmark" : null,
@@ -112,12 +130,14 @@ export function scoreDailyBriefAgainstBenchmark(episode: BenchmarkEpisode): Dail
   const score = baseline ? null :
     (flow ? 15 : 0) +
     (spokenStructure ? 5 : 0) +
+    (editorialBoundaries ? 5 : 0) +
+    (globalPoliticalScope ? 5 : 0) +
     (topics ? 10 : 0) +
     (sources ? 25 : 0) +
     (scripts ? 10 : 0) +
     (duration ? 5 : 0) +
     (pairedSegments ? 15 : 0) +
-    (fullVoices ? 15 : 0);
+    (fullVoices ? 5 : 0);
 
   return {
     date: episode.date,
