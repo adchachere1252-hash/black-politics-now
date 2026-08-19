@@ -1112,6 +1112,18 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Remove the public Primary Results layer while preserving the general-election map, Black Representation records, and internal primary evidence
 - [x] Verify desktop/mobile launch surfaces no longer expose a primary map, run checks, publish, synchronize GitHub, and document the completed cleanup
 
+## Admin AI Research Task Repair (Aug 19)
+- [x] Trace the Admin AI research button through its protected procedure, persisted task or recommendation state, and worker/agent execution path
+- [x] Identify the actual failure mode from runtime, network, and database evidence without creating unintended public changes
+- [x] Replace unavailable AI research controls with deterministic evidence packages and official-source portrait review, with protected regression coverage and clear Admin completion feedback
+- [x] Validate Admin AI research task creation and completion, run checks, publish, synchronize GitHub, and document the completed diagnostic checklist
+
+## General-Election Candidate Outcomes (Aug 19)
+- [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
+- [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown
+- [x] Update Maxwell Frost’s separate Black Representation record with the official status, source, and unopposed context while preserving the reference article unchanged
+- [x] Verify public and Admin candidate-status presentation, run release checks, publish, synchronize GitHub, and document the completed outcome workflow
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade

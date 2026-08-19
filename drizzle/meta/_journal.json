@@ -211,6 +211,13 @@
       "when": 1787090940249,
       "tag": "0029_brown_changeling",
       "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "5",
+      "when": 1787176314090,
+      "tag": "0030_hard_madame_masque",
+      "breakpoints": true
     }
   ]
 }

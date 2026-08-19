@@ -41,6 +41,7 @@ export function AgentDeskTab({ focusRecommendationId }: { focusRecommendationId?
   const [editorialOwner, setEditorialOwner] = useState("");
   const [dataQualityOwner, setDataQualityOwner] = useState("");
   const [priorityHours, setPriorityHours] = useState("8");
+  const [runMessage, setRunMessage] = useState<string | null>(null);
   const filters = useMemo(() => ({
     ...(status !== "all" ? { status } : {}),
     ...(category !== "all" ? { category } : {}),
@@ -60,7 +61,7 @@ export function AgentDeskTab({ focusRecommendationId }: { focusRecommendationId?
   const { data: settings } = trpc.agent.settings.useQuery(undefined, queueRefresh);
   const { data: tasks = [] } = trpc.agent.tasks.useQuery(undefined, queueRefresh);
   const { data: changeProposals = [] } = trpc.agent.changeProposals.useQuery(undefined, queueRefresh);
-  const runNow = trpc.agent.runNow.useMutation({ onSuccess: invalidateDesk });
+  const runNow = trpc.agent.runNow.useMutation({ onSuccess: (result) => { invalidateDesk(); setRunMessage(result.summary); } });
   const review = trpc.agent.reviewRecommendation.useMutation({ onSuccess: invalidateDesk });
   const assign = trpc.agent.assignRecommendation.useMutation({ onSuccess: invalidateDesk });
   const approveToTask = trpc.agent.approveToTask.useMutation({ onSuccess: invalidateDesk });
@@ -89,16 +90,17 @@ export function AgentDeskTab({ focusRecommendationId }: { focusRecommendationId?
           <div>
             <div className="flex items-center gap-2 text-primary"><Sparkles size={18} /><h2 className="font-bold">Autonomous Research Desk</h2></div>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
-              The agent reviews current platform context and creates cited recommendations. An administrator can now explicitly assign an approved task to the agent for a bounded, source-grounded work package; no public publishing, election-record change, or alert can occur automatically.
+              Prepare a current, source-grounded evidence package for review. An administrator can explicitly assign an approved follow-up as a bounded work package; no public publishing, election-record change, or alert can occur automatically.
             </p>
             <p className="mt-2 text-xs text-muted-foreground">Routine cadence: every {settings?.researchIntervalHours ?? 4} hours. Last run: {settings?.lastRunAt ? new Date(settings.lastRunAt).toLocaleString() : "not yet run"}.</p>
             <p className="mt-2 rounded-md border border-primary/15 bg-background/55 p-2 text-xs leading-5 text-muted-foreground"><strong className="text-foreground">Approval boundary:</strong> choose a human follow-up or a bounded agent work package. Agent execution can return cited research, verification notes, or a draft for review; it cannot publish content, change election data, or send public alerts.</p>
           </div>
-          <button onClick={() => runNow.mutate()} disabled={runNow.isPending} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50">
-            <RefreshCw size={15} className={runNow.isPending ? "animate-spin" : ""} /> {runNow.isPending ? "Researching…" : "Run research now"}
+          <button onClick={() => { setRunMessage(null); runNow.mutate(); }} disabled={runNow.isPending} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50">
+            <RefreshCw size={15} className={runNow.isPending ? "animate-spin" : ""} /> {runNow.isPending ? "Preparing…" : "Prepare evidence package"}
           </button>
         </div>
-        {runNow.error && <p className="mt-3 text-sm text-destructive">The run did not complete. No public content or election data was changed.</p>}
+        {runMessage && <p className="mt-3 rounded-md border border-emerald-500/25 bg-emerald-500/10 p-2 text-sm text-emerald-800 dark:text-emerald-200">Evidence package ready. {runMessage}</p>}
+        {runNow.error && <p className="mt-3 text-sm text-destructive">The evidence package did not complete. No public content or election data was changed.</p>}
         <div className="mt-4 grid gap-2 border-t border-primary/15 pt-4 sm:grid-cols-[1fr_1fr_auto]">
           <input value={editorialOwner || settings?.defaultEditorialOwner || ""} onChange={(event) => setEditorialOwner(event.target.value)} placeholder="Editorial default owner" className="rounded-md border border-border bg-background px-3 py-2 text-xs" />
           <input value={dataQualityOwner || settings?.defaultDataQualityOwner || ""} onChange={(event) => setDataQualityOwner(event.target.value)} placeholder="Data-quality default owner" className="rounded-md border border-border bg-background px-3 py-2 text-xs" />

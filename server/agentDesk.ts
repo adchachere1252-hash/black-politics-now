@@ -18,7 +18,7 @@ import { getWorldElections } from "./worldDb";
 import { getPortraitSubmissionTargets } from "./portraitReview";
 import { getElectionDayCommandCenter } from "./electionDayCommandCenter";
 
-type SourceItem = {
+export type SourceItem = {
   id: string;
   title: string;
   url: string;
@@ -386,9 +386,30 @@ const taskChangeSetOutputSchema = {
   },
 };
 
+export function buildEvidencePackage(sourceItems: SourceItem[], mode: ResearchMode) {
+  const selected = sourceItems.slice(0, mode === "election_night" ? 12 : 18);
+  const sourceIds = selected.map((source) => source.id);
+  const kinds = Array.from(new Set(selected.map((source) => source.kind)));
+  const priority = mode === "election_night" ? "high" as const : "medium" as const;
+  const title = mode === "election_night"
+    ? "Review Election Night evidence package"
+    : "Review current platform evidence package";
+  return {
+    summary: `Prepared a deterministic review package with ${selected.length} current platform source record${selected.length === 1 ? "" : "s"} across ${kinds.length || 0} evidence type${kinds.length === 1 ? "" : "s"}. No language-model request or public action was performed.`,
+    recommendations: [{
+      category: "source_watch" as const,
+      priority,
+      title,
+      summary: "A source-grounded package is ready for editorial or data-quality review. It groups the latest available platform signals without generating conclusions or changing any public record.",
+      proposedAction: "Open the attached evidence, verify the dated source context, and approve a bounded human or agent follow-up only when a specific correction or editorial task is justified.",
+      sourceIds,
+    }],
+  };
+}
+
 export async function runResearchDesk(trigger: "manual" | "admin" | "scheduled" = "admin", mode: ResearchMode = "routine") {
   const sourceItems = await collectPlatformSources("platform data quality, election coverage, representation, podcast, news, atlas, world elections");
-  const model = await resolveModel();
+  const model = "deterministic-evidence-package";
   const sourceSnapshot = JSON.stringify(sourceItems);
   const run = await createRun(trigger, mode, model, sourceSnapshot);
   const db = await getDb();
@@ -396,27 +417,8 @@ export async function runResearchDesk(trigger: "manual" | "admin" | "scheduled" 
   const [settings] = await db.select().from(agentSettings).where(eq(agentSettings.id, 1)).limit(1);
 
   try {
-    const parsed = await requestStructuredJson<{
-      summary: string;
-      recommendations: Array<{
-        category: "data_quality" | "editorial" | "coverage_gap" | "source_watch" | "product";
-        priority: "high" | "medium" | "low";
-        title: string;
-        summary: string;
-        proposedAction: string;
-        sourceIds: string[];
-      }>;
-    }>(
-      "Research Desk recommendation run",
-      model,
-      recommendationOutputSchema,
-      [{
-        role: "system",
-        content: `You are the Black Politics Now Autonomous Research Desk. Review only the supplied platform context. Return at most ${mode === "election_night" ? "three urgent, high-priority" : "five specific, actionable"} recommendations that improve data quality, editorial coverage, source monitoring, or product clarity. Evidence must use only supplied source IDs. Do not suggest automatic publishing, election-record changes, public alerts, or any action that bypasses an editor. Do not restate facts as recommendations without an actionable improvement.${mode === "election_night" ? " Focus only on verified race-data clarity, source coverage, reporting gaps, and public-facing election-night accuracy." : ""}\n\nPLATFORM CONTEXT:\n` + asPromptSources(sourceItems),
-      }],
-      2200,
-    );
-    const recommendations = parsed.recommendations.slice(0, 5).map((recommendation) => {
+    const packageResult = buildEvidencePackage(sourceItems, mode);
+    const recommendations = packageResult.recommendations.map((recommendation) => {
       const assignedTo = defaultOwnerForCategory(recommendation.category, settings);
       return {
         runId: run.id,
@@ -436,12 +438,12 @@ export async function runResearchDesk(trigger: "manual" | "admin" | "scheduled" 
     if (recommendations.length > 0) await db.insert(agentRecommendations).values(recommendations);
     await db.update(agentRuns).set({
       status: "success",
-      summary: parsed.summary,
+      summary: packageResult.summary,
       recommendationCount: recommendations.length,
       completedAt: new Date(),
     }).where(eq(agentRuns.id, run.id));
     await db.update(agentSettings).set({ lastRunAt: new Date() }).where(eq(agentSettings.id, 1));
-    return { runId: run.id, recommendationCount: recommendations.length, summary: parsed.summary };
+    return { runId: run.id, recommendationCount: recommendations.length, summary: packageResult.summary };
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown research run failure";
     await db.update(agentRuns).set({ status: "failed", errorMessage: message, completedAt: new Date() }).where(eq(agentRuns.id, run.id));

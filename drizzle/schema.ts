@@ -697,7 +697,7 @@ export const cbcMembers = mysqlTable("cbc_members", {
     "running", "retiring", "resigned", "deceased", "lost_primary",
     "running_for_governor", "running_for_senate",
     "not_up_2026", "challenger", "advanced_to_general", "in_runoff",
-    "too_close_to_call", "elected"
+    "too_close_to_call", "elected", "won_general", "lost_general"
   ]).notNull().default("running"),
   roleType: mysqlEnum("role_type", [
     "incumbent", "nominee", "challenger", "former_member", "delegate"

@@ -195,6 +195,18 @@ describe("election router", () => {
     expect(floridaRecords.every((record) => record.articleUrl === "https://blkpoliticsnow.com/2026-primary-results-tracking-shifts-in-black-representation-3/")).toBe(true);
   });
 
+  it("returns Maxwell Frost as a separately sourced unopposed general-election winner", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const profiles = await caller.election.cbc() as any[];
+    const frost = profiles.find((profile) => profile.member === "Maxwell Frost" && profile.district === "FL-10");
+    expect(frost).toMatchObject({
+      status: "won_general",
+      generalOpponent: "No qualified general-election opponent",
+      raceStage: "general",
+    });
+    expect(frost.sourceUrl).toBe("https://dos.elections.myflorida.com/candidates/CanList.asp?elecid=20261103-GEN");
+  });
+
   it("allows an administrator to safely re-save every article-backed election record", async () => {
     const publicCaller = appRouter.createCaller(createPublicContext());
     const adminCaller = appRouter.createCaller(createAdminContext());
