@@ -230,19 +230,23 @@
   100% { transform: translateX(-50%); }
 }
 .ticker-scroll {
-  animation: ticker-scroll 30s linear infinite;
+  display: flex;
+  align-items: center;
+  animation: ticker-scroll 46s linear infinite;
   will-change: transform;
   width: max-content;
 }
 .ticker-viewport { overflow: hidden; }
-.ticker-scroll--paused { animation-play-state: paused; }
-.ticker-scroll:hover,
-.ticker-scroll:focus-visible,
-.ticker-scroll:focus-within {
-  animation-play-state: paused;
+.ticker-sequence {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 1.5rem;
+  padding-right: 1.5rem;
 }
 @media (max-width: 640px) {
-  .ticker-scroll { animation-duration: 42s; gap: 1rem; }
+  .ticker-scroll { animation-duration: 58s; }
+  .ticker-sequence { gap: 1rem; padding-right: 1rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .ticker-scroll {

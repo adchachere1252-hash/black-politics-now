@@ -1051,6 +1051,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add regression coverage for public-safe reads, Admin-only certification, certification-source requirements, and immutable archive snapshots
 - [x] Run responsive verification, full release checks, publish the checkpoint, synchronize private GitHub, and deliver the completed archive checklist
 
+## Homepage Map Scale and Organic Ticker Flow (Aug 18)
+- [x] Audit the desktop and mobile homepage map containers to identify the oversized footprint without changing the three-column desktop dashboard or mobile stacked layout
+- [x] Reduce the homepage map visual footprint while preserving the full map, state interaction, legend, and accessible search controls
+- [x] Remove the ticker’s visible pause/resume button and repair the motion track for smooth, continuous, organic flow on website and mobile app
+- [x] Verify the refined homepage map and ticker behavior across desktop and mobile, then run regression checks, publish, synchronize GitHub, and deliver the completed checklist
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade
