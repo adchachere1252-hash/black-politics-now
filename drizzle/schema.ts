@@ -694,7 +694,7 @@ export const cbcMembers = mysqlTable("cbc_members", {
   stateCode: varchar("state_code", { length: 2 }).notNull(),
   chamber: mysqlEnum("chamber", ["house", "senate", "governor"]).notNull(),
   status: mysqlEnum("cbc_status", [
-    "running", "retiring", "resigned", "deceased", "lost_primary",
+    "running", "retiring", "resigned", "withdrawn", "deceased", "lost_primary",
     "running_for_governor", "running_for_senate",
     "not_up_2026", "challenger", "advanced_to_general", "in_runoff",
     "too_close_to_call", "elected", "won_general", "lost_general"
@@ -745,7 +745,7 @@ export const blackRepresentationElections = mysqlTable("black_representation_ele
   electionType: mysqlEnum("election_type", ["primary", "runoff", "general", "special"]).notNull(),
   partyContest: varchar("party_contest", { length: 16 }),
   electionDate: varchar("election_date", { length: 32 }),
-  resultStatus: mysqlEnum("result_status", ["called", "too_close_to_call", "upcoming", "uncontested"]).notNull().default("upcoming"),
+  resultStatus: mysqlEnum("result_status", ["called", "too_close_to_call", "upcoming", "uncontested", "withdrawn"]).notNull().default("upcoming"),
   winnerName: varchar("winner_name", { length: 128 }),
   winnerParty: varchar("winner_party", { length: 8 }),
   winnerVotes: bigint("winner_votes", { mode: "number" }),
@@ -767,6 +767,27 @@ export const blackRepresentationElections = mysqlTable("black_representation_ele
 
 export type BlackRepresentationElection = typeof blackRepresentationElections.$inferSelect;
 export type InsertBlackRepresentationElection = typeof blackRepresentationElections.$inferInsert;
+
+/**
+ * A durable audit record for deliberate one-at-a-time removals. The source rows
+ * can be deleted only by an administrator, but the essential prior snapshot,
+ * reason, and actor remain reviewable after a correction.
+ */
+export const candidateRemovalAudit = mysqlTable("candidate_removal_audit", {
+  id: int("id").autoincrement().primaryKey(),
+  targetType: mysqlEnum("target_type", ["black_representation_profile", "black_representation_contest"]).notNull(),
+  targetId: int("target_id").notNull(),
+  displayName: varchar("display_name", { length: 160 }).notNull(),
+  stateCode: varchar("state_code", { length: 2 }),
+  district: varchar("district", { length: 16 }),
+  reason: text("reason").notNull(),
+  sourceUrl: text("source_url"),
+  removedBy: varchar("removed_by", { length: 128 }).notNull(),
+  snapshotJson: text("snapshot_json").notNull(),
+  removedAt: timestamp("removed_at").defaultNow().notNull(),
+});
+
+export type CandidateRemovalAudit = typeof candidateRemovalAudit.$inferSelect;
 
 // ═══════════════════════════════════════════════════════════════════════════
 // AUTONOMOUS RESEARCH DESK

@@ -1,0 +1,2 @@
+ALTER TABLE `black_representation_elections` MODIFY COLUMN `result_status` enum('called','too_close_to_call','upcoming','uncontested','withdrawn') NOT NULL DEFAULT 'upcoming';--> statement-breakpoint
+ALTER TABLE `cbc_members` MODIFY COLUMN `cbc_status` enum('running','retiring','resigned','withdrawn','deceased','lost_primary','running_for_governor','running_for_senate','not_up_2026','challenger','advanced_to_general','in_runoff','too_close_to_call','elected','won_general','lost_general') NOT NULL DEFAULT 'running';

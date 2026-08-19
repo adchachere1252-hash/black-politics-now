@@ -1118,6 +1118,13 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Replace unavailable AI research controls with deterministic evidence packages and official-source portrait review, with protected regression coverage and clear Admin completion feedback
 - [x] Validate Admin AI research task creation and completion, run checks, publish, synchronize GitHub, and document the completed diagnostic checklist
 
+## Black Representation Election Corrections and Candidate Removal (Aug 19)
+- [x] Verify Wisconsin governor, U.S. Virgin Islands governor, South Carolina governor, South Dakota Senate, Texas 31, and Texas 33 claims from the user’s uploaded material
+- [x] Compare each verified outcome to current Black Representation profiles and contest records, retaining unresolved or conflicting claims for review
+- [x] Apply only independently supported Black Representation candidate, contest, status, vote, opponent, and source corrections
+- [x] Add protected candidate-removal controls with explicit confirmation, documented reason, dependency-aware safeguards, and no accidental bulk deletion
+- [x] Validate corrected public records and Admin deletion controls, run checks, publish, synchronize GitHub, and deliver the completed correction checklist
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

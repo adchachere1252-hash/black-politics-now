@@ -83,6 +83,34 @@ describe("election router", () => {
     expect(Array.isArray(races)).toBe(true);
   });
 
+  it("returns the separately verified Black Representation governor, territory, and runoff corrections", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const [members, contests] = await Promise.all([
+      caller.election.cbc(),
+      caller.election.blackRepresentationElections(),
+    ]);
+    expect(members).toEqual(expect.arrayContaining([
+      expect.objectContaining({ member: "David Crowley", stateCode: "WI", status: "advanced_to_general" }),
+      expect.objectContaining({ member: "Stacey Plaskett", stateCode: "VI", status: "advanced_to_general" }),
+      expect.objectContaining({ member: "Julian Beaudion", stateCode: "SD", status: "withdrawn" }),
+      expect.objectContaining({ member: "Colin Allred", stateCode: "TX", status: "advanced_to_general" }),
+    ]));
+    expect(contests).toEqual(expect.arrayContaining([
+      expect.objectContaining({ stateCode: "WI", district: "WI-Gov", winnerName: "David Crowley", winnerVotePct: "39.80" }),
+      expect.objectContaining({ stateCode: "VI", district: "VI-Gov", winnerName: "Stacey Plaskett", winnerVotePct: "47.00" }),
+      expect.objectContaining({ stateCode: "SD", district: "SD-Sen", resultStatus: "withdrawn" }),
+    ]));
+  });
+
+  it("keeps audited candidate removal unavailable to public callers", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    await expect(caller.election.removeCbc({
+      id: 13,
+      reason: "Duplicate profile documented in a separate correction record.",
+      sourceUrl: "https://example.gov/correction",
+    })).rejects.toThrow();
+  });
+
   it("returns Historical Atlas redistricting records with state context", async () => {
     const caller = appRouter.createCaller(createPublicContext());
     const states = await caller.election.redistricting();
@@ -126,7 +154,7 @@ describe("election router", () => {
     for (const record of records as any[]) {
       expect(record.district).toEqual(expect.any(String));
       expect(record.stateCode).toMatch(/^[A-Z]{2}$/);
-      expect(record.resultStatus).toMatch(/^(called|uncontested|too_close_to_call|upcoming)$/);
+      expect(record.resultStatus).toMatch(/^(called|uncontested|too_close_to_call|upcoming|withdrawn)$/);
       expect(record.winnerName).toEqual(expect.any(String));
       expect(record.sourceUrl).toMatch(/^https:\/\//);
     }

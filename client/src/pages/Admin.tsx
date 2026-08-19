@@ -13,7 +13,7 @@ import { buildAdminCandidateRows, type AdminCandidateCategory } from "@/lib/admi
 import { getOfficialPortraitSourceLeads } from "@/lib/portraitSourceLeads";
 import { getAdminFreshness } from "@/lib/adminFreshness";
 import { useState, useMemo } from "react";
-import { ArrowUpRight, Shield, Radio, MapPin, Users, Save, Check, Search, SearchCheck, Star, Sparkles, AlertTriangle, CheckCircle2, Clock3, FileText, Headphones, ListChecks, RefreshCw, ShieldCheck, ImagePlus, FileDiff, Radar, Globe2, ExternalLink, BarChart3, Monitor, Smartphone, TabletSmartphone, MousePointerClick, BellRing } from "lucide-react";
+import { ArrowUpRight, Shield, Radio, MapPin, Users, Save, Check, Search, SearchCheck, Star, Sparkles, AlertTriangle, CheckCircle2, Clock3, FileText, Headphones, ListChecks, RefreshCw, ShieldCheck, ImagePlus, FileDiff, Radar, Globe2, ExternalLink, BarChart3, Monitor, Smartphone, TabletSmartphone, MousePointerClick, BellRing, Trash2 } from "lucide-react";
 
 type AdminTab = "overview" | "command" | "podcast" | "elections" | "candidates" | "cbc" | "atlasWorld" | "agent" | "changes" | "portraits" | "audience";
 
@@ -720,6 +720,8 @@ function CbcOpsTab() {
   const utils = trpc.useUtils();
   const updateCbc = trpc.election.updateCbc.useMutation({ onSuccess: () => utils.election.cbc.invalidate() });
   const updateElection = trpc.election.updateBlackRepresentationElection.useMutation({ onSuccess: () => utils.election.blackRepresentationElections.invalidate() });
+  const removeCbc = trpc.election.removeCbc.useMutation({ onSuccess: () => utils.election.cbc.invalidate() });
+  const removeElection = trpc.election.removeBlackRepresentationElection.useMutation({ onSuccess: () => utils.election.blackRepresentationElections.invalidate() });
 
   const filtered = (members as any[]).filter((m: any) => {
     if (!search) return true;
@@ -742,13 +744,13 @@ function CbcOpsTab() {
       </div>
       <div className="space-y-2 max-h-[60vh] overflow-y-auto">
         {filtered.map((m: any) => (
-          <CbcEditor key={m.id} member={m} onSave={(data) => updateCbc.mutate({ id: m.id, data })} saving={updateCbc.isPending} />
+          <CbcEditor key={m.id} member={m} onSave={(data) => updateCbc.mutate({ id: m.id, data })} onRemove={(data) => removeCbc.mutate({ id: m.id, ...data })} removalError={removeCbc.error?.message} saving={updateCbc.isPending || removeCbc.isPending} />
         ))}
       </div>
       <h3 className="text-sm font-bold mt-8 mb-3">Article-Backed Election Results</h3>
       <div className="space-y-2 max-h-[60vh] overflow-y-auto">
         {(elections as any[]).filter((race: any) => !search || `${race.state} ${race.district} ${race.winnerName} ${race.runnerUpName}`.toLowerCase().includes(search.toLowerCase())).map((race: any) => (
-          <BlackRepresentationElectionEditor key={race.id} race={race} onSave={(data: any) => updateElection.mutate({ id: race.id, data })} saving={updateElection.isPending} />
+          <BlackRepresentationElectionEditor key={race.id} race={race} onSave={(data: any) => updateElection.mutate({ id: race.id, data })} onRemove={(data: any) => removeElection.mutate({ id: race.id, ...data })} removalError={removeElection.error?.message} saving={updateElection.isPending || removeElection.isPending} />
         ))}
       </div>
     </div>
@@ -792,11 +794,14 @@ function CandidatesOpsTab({ onOpenPortraits }: { onOpenPortraits: (targetKey?: s
   </div>;
 }
 
-function CbcEditor({ member, onSave, saving }: { member: any; onSave: (data: any) => void; saving: boolean }) {
+function CbcEditor({ member, onSave, onRemove, removalError, saving }: { member: any; onSave: (data: any) => void; onRemove: (data: { reason: string; sourceUrl?: string }) => void; removalError?: string; saving: boolean }) {
   const [status, setStatus] = useState(member.cbcStatus ?? "running");
   const [primaryResult, setPrimaryResult] = useState(member.primaryResult ?? "");
   const [notes, setNotes] = useState(member.notes ?? "");
   const [saved, setSaved] = useState(false);
+  const [removing, setRemoving] = useState(false);
+  const [removalReason, setRemovalReason] = useState("");
+  const [removalSource, setRemovalSource] = useState("");
 
   const handleSave = () => {
     onSave({ cbcStatus: status, primaryResult: primaryResult || null, notes: notes || null });
@@ -813,6 +818,7 @@ function CbcEditor({ member, onSave, saving }: { member: any; onSave: (data: any
           <option value="running">Running</option>
           <option value="retiring">Retiring</option>
           <option value="resigned">Resigned</option>
+          <option value="withdrawn">Withdrawn</option>
           <option value="deceased">Deceased</option>
           <option value="lost_primary">Lost Primary</option>
           <option value="running_for_governor">Running for Gov</option>
@@ -845,12 +851,14 @@ function CbcEditor({ member, onSave, saving }: { member: any; onSave: (data: any
           {saved ? <Check size={12} /> : <Save size={12} />}
           {saved ? "Saved" : "Save"}
         </button>
+        <button onClick={() => setRemoving((current) => !current)} disabled={saving} className="flex items-center gap-1 rounded border border-destructive/45 px-2 py-1 text-xs font-semibold text-destructive hover:bg-destructive/10 disabled:opacity-50"><Trash2 size={12} /> Remove</button>
       </div>
+      {removing && <div className="mt-3 rounded-md border border-destructive/30 bg-destructive/5 p-3"><p className="text-xs font-semibold text-destructive">Remove this Black Representation profile</p><p className="mt-1 text-xs text-muted-foreground">This creates an audit record. A profile with a linked contest cannot be removed until that contest is separately reviewed.</p>{removalError && <p className="mt-2 text-xs font-medium text-destructive">Removal blocked: {removalError}</p>}<div className="mt-2 flex flex-wrap gap-2"><input value={removalReason} onChange={e => setRemovalReason(e.target.value)} placeholder="Reason (12+ characters)" className="min-w-[220px] flex-1 rounded bg-background px-2 py-1 text-xs" /><input value={removalSource} onChange={e => setRemovalSource(e.target.value)} placeholder="Optional evidence URL" className="min-w-[180px] flex-1 rounded bg-background px-2 py-1 text-xs" /><button onClick={() => onRemove({ reason: removalReason, sourceUrl: removalSource || undefined })} disabled={saving || removalReason.trim().length < 12} className="rounded bg-destructive px-2 py-1 text-xs font-bold text-destructive-foreground disabled:opacity-50">Confirm removal</button></div></div>}
     </div>
   );
 }
 
-function BlackRepresentationElectionEditor({ race, onSave, saving }: { race: any; onSave: (data: any) => void; saving: boolean }) {
+function BlackRepresentationElectionEditor({ race, onSave, onRemove, removalError, saving }: { race: any; onSave: (data: any) => void; onRemove: (data: { reason: string; sourceUrl?: string }) => void; removalError?: string; saving: boolean }) {
   const [resultStatus, setResultStatus] = useState(race.resultStatus ?? "upcoming");
   const [winnerName, setWinnerName] = useState(race.winnerName ?? "");
   const [winnerVotes, setWinnerVotes] = useState(race.winnerVotes?.toString() ?? "");
@@ -858,6 +866,9 @@ function BlackRepresentationElectionEditor({ race, onSave, saving }: { race: any
   const [generalOpponent, setGeneralOpponent] = useState(race.generalOpponent ?? "");
   const [sourceUrl, setSourceUrl] = useState(race.sourceUrl ?? "");
   const [saved, setSaved] = useState(false);
+  const [removing, setRemoving] = useState(false);
+  const [removalReason, setRemovalReason] = useState("");
+  const [removalSource, setRemovalSource] = useState("");
 
   const handleSave = () => {
     onSave({
@@ -882,6 +893,7 @@ function BlackRepresentationElectionEditor({ race, onSave, saving }: { race: any
           <option value="uncontested">Uncontested</option>
           <option value="too_close_to_call">Too Close</option>
           <option value="upcoming">Upcoming</option>
+          <option value="withdrawn">Withdrawn</option>
         </select>
         <input value={winnerName} onChange={e => setWinnerName(e.target.value)} placeholder="Winner" className="bg-muted rounded px-2 py-1 text-xs w-32" />
         <input value={winnerVotes} onChange={e => setWinnerVotes(e.target.value)} placeholder="Votes" type="number" className="bg-muted rounded px-2 py-1 text-xs w-24" />
@@ -892,6 +904,8 @@ function BlackRepresentationElectionEditor({ race, onSave, saving }: { race: any
           {saved ? <Check size={12} /> : <Save size={12} />}{saved ? "Saved" : "Save"}
         </button>
       </div>
+      {removing && <div className="mt-3 rounded-md border border-destructive/30 bg-destructive/5 p-3"><p className="text-xs font-semibold text-destructive">Remove this contest record</p><p className="mt-1 text-xs text-muted-foreground">The complete prior record, reason, source, and administrator are retained in the removal audit.</p>{removalError && <p className="mt-2 text-xs font-medium text-destructive">Removal blocked: {removalError}</p>}<div className="mt-2 flex flex-wrap gap-2"><input value={removalReason} onChange={e => setRemovalReason(e.target.value)} placeholder="Reason (12+ characters)" className="min-w-[220px] flex-1 rounded bg-background px-2 py-1 text-xs" /><input value={removalSource} onChange={e => setRemovalSource(e.target.value)} placeholder="Optional evidence URL" className="min-w-[180px] flex-1 rounded bg-background px-2 py-1 text-xs" /><button onClick={() => onRemove({ reason: removalReason, sourceUrl: removalSource || undefined })} disabled={saving || removalReason.trim().length < 12} className="rounded bg-destructive px-2 py-1 text-xs font-bold text-destructive-foreground disabled:opacity-50">Confirm removal</button></div></div>}
+      <button onClick={() => setRemoving((current) => !current)} disabled={saving} className="mt-2 inline-flex items-center gap-1 rounded border border-destructive/45 px-2 py-1 text-xs font-semibold text-destructive hover:bg-destructive/10 disabled:opacity-50"><Trash2 size={12} /> Remove contest</button>
     </div>
   );
 }

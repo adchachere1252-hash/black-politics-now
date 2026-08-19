@@ -41,7 +41,7 @@ import { buildPodcastShowNotes, getPodcastAnalytics, getPodcastShowNotes, record
 import { getDailyBriefQAScorecard } from "./dailyBriefBenchmark";
 import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getPublicElectionFreshness, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateReferendum } from "./electionDb";
 import { fetchWithCache, getPersistedWordPressNews } from "./newsCache";
-import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
+import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, removeBlackRepresentationElection, removeBlackRepresentationProfile, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
 import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
 import { getWorldElectionRefreshOperations, runDatedWorldElectionRefresh } from "./worldElectionRefresh";
 import { advanceElectionDayRehearsal, getElectionDayCommandCenter, getElectionSourceConflictQueue, getPostElectionReconciliationReport, startElectionDayRehearsal } from "./electionDayCommandCenter";
@@ -157,6 +157,12 @@ export const appRouter = router({
     updateBlackRepresentationElection: adminProcedure
       .input(z.object({ id: z.number(), data: z.record(z.string(), z.unknown()) }))
       .mutation(async ({ input }) => { await updateBlackRepresentationElection(input.id, input.data as any); return { success: true }; }),
+    removeCbc: adminProcedure
+      .input(z.object({ id: z.number().int().positive(), reason: z.string().min(12).max(1200), sourceUrl: z.string().url().max(2048).optional() }))
+      .mutation(async ({ input, ctx }) => removeBlackRepresentationProfile({ ...input, removedBy: ctx.user.name ?? "Administrator" })),
+    removeBlackRepresentationElection: adminProcedure
+      .input(z.object({ id: z.number().int().positive(), reason: z.string().min(12).max(1200), sourceUrl: z.string().url().max(2048).optional() }))
+      .mutation(async ({ input, ctx }) => removeBlackRepresentationElection({ ...input, removedBy: ctx.user.name ?? "Administrator" })),
     redistricting: publicProcedure.query(async () => getAllRedistrictingStates()),
   }),
 

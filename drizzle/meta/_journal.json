@@ -218,6 +218,20 @@
       "when": 1787176314090,
       "tag": "0030_hard_madame_masque",
       "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "5",
+      "when": 1787178432991,
+      "tag": "0031_massive_puck",
+      "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "5",
+      "when": 1787178557567,
+      "tag": "0032_pale_king_bedlam",
+      "breakpoints": true
     }
   ]
 }
