@@ -1075,6 +1075,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify current homepage World Elections card data, Cook Islands completed context, and Bangladesh next-election context
 - [x] Correct any confirmed freshness or display defect without representing primary returns as general-election calls, then deliver the completed map checklist
 
+## Public U.S. Primary Results Map (Aug 19)
+- [x] Locate the internal August 18 primary-outcomes recap and reconcile each public-map entry to source-backed result evidence
+- [x] Add a clearly labeled Primary Results map view that is visually and semantically separate from General Election ratings, calls, and certified results
+- [x] Display result-level source links, preliminary/official status, and last-updated context without overstating unresolved counts
+- [x] Verify desktop/mobile map behavior, run regression checks, publish, synchronize GitHub, and document where the new public primary map is available
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade

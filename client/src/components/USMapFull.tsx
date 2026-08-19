@@ -133,6 +133,7 @@ export function USMapFull({ raceData, onStateClick, selectedState, showLegend = 
       case "Likely R": return "var(--color-likely-r)";
       case "Solid R": return "var(--color-solid-r)";
       case "Black Political Representation": return "var(--color-representation)";
+      case "Primary Result": return "var(--color-primary-result)";
       default: return "var(--color-no-data)";
     }
   };
@@ -140,6 +141,7 @@ export function USMapFull({ raceData, onStateClick, selectedState, showLegend = 
   const hoveredData = hoveredState ? raceData[hoveredState] : null;
   const hoveredName = hoveredState ? STATE_NAMES[hoveredState] : null;
   const representationView = hoveredData?.rating === "Black Political Representation";
+  const primaryResultsView = hoveredData?.rating === "Primary Result";
   const boundedTooltipPos = getBoundedMapTooltipPosition(tooltipPos);
 
   return (
@@ -185,8 +187,8 @@ export function USMapFull({ raceData, onStateClick, selectedState, showLegend = 
           <p className="text-sm font-bold text-foreground">{hoveredName}</p>
           <p className="text-xs text-muted-foreground mt-0.5">{hoveredData.rating ?? "No Rating"}</p>
           <div className="mt-1.5 text-xs">
-            <p className={representationView ? "text-primary" : "text-[color:var(--color-solid-d)]"}>{hoveredData.candidate1 || "—"}</p>
-            <p className={representationView ? "text-primary" : "text-[color:var(--color-solid-r)]"}>{hoveredData.candidate2 || "—"}</p>
+            <p className={representationView || primaryResultsView ? "text-primary" : "text-[color:var(--color-solid-d)]"}>{hoveredData.candidate1 || "—"}</p>
+            <p className={representationView || primaryResultsView ? "text-primary" : "text-[color:var(--color-solid-r)]"}>{hoveredData.candidate2 || "—"}</p>
           </div>
           {hoveredData.calledWinner && (
             <p className="text-xs text-primary font-medium mt-1">Winner: {hoveredData.calledWinner}</p>
@@ -199,6 +201,9 @@ export function USMapFull({ raceData, onStateClick, selectedState, showLegend = 
         {(Object.values(raceData).some((race) => race.rating === "Black Political Representation") ? [
           { label: "Black Political Representation", color: "var(--color-representation)" },
           { label: "No Data", color: "var(--color-no-data)" },
+        ] : Object.values(raceData).some((race) => race.rating === "Primary Result") ? [
+          { label: "August 18 primary / special result", color: "var(--color-primary-result)" },
+          { label: "No August 18 result", color: "var(--color-no-data)" },
         ] : [
           { label: "Solid D", color: "var(--color-solid-d)" },
           { label: "Likely D", color: "var(--color-likely-d)" },
