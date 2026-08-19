@@ -1092,6 +1092,14 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Validate protected Admin data paths, timed refresh behavior, and no-data/error states across desktop and mobile
 - [x] Run regression checks, publish the Admin accuracy release, synchronize GitHub, and document the completed dashboard checklist
 
+## Black Representation Primary-Results Comparison (Aug 19)
+- [x] Preserve the provided article and its WordPress URL as a read-only comparison source; do not edit, rewrite, move, or alter either
+- [x] Extract all Black Representation candidates, districts, outcomes, and status claims from the provided August 18 primary-results article
+- [x] Compare article claims against current Black Representation members and election records, identifying missing, stale, or inconsistent entries
+- [x] Verify material differences using official election authorities or independent reporting before editing any public map record
+- [x] Apply only evidence-supported Black Representation map updates with status, source, and timestamp context
+- [x] Validate the desktop primary and Black Reps map views, run checks, publish, synchronize GitHub, and deliver the comparative audit checklist
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade

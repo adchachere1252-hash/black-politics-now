@@ -166,6 +166,35 @@ describe("election router", () => {
     expect(james.sourceUrl).toMatch(/^https:\/\//);
   });
 
+  it("keeps independently verified Florida primary representation outcomes separate from general-election calls", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const profiles = await caller.election.cbc() as any[];
+    const records = await caller.election.blackRepresentationElections() as any[];
+    const donalds = profiles.find((profile) => profile.member === "Byron Donalds" && profile.district === "FL-19");
+    const nixon = profiles.find((profile) => profile.member === "Angie Nixon" && profile.district === "FL-Sen");
+    const floridaRecords = records.filter((record) => record.stateCode === "FL");
+
+    expect(donalds).toMatchObject({
+      status: "advanced_to_general",
+      primaryResult: "Won Republican primary; advanced to general",
+      primaryVotePct: "47.80",
+      generalOpponent: "David Jolly (D)",
+    });
+    expect(nixon).toMatchObject({
+      status: "advanced_to_general",
+      primaryOpponent: "Alex Vindman",
+      generalOpponent: "Ashley Moody (R)",
+    });
+    expect(floridaRecords).toEqual(expect.arrayContaining([
+      expect.objectContaining({ district: "FL-Gov", electionType: "primary", resultStatus: "called", winnerName: "Byron Donalds" }),
+      expect.objectContaining({ district: "FL-Sen", electionType: "primary", resultStatus: "called", winnerName: "Angie Nixon" }),
+      expect.objectContaining({ district: "FL-20", electionType: "primary", resultStatus: "called", winnerName: "Debbie Wasserman Schultz" }),
+      expect.objectContaining({ district: "FL-24", electionType: "primary", resultStatus: "called", winnerName: "Oliver Gilbert III" }),
+      expect.objectContaining({ district: "FL-10", electionType: "primary", resultStatus: "uncontested", winnerName: "Maxwell Frost" }),
+    ]));
+    expect(floridaRecords.every((record) => record.articleUrl === "https://blkpoliticsnow.com/2026-primary-results-tracking-shifts-in-black-representation-3/")).toBe(true);
+  });
+
   it("allows an administrator to safely re-save every article-backed election record", async () => {
     const publicCaller = appRouter.createCaller(createPublicContext());
     const adminCaller = appRouter.createCaller(createAdminContext());
