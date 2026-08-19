@@ -27,7 +27,7 @@ export function AgentProposedChangesTab() {
   const [status, setStatus] = useState("pending_review");
   const [notes, setNotes] = useState<Record<number, string>>({});
   const [researchNotice, setResearchNotice] = useState<string | null>(null);
-  const { data: proposals = [], isLoading } = trpc.agent.changeProposals.useQuery(status === "all" ? undefined : { status: status as "pending_review" | "approved" | "rejected" | "revision_requested" });
+  const { data: proposals = [], isLoading } = trpc.agent.changeProposals.useQuery(status === "all" ? undefined : { status: status as "pending_review" | "approved" | "rejected" | "revision_requested" }, { refetchInterval: 60_000 });
   const review = trpc.agent.reviewChangeProposal.useMutation({
     onSuccess: () => {
       utils.agent.changeProposals.invalidate();

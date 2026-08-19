@@ -1081,6 +1081,17 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Display result-level source links, preliminary/official status, and last-updated context without overstating unresolved counts
 - [x] Verify desktop/mobile map behavior, run regression checks, publish, synchronize GitHub, and document where the new public primary map is available
 
+## Live Results Ticker Motion Repair (Aug 19)
+- [x] Inspect the deployed ticker’s computed animation, reduced-motion state, layout width, and current result payload on desktop and mobile
+- [x] Replace any unreliable CSS-only motion path with a resilient continuous animation that visibly advances without a pause/resume control
+- [x] Verify observed motion over time on desktop and mobile, run regression checks, publish the fix, synchronize GitHub, and document the completed repair
+
+## Admin Dashboard Accuracy and Timeliness (Aug 19)
+- [x] Audit freshness, source state, and failure conditions for Admin Overview, Election Ops, World Elections, Podcast Ops, Agent Desk, Candidate and Portrait Review, and Audience data
+- [x] Add consistent freshness labels, last-success timestamps, stale/degraded states, and clear next-action guidance to relevant Admin Dashboard workspaces
+- [x] Validate protected Admin data paths, timed refresh behavior, and no-data/error states across desktop and mobile
+- [x] Run regression checks, publish the Admin accuracy release, synchronize GitHub, and document the completed dashboard checklist
+
 ## Connected Admin Feature Verification (Aug 16)
 - [x] Verify Command Center, Election Ops, Agent Desk, Proposed Changes, Podcast Ops, Atlas & World, Black Representation, and Audience operate through protected data paths
 - [x] Verify Admin desktop and mobile navigation, loading states, empty states, and error states after the portrait workflow upgrade

@@ -1,6 +1,7 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { isFinalElectionTickerOutcome } from "@/lib/resultsTickerEligibility";
 import { createTickerSequences } from "@/lib/tickerFlow";
+import { nextTickerOffset } from "@/lib/tickerMotion";
 
 interface TickerItem {
   state: string;
@@ -15,6 +16,7 @@ interface ResultsTickerProps {
 }
 
 export function ResultsTicker({ senateRaces, houseRaces }: ResultsTickerProps) {
+  const trackRef = useRef<HTMLDivElement>(null);
   const calledRaces = useMemo(() => {
     const results: TickerItem[] = [];
     senateRaces.forEach((r: any) => {
@@ -26,6 +28,26 @@ export function ResultsTicker({ senateRaces, houseRaces }: ResultsTickerProps) {
     return results;
   }, [senateRaces, houseRaces]);
   const tickerSequences = useMemo(() => createTickerSequences(calledRaces), [calledRaces]);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track || calledRaces.length === 0) return;
+
+    let frame = 0;
+    let offset = 0;
+    let lastFrame = performance.now();
+
+    const move = (now: number) => {
+      const halfTrackWidth = track.scrollWidth / 2;
+      offset = nextTickerOffset(offset, now - lastFrame, halfTrackWidth);
+      track.style.transform = `translate3d(${-offset}px, 0, 0)`;
+      lastFrame = now;
+      frame = requestAnimationFrame(move);
+    };
+
+    frame = requestAnimationFrame(move);
+    return () => cancelAnimationFrame(frame);
+  }, [calledRaces]);
 
   if (calledRaces.length === 0) {
     return (
@@ -50,7 +72,7 @@ export function ResultsTicker({ senateRaces, houseRaces }: ResultsTickerProps) {
           <span className="text-[10px] font-black text-destructive uppercase tracking-widest">RESULTS</span>
         </span>
         <div className="ticker-viewport min-w-0 flex-1" aria-label="Continuously scrolling final election outcomes">
-          <div className="ticker-scroll" aria-hidden="true">
+          <div className="ticker-scroll" ref={trackRef} aria-hidden="true">
             {tickerSequences.map((sequence, sequenceIndex) => <div className="ticker-sequence" key={sequenceIndex}>
               {sequence.map((race, index) => (
                 <span key={`${sequenceIndex}-${race.state}-${race.chamber}-${index}`} className="whitespace-nowrap text-xs">

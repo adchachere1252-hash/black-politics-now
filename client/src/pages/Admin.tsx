@@ -11,6 +11,7 @@ import { rankedWorldSignals, worldSignalLabel } from "@/lib/worldElectionDisplay
 import { getAdminElectionEngineBadge } from "@/lib/electionFreshness";
 import { buildAdminCandidateRows, type AdminCandidateCategory } from "@/lib/adminCandidates";
 import { getOfficialPortraitSourceLeads } from "@/lib/portraitSourceLeads";
+import { getAdminFreshness } from "@/lib/adminFreshness";
 import { useState, useMemo } from "react";
 import { ArrowUpRight, Shield, Radio, MapPin, Users, Save, Check, Search, SearchCheck, Star, Sparkles, AlertTriangle, CheckCircle2, Clock3, FileText, Headphones, ListChecks, RefreshCw, ShieldCheck, ImagePlus, FileDiff, Radar, Globe2, ExternalLink, BarChart3, Monitor, Smartphone, TabletSmartphone, MousePointerClick, BellRing } from "lucide-react";
 
@@ -107,7 +108,7 @@ export default function AdminPage() {
         <button onClick={openActivePortraitBatch} className="inline-flex shrink-0 items-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-bold text-primary-foreground shadow-sm hover:bg-primary/90"><ImagePlus size={14} /> Open active batch</button>
       </div>
 
-      {tab === "overview" && <OverviewTab onReview={(id) => { setFocusRecommendationId(id); navigateToTab("agent"); }} onNavigate={(destination) => destination === "portraits" ? openActivePortraitBatch() : navigateToTab(destination)} />}
+      {tab === "overview" && <OverviewTab onReview={(id) => { setFocusRecommendationId(id); navigateToTab("agent"); }} onNavigate={(destination) => destination === "portraits" ? openActivePortraitBatch() : navigateToTab(destination)} onNavigateAdmin={navigateToTab} />}
       {tab === "command" && <ElectionDayCommandCenterTab />}
       {tab === "podcast" && <PodcastOpsTab />}
       {tab === "elections" && <ElectionOpsTab />}
@@ -122,13 +123,14 @@ export default function AdminPage() {
   );
 }
 
-function OverviewTab({ onReview, onNavigate }: { onReview: (id: number) => void; onNavigate: (destination: "agent" | "changes" | "portraits") => void }) {
-  const { data: scoreboard } = trpc.election.scoreboard.useQuery();
-  const { data: episodes } = trpc.podcast.getEpisodes.useQuery();
-  const { data: senateRaces } = trpc.election.senate.useQuery();
-  const { data: houseRaces } = trpc.election.house.useQuery();
-  const { data: governors } = trpc.election.governors.useQuery();
-  const { data: electionFreshness } = trpc.election.freshness.useQuery();
+function OverviewTab({ onReview, onNavigate, onNavigateAdmin }: { onReview: (id: number) => void; onNavigate: (destination: "agent" | "changes" | "portraits") => void; onNavigateAdmin: (destination: AdminTab) => void }) {
+  const liveRefresh = { refetchInterval: 60_000 };
+  const { data: scoreboard } = trpc.election.scoreboard.useQuery(undefined, liveRefresh);
+  const { data: episodes } = trpc.podcast.getEpisodes.useQuery(undefined, liveRefresh);
+  const { data: senateRaces } = trpc.election.senate.useQuery(undefined, liveRefresh);
+  const { data: houseRaces } = trpc.election.house.useQuery(undefined, liveRefresh);
+  const { data: governors } = trpc.election.governors.useQuery(undefined, liveRefresh);
+  const { data: electionFreshness } = trpc.election.freshness.useQuery(undefined, liveRefresh);
   const { data: priorityRecommendations = [] } = trpc.agent.recommendations.useQuery({ status: "pending", priority: "high" });
   const { data: agentSettings } = trpc.agent.settings.useQuery();
   const { data: dailyAgentSummary } = trpc.agent.dailySummary.useQuery(undefined, { refetchInterval: 60_000 });
@@ -136,8 +138,8 @@ function OverviewTab({ onReview, onNavigate }: { onReview: (id: number) => void;
   const { data: pendingChanges = [] } = trpc.agent.changeProposals.useQuery({ status: "pending_review" });
   const { data: pendingPortraits = [] } = trpc.portraits.submissions.useQuery({ status: "pending" });
   const { data: portraitResearchBatch } = trpc.portraits.latestResearchBatch.useQuery();
-  const { data: worldElections = [] } = trpc.world.elections.useQuery();
-  const { data: worldRefresh, refetch: refetchWorldRefresh } = trpc.world.refreshOperations.useQuery();
+  const { data: worldElections = [] } = trpc.world.elections.useQuery(undefined, liveRefresh);
+  const { data: worldRefresh, refetch: refetchWorldRefresh } = trpc.world.refreshOperations.useQuery(undefined, liveRefresh);
   const runWorldRefresh = trpc.world.runRefreshNow.useMutation({ onSuccess: () => refetchWorldRefresh() });
   const [priorityOwner, setPriorityOwner] = useState("all");
 
@@ -161,6 +163,13 @@ function OverviewTab({ onReview, onNavigate }: { onReview: (id: number) => void;
   const worldRefreshItems = worldRefresh?.items as any[] ?? [];
   const worldRefreshChanges = worldRefreshItems.filter((item) => item.lastStatus === "changed").length;
   const portraitsReadyForReview = portraitResearchBatch?.byStatus?.ready_for_review ?? 0;
+  const latestEpisode = (episodes as any[] ?? [])[0];
+  const freshnessRows = [
+    { label: "Election Watch", value: engineBadge.label, timestamp: electionFreshness?.heartbeatAt, detail: `${electionFreshness?.mode ?? "unknown"} · ${electionFreshness?.sourceHealth ?? "unknown"}`, tone: engineBadge.tone === "warning" ? "warn" as const : "good" as const, destination: "command" as const },
+    { label: "Daily Brief", value: latestEpisode?.verificationStatus === "passed" ? "Verified" : latestEpisode ? "Held" : "Awaiting", timestamp: latestEpisode?.updatedAt ?? dailyAgentSummary?.updatedAt, detail: latestEpisode?.date ? `${latestEpisode.date} · ${latestEpisode?.segmentCount ?? 0} segments` : "No current episode record", tone: latestEpisode?.verificationStatus === "passed" ? "good" as const : "warn" as const, destination: "podcast" as const },
+    { label: "World Elections", value: worldRefreshSettings?.lastError ? "Needs review" : worldRefreshChanges ? "Review queued" : "Monitored", timestamp: worldRefreshSettings?.lastSuccessAt ?? worldRefreshSettings?.lastRunAt, detail: worldRefreshSettings?.lastError || (worldRefreshChanges ? `${worldRefreshChanges} source changes awaiting review` : "Review-only monitor active"), tone: worldRefreshSettings?.lastError || worldRefreshChanges ? "warn" as const : "good" as const, destination: "atlasWorld" as const },
+    { label: "Research & Portraits", value: dailyAgentSummary?.agentRunStatus === "failed" ? "Needs review" : "Tracked", timestamp: dailyAgentSummary?.updatedAt ?? dailyAgentSummary?.generatedAt, detail: dailyAgentSummary ? `${dailyAgentSummary.pendingRecommendations} recommendations · ${dailyAgentSummary.pendingPortraitReviews} portrait reviews` : "Awaiting operational snapshot", tone: dailyAgentSummary?.agentRunStatus === "failed" ? "warn" as const : "good" as const, destination: "agent" as const },
+  ];
   const decisionItems: Array<{ id: string; title: string; detail: string; type: string; destination: "agent" | "changes" | "portraits"; recommendationId?: number }> = [
     ...(pendingChanges as any[]).slice(0, 2).map((item) => ({ id: `change-${item.id}`, title: item.title, detail: "Agent change set awaiting decision", type: "Change set", destination: "changes" as const })),
     ...(portraitsReadyForReview > 0 ? [{ id: "portrait-research-ready", title: `${portraitsReadyForReview} portrait research findings ready to inspect`, detail: "Open Portrait Review to filter the active batch and inspect source packages.", type: "Portrait research", destination: "portraits" as const }] : []),
@@ -185,6 +194,11 @@ function OverviewTab({ onReview, onNavigate }: { onReview: (id: number) => void;
           <p className="text-3xl font-bold">{(scoreboard?.house.dem ?? 0) + (scoreboard?.house.rep ?? 0)}</p>
         </div>
       </div>
+
+      <section className="glass-card rounded-xl border border-sky-500/25 bg-sky-500/[0.035] p-5">
+        <div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider"><Clock3 size={16} className="text-sky-600 dark:text-sky-300" /> Operational data freshness</h3><p className="mt-1 max-w-2xl text-xs text-muted-foreground">This dashboard rechecks its election, briefing, World Elections, and review signals every minute while open. Each card shows the last durable update rather than implying a live value when one is unavailable.</p></div><span className="rounded-full bg-sky-500/10 px-2.5 py-1 text-[10px] font-bold uppercase text-sky-700 dark:text-sky-300">60-second Admin refresh</span></div>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{freshnessRows.map((row) => <AdminFreshnessCard key={row.label} {...row} onOpen={() => onNavigateAdmin(row.destination)} />)}</div>
+      </section>
 
       <div className="glass-card rounded-xl border border-primary/25 bg-primary/[0.035] p-5">
         <div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider"><Radio size={16} className="text-primary" /> Morning agent summary</h3><p className="mt-1 max-w-2xl text-xs text-muted-foreground">A durable record written by the Daily Brief guard after its morning production outcome. It preserves what the automation found instead of relying on transient logs.</p></div><span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase ${dailyAgentSummary?.briefStatus === "passed" ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" : dailyAgentSummary ? "bg-amber-500/10 text-amber-700 dark:text-amber-300" : "bg-muted text-muted-foreground"}`}>{dailyAgentSummary ? `${dailyAgentSummary.snapshotDate} · ${dailyAgentSummary.briefStatus}` : "Awaiting next morning run"}</span></div>
@@ -349,6 +363,13 @@ function OpsMetric({ icon: Icon, label, value, detail, tone = "neutral" }: { ico
   return <div className={`rounded-lg border p-3 ${colors}`}><Icon size={15} className={tone === "good" ? "text-emerald-600 dark:text-emerald-300" : tone === "warn" ? "text-amber-600 dark:text-amber-300" : "text-primary"}/><p className="mt-2 text-[10px] font-bold uppercase tracking-[0.1em] text-muted-foreground">{label}</p><p className="mt-1 text-sm font-semibold text-foreground">{value}</p>{detail && <p className="mt-1 text-[11px] text-muted-foreground">{detail}</p>}</div>;
 }
 
+function AdminFreshnessCard({ label, value, timestamp, detail, tone, onOpen }: { label: string; value: string; timestamp?: Date | string | number | null; detail: string; tone: "good" | "warn"; onOpen: () => void }) {
+  const freshness = getAdminFreshness(timestamp);
+  const effectiveTone = tone === "warn" || freshness.stale ? "warn" : "good";
+  const colors = effectiveTone === "good" ? "border-emerald-500/25 bg-emerald-500/5 hover:border-emerald-500/50" : "border-amber-500/30 bg-amber-500/5 hover:border-amber-500/55";
+  return <button type="button" onClick={onOpen} className={`rounded-lg border p-3 text-left transition-colors ${colors}`}><div className="flex items-start justify-between gap-2"><p className="text-[10px] font-bold uppercase tracking-[0.1em] text-muted-foreground">{label}</p><ArrowUpRight size={13} className={effectiveTone === "good" ? "text-emerald-600 dark:text-emerald-300" : "text-amber-600 dark:text-amber-300"} /></div><p className="mt-2 text-sm font-semibold text-foreground">{value}</p><p className="mt-1 line-clamp-2 text-[11px] text-muted-foreground">{detail}</p><p className={`mt-2 text-[10px] font-bold uppercase tracking-[0.08em] ${effectiveTone === "good" ? "text-emerald-700 dark:text-emerald-300" : "text-amber-700 dark:text-amber-300"}`}>{freshness.stale && freshness.minutesAgo !== null ? `Stale · ${freshness.label}` : freshness.label}</p></button>;
+}
+
 function PodcastGate({ icon: Icon, label, detail, passed }: { icon: any; label: string; detail: string; passed: boolean }) {
   return <div className={`rounded-lg border p-3 ${passed ? "border-emerald-500/25 bg-emerald-500/5" : "border-amber-500/25 bg-amber-500/5"}`}><Icon size={15} className={passed ? "text-emerald-600 dark:text-emerald-300" : "text-amber-600 dark:text-amber-300"}/><p className="mt-2 text-xs font-semibold text-foreground">{label}</p><p className="mt-1 text-xs text-muted-foreground">{detail}</p><p className={`mt-2 text-[10px] font-bold uppercase tracking-[0.1em] ${passed ? "text-emerald-700 dark:text-emerald-300" : "text-amber-700 dark:text-amber-300"}`}>{passed ? "Passed" : "Held safely"}</p></div>;
 }
@@ -388,10 +409,11 @@ const RATINGS = ["Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R
 function ElectionOpsTab() {
   const [chamber, setChamber] = useState<"senate" | "house" | "governors" | "referendums">("senate");
   const [houseSearch, setHouseSearch] = useState("");
-  const { data: senateRaces = [] } = trpc.election.senate.useQuery();
-  const { data: houseRaces = [] } = trpc.election.house.useQuery();
-  const { data: governors = [] } = trpc.election.governors.useQuery();
-  const { data: referendums = [] } = trpc.election.referendums.useQuery();
+  const activeRefresh = { refetchInterval: 60_000 };
+  const { data: senateRaces = [] } = trpc.election.senate.useQuery(undefined, activeRefresh);
+  const { data: houseRaces = [] } = trpc.election.house.useQuery(undefined, activeRefresh);
+  const { data: governors = [] } = trpc.election.governors.useQuery(undefined, activeRefresh);
+  const { data: referendums = [] } = trpc.election.referendums.useQuery(undefined, activeRefresh);
 
   const utils = trpc.useUtils();
   const updateSenate = trpc.election.updateSenate.useMutation({ onSuccess: () => utils.election.senate.invalidate() });

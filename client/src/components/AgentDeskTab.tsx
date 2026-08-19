@@ -54,11 +54,12 @@ export function AgentDeskTab({ focusRecommendationId }: { focusRecommendationId?
     utils.agent.tasks.invalidate();
     utils.agent.changeProposals.invalidate();
   };
-  const { data: recommendations = [] } = trpc.agent.recommendations.useQuery(filters);
-  const { data: runs = [] } = trpc.agent.runs.useQuery();
-  const { data: settings } = trpc.agent.settings.useQuery();
-  const { data: tasks = [] } = trpc.agent.tasks.useQuery();
-  const { data: changeProposals = [] } = trpc.agent.changeProposals.useQuery();
+  const queueRefresh = { refetchInterval: 60_000 };
+  const { data: recommendations = [] } = trpc.agent.recommendations.useQuery(filters, queueRefresh);
+  const { data: runs = [] } = trpc.agent.runs.useQuery(undefined, queueRefresh);
+  const { data: settings } = trpc.agent.settings.useQuery(undefined, queueRefresh);
+  const { data: tasks = [] } = trpc.agent.tasks.useQuery(undefined, queueRefresh);
+  const { data: changeProposals = [] } = trpc.agent.changeProposals.useQuery(undefined, queueRefresh);
   const runNow = trpc.agent.runNow.useMutation({ onSuccess: invalidateDesk });
   const review = trpc.agent.reviewRecommendation.useMutation({ onSuccess: invalidateDesk });
   const assign = trpc.agent.assignRecommendation.useMutation({ onSuccess: invalidateDesk });
