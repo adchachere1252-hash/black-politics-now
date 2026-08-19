@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import { scoreDailyBriefAgainstBenchmark } from "./dailyBriefBenchmark";
 
 const verifiedSegments = [
-  { key: "00_greeting", script: "Welcome to the Daily Intelligence Brief.", durationSec: 10, hasAndrewAudio: true, hasJennyAudio: true },
-  ...Array.from({ length: 13 }, (_, index) => ({ key: `${String(index + 1).padStart(2, "0")}_topic_${index + 1}`, script: `${"Source-backed editorial reporting ".repeat(20)}[REF: Source | https://example.com/${index + 1}]`, durationSec: 60, hasAndrewAudio: true, hasJennyAudio: true })),
+  { key: "00_greeting", script: "Good morning and welcome to the Daily Intelligence Brief. I am glad you are here for a source-checked update spanning technology, policy, politics, the economy, public health, climate, and space. Each section begins with a clear topic introduction before we move to the reporting.", durationSec: 10, hasAndrewAudio: true, hasJennyAudio: true },
+  ...Array.from({ length: 13 }, (_, index) => ({ key: `${String(index + 1).padStart(2, "0")}_topic_${index + 1}`, script: `Next, Topic ${index + 1}. Here is the verified reporting and what it means. ${"Source-backed editorial reporting ".repeat(20)}[REF: Source | https://example.com/${index + 1}]`, durationSec: 60, hasAndrewAudio: true, hasJennyAudio: true })),
   { key: "14_closing", script: "Thank you for listening.", durationSec: 10, hasAndrewAudio: true, hasJennyAudio: true },
 ];
 
@@ -20,6 +20,13 @@ describe("scoreDailyBriefAgainstBenchmark", () => {
     expect(score.status).toBe("held");
     expect(score.checks.sources).toBe(false);
     expect(score.holdReasons.join(" ")).toContain("source evidence");
+  });
+
+  it("holds an otherwise complete release when topic introductions are missing from the full-episode structure", () => {
+    const score = scoreDailyBriefAgainstBenchmark({ date: "2026-08-19", day: "Wednesday", verificationStatus: "passed", totalDurationSec: 800, hasAndrewFull: true, hasJennyFull: true, segments: verifiedSegments.map((segment, index) => index === 1 ? { ...segment, script: segment.script?.replace(/^Next,[^]+?means\. /, "") } : segment) });
+    expect(score.status).toBe("held");
+    expect(score.checks.spokenStructure).toBe(false);
+    expect(score.holdReasons.join(" ")).toContain("audible topic introduction");
   });
 
   it("identifies original pre-July records as preserved baselines rather than scoring them under later voice requirements", () => {

@@ -29,6 +29,7 @@ export type DailyBriefBenchmarkScore = {
   status: "verified" | "held" | "baseline";
   checks: {
     flow: boolean;
+    spokenStructure: boolean;
     topics: boolean;
     sources: boolean;
     scripts: boolean;
@@ -64,12 +65,22 @@ function isEditorial(segment: BenchmarkSegment) {
   return !segment.key.includes("greeting") && !segment.key.includes("closing");
 }
 
+function hasDetailedGreeting(script?: string | null) {
+  const normalized = (script || "").trim();
+  return audibleWordCount(normalized) >= 35 && /Daily Intelligence Brief/i.test(normalized);
+}
+
+function hasSpokenEditorialLead(script?: string | null) {
+  return /^(We begin with|Next,|Our next briefing is|This is your)/i.test((script || "").trim());
+}
+
 export function scoreDailyBriefAgainstBenchmark(episode: BenchmarkEpisode): DailyBriefBenchmarkScore {
   const segments = [...episode.segments];
   const editorial = segments.filter(isEditorial);
   const firstIsGreeting = segments[0]?.key.includes("greeting") ?? false;
   const lastIsClosing = segments.at(-1)?.key.includes("closing") ?? false;
   const flow = firstIsGreeting && lastIsClosing && editorial.length >= 13;
+  const spokenStructure = hasDetailedGreeting(segments[0]?.script) && editorial.length >= 13 && editorial.every((segment) => hasSpokenEditorialLead(segment.script));
   const keys = segments.map((segment) => segment.key);
   const hasDuplicates = new Set(keys).size !== keys.length;
   const weekdaySpecial = episode.day === "Monday"
@@ -87,9 +98,10 @@ export function scoreDailyBriefAgainstBenchmark(episode: BenchmarkEpisode): Dail
   const duration = recordedDuration > 0 && summedDuration > 0 && Math.abs(recordedDuration - summedDuration) <= 20;
   const fullVoices = episode.verificationStatus === "passed" && Boolean(episode.hasAndrewFull) && Boolean(episode.hasJennyFull);
   const baseline = episode.date < BASELINE_CUTOFF;
-  const checks = { flow, topics, sources, scripts, duration, pairedSegments, fullVoices };
+  const checks = { flow, spokenStructure, topics, sources, scripts, duration, pairedSegments, fullVoices };
   const holdReasons = [
     !flow ? "opening, closing, or editorial count does not meet the benchmark" : null,
+    !spokenStructure ? "full episode requires a detailed greeting and an audible topic introduction for every editorial segment" : null,
     !topics ? "topic sequence has a duplicate or is missing its weekday special" : null,
     !sources ? "one or more editorial segments lack source evidence" : null,
     !scripts ? "one or more editorial scripts are too short for the benchmark" : null,
@@ -98,7 +110,8 @@ export function scoreDailyBriefAgainstBenchmark(episode: BenchmarkEpisode): Dail
     !fullVoices ? "verified Andrew and Jenny continuous mixes are both required" : null,
   ].filter((reason): reason is string => Boolean(reason));
   const score = baseline ? null :
-    (flow ? 20 : 0) +
+    (flow ? 15 : 0) +
+    (spokenStructure ? 5 : 0) +
     (topics ? 10 : 0) +
     (sources ? 25 : 0) +
     (scripts ? 10 : 0) +

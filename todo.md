@@ -1125,6 +1125,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add protected candidate-removal controls with explicit confirmation, documented reason, dependency-aware safeguards, and no accidental bulk deletion
 - [x] Validate corrected public records and Admin deletion controls, run checks, publish, synchronize GitHub, and deliver the completed correction checklist
 
+## Daily Intelligence Brief Spoken Structure Repair (Aug 19)
+- [x] Audit current full Andrew/Jenny assembly order, greeting and closing assets, segment scripts, and source-backed spoken-introduction coverage
+- [x] Define and enforce a detailed spoken structure: full-episode greeting, segment title/introduction, editorial transition, source-grounded reporting, and closing
+- [x] Repair the assembly and generation path so both full voices include audible structural breaks rather than a continuous monologue
+- [x] Validate transcript, segment order, Andrew/Jenny full mixes, duration, and public playback; run checks, publish, synchronize GitHub, and document the editorial repair
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown
