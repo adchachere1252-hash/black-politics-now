@@ -39,7 +39,7 @@ import { queuePodcastRecoveryRequest } from "./podcastRecovery";
 import { getEasternDate } from "./dailyBriefSafeguards";
 import { buildPodcastShowNotes, getPodcastAnalytics, getPodcastShowNotes, recordPodcastPlay, savePodcastShowNotes } from "./podcastLegacy";
 import { getDailyBriefQAScorecard } from "./dailyBriefBenchmark";
-import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getPublicElectionFreshness, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateGovernorCandidateLog, getGovernorCandidateLogHistory, updateReferendum } from "./electionDb";
+import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getPublicElectionFreshness, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateGovernorCandidateLog, getGovernorCandidateLogHistory, updateSenateCandidateLog, updateHouseCandidateLog, getRaceCandidateLogHistory, updateReferendum } from "./electionDb";
 import { fetchWithCache, getPersistedWordPressNews } from "./newsCache";
 import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, removeBlackRepresentationElection, removeBlackRepresentationProfile, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
 import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
@@ -175,6 +175,42 @@ export const appRouter = router({
       }))
       .mutation(async ({ ctx, input }) => {
         await updateGovernorCandidateLog({ ...input, editorName: ctx.user.name ?? "Administrator" });
+        return { success: true };
+      }),
+    senateCandidateHistory: adminProcedure
+      .input(z.object({ id: z.number().int().positive() }))
+      .query(async ({ input }) => getRaceCandidateLogHistory("senate", input.id)),
+    houseCandidateHistory: adminProcedure
+      .input(z.object({ id: z.number().int().positive() }))
+      .query(async ({ input }) => getRaceCandidateLogHistory("house", input.id)),
+    updateSenateCandidateLog: adminProcedure
+      .input(z.object({
+        id: z.number().int().positive(),
+        candidate1Name: z.string().min(2).max(128),
+        candidate1Party: z.enum(["D", "R", "I", "L", "G"]),
+        candidate2Name: z.string().min(2).max(128),
+        candidate2Party: z.enum(["D", "R", "I", "L", "G"]),
+        candidateSourceUrl: z.string().url().max(2048),
+        candidateSourceLabel: z.string().min(2).max(256),
+        editorNote: z.string().max(4000).optional().nullable(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        await updateSenateCandidateLog({ ...input, editorName: ctx.user.name ?? "Administrator" });
+        return { success: true };
+      }),
+    updateHouseCandidateLog: adminProcedure
+      .input(z.object({
+        id: z.number().int().positive(),
+        candidate1Name: z.string().min(2).max(128),
+        candidate1Party: z.enum(["D", "R", "I", "L", "G"]),
+        candidate2Name: z.string().min(2).max(128),
+        candidate2Party: z.enum(["D", "R", "I", "L", "G"]),
+        candidateSourceUrl: z.string().url().max(2048),
+        candidateSourceLabel: z.string().min(2).max(256),
+        editorNote: z.string().max(4000).optional().nullable(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        await updateHouseCandidateLog({ ...input, editorName: ctx.user.name ?? "Administrator" });
         return { success: true };
       }),
     updateReferendum: adminProcedure

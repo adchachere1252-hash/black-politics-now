@@ -1257,6 +1257,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add an explicit Florida Governor candidate-management shortcut that opens the source-backed editor with the current Donalds–Jolly record
 - [x] Verify the route is discoverable through the Admin contract and its protected save path; source validation and audit history remain mandatory, and the public Governor record persists
 
+## Full Senate, House, and Governor Candidate Race Management (Aug 20)
+- [x] Add source-backed manual candidate-log fields and immutable audit history for Senate and House contests without affecting vote, rating, or winner fields
+- [x] Add Admin-only Senate and House candidate-log procedures with required source labels, source URLs, and private edit reasons
+- [x] Expand Candidate Changes with searchable Senate, House, and Governor tabs, direct contest editors, source cards, and audited change history
+- [x] Verify public candidate display, protected authorization, source validation, persistence, regression tests, production build, and a complete release checklist
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

@@ -89,6 +89,8 @@ export const senateRaces = mysqlTable("senate_races", {
   status: mysqlEnum("status", ["Scheduled", "Primary", "Primary Runoff", "General", "Called", "Certified"]).default("Scheduled").notNull(),
   primaryDate: varchar("primary_date", { length: 32 }),
   primaryRunoffDate: varchar("primary_runoff_date", { length: 32 }),
+  candidateSourceUrl: varchar("candidate_source_url", { length: 2048 }),
+  candidateSourceLabel: varchar("candidate_source_label", { length: 256 }),
   generalDate: varchar("general_date", { length: 32 }).default("November 3, 2026"),
   pctReporting: decimal("pct_reporting", { precision: 5, scale: 2 }).default("0"),
   candidate1Bio: text("candidate1_bio"),
@@ -155,6 +157,8 @@ export const houseRaces = mysqlTable("house_races", {
   incumbentParty: mysqlEnum("incumbent_party", ["D", "R", "I"]),
   incumbentRetiring: boolean("incumbent_retiring").default(false).notNull(),
   isVacancy: boolean("is_vacancy").default(false).notNull(),
+  candidateSourceUrl: varchar("candidate_source_url", { length: 2048 }),
+  candidateSourceLabel: varchar("candidate_source_label", { length: 256 }),
   candidate1Name: varchar("candidate1_name", { length: 128 }),
   candidate1Party: mysqlEnum("candidate1_party", ["D", "R", "I", "L", "G"]),
   candidate1Votes: bigint("candidate1_votes", { mode: "number" }).default(0),
@@ -258,6 +262,29 @@ export const governorCandidateEdits = mysqlTable("governor_candidate_edits", {
 ]);
 
 export type GovernorCandidateEdit = typeof governorCandidateEdits.$inferSelect;
+
+/** Immutable administrator record for manual Senate and House candidate-log updates. */
+export const electionCandidateEdits = mysqlTable("election_candidate_edits", {
+  id: int("id").autoincrement().primaryKey(),
+  contestType: mysqlEnum("contest_type", ["senate", "house"]).notNull(),
+  contestId: int("contest_id").notNull(),
+  stateCode: varchar("state_code", { length: 2 }).notNull(),
+  districtLabel: varchar("district_label", { length: 16 }),
+  candidate1Name: varchar("candidate1_name", { length: 128 }),
+  candidate1Party: mysqlEnum("candidate1_party", ["D", "R", "I", "L", "G"]),
+  candidate2Name: varchar("candidate2_name", { length: 128 }),
+  candidate2Party: mysqlEnum("candidate2_party", ["D", "R", "I", "L", "G"]),
+  sourceUrl: varchar("source_url", { length: 2048 }).notNull(),
+  sourceLabel: varchar("source_label", { length: 256 }).notNull(),
+  editorName: varchar("editor_name", { length: 128 }).notNull(),
+  editorNote: text("editor_note"),
+  previousValue: text("previous_value").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("election_candidate_edits_contest_created_idx").on(table.contestType, table.contestId, table.createdAt),
+]);
+
+export type ElectionCandidateEdit = typeof electionCandidateEdits.$inferSelect;
 
 // ─── Referendums ──────────────────────────────────────────────────────────────
 export const referendums = mysqlTable("referendums", {

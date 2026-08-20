@@ -1,6 +1,6 @@
-import { eq, desc, like, or, sql } from "drizzle-orm";
+import { and, eq, desc, like, or, sql } from "drizzle-orm";
 import { getDb } from "./db";
-import { senateRaces, houseRaces, governorRaces, governorCandidateEdits, referendums, electionDayStatus } from "../drizzle/schema";
+import { senateRaces, houseRaces, governorRaces, governorCandidateEdits, electionCandidateEdits, referendums, electionDayStatus } from "../drizzle/schema";
 import { photoWithRepositoryFallback } from "./candidatePhotoResolver";
 
 function withSenatePhotoFallback(race: any) {
@@ -192,6 +192,72 @@ export async function getGovernorCandidateLogHistory(id: number) {
   const db = await getDb();
   if (!db) return [];
   return db.select().from(governorCandidateEdits).where(eq(governorCandidateEdits.governorRaceId, id)).orderBy(desc(governorCandidateEdits.createdAt), desc(governorCandidateEdits.id)).limit(12);
+}
+
+export type RaceCandidateLogInput = {
+  id: number;
+  candidate1Name: string;
+  candidate1Party: "D" | "R" | "I" | "L" | "G";
+  candidate2Name: string;
+  candidate2Party: "D" | "R" | "I" | "L" | "G";
+  candidateSourceUrl: string;
+  candidateSourceLabel: string;
+  editorName: string;
+  editorNote?: string | null;
+};
+
+async function updateRaceCandidateLog(input: RaceCandidateLogInput, contestType: "senate" | "house") {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const table: any = contestType === "senate" ? senateRaces : houseRaces;
+  const [existing] = await db.select().from(table).where(eq(table.id, input.id)).limit(1);
+  if (!existing) throw new Error(`${contestType === "senate" ? "Senate" : "House"} race not found`);
+  const prior = {
+    candidate1Name: existing.candidate1Name,
+    candidate1Party: existing.candidate1Party,
+    candidate2Name: existing.candidate2Name,
+    candidate2Party: existing.candidate2Party,
+    candidateSourceUrl: existing.candidateSourceUrl,
+    candidateSourceLabel: existing.candidateSourceLabel,
+  };
+  await db.update(table).set({
+    candidate1Name: input.candidate1Name,
+    candidate1Party: input.candidate1Party,
+    candidate2Name: input.candidate2Name,
+    candidate2Party: input.candidate2Party,
+    candidateSourceUrl: input.candidateSourceUrl,
+    candidateSourceLabel: input.candidateSourceLabel,
+    notes: input.editorNote || existing.notes,
+  }).where(eq(table.id, input.id));
+  await db.insert(electionCandidateEdits).values({
+    contestType,
+    contestId: existing.id,
+    stateCode: existing.stateCode,
+    districtLabel: contestType === "house" ? existing.districtLabel : null,
+    candidate1Name: input.candidate1Name,
+    candidate1Party: input.candidate1Party,
+    candidate2Name: input.candidate2Name,
+    candidate2Party: input.candidate2Party,
+    sourceUrl: input.candidateSourceUrl,
+    sourceLabel: input.candidateSourceLabel,
+    editorName: input.editorName,
+    editorNote: input.editorNote || null,
+    previousValue: JSON.stringify(prior),
+  });
+}
+
+export async function updateSenateCandidateLog(input: RaceCandidateLogInput) {
+  return updateRaceCandidateLog(input, "senate");
+}
+
+export async function updateHouseCandidateLog(input: RaceCandidateLogInput) {
+  return updateRaceCandidateLog(input, "house");
+}
+
+export async function getRaceCandidateLogHistory(contestType: "senate" | "house", id: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(electionCandidateEdits).where(and(eq(electionCandidateEdits.contestType, contestType), eq(electionCandidateEdits.contestId, id))).orderBy(desc(electionCandidateEdits.createdAt), desc(electionCandidateEdits.id)).limit(12);
 }
 
 export async function updateReferendum(id: number, data: Record<string, unknown>) {
