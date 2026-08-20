@@ -1180,6 +1180,11 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Complete launch-visible desktop and mobile review for screen fit, labels, legends, controls, accessibility, and overflow; correct the confirmed map-priority issue only
 - [x] Run final tests, TypeScript, build, production checks, and publish a plain-language launch-readiness decision with all remaining limitations
 
+## Atlas Source Tag and Playback Verification (Aug 20)
+- [x] Add a map-visible, accessible UCLA source tag that distinguishes geometry from Census apportionment and Voteview overlays
+- [x] Verify playback sequencing from the 89th through 119th Congress, including validated-frame readiness, pause, restart, speed selection, and completion behavior
+- [x] Verify the playback controls in desktop and mobile layouts, run final quality gates, publish the update, and document the sandbox production-build memory limitation
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

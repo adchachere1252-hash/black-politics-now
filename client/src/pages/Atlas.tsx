@@ -22,7 +22,7 @@ import { LEWIS_MANIFEST } from "@/data/atlasBoundaryManifest";
 import { ATLAS_VRA_TIMELINE, sourceCheckedBoundaryNote } from "@/data/atlasVraTimeline";
 import { AtlasBoundaryPreview } from "@/components/AtlasBoundaryPreview";
 import { HistoricalUSMap, type AtlasFrameStatus, type AtlasOverlayMode } from "@/components/HistoricalUSMap";
-import { nextPlaybackCongress } from "@/lib/atlasPlayback";
+import { ATLAS_PLAYBACK_SPEEDS, atlasPlaybackStepState, nextPlaybackCongress, type AtlasPlaybackSpeed } from "@/lib/atlasPlayback";
 import { buildAtlasComparisonUrl } from "@/lib/atlasComparisonShare";
 import { atlasPartyLabel, type AtlasDistrictSelection } from "@/lib/atlasDistrictDetail";
 
@@ -40,12 +40,6 @@ const DECADE_JUMPS = [
   { congress: 114, label: "2015 · 114th Congress" },
   { congress: 119, label: "2025 · 119th Congress" },
 ];
-const PLAYBACK_SPEEDS = {
-  slow: { label: "Slow", duration: 6500 },
-  standard: { label: "Standard", duration: 4500 },
-  fast: { label: "Fast", duration: 2750 },
-} as const;
-
 function congressYears(congress: number) {
   return [1963 + (congress - 88) * 2, 1964 + (congress - 88) * 2] as const;
 }
@@ -73,7 +67,7 @@ export default function Atlas() {
   });
   const [stateQuery, setStateQuery] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
-  const [playbackSpeed, setPlaybackSpeed] = useState<keyof typeof PLAYBACK_SPEEDS>("standard");
+  const [playbackSpeed, setPlaybackSpeed] = useState<AtlasPlaybackSpeed>("standard");
   const [shareStatus, setShareStatus] = useState<"idle" | "copied" | "unavailable">("idle");
   const [frameStatus, setFrameStatus] = useState<AtlasFrameStatus | null>(null);
   const [compareMode, setCompareMode] = useState(() => typeof window !== "undefined" && new URLSearchParams(window.location.search).get("compare") === "1");
@@ -155,14 +149,20 @@ export default function Atlas() {
   }, [selected?.stateCode, selectedCongress, compareMode, comparisonCongress, overlayMode]);
 
   useEffect(() => {
-    if (!isPlaying || !frameStatus?.ready || frameStatus.congress !== selectedCongress) return;
-    if (selectedCongress >= 119) {
+    const step = atlasPlaybackStepState({
+      isPlaying,
+      frameReady: Boolean(frameStatus?.ready),
+      displayedCongress: frameStatus?.congress ?? null,
+      selectedCongress,
+    });
+    if (step === "wait") return;
+    if (step === "complete") {
       setIsPlaying(false);
       return;
     }
     const timer = window.setTimeout(
       () => setSelectedCongress((congress) => nextPlaybackCongress(congress)),
-      PLAYBACK_SPEEDS[playbackSpeed].duration,
+      ATLAS_PLAYBACK_SPEEDS[playbackSpeed].duration,
     );
     return () => window.clearTimeout(timer);
   }, [frameStatus, isPlaying, playbackSpeed, selectedCongress]);
@@ -275,10 +275,10 @@ export default function Atlas() {
                 <button type="button" aria-label="Previous Congress" onClick={() => { setIsPlaying(false); setSelectedCongress((congress) => Math.max(89, congress - 1)); }} disabled={selectedCongress === 89} className="grid h-9 w-9 place-items-center rounded-md text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-35"><ChevronLeft size={18} /></button>
                 <button type="button" onClick={() => { if (!isPlaying && selectedCongress >= 119) setSelectedCongress(89); setIsPlaying((value) => !value); }} className="inline-flex h-9 items-center gap-2 rounded-md bg-primary px-3 text-xs font-semibold text-primary-foreground">{isPlaying ? <Pause size={14} /> : <Play size={14} fill="currentColor" />}{isPlaying ? "Pause" : "Play all-state history"}</button>
                 <button type="button" aria-label="Next Congress" onClick={() => { setIsPlaying(false); setSelectedCongress((congress) => Math.min(119, congress + 1)); }} disabled={selectedCongress === 119} className="grid h-9 w-9 place-items-center rounded-md text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-35"><ChevronRight size={18} /></button>
-                <label className="ml-1 flex items-center gap-1.5 text-[10px] font-semibold text-muted-foreground">Speed<select aria-label="Atlas playback speed" value={playbackSpeed} onChange={(event) => setPlaybackSpeed(event.target.value as keyof typeof PLAYBACK_SPEEDS)} className="h-8 rounded border border-border bg-card px-1.5 text-[10px] text-foreground"><option value="slow">Slow · 6.5s</option><option value="standard">Standard · 4.5s</option><option value="fast">Fast · 2.75s</option></select></label>
+                <label className="ml-1 flex items-center gap-1.5 text-[10px] font-semibold text-muted-foreground">Speed<select aria-label="Atlas playback speed" value={playbackSpeed} onChange={(event) => setPlaybackSpeed(event.target.value as AtlasPlaybackSpeed)} className="h-8 rounded border border-border bg-card px-1.5 text-[10px] text-foreground"><option value="slow">Slow · 6.5s</option><option value="standard">Standard · 4.5s</option><option value="fast">Fast · 2.75s</option></select></label>
                 <label className="ml-1 flex items-center gap-1.5 text-[10px] font-semibold text-muted-foreground">Jump<select aria-label="Jump to an Atlas decade" defaultValue="" onChange={(event) => { const congress = Number(event.target.value); if (congress) { setIsPlaying(false); setSelectedCongress(congress); event.currentTarget.value = ""; } }} className="h-8 rounded border border-border bg-card px-1.5 text-[10px] text-foreground"><option value="" disabled>Choose decade</option>{DECADE_JUMPS.map((jump) => <option value={jump.congress} key={jump.congress}>{jump.label}</option>)}</select></label>
               </div>
-              <span className="text-xs text-muted-foreground">{isFrameTransitioning ? `Keeping the ${displayedCongress}th Congress visible while ${selectedCongress}th loads.` : `Playback advances after the next validated 50-state map and overlay are ready · ${PLAYBACK_SPEEDS[playbackSpeed].label} pace.`}</span>
+              <span className="text-xs text-muted-foreground">{isFrameTransitioning ? `Keeping the ${displayedCongress}th Congress visible while ${selectedCongress}th loads.` : `Playback advances after the next validated 50-state map and overlay are ready · ${ATLAS_PLAYBACK_SPEEDS[playbackSpeed].label} pace.`}</span>
             </div>
             <div className="mt-4"><HistoricalUSMap congress={selectedCongress} selectedState={selected?.stateCode} onStateSelect={selectAtlasState} onDistrictSelect={selectAtlasDistrict} overlayMode={overlayMode} onFrameStatus={setFrameStatus} /></div>
             <input aria-label="Historical map Congress" type="range" min="89" max="119" step="1" value={selectedCongress} onChange={(event) => { setIsPlaying(false); setSelectedCongress(Number(event.target.value)); }} className="mt-5 w-full accent-primary" />
@@ -321,12 +321,18 @@ function CongressComparisonPanel({ label, congress, onCongressChange, selectedSt
   const [isPlaying, setIsPlaying] = useState(false);
   const [frameStatus, setFrameStatus] = useState<AtlasFrameStatus | null>(null);
   useEffect(() => {
-    if (!isPlaying || !frameStatus?.ready || frameStatus.congress !== congress) return;
-    if (congress >= 119) {
+    const step = atlasPlaybackStepState({
+      isPlaying,
+      frameReady: Boolean(frameStatus?.ready),
+      displayedCongress: frameStatus?.congress ?? null,
+      selectedCongress: congress,
+    });
+    if (step === "wait") return;
+    if (step === "complete") {
       setIsPlaying(false);
       return;
     }
-    const timer = window.setTimeout(() => onCongressChange(nextPlaybackCongress(congress)), PLAYBACK_SPEEDS.standard.duration);
+    const timer = window.setTimeout(() => onCongressChange(nextPlaybackCongress(congress)), ATLAS_PLAYBACK_SPEEDS.standard.duration);
     return () => window.clearTimeout(timer);
   }, [congress, frameStatus, isPlaying, onCongressChange]);
   return <div className="rounded-xl border border-border bg-background p-3"><div className="flex items-center justify-between gap-3"><div><p className="text-[10px] font-semibold uppercase tracking-[.14em] text-primary">{label}</p><p className="font-display mt-1 text-lg font-bold">{congress}th Congress · {congressYears(congress)[0]}–{congressYears(congress)[1]}</p></div><div className="flex items-center gap-2"><button type="button" onClick={() => { if (!isPlaying && congress >= 119) onCongressChange(89); setIsPlaying((value) => !value); }} className="inline-flex h-9 items-center gap-1 rounded-md border border-primary/35 px-2.5 text-xs font-semibold text-primary hover:bg-primary/10">{isPlaying ? <Pause size={13} /> : <Play size={13} fill="currentColor" />}{isPlaying ? "Pause" : "Play"}</button><select aria-label={`${label} Congress`} value={congress} onChange={(event) => { setIsPlaying(false); onCongressChange(Number(event.target.value)); }} className="h-9 rounded-md border border-border bg-card px-2 text-xs font-semibold text-foreground">{CONGRESSES.map((value) => <option value={value} key={value}>{value}th · {congressYears(value)[0]}</option>)}</select></div></div><input aria-label={`${label} historical map Congress`} type="range" min="89" max="119" step="1" value={congress} onChange={(event) => { setIsPlaying(false); onCongressChange(Number(event.target.value)); }} className="mt-4 w-full accent-primary" /><div className="mt-4"><HistoricalUSMap congress={congress} selectedState={selectedState} onStateSelect={onStateSelect} onDistrictSelect={onDistrictSelect} overlayMode={overlayMode} label={label} compact onFrameStatus={setFrameStatus} /></div></div>;

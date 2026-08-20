@@ -1,6 +1,19 @@
 import { LEWIS_MANIFEST } from "@/data/atlasBoundaryManifest";
 
 export const ATLAS_PLAYBACK_CONGRESSES = Array.from({ length: 31 }, (_, index) => 89 + index);
+export const ATLAS_PLAYBACK_SPEEDS = {
+  slow: { label: "Slow", duration: 6500 },
+  standard: { label: "Standard", duration: 4500 },
+  fast: { label: "Fast", duration: 2750 },
+} as const;
+
+export type AtlasPlaybackSpeed = keyof typeof ATLAS_PLAYBACK_SPEEDS;
+export type AtlasPlaybackStep = "wait" | "advance" | "complete";
+
+export function atlasPlaybackStepState({ isPlaying, frameReady, displayedCongress, selectedCongress }: { isPlaying: boolean; frameReady: boolean; displayedCongress: number | null; selectedCongress: number }): AtlasPlaybackStep {
+  if (!isPlaying || !frameReady || displayedCongress !== selectedCongress) return "wait";
+  return selectedCongress >= 119 ? "complete" : "advance";
+}
 
 export function atlasManifestCoverage(congress: number) {
   const coveredStates = Object.entries(LEWIS_MANIFEST)
