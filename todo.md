@@ -1270,6 +1270,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Apply and validate white source-derived state separators in Atlas party, boundary, and member modes without obscuring district geometry or party colors
 - [x] Verify Admin creation, public Black Representation display, Atlas desktop/mobile contrast, tests, build, and release checklist
 
+## Homepage Map Freshness, Alaska Primary Context, and Automation Audit (Aug 20)
+- [x] Verify the homepage map’s declared general-election scope, current Alaska data, public timestamp, and map-to-Admin data contract
+- [x] Compare the current Alaska record with official primary evidence and add only clearly labeled primary context that does not alter general-election ratings, calls, ticker eligibility, or certified results
+- [x] Verify autonomous refresh scheduling, last-success evidence, failure behavior, and clear Admin freshness/primary-review visibility
+- [x] Verify homepage and Admin display, tests, production build, and publish a source-backed freshness decision
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

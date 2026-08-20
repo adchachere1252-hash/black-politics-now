@@ -37,6 +37,7 @@ function publicNewsListPost(post: any) {
 import { getArchiveEpisodesFormatted, getEpisodesFormatted, subscribeEmail, unsubscribeEmail, getPipelineRuns, getPodcastOperations } from "./podcastDb";
 import { queuePodcastRecoveryRequest } from "./podcastRecovery";
 import { getEasternDate } from "./dailyBriefSafeguards";
+import { getPublicPrimaryContexts } from "./electionPrimaryContext";
 import { buildPodcastShowNotes, getPodcastAnalytics, getPodcastShowNotes, recordPodcastPlay, savePodcastShowNotes } from "./podcastLegacy";
 import { getDailyBriefQAScorecard } from "./dailyBriefBenchmark";
 import { createGovernorRace, createHouseRace, createSenateRace, getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getPublicElectionFreshness, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateGovernorCandidateLog, getGovernorCandidateLogHistory, updateSenateCandidateLog, updateHouseCandidateLog, getRaceCandidateLogHistory, updateReferendum } from "./electionDb";
@@ -146,6 +147,7 @@ export const appRouter = router({
     referendums: publicProcedure.query(async () => getAllReferendums()),
     scoreboard: publicProcedure.query(async () => getScoreboard()),
     freshness: publicProcedure.query(async () => getPublicElectionFreshness()),
+    primaryContexts: publicProcedure.query(async () => getPublicPrimaryContexts()),
     search: publicProcedure
       .input(z.object({ query: z.string().min(1).max(100) }))
       .query(async ({ input }) => searchRaces(input.query)),
