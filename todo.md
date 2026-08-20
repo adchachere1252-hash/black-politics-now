@@ -1162,6 +1162,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Run the current-date guarded generation, dual-voice audio, and full publication gates only after the source preflight passes
 - [x] Verify the complete Andrew/Jenny release, segment structure, duration, and source evidence before reporting recovery completion
 
+## Historical Atlas Map Fit and Party Transitions (Aug 20)
+- [x] Audit Historical Atlas screen fit, party overlay semantics, and shared homepage red/blue/purple color tokens
+- [x] Prioritize the national map in the desktop and mobile layouts so its full 50-state frame is visible without excessive introductory whitespace
+- [x] Default to and clearly label a verified Party transitions overlay using Democratic blue, Republican red, and purple other/independent colors
+- [x] Validate historical party-switch comparison behavior, responsive screen fit, tests, build, publication, and the completed map checklist
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown
