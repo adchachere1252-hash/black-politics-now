@@ -1215,6 +1215,11 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Exercise deployed playback, comparison, direct district detail, source links, keyboard access, loading/error behavior, and mobile layout independently of the prior local validation
 - [x] Run final regression/build gates, document all evidence and limitations, correct any confirmed remaining defect, and publish a fresh verification decision
 
+## Atlas Selected-State Color Correction (Aug 20)
+- [x] Remove gold selected-state district fills so party, boundary, and member data colors are never overridden
+- [x] Retain selection awareness through an outline-only accessible indicator and clear selected-state text
+- [x] Verify party, boundary, and member overlays and publish the color correction
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown
