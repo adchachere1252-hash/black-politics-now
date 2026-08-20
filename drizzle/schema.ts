@@ -228,12 +228,36 @@ export const governorRaces = mysqlTable("governor_races", {
   repBio: text("rep_bio"),
   demPhoto: text("dem_photo"),
   repPhoto: text("rep_photo"),
+  candidateSourceUrl: varchar("candidate_source_url", { length: 2048 }),
+  candidateSourceLabel: varchar("candidate_source_label", { length: 256 }),
   notes: text("notes"),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
 });
 
 export type GovernorRace = typeof governorRaces.$inferSelect;
 export type InsertGovernorRace = typeof governorRaces.$inferInsert;
+
+/**
+ * Immutable record of an administrator's manual general-election candidate
+ * update. It records the source and prior values without changing results.
+ */
+export const governorCandidateEdits = mysqlTable("governor_candidate_edits", {
+  id: int("id").autoincrement().primaryKey(),
+  governorRaceId: int("governor_race_id").notNull(),
+  stateCode: varchar("state_code", { length: 2 }).notNull(),
+  demCandidate: varchar("dem_candidate", { length: 128 }),
+  repCandidate: varchar("rep_candidate", { length: 128 }),
+  sourceUrl: varchar("source_url", { length: 2048 }).notNull(),
+  sourceLabel: varchar("source_label", { length: 256 }).notNull(),
+  editorName: varchar("editor_name", { length: 128 }).notNull(),
+  editorNote: text("editor_note"),
+  previousValue: text("previous_value").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("governor_candidate_edits_race_created_idx").on(table.governorRaceId, table.createdAt),
+]);
+
+export type GovernorCandidateEdit = typeof governorCandidateEdits.$inferSelect;
 
 // ─── Referendums ──────────────────────────────────────────────────────────────
 export const referendums = mysqlTable("referendums", {

@@ -39,7 +39,7 @@ import { queuePodcastRecoveryRequest } from "./podcastRecovery";
 import { getEasternDate } from "./dailyBriefSafeguards";
 import { buildPodcastShowNotes, getPodcastAnalytics, getPodcastShowNotes, recordPodcastPlay, savePodcastShowNotes } from "./podcastLegacy";
 import { getDailyBriefQAScorecard } from "./dailyBriefBenchmark";
-import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getPublicElectionFreshness, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateReferendum } from "./electionDb";
+import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getPublicElectionFreshness, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateGovernorCandidateLog, getGovernorCandidateLogHistory, updateReferendum } from "./electionDb";
 import { fetchWithCache, getPersistedWordPressNews } from "./newsCache";
 import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, removeBlackRepresentationElection, removeBlackRepresentationProfile, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
 import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
@@ -159,6 +159,24 @@ export const appRouter = router({
     updateGovernor: adminProcedure
       .input(z.object({ id: z.number(), data: z.record(z.string(), z.unknown()) }))
       .mutation(async ({ input }) => { requireManualCallEvidence(input.data); await updateGovernorRace(input.id, input.data as any); return { success: true }; }),
+    governorCandidateHistory: adminProcedure
+      .input(z.object({ id: z.number().int().positive() }))
+      .query(async ({ input }) => getGovernorCandidateLogHistory(input.id)),
+    updateGovernorCandidateLog: adminProcedure
+      .input(z.object({
+        id: z.number().int().positive(),
+        demCandidate: z.string().min(2).max(128),
+        repCandidate: z.string().min(2).max(128),
+        demPreviousOffice: z.string().max(256).optional().nullable(),
+        repPreviousOffice: z.string().max(256).optional().nullable(),
+        candidateSourceUrl: z.string().url().max(2048),
+        candidateSourceLabel: z.string().min(2).max(256),
+        editorNote: z.string().max(4000).optional().nullable(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        await updateGovernorCandidateLog({ ...input, editorName: ctx.user.name ?? "Administrator" });
+        return { success: true };
+      }),
     updateReferendum: adminProcedure
       .input(z.object({ id: z.number(), data: z.record(z.string(), z.unknown()) }))
       .mutation(async ({ input }) => { await updateReferendum(input.id, input.data as any); return { success: true }; }),

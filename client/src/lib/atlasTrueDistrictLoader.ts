@@ -50,3 +50,9 @@ export async function loadTrueDistrictFrame(congress: number, request: typeof fe
   cacheFrame(congress, frame);
   return frame;
 }
+
+/** Warm the next frame without changing the visible map or surfacing a preload failure. */
+export function preloadTrueDistrictFrame(congress: number) {
+  if (congress < 89 || congress > 119 || frameCache.has(congress)) return;
+  void loadTrueDistrictFrame(congress).catch(() => undefined);
+}

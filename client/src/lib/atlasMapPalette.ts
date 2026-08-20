@@ -16,7 +16,9 @@ export function getAtlasDistrictFill({ mode, party, hasMember, selected }: { mod
 }
 
 export function getAtlasDistrictStroke({ mode, party, selected }: { mode: AtlasMapColorMode; party?: AtlasMapParty; selected: boolean }) {
-  if (selected) return "var(--foreground)";
+  // A selected state is identified by text, not by redrawing every one of its
+  // districts in a heavy outline that can be mistaken for geography.
+  void selected;
   if (mode === "party" && party === "D") return "var(--color-likely-d)";
   if (mode === "party" && party === "R") return "var(--color-likely-r)";
   if (mode === "party" && party === "O") return "var(--color-tossup)";

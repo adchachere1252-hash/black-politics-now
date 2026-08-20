@@ -1232,6 +1232,14 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add a production-visible regression gate that distinguishes water surfaces from interior district fractures and blocks release on a fracture
 - [x] Directly inspect the repaired production map at the affected desktop size and publish only after the owner-facing surface is complete
 
+## Atlas Reliability and Florida Governor Candidate-Race Editor (Aug 20)
+- [x] Remove heavy black selected-state district outlines and replace them with a restrained, non-distracting selected-state indicator
+- [x] Rebuild Atlas playback around preloaded next frames, stable map transforms, explicit frame-ready transitions, and safe speed pacing without visible hitches
+- [x] Stabilize fit-to-page, zoom limits, reset behavior, and selection transitions so the national map does not jump or unexpectedly resize
+- [x] Add a protected Admin candidate-race editor that lets an administrator manually create, update, attach, detach, and review candidate records for a specified contest
+- [x] Verify and update the Florida Governor contest so Byron Donalds and David Jolly appear as its manually managed general-election candidates with source-backed context
+- [x] Verify desktop/mobile Atlas behavior, Admin authorization and persistence, public candidate presentation, tests, build, and a completed release checklist
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

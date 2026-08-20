@@ -14,7 +14,7 @@ describe("Historical Atlas House-map palette", () => {
   it("keeps selection and legend presentation tied to the shared design tokens", () => {
     expect(getAtlasDistrictStroke({ mode: "party", party: "D", selected: false })).toBe("var(--color-likely-d)");
     expect(getAtlasDistrictStroke({ mode: "boundary", selected: false })).toBe("var(--muted-foreground)");
-    expect(getAtlasDistrictStroke({ mode: "boundary", selected: true })).toBe("var(--foreground)");
+    expect(getAtlasDistrictStroke({ mode: "boundary", selected: true })).toBe("var(--muted-foreground)");
     expect(getAtlasMapLegend("party")).toEqual(expect.arrayContaining([
       { label: "Democratic", color: "var(--color-solid-d)" },
       { label: "Republican", color: "var(--color-solid-r)" },

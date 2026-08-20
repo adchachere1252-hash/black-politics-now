@@ -625,6 +625,7 @@ function GovEditor({ race, onSave, saving }: { race: any; onSave: (data: any) =>
   const [manualCallSource, setManualCallSource] = useState(race.calledSourceUrl ?? "");
   const [callError, setCallError] = useState("");
   const [saved, setSaved] = useState(false);
+  const [candidateLogOpen, setCandidateLogOpen] = useState(false);
 
   const confirmManualCall = () => {
     if (!calledWinner) return setCallError("Select the Democratic or Republican candidate before confirming a manual call.");
@@ -647,43 +648,56 @@ function GovEditor({ race, onSave, saving }: { race: any; onSave: (data: any) =>
     setTimeout(() => setSaved(false), 2000);
   };
 
-  return (
-    <div className="glass-card rounded-lg p-3">
-      <div className="flex items-center gap-3 flex-wrap">
-        <span className="text-sm font-bold min-w-[120px]">{race.stateName}</span>
-        <span className="text-xs text-muted-foreground">{race.demCandidate ?? "TBD"} (D) vs {race.repCandidate ?? "TBD"} (R)</span>
-        <select value={rating} onChange={e => setRating(e.target.value)} className="bg-muted rounded px-2 py-1 text-xs">
-          <option value="">No Rating</option>
-          {RATINGS.map(r => <option key={r} value={r}>{r}</option>)}
-        </select>
-        <input
-          value={calledWinner}
-          onChange={e => setCalledWinner(e.target.value)}
-          placeholder="Called winner"
-          className="bg-muted rounded px-2 py-1 text-xs w-28"
-        />
-        <select aria-label="Select Governor winner" value="" onChange={e => { if (e.target.value) setCalledWinner(e.target.value); }} className="bg-amber-500/10 rounded px-2 py-1 text-xs min-w-[150px]"><option value="">Select winner from ballot</option>{race.demCandidate && <option value={race.demCandidate}>{race.demCandidate} (D)</option>}{race.repCandidate && <option value={race.repCandidate}>{race.repCandidate} (R)</option>}</select>
-        <input value={manualCallSource} onChange={e => setManualCallSource(e.target.value)} placeholder="Required results source URL" type="url" className="bg-muted rounded px-2 py-1 text-xs w-52" />
-        <button onClick={confirmManualCall} disabled={saving || !calledWinner} className="rounded bg-amber-600 px-2 py-1 text-xs font-semibold text-white disabled:opacity-50">Confirm call</button>
-        {race.calledSourceUrl && <a href={race.calledSourceUrl} target="_blank" rel="noreferrer" className="text-[10px] font-semibold text-primary underline underline-offset-2">Evidence ↗</a>}
-        {callError && <span className="text-[10px] text-destructive">{callError}</span>}
-        <input
-          value={notes}
-          onChange={e => setNotes(e.target.value)}
-          placeholder="Race notes"
-          className="bg-muted rounded px-2 py-1 text-xs w-40"
-        />
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className="ml-auto flex items-center gap-1 px-2 py-1 rounded bg-primary/20 text-primary text-xs hover:bg-primary/30 transition-colors disabled:opacity-50"
-        >
-          {saved ? <Check size={12} /> : <Save size={12} />}
-          {saved ? "Saved" : "Save"}
-        </button>
-      </div>
+  return <div className="glass-card rounded-lg p-3">
+    <div className="flex items-center gap-3 flex-wrap">
+      <span className="text-sm font-bold min-w-[120px]">{race.stateName}</span>
+      <span className="text-xs text-muted-foreground">{race.demCandidate ?? "TBD"} (D) vs {race.repCandidate ?? "TBD"} (R)</span>
+      <select value={rating} onChange={e => setRating(e.target.value)} className="bg-muted rounded px-2 py-1 text-xs"><option value="">No Rating</option>{RATINGS.map(r => <option key={r} value={r}>{r}</option>)}</select>
+      <input value={calledWinner} onChange={e => setCalledWinner(e.target.value)} placeholder="Called winner" className="bg-muted rounded px-2 py-1 text-xs w-28" />
+      <select aria-label="Select Governor winner" value="" onChange={e => { if (e.target.value) setCalledWinner(e.target.value); }} className="bg-amber-500/10 rounded px-2 py-1 text-xs min-w-[150px]"><option value="">Select winner from ballot</option>{race.demCandidate && <option value={race.demCandidate}>{race.demCandidate} (D)</option>}{race.repCandidate && <option value={race.repCandidate}>{race.repCandidate} (R)</option>}</select>
+      <input value={manualCallSource} onChange={e => setManualCallSource(e.target.value)} placeholder="Required results source URL" type="url" className="bg-muted rounded px-2 py-1 text-xs w-52" />
+      <button onClick={confirmManualCall} disabled={saving || !calledWinner} className="rounded bg-amber-600 px-2 py-1 text-xs font-semibold text-white disabled:opacity-50">Confirm call</button>
+      {race.calledSourceUrl && <a href={race.calledSourceUrl} target="_blank" rel="noreferrer" className="text-[10px] font-semibold text-primary underline underline-offset-2">Evidence ↗</a>}
+      {callError && <span className="text-[10px] text-destructive">{callError}</span>}
+      <input value={notes} onChange={e => setNotes(e.target.value)} placeholder="Race notes" className="bg-muted rounded px-2 py-1 text-xs w-40" />
+      <button onClick={handleSave} disabled={saving} className="ml-auto flex items-center gap-1 px-2 py-1 rounded bg-primary/20 text-primary text-xs hover:bg-primary/30 transition-colors disabled:opacity-50">{saved ? <Check size={12} /> : <Save size={12} />}{saved ? "Saved" : "Save"}</button>
+      <button onClick={() => setCandidateLogOpen((value) => !value)} className="rounded border border-primary/35 px-2 py-1 text-xs font-semibold text-primary hover:bg-primary/10">{candidateLogOpen ? "Close candidate log" : "Manage candidates"}</button>
     </div>
-  );
+    {candidateLogOpen && <GovernorCandidateLogEditor race={race} onClose={() => setCandidateLogOpen(false)} />}
+  </div>;
+}
+
+function GovernorCandidateLogEditor({ race, onClose }: { race: any; onClose: () => void }) {
+  const utils = trpc.useUtils();
+  const [demCandidate, setDemCandidate] = useState(race.demCandidate ?? "");
+  const [repCandidate, setRepCandidate] = useState(race.repCandidate ?? "");
+  const [demOffice, setDemOffice] = useState(race.demPreviousOffice ?? "");
+  const [repOffice, setRepOffice] = useState(race.repPreviousOffice ?? "");
+  const [sourceUrl, setSourceUrl] = useState(race.candidateSourceUrl ?? "");
+  const [sourceLabel, setSourceLabel] = useState(race.candidateSourceLabel ?? "");
+  const [editorNote, setEditorNote] = useState("");
+  const [error, setError] = useState("");
+  const { data: history = [] } = trpc.election.governorCandidateHistory.useQuery({ id: race.id });
+  const saveCandidateLog = trpc.election.updateGovernorCandidateLog.useMutation({
+    onSuccess: async () => { await Promise.all([utils.election.governors.invalidate(), utils.election.governorCandidateHistory.invalidate({ id: race.id })]); setEditorNote(""); setError(""); },
+    onError: (mutationError) => setError(mutationError.message || "The candidate log could not be saved."),
+  });
+  const save = () => {
+    if (!demCandidate.trim() || !repCandidate.trim() || !sourceUrl.trim() || !sourceLabel.trim()) return setError("Democratic candidate, Republican candidate, source label, and source URL are required.");
+    try {
+      const url = new URL(sourceUrl.trim());
+      if (url.protocol !== "https:" && url.protocol !== "http:") throw new Error("Unsupported protocol");
+      saveCandidateLog.mutate({ id: race.id, demCandidate: demCandidate.trim(), repCandidate: repCandidate.trim(), demPreviousOffice: demOffice.trim() || null, repPreviousOffice: repOffice.trim() || null, candidateSourceUrl: url.toString(), candidateSourceLabel: sourceLabel.trim(), editorNote: editorNote.trim() || null });
+    } catch { setError("Enter a valid HTTPS or HTTP source URL before saving the candidate log."); }
+  };
+  return <section className="mt-3 rounded-lg border border-primary/30 bg-primary/[0.045] p-3" aria-label={`${race.stateName} Governor candidate log`}>
+    <div className="flex flex-wrap items-start justify-between gap-2"><div><p className="text-[10px] font-bold uppercase tracking-[.14em] text-primary">Manual general-election candidate log</p><p className="mt-1 text-xs text-muted-foreground">This updates the public Governor record and keeps a private source-backed change history. It does not call a winner or alter results.</p></div><button type="button" onClick={onClose} className="text-xs font-semibold text-muted-foreground hover:text-foreground">Close</button></div>
+    <div className="mt-3 grid gap-2 sm:grid-cols-2"><label className="text-xs font-semibold text-muted-foreground">Democratic candidate<input value={demCandidate} onChange={(event) => setDemCandidate(event.target.value)} placeholder="Candidate name" className="mt-1 h-9 w-full rounded border border-border bg-background px-2 text-sm text-foreground" /></label><label className="text-xs font-semibold text-muted-foreground">Republican candidate<input value={repCandidate} onChange={(event) => setRepCandidate(event.target.value)} placeholder="Candidate name" className="mt-1 h-9 w-full rounded border border-border bg-background px-2 text-sm text-foreground" /></label><label className="text-xs font-semibold text-muted-foreground">Democratic candidate context<input value={demOffice} onChange={(event) => setDemOffice(event.target.value)} placeholder="Current or prior office" className="mt-1 h-9 w-full rounded border border-border bg-background px-2 text-sm text-foreground" /></label><label className="text-xs font-semibold text-muted-foreground">Republican candidate context<input value={repOffice} onChange={(event) => setRepOffice(event.target.value)} placeholder="Current or prior office" className="mt-1 h-9 w-full rounded border border-border bg-background px-2 text-sm text-foreground" /></label></div>
+    <div className="mt-2 grid gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]"><label className="text-xs font-semibold text-muted-foreground">Source label<input value={sourceLabel} onChange={(event) => setSourceLabel(event.target.value)} placeholder="e.g., PBS NewsHour / AP" className="mt-1 h-9 w-full rounded border border-border bg-background px-2 text-sm text-foreground" /></label><label className="text-xs font-semibold text-muted-foreground">Source URL<input value={sourceUrl} onChange={(event) => setSourceUrl(event.target.value)} placeholder="https://…" type="url" className="mt-1 h-9 w-full rounded border border-border bg-background px-2 text-sm text-foreground" /></label></div>
+    <label className="mt-2 block text-xs font-semibold text-muted-foreground">Editor note (private audit context)<textarea value={editorNote} onChange={(event) => setEditorNote(event.target.value)} placeholder="Why this candidate log was changed" className="mt-1 min-h-16 w-full rounded border border-border bg-background px-2 py-2 text-sm text-foreground" /></label>
+    <div className="mt-3 flex flex-wrap items-center gap-2"><button type="button" onClick={save} disabled={saveCandidateLog.isPending} className="inline-flex items-center gap-1 rounded bg-primary px-3 py-2 text-xs font-bold text-primary-foreground disabled:opacity-50">{saveCandidateLog.isPending ? "Saving candidate log…" : <><Save size={13} /> Save candidate log</>}</button>{race.candidateSourceUrl && <a href={race.candidateSourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-primary underline underline-offset-4">Current public source <ExternalLink size={12} /></a>}{error && <span className="text-xs text-destructive">{error}</span>}</div>
+    {history.length > 0 && <div className="mt-3 border-t border-primary/15 pt-3"><p className="text-[10px] font-bold uppercase tracking-[.12em] text-primary">Recent private change history</p><div className="mt-2 space-y-1.5">{history.slice(0, 3).map((item: any) => <div key={item.id} className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-muted-foreground"><span><strong className="text-foreground">{item.demCandidate || "—"}</strong> (D) vs <strong className="text-foreground">{item.repCandidate || "—"}</strong> (R)</span><a href={item.sourceUrl} target="_blank" rel="noreferrer" className="text-primary underline underline-offset-2">{item.sourceLabel}</a></div>)}</div></div>}
+  </section>;
 }
 
 function RefEditor({ referendum, onSave, saving }: { referendum: any; onSave: (data: any) => void; saving: boolean }) {

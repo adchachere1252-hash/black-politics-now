@@ -1,6 +1,6 @@
 import { eq, desc, like, or, sql } from "drizzle-orm";
 import { getDb } from "./db";
-import { senateRaces, houseRaces, governorRaces, referendums, electionDayStatus } from "../drizzle/schema";
+import { senateRaces, houseRaces, governorRaces, governorCandidateEdits, referendums, electionDayStatus } from "../drizzle/schema";
 import { photoWithRepositoryFallback } from "./candidatePhotoResolver";
 
 function withSenatePhotoFallback(race: any) {
@@ -139,6 +139,59 @@ export async function updateGovernorRace(id: number, data: Record<string, unknow
   const db = await getDb();
   if (!db) return;
   await db.update(governorRaces).set(data as any).where(eq(governorRaces.id, id));
+}
+
+export type GovernorCandidateLogInput = {
+  id: number;
+  demCandidate: string;
+  repCandidate: string;
+  demPreviousOffice?: string | null;
+  repPreviousOffice?: string | null;
+  candidateSourceUrl: string;
+  candidateSourceLabel: string;
+  editorName: string;
+  editorNote?: string | null;
+};
+
+export async function updateGovernorCandidateLog(input: GovernorCandidateLogInput) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const [existing] = await db.select().from(governorRaces).where(eq(governorRaces.id, input.id)).limit(1);
+  if (!existing) throw new Error("Governor race not found");
+  const prior = {
+    demCandidate: existing.demCandidate,
+    repCandidate: existing.repCandidate,
+    demPreviousOffice: existing.demPreviousOffice,
+    repPreviousOffice: existing.repPreviousOffice,
+    candidateSourceUrl: existing.candidateSourceUrl,
+    candidateSourceLabel: existing.candidateSourceLabel,
+  };
+  await db.update(governorRaces).set({
+    demCandidate: input.demCandidate,
+    repCandidate: input.repCandidate,
+    demPreviousOffice: input.demPreviousOffice || null,
+    repPreviousOffice: input.repPreviousOffice || null,
+    candidateSourceUrl: input.candidateSourceUrl,
+    candidateSourceLabel: input.candidateSourceLabel,
+    notes: input.editorNote || existing.notes,
+  }).where(eq(governorRaces.id, input.id));
+  await db.insert(governorCandidateEdits).values({
+    governorRaceId: existing.id,
+    stateCode: existing.stateCode,
+    demCandidate: input.demCandidate,
+    repCandidate: input.repCandidate,
+    sourceUrl: input.candidateSourceUrl,
+    sourceLabel: input.candidateSourceLabel,
+    editorName: input.editorName,
+    editorNote: input.editorNote || null,
+    previousValue: JSON.stringify(prior),
+  });
+}
+
+export async function getGovernorCandidateLogHistory(id: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(governorCandidateEdits).where(eq(governorCandidateEdits.governorRaceId, id)).orderBy(desc(governorCandidateEdits.createdAt), desc(governorCandidateEdits.id)).limit(12);
 }
 
 export async function updateReferendum(id: number, data: Record<string, unknown>) {
