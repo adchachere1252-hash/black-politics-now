@@ -1197,6 +1197,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify every public Atlas mode and control: main/comparison playback, pause/restart, speed, timeline, state and district detail, notes, keyboard access, share links, loading, and error states
 - [x] Complete desktop/mobile visual, accessibility, responsiveness, performance, test, build, and production verification; correct confirmed defects and publish a transparent launch-quality report
 
+## Atlas Continuous Reliability Review (Aug 20)
+- [x] Run a fresh independent verification of deployed source-frame health, public district interaction, playback, Admin operations, responsive display, tests, and production build
+- [x] Define a safe recurring Atlas verification workflow with deterministic source checks, browser interaction checks, performance thresholds, durable evidence, and owner alerts
+- [x] Define AI-agent responsibilities for evidence synthesis and issue triage while retaining human approval for geometry changes, historical interpretation, and public editorial notes
+- [x] Publish a practical recurring reliability recommendation and the new verification decision
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

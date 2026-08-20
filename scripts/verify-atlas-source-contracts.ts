@@ -1,6 +1,6 @@
 import { UCLA_TRUE_DISTRICT_ASSETS } from "../client/src/data/atlasTrueDistrictAssets";
 
-const ORIGIN = "http://127.0.0.1:3000";
+const ORIGIN = process.env.ATLAS_ORIGIN ?? "http://127.0.0.1:3000";
 
 function coordinatePositions(geometry: any): number {
   if (!geometry) return 0;
