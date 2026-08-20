@@ -1,4 +1,5 @@
 import { UCLA_TRUE_DISTRICT_ASSETS } from "@/data/atlasTrueDistrictAssets";
+import { feature as topologyFeature } from "topojson-client";
 
 export type TrueDistrictFeature = {
   type: "Feature";
@@ -8,8 +9,14 @@ export type TrueDistrictFeature = {
 
 export type TrueDistrictFrame = {
   type: "FeatureCollection";
-  metadata: { source: string; sourceUrl: string; congress: number; states: number; districtFeatures: number; overlapArtifactsRemoved?: number; simplifiedForWeb: boolean };
+  metadata: { source: string; sourceUrl: string; congress: number; states: number; districtFeatures: number; overlapArtifactsRemoved?: number; simplifiedForWeb: boolean; topologyPreservesSharedBoundaries?: boolean; canonicalRevision?: string };
   features: TrueDistrictFeature[];
+};
+
+type AtlasTopologyFrame = {
+  type: "Topology";
+  objects: { districts: unknown };
+  metadata: TrueDistrictFrame["metadata"];
 };
 
 const frameCache = new Map<number, TrueDistrictFrame>();
@@ -28,7 +35,11 @@ export async function loadTrueDistrictFrame(congress: number, request: typeof fe
   if (!url) throw new Error(`No validated UCLA district frame exists for Congress ${congress}`);
   const response = await request(url);
   if (!response.ok) throw new Error(`Validated district frame unavailable for Congress ${congress}`);
-  const frame = await response.json() as TrueDistrictFrame;
+  if (!response.body || typeof DecompressionStream === "undefined") throw new Error("This browser cannot decode the Atlas source-topology frame");
+  const text = await new Response(response.body.pipeThrough(new DecompressionStream("gzip"))).text();
+  const topology = JSON.parse(text) as AtlasTopologyFrame;
+  const resolved = topologyFeature(topology as any, topology.objects?.districts as any) as unknown as { type: "FeatureCollection"; features: TrueDistrictFeature[] };
+  const frame: TrueDistrictFrame = { type: "FeatureCollection", metadata: topology.metadata, features: resolved.features };
   const states = new Set(frame.features?.map((feature) => feature.properties?.state).filter(Boolean));
   if (frame.type !== "FeatureCollection" || frame.metadata?.congress !== congress || states.size !== 50 || !frame.features?.length) {
     throw new Error(`Validated district frame failed integrity checks for Congress ${congress}`);

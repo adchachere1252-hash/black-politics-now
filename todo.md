@@ -1203,6 +1203,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Define AI-agent responsibilities for evidence synthesis and issue triage while retaining human approval for geometry changes, historical interpretation, and public editorial notes
 - [x] Publish a practical recurring reliability recommendation and the new verification decision
 
+## Atlas National Renderer Rebuild — Screenshot-Confirmed Defect (Aug 20)
+- [x] Reproduce and trace the incomplete party-map rendering shown in the owner screenshot, including white triangular gaps, broken surfaces, and any geometry simplification or projection loss
+- [x] Replace the defective national geometry rendering pipeline with one that preserves all UCLA Polygon and MultiPolygon rings, holes, and inset geometry without artificial gaps
+- [x] Preserve verified source metadata, party/member overlays, district interaction, playback, comparison, state detail, and responsive controls through the renderer rebuild
+- [x] Require desktop/mobile viewport acceptance, all-frame source-topology validation, and surface-gap measurement across boundary, party, member, early, modern, and comparison frames; document the full-page capture-tool limitation
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

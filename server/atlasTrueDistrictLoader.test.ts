@@ -2,12 +2,18 @@ import { describe, expect, it, vi } from "vitest";
 import { UCLA_TRUE_DISTRICT_ASSETS } from "../client/src/data/atlasTrueDistrictAssets";
 import { loadTrueDistrictFrame } from "../client/src/lib/atlasTrueDistrictLoader";
 
-function frame(congress: number) {
+function topologyFrame(congress: number) {
   return {
-    type: "FeatureCollection" as const,
-    metadata: { source: "UCLA", sourceUrl: "https://cdmaps.polisci.ucla.edu/", congress, states: 50, districtFeatures: 435, simplifiedForWeb: true },
-    features: Array.from({ length: 50 }, (_, index) => ({ type: "Feature" as const, properties: { state: `State ${index}`, district: 1, id: String(index) }, geometry: null })),
+    type: "Topology",
+    metadata: { source: "UCLA", sourceUrl: "https://cdmaps.polisci.ucla.edu/", congress, states: 50, districtFeatures: 435, simplifiedForWeb: false, topologyPreservesSharedBoundaries: true },
+    objects: { districts: { type: "GeometryCollection", geometries: Array.from({ length: 50 }, (_, index) => ({ type: "Point", coordinates: [index, index], properties: { state: `State ${index}`, district: 1, id: String(index) } })) } },
   };
+}
+
+async function compressedResponse(payload: unknown) {
+  const gzip = new CompressionStream("gzip");
+  const body = new Blob([JSON.stringify(payload)]).stream().pipeThrough(gzip);
+  return new Response(body);
 }
 
 describe("validated UCLA Atlas district frames", () => {
@@ -16,9 +22,11 @@ describe("validated UCLA Atlas district frames", () => {
   });
 
   it("accepts a 50-state matching Congress frame and uses the immutable asset URL", async () => {
-    const request = vi.fn(async () => ({ ok: true, json: async () => frame(119) }));
+    const request = vi.fn(async () => compressedResponse(topologyFrame(119)));
     const loaded = await loadTrueDistrictFrame(119, request as any);
     expect(loaded.metadata.congress).toBe(119);
+    expect(loaded.metadata.topologyPreservesSharedBoundaries).toBe(true);
+    expect(loaded.features).toHaveLength(50);
     expect(request).toHaveBeenCalledWith(UCLA_TRUE_DISTRICT_ASSETS[119]);
   });
 });
