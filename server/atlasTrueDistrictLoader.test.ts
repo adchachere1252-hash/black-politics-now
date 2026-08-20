@@ -27,6 +27,7 @@ describe("validated UCLA Atlas district frames", () => {
     expect(loaded.metadata.congress).toBe(119);
     expect(loaded.metadata.topologyPreservesSharedBoundaries).toBe(true);
     expect(loaded.features).toHaveLength(50);
+    expect(loaded.stateBoundaries).toHaveLength(50);
     expect(request).toHaveBeenCalledWith(UCLA_TRUE_DISTRICT_ASSETS[119]);
   });
 

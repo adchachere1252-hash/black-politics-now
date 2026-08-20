@@ -27,6 +27,7 @@ export default function AdminPage() {
   const [focusRecommendationId, setFocusRecommendationId] = useState<number | undefined>();
   const [portraitTargetKey, setPortraitTargetKey] = useState<string | undefined>();
   const [blackRepresentationSearch, setBlackRepresentationSearch] = useState("");
+  const [governorCandidateSearch, setGovernorCandidateSearch] = useState("");
 
   const navigateToTab = (nextTab: AdminTab) => {
     setTab(nextTab);
@@ -52,6 +53,10 @@ export default function AdminPage() {
   const openBlackRepresentationRecord = (candidateName: string) => {
     setBlackRepresentationSearch(candidateName);
     navigateToTab("cbc");
+  };
+  const openGovernorCandidateEditor = (location: string) => {
+    setGovernorCandidateSearch(location.replace(/\s+Governor$/i, ""));
+    navigateToTab("elections");
   };
 
   if (loading) return <div className="container py-8"><div className="h-40 bg-muted rounded animate-pulse" /></div>;
@@ -117,8 +122,8 @@ export default function AdminPage() {
       {tab === "overview" && <OverviewTab onReview={(id) => { setFocusRecommendationId(id); navigateToTab("agent"); }} onNavigate={(destination) => destination === "portraits" ? openActivePortraitBatch() : navigateToTab(destination)} onNavigateAdmin={navigateToTab} />}
       {tab === "command" && <ElectionDayCommandCenterTab />}
       {tab === "podcast" && <PodcastOpsTab />}
-      {tab === "elections" && <ElectionOpsTab />}
-      {tab === "candidates" && <CandidatesOpsTab onOpenPortraits={openCandidatePortrait} onManageBlackRepresentation={openBlackRepresentationRecord} />}
+      {tab === "elections" && <ElectionOpsTab initialGovernorSearch={governorCandidateSearch} />}
+      {tab === "candidates" && <CandidatesOpsTab onOpenPortraits={openCandidatePortrait} onManageBlackRepresentation={openBlackRepresentationRecord} onManageGovernor={openGovernorCandidateEditor} />}
       {tab === "cbc" && <CbcOpsTab initialSearch={blackRepresentationSearch} />}
       {tab === "atlasWorld" && <AtlasWorldOpsTab />}
       {tab === "agent" && <AgentDeskTab focusRecommendationId={focusRecommendationId} />}
@@ -412,9 +417,10 @@ function parsePreflightReport(serialized?: string | null): any | null {
 
 const RATINGS = ["Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R"];
 
-function ElectionOpsTab() {
+function ElectionOpsTab({ initialGovernorSearch = "" }: { initialGovernorSearch?: string }) {
   const [chamber, setChamber] = useState<"senate" | "house" | "governors" | "referendums">("senate");
   const [houseSearch, setHouseSearch] = useState("");
+  const [governorSearch, setGovernorSearch] = useState("");
   const activeRefresh = { refetchInterval: 60_000 };
   const { data: senateRaces = [] } = trpc.election.senate.useQuery(undefined, activeRefresh);
   const { data: houseRaces = [] } = trpc.election.house.useQuery(undefined, activeRefresh);
@@ -426,6 +432,12 @@ function ElectionOpsTab() {
   const updateHouse = trpc.election.updateHouse.useMutation({ onSuccess: () => utils.election.house.invalidate() });
   const updateGovernor = trpc.election.updateGovernor.useMutation({ onSuccess: () => utils.election.governors.invalidate() });
   const updateReferendum = trpc.election.updateReferendum.useMutation({ onSuccess: () => utils.election.referendums.invalidate() });
+
+  useEffect(() => {
+    if (!initialGovernorSearch) return;
+    setChamber("governors");
+    setGovernorSearch(initialGovernorSearch);
+  }, [initialGovernorSearch]);
 
   return (
     <div>
@@ -481,8 +493,14 @@ function ElectionOpsTab() {
         </div>
       )}
       {chamber === "governors" && (
-        <div className="space-y-2 max-h-[60vh] overflow-y-auto">
-          {(governors as any[]).map((race: any) => (
+        <div>
+          <div className="relative mb-3"><Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" /><input value={governorSearch} onChange={e => setGovernorSearch(e.target.value)} placeholder="Search a Governor contest or candidate..." className="w-full rounded-lg bg-muted py-2 pl-8 pr-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary" /></div>
+          <div className="space-y-2 max-h-[60vh] overflow-y-auto">
+          {(governors as any[]).filter((race: any) => {
+            if (!governorSearch) return true;
+            const query = governorSearch.toLowerCase();
+            return race.stateName?.toLowerCase().includes(query) || race.stateCode?.toLowerCase().includes(query) || race.demCandidate?.toLowerCase().includes(query) || race.repCandidate?.toLowerCase().includes(query);
+          }).map((race: any) => (
             <GovEditor
               key={race.id}
               race={race}
@@ -490,6 +508,7 @@ function ElectionOpsTab() {
               saving={updateGovernor.isPending}
             />
           ))}
+          </div>
         </div>
       )}
       {chamber === "referendums" && (
@@ -781,7 +800,7 @@ function CbcOpsTab({ initialSearch = "" }: { initialSearch?: string }) {
   );
 }
 
-function CandidatesOpsTab({ onOpenPortraits, onManageBlackRepresentation }: { onOpenPortraits: (targetKey?: string) => void; onManageBlackRepresentation: (candidateName: string) => void }) {
+function CandidatesOpsTab({ onOpenPortraits, onManageBlackRepresentation, onManageGovernor }: { onOpenPortraits: (targetKey?: string) => void; onManageBlackRepresentation: (candidateName: string) => void; onManageGovernor: (location: string) => void }) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<"all" | AdminCandidateCategory>("all");
   const [selectedCandidateId, setSelectedCandidateId] = useState<string | null>(null);
@@ -807,7 +826,7 @@ function CandidatesOpsTab({ onOpenPortraits, onManageBlackRepresentation }: { on
   return <div className="space-y-5">
     <section className="glass-card rounded-xl p-5">
       <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">Candidate operations</p><h2 className="mt-1 text-xl font-bold">All candidates</h2><p className="mt-1 max-w-3xl text-sm text-muted-foreground">One protected view of every Senate, House, Governor, and Black Representation candidate already tracked by the platform. A stored image URL is not treated as verified: candidates are labeled as image missing, needs verification, or awaiting your image decision. Black Representation cards also include a protected route to manage or delete the matched profile.</p></div><button onClick={() => onOpenPortraits()} className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-bold text-primary-foreground hover:bg-primary/90"><ImagePlus size={14} /> Open Portrait Review</button></div>
-      <div className="mt-5 grid gap-3 sm:grid-cols-3"><OpsMetric icon={CheckCircle2} label="Needs verification" value={String(photoSummary.needs_verification)} detail="Stored image needs human/source review" tone="warn" /><OpsMetric icon={Clock3} label="Review image" value={String(photoSummary.pending_review)} detail="Visual submission awaits your decision" tone="warn" /><OpsMetric icon={ImagePlus} label="Image missing" value={String(photoSummary.evidence_needed)} detail="No current image or evidence package" tone="warn" /></div>
+      <div className="mt-4 flex flex-wrap gap-2">{category === "governor" && <button onClick={() => onManageGovernor(search)} className="inline-flex items-center gap-2 rounded-md border border-primary/40 bg-background px-3 py-2 text-xs font-bold text-primary hover:bg-primary/5"><MapPin size={14} /> Manage Governor candidate log</button>}</div><div className="mt-5 grid gap-3 sm:grid-cols-3"><OpsMetric icon={CheckCircle2} label="Needs verification" value={String(photoSummary.needs_verification)} detail="Stored image needs human/source review" tone="warn" /><OpsMetric icon={Clock3} label="Review image" value={String(photoSummary.pending_review)} detail="Visual submission awaits your decision" tone="warn" /><OpsMetric icon={ImagePlus} label="Image missing" value={String(photoSummary.evidence_needed)} detail="No current image or evidence package" tone="warn" /></div>
     </section>
     <section className="glass-card rounded-xl p-5">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between"><div className="relative w-full lg:max-w-md"><Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search candidate, state, district, or party..." className="w-full rounded-lg bg-muted py-2 pl-8 pr-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary" /></div><div className="flex flex-wrap gap-2">{(["all", "senate", "house", "governor", "black_representation"] as const).map((item) => <button key={item} onClick={() => setCategory(item)} className={`rounded-md px-2.5 py-1.5 text-xs font-semibold ${category === item ? "bg-primary text-primary-foreground" : "border border-border text-muted-foreground hover:bg-muted"}`}>{item === "all" ? "All" : categoryCopy[item]}</button>)}</div></div>

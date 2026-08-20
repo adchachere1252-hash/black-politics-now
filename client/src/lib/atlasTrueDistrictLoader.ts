@@ -1,5 +1,5 @@
 import { UCLA_TRUE_DISTRICT_ASSETS } from "@/data/atlasTrueDistrictAssets";
-import { feature as topologyFeature } from "topojson-client";
+import { feature as topologyFeature, merge as topologyMerge } from "topojson-client";
 
 export type TrueDistrictFeature = {
   type: "Feature";
@@ -11,11 +11,12 @@ export type TrueDistrictFrame = {
   type: "FeatureCollection";
   metadata: { source: string; sourceUrl: string; congress: number; states: number; districtFeatures: number; overlapArtifactsRemoved?: number; simplifiedForWeb: boolean; topologyPreservesSharedBoundaries?: boolean; canonicalRevision?: string };
   features: TrueDistrictFeature[];
+  stateBoundaries?: Array<{ state: string; geometry: unknown }>;
 };
 
 type AtlasTopologyFrame = {
   type: "Topology";
-  objects: { districts: unknown };
+  objects: { districts: { type?: string; geometries?: Array<{ properties?: { state?: string } }> } };
   metadata: TrueDistrictFrame["metadata"];
 };
 
@@ -42,9 +43,15 @@ export async function loadTrueDistrictFrame(congress: number, request: typeof fe
     throw new Error(`Atlas frame ${congress} does not use the required canonical shared-boundary geometry`);
   }
   const resolved = topologyFeature(topology as any, topology.objects?.districts as any) as unknown as { type: "FeatureCollection"; features: TrueDistrictFeature[] };
-  const frame: TrueDistrictFrame = { type: "FeatureCollection", metadata: topology.metadata, features: resolved.features };
+  const rawGeometries = topology.objects?.districts?.geometries ?? [];
+  const statesInTopology = Array.from(new Set(rawGeometries.map((geometry) => geometry.properties?.state).filter((state): state is string => Boolean(state))));
+  const stateBoundaries = statesInTopology.map((state) => ({
+    state,
+    geometry: topologyMerge(topology as any, rawGeometries.filter((geometry) => geometry.properties?.state === state) as any),
+  }));
+  const frame: TrueDistrictFrame = { type: "FeatureCollection", metadata: topology.metadata, features: resolved.features, stateBoundaries };
   const states = new Set(frame.features?.map((feature) => feature.properties?.state).filter(Boolean));
-  if (frame.type !== "FeatureCollection" || frame.metadata?.congress !== congress || states.size !== 50 || !frame.features?.length) {
+  if (frame.type !== "FeatureCollection" || frame.metadata?.congress !== congress || states.size !== 50 || stateBoundaries.length !== 50 || !frame.features?.length) {
     throw new Error(`Validated district frame failed integrity checks for Congress ${congress}`);
   }
   cacheFrame(congress, frame);

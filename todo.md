@@ -1240,6 +1240,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify and update the Florida Governor contest so Byron Donalds and David Jolly appear as its manually managed general-election candidates with source-backed context
 - [x] Verify desktop/mobile Atlas behavior, Admin authorization and persistence, public candidate presentation, tests, build, and a completed release checklist
 
+## Atlas State-Border Hierarchy and Direct Candidate Management (Aug 20)
+- [x] Add an accurate state-border overlay above district fills, with clear visual hierarchy that does not override party, member, or boundary data
+- [x] Verify state-border alignment across current and historic Atlas frames, plus desktop and mobile readability
+- [x] Make Admin candidate changes easier to find and operate from a direct candidate-management entry point, while retaining source requirements and audit history
+- [x] Verify protected candidate persistence, public Governor display, regression tests, production build, and the completed checklist
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown
