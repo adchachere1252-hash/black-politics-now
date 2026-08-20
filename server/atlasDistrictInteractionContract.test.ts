@@ -5,10 +5,12 @@ const mapSource = readFileSync(new URL("../client/src/components/HistoricalUSMap
 const pageSource = readFileSync(new URL("../client/src/pages/Atlas.tsx", import.meta.url), "utf8");
 
 describe("Historical Atlas district interaction contract", () => {
-  it("keeps mouse and keyboard district activation connected to the typed selection callback", () => {
-    expect(mapSource).toContain("onClick={() => { if (!moved.current) selectDistrict(path); }}");
+  it("keeps pointer and keyboard district activation connected to the typed selection callback", () => {
+    expect(mapSource).toContain("svg.addEventListener(\"pointerup\", handleNativePointerUp)");
+    expect(mapSource).toContain("data-atlas-path-key={path.key}");
     expect(mapSource).toContain("onKeyDown={(event) => { if (event.key === \"Enter\" || event.key === \" \") { event.preventDefault(); selectDistrict(path); } }}");
-    expect(mapSource).toContain("onDistrictSelect?.(atlasDistrictSelection({");
+    expect(mapSource).toContain("const selection = atlasDistrictSelection({");
+    expect(mapSource).toContain("if (onDistrictSelect) onDistrictSelect(selection);");
   });
 
   it("keeps the Atlas page wired to render a source-linked selected-district panel", () => {

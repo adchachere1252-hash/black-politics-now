@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle2, ExternalLink, FileText, Play, RefreshCw, Save, ShieldCheck } from "lucide-react";
+import { AlertTriangle, CheckCircle2, ExternalLink, FileText, Play, RefreshCw, Save, ShieldCheck } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 
 const EMPTY_NOTE = { id: undefined as number | undefined, stateCode: "AL", congress: 119, title: "", body: "", sourceLabel: "", sourceUrl: "" };
@@ -9,10 +9,12 @@ export function AtlasOperationsAdmin() {
   const notesQuery = trpc.atlasOperations.notes.useQuery();
   const [note, setNote] = useState(EMPTY_NOTE);
   const [notice, setNotice] = useState<string | null>(null);
+  const [completedPlayback, setCompletedPlayback] = useState<{ auditId: number | null; status: "passed" | "failed"; checkedAt: Date; summary: string } | null>(null);
   const playbackCheck = trpc.atlasOperations.runPlaybackCheck.useMutation({
-    onSuccess: (result) => {
-      setNotice(result.summary);
-      healthQuery.refetch();
+    onSuccess: async (result) => {
+      await healthQuery.refetch();
+      setCompletedPlayback({ auditId: result.audit?.id ?? null, status: result.status, checkedAt: new Date(), summary: result.summary });
+      setNotice(result.status === "passed" ? "Playback check completed and the durable audit history has refreshed." : "Playback check completed with an issue requiring review.");
     },
     onError: (error) => setNotice(`Playback check could not run: ${error.message}`),
   });
@@ -49,7 +51,8 @@ export function AtlasOperationsAdmin() {
 
     <div className="mt-4 grid gap-3 sm:grid-cols-3"><AtlasOpsMetric value={`${readyFrames}/31`} label="ready Congress frames" good={readyFrames === 31} /><AtlasOpsMetric value={health.every((frame) => frame.stateCount === 50) ? "50/50" : "Review"} label="states per frame" good={health.length > 0 && health.every((frame) => frame.stateCount === 50)} /><AtlasOpsMetric value={latestAudit?.status === "passed" ? "Passed" : latestAudit ? "Review" : "Not run"} label="latest playback check" good={latestAudit?.status === "passed"} /></div>
 
-    <div className="mt-4 rounded-lg border border-border/70 bg-background/50 p-3 text-xs text-muted-foreground"><p><strong className="text-foreground">Source boundaries:</strong> UCLA district geometry · Census apportionment totals · Voteview House roster overlay.</p><p className="mt-1"><strong className="text-foreground">Latest result:</strong> {latestAudit?.summary ?? "No durable Admin playback check has been recorded yet."}</p></div>
+    <div className="mt-4 rounded-lg border border-border/70 bg-background/50 p-3 text-xs text-muted-foreground"><p><strong className="text-foreground">Source boundaries:</strong> UCLA district geometry · Census apportionment totals · Voteview House roster overlay.</p><p className="mt-1"><strong className="text-foreground">Latest result:</strong> {latestAudit?.summary ?? "No durable Admin playback check has been recorded yet."}</p>{latestAudit?.createdAt && <p className="mt-1"><strong className="text-foreground">Last checked:</strong> {new Date(latestAudit.createdAt).toLocaleString()} · audit #{latestAudit.id}</p>}</div>
+    {completedPlayback && <div className={`mt-3 rounded-lg border p-3 text-xs ${completedPlayback.status === "passed" ? "border-emerald-500/30 bg-emerald-500/[0.06]" : "border-amber-500/35 bg-amber-500/[0.07]"}`} role="status" aria-live="polite"><div className="flex items-start gap-2"><span className={completedPlayback.status === "passed" ? "text-emerald-700 dark:text-emerald-300" : "text-amber-700 dark:text-amber-300"}>{completedPlayback.status === "passed" ? <CheckCircle2 size={16} /> : <AlertTriangle size={16} />}</span><div><p className="font-bold text-foreground">Playback check {completedPlayback.status === "passed" ? "passed" : "needs review"}{completedPlayback.auditId ? ` · audit #${completedPlayback.auditId}` : ""}</p><p className="mt-1 text-muted-foreground">{completedPlayback.summary}</p><p className="mt-1 text-[10px] text-muted-foreground">Completed {completedPlayback.checkedAt.toLocaleString()}</p></div></div></div>}
     {notice && <div className="mt-3 flex items-start justify-between gap-3 rounded-lg border border-primary/25 bg-primary/[0.05] px-3 py-2 text-xs text-muted-foreground"><span>{notice}</span><button type="button" onClick={() => setNotice(null)} className="font-bold text-primary">Dismiss</button></div>}
 
     <details className="mt-4 rounded-lg border border-border/70 bg-background/40 p-3"><summary className="cursor-pointer text-xs font-bold text-foreground">Frame health · {readyFrames}/31 ready</summary><div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">{health.map((frame) => <div key={frame.congress} className={`rounded-md border px-2.5 py-2 text-xs ${frame.ready ? "border-emerald-500/25 bg-emerald-500/[0.04]" : "border-amber-500/30 bg-amber-500/[0.05]"}`}><div className="flex items-center justify-between gap-2"><strong>{frame.congress}th</strong><span className={`text-[10px] font-bold uppercase ${frame.ready ? "text-emerald-700 dark:text-emerald-300" : "text-amber-700 dark:text-amber-300"}`}>{frame.ready ? "Ready" : "Review"}</span></div><p className="mt-1 text-[10px] text-muted-foreground">{frame.stateCount}/50 states · {frame.uniqueBoundaryFiles} files · {frame.assetRegistered ? "asset registered" : "asset missing"}</p></div>)}</div></details>

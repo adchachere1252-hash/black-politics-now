@@ -72,7 +72,7 @@ export async function getAtlasOperations() {
   const health = getAtlasFrameHealth();
   const db = await getDb();
   if (!db) return { health, recentAudits: [], sourceBoundaries: ATLAS_SOURCE_BOUNDARIES };
-  const recentAudits = await db.select().from(atlasOperationsAudits).orderBy(desc(atlasOperationsAudits.createdAt)).limit(12);
+  const recentAudits = await db.select().from(atlasOperationsAudits).orderBy(desc(atlasOperationsAudits.createdAt), desc(atlasOperationsAudits.id)).limit(12);
   return { health, recentAudits, sourceBoundaries: ATLAS_SOURCE_BOUNDARIES };
 }
 
@@ -90,7 +90,7 @@ export async function runAtlasPlaybackCheck(initiatedBy: string) {
     detailsJson: JSON.stringify(result),
     initiatedBy,
   });
-  const [latestAudit] = await db.select().from(atlasOperationsAudits).orderBy(desc(atlasOperationsAudits.createdAt)).limit(1);
+  const [latestAudit] = await db.select().from(atlasOperationsAudits).orderBy(desc(atlasOperationsAudits.createdAt), desc(atlasOperationsAudits.id)).limit(1);
   return { ...result, summary, audit: latestAudit ?? null };
 }
 

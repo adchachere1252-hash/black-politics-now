@@ -1191,6 +1191,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add editor-approved historical notes with state/Congress scope, source links, draft/approved visibility, public presentation, and full audit metadata
 - [x] Verify protected Admin access, public source boundaries, desktop/mobile workflow, regression tests, build, publication, and Atlas Operations completion report
 
+## Atlas Playback and Full-Page Launch-Blocking Verification (Aug 20)
+- [x] Trace and exercise the Admin “Run playback check” mutation through authorization, execution, database persistence, refetch, and visible success/error feedback
+- [x] Independently verify all 31 UCLA frame assets, 50-state/region coverage, district boundary fidelity signals, party/member overlays, apportionment context, and source disclosures
+- [x] Verify every public Atlas mode and control: main/comparison playback, pause/restart, speed, timeline, state and district detail, notes, keyboard access, share links, loading, and error states
+- [x] Complete desktop/mobile visual, accessibility, responsiveness, performance, test, build, and production verification; correct confirmed defects and publish a transparent launch-quality report
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

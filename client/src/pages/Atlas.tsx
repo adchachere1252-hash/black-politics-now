@@ -16,7 +16,7 @@ import {
   Search,
   X,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { APPORTIONMENT_HISTORY, APPORTIONMENT_YEARS, STATE_CODES } from "@/data/atlasHistory";
 import { LEWIS_MANIFEST } from "@/data/atlasBoundaryManifest";
 import { ATLAS_VRA_TIMELINE, sourceCheckedBoundaryNote } from "@/data/atlasVraTimeline";
@@ -83,6 +83,7 @@ export default function Atlas() {
     return value === "boundary" || value === "member" ? value : "party";
   });
   const [selectedDistrict, setSelectedDistrict] = useState<AtlasDistrictSelection | null>(null);
+  const districtDetailRef = useRef<HTMLDivElement | null>(null);
   const [mobileStateDetailOpen, setMobileStateDetailOpen] = useState(false);
 
   const historicalStates = useMemo(
@@ -116,22 +117,29 @@ export default function Atlas() {
     || state.stateCode.toLowerCase().includes(stateQuery.trim().toLowerCase())
   ));
 
-  const selectAtlasState = (stateCode: string) => {
+  const selectAtlasState = useCallback((stateCode: string) => {
     setSelectedCode(stateCode);
     setSelectedDistrict(null);
     if (typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches) setMobileStateDetailOpen(true);
-  };
+  }, []);
 
-  const selectAtlasDistrict = (district: AtlasDistrictSelection) => {
+  const selectAtlasDistrict = useCallback((district: AtlasDistrictSelection) => {
     setSelectedCode(district.stateCode);
     setSelectedCongress(district.congress);
     setSelectedDistrict(district);
     if (typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches) setMobileStateDetailOpen(true);
-  };
+  }, []);
 
   useEffect(() => {
     if (selectedDistrict && selectedDistrict.congress !== selectedCongress) setSelectedDistrict(null);
   }, [selectedCongress, selectedDistrict]);
+
+  useEffect(() => {
+    if (!selectedDistrict || !districtDetailRef.current) return;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    districtDetailRef.current.scrollIntoView({ block: "start", behavior: reducedMotion ? "auto" : "smooth" });
+    districtDetailRef.current.focus({ preventScroll: true });
+  }, [selectedDistrict]);
 
   useEffect(() => {
     if (!selected?.stateCode || typeof window === "undefined") return;
@@ -295,7 +303,7 @@ export default function Atlas() {
           </>}
 
           {compareMode && <div className="mt-5 grid gap-5 xl:grid-cols-2"><CongressComparisonPanel label="Comparison A" congress={comparisonCongress} onCongressChange={setComparisonCongress} selectedState={selected?.stateCode} onStateSelect={selectAtlasState} onDistrictSelect={selectAtlasDistrict} overlayMode={overlayMode} /><CongressComparisonPanel label="Comparison B" congress={selectedCongress} onCongressChange={setSelectedCongress} selectedState={selected?.stateCode} onStateSelect={selectAtlasState} onDistrictSelect={selectAtlasDistrict} overlayMode={overlayMode} /></div>}
-          {selectedDistrict && <DistrictDetailPanel district={selectedDistrict} boundaryEra={selectedBoundaryEra?.name} stateSeatCount={selectedSeatCount} onClose={() => setSelectedDistrict(null)} />}
+          {selectedDistrict && <div ref={districtDetailRef} id="atlas-district-detail" tabIndex={-1} aria-label="Selected congressional district detail"><DistrictDetailPanel district={selectedDistrict} boundaryEra={selectedBoundaryEra?.name} stateSeatCount={selectedSeatCount} onClose={() => setSelectedDistrict(null)} /></div>}
           <div className="mt-4 grid gap-3 sm:grid-cols-3"><AtlasLens title={overlayMode === "boundary" ? "Map basis" : "Verified overlay"} detail={overlayMode === "boundary" ? "The national frame uses UCLA’s Congress-specific historical district geometry. Census apportionment is retained as the official seat-count standard." : overlayMode === "party" ? "Voteview party code 100 is Democratic blue, 200 is Republican red, and other codes remain purple rather than being recoded." : "Voteview matches House member names, party codes, districts, and Bioguide identifiers to the selected Congress when a verified roster match is available."} /><AtlasLens title="Compare transitions" detail="Choose two Congresses to place the same verified party palette side by side. The map shows records; it does not infer why a district changed party." /><AtlasLens title="Selected state" detail={selected ? `${selected.stateName} has ${selectedSeatCount} House seat${selectedSeatCount === 1 ? "" : "s"} in this period${seatChange ? ` (${seatChange > 0 ? "+" : ""}${seatChange} at the applicable apportionment cycle)` : ""}.` : "Select any state or district to open its detailed historical record."} /></div>
         </div>
       </section>
