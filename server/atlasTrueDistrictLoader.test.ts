@@ -29,4 +29,11 @@ describe("validated UCLA Atlas district frames", () => {
     expect(loaded.features).toHaveLength(50);
     expect(request).toHaveBeenCalledWith(UCLA_TRUE_DISTRICT_ASSETS[119]);
   });
+
+  it("refuses a simplified or non-shared-boundary frame before it can render", async () => {
+    const legacy = topologyFrame(118);
+    legacy.metadata.simplifiedForWeb = true;
+    legacy.metadata.topologyPreservesSharedBoundaries = false;
+    await expect(loadTrueDistrictFrame(118, (async () => compressedResponse(legacy)) as any)).rejects.toThrow("required canonical shared-boundary geometry");
+  });
 });

@@ -1220,6 +1220,18 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Retain selection awareness through an outline-only accessible indicator and clear selected-state text
 - [x] Verify party, boundary, and member overlays and publish the color correction
 
+## Public Atlas Fracture Remediation (Aug 20)
+- [ ] Reproduce the screenshot-confirmed triangular fractures in the exact public party-map asset and identify its active asset URL, data format, and renderer path
+- [ ] Remove or invalidate any stale simplified frame path and enforce canonical shared-boundary geometry for all public party-map frames
+- [ ] Add a visible-map gap gate that fails on internal non-water fractures at desktop map scale and verify the deployed party map has none
+- [ ] Verify the actual public desktop map, playback, selected state, and party colors; run full quality gates and publish only after the fractures are gone
+
+## Live Production Atlas Defect — Owner-Confirmed (Aug 20)
+- [ ] Reproduce the owner-confirmed live 119th party-map fractures using the production route and capture the served JavaScript bundle, map-asset URL, and rendered SVG evidence
+- [ ] Replace the active production fracture path with a renderer that cannot expose independently simplified neighboring district edges
+- [ ] Add a production-visible regression gate that distinguishes water surfaces from interior district fractures and blocks release on a fracture
+- [ ] Directly inspect the repaired production map at the affected desktop size and publish only after the owner-facing surface is complete
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

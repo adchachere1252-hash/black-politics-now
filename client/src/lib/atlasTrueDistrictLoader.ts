@@ -38,6 +38,9 @@ export async function loadTrueDistrictFrame(congress: number, request: typeof fe
   if (!response.body || typeof DecompressionStream === "undefined") throw new Error("This browser cannot decode the Atlas source-topology frame");
   const text = await new Response(response.body.pipeThrough(new DecompressionStream("gzip"))).text();
   const topology = JSON.parse(text) as AtlasTopologyFrame;
+  if (topology.metadata?.simplifiedForWeb || topology.metadata?.topologyPreservesSharedBoundaries !== true) {
+    throw new Error(`Atlas frame ${congress} does not use the required canonical shared-boundary geometry`);
+  }
   const resolved = topologyFeature(topology as any, topology.objects?.districts as any) as unknown as { type: "FeatureCollection"; features: TrueDistrictFeature[] };
   const frame: TrueDistrictFrame = { type: "FeatureCollection", metadata: topology.metadata, features: resolved.features };
   const states = new Set(frame.features?.map((feature) => feature.properties?.state).filter(Boolean));
