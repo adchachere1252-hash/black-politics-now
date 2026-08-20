@@ -1246,6 +1246,17 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Make Admin candidate changes easier to find and operate from a direct candidate-management entry point, while retaining source requirements and audit history
 - [x] Verify protected candidate persistence, public Governor display, regression tests, production build, and the completed checklist
 
+## Full Atlas and Candidate Management Verification (Aug 20)
+- [x] Re-verify all 31 canonical topology frames, 50 source-derived state exteriors, party/boundary/member overlays, source tags, and internal-gap safeguards
+- [x] Re-verify real public playback, pause, speed, restart, zoom, pan, reset, district detail, comparison, share URL, loading/error, desktop, and mobile behavior
+- [x] Re-verify direct Candidate → Governor candidate-log handoff, Admin-only authorization, source validation, Florida persistence, audit history, and public Governor display
+- [x] Re-run full tests, TypeScript, production build, and direct production checks; document the decision and any remaining limitation
+
+## Admin Candidate Management Discoverability Fix (Aug 20)
+- [x] Add a first-class, plainly labeled Admin candidate-management workspace visible from the dashboard navigation and Election Ops
+- [x] Add an explicit Florida Governor candidate-management shortcut that opens the source-backed editor with the current Donalds–Jolly record
+- [x] Verify the route is discoverable through the Admin contract and its protected save path; source validation and audit history remain mandatory, and the public Governor record persists
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

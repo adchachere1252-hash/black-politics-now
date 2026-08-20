@@ -5,6 +5,7 @@ const schema = readFileSync(new URL("../drizzle/schema.ts", import.meta.url), "u
 const persistence = readFileSync(new URL("./electionDb.ts", import.meta.url), "utf8");
 const router = readFileSync(new URL("./routers.ts", import.meta.url), "utf8");
 const admin = readFileSync(new URL("../client/src/pages/Admin.tsx", import.meta.url), "utf8");
+const candidateChanges = readFileSync(new URL("../client/src/components/CandidateChangesTab.tsx", import.meta.url), "utf8");
 
 describe("Governor candidate-log contract", () => {
   it("keeps candidate source fields and an immutable audit record in the election schema", () => {
@@ -23,5 +24,8 @@ describe("Governor candidate-log contract", () => {
     expect(admin).toContain("Manual general-election candidate log");
     expect(admin).toContain("Manage Governor candidate log");
     expect(admin).toContain("Search a Governor contest or candidate...");
+    expect(admin).toContain('label: "Candidate Changes"');
+    expect(candidateChanges).toContain("Manage Florida candidates");
+    expect(candidateChanges).toContain("Change candidates");
   });
 });

@@ -1,7 +1,10 @@
 import fs from "node:fs/promises";
 
 const origin = process.env.ATLAS_ORIGIN ?? "https://blkpolnow-nztxnshf.manus.space";
-const route = `${origin}/atlas?state=AL&congress=119&overlay=party&productionTrace=${Date.now()}`;
+const atlasPath = process.env.ATLAS_PATH ?? "/atlas?state=AL&congress=119&overlay=party";
+const routeUrl = new URL(atlasPath, origin);
+routeUrl.searchParams.set("productionTrace", String(Date.now()));
+const route = routeUrl.href;
 const output = "/home/ubuntu/atlas-audit/live-atlas-fracture-trace.json";
 const screenshotPath = "/home/ubuntu/atlas-audit/live-atlas-fracture-trace.png";
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -73,7 +76,7 @@ async function main() {
         const start = Date.now();
         while (Date.now() - start < 60000) {
           const paths = [...document.querySelectorAll('path[data-atlas-path-key]')];
-          if (document.body.innerText.includes('50/50 states') && paths.length >= 400) {
+          if (document.body?.innerText.includes('50/50 states') && paths.length >= 400) {
             const resources = performance.getEntriesByType('resource').map((entry) => entry.name)
               .filter((name) => /district|ucla|canonical|topo/i.test(name));
             const svg = paths[0]?.ownerSVGElement;
