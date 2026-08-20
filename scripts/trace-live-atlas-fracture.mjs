@@ -78,6 +78,39 @@ async function main() {
               .filter((name) => /district|ucla|canonical|topo/i.test(name));
             const svg = paths[0]?.ownerSVGElement;
             const rect = svg?.getBoundingClientRect();
+            const gapAudit = (() => {
+              if (!rect) return { candidateCount: -1, candidates: [] };
+              const step = 5;
+              const cols = Math.floor(rect.width / step);
+              const rows = Math.floor(rect.height / step);
+              const painted = Array.from({ length: rows }, (_, row) => Array.from({ length: cols }, (_, col) => {
+                const hit = document.elementFromPoint(rect.left + col * step + step / 2, rect.top + row * step + step / 2);
+                return Boolean(hit?.closest?.('path[data-atlas-path-key]'));
+              }));
+              const seen = Array.from({ length: rows }, () => Array(cols).fill(false));
+              const candidates = [];
+              for (let row = 0; row < rows; row += 1) for (let col = 0; col < cols; col += 1) {
+                if (painted[row][col] || seen[row][col]) continue;
+                const queue = [[row, col]];
+                seen[row][col] = true;
+                let cells = 0;
+                let touchesEdge = false;
+                while (queue.length) {
+                  const [currentRow, currentCol] = queue.pop();
+                  cells += 1;
+                  if (currentRow === 0 || currentCol === 0 || currentRow === rows - 1 || currentCol === cols - 1) touchesEdge = true;
+                  for (const [nextRow, nextCol] of [[currentRow - 1, currentCol], [currentRow + 1, currentCol], [currentRow, currentCol - 1], [currentRow, currentCol + 1]]) {
+                    if (nextRow < 0 || nextCol < 0 || nextRow >= rows || nextCol >= cols || painted[nextRow][nextCol] || seen[nextRow][nextCol]) continue;
+                    seen[nextRow][nextCol] = true;
+                    queue.push([nextRow, nextCol]);
+                  }
+                }
+                // Small enclosed components are characteristic of the prior triangular cracks.
+                // Large components are natural water bodies; the exterior always touches the SVG edge.
+                if (!touchesEdge && cells >= 2 && cells <= 500) candidates.push({ cells, approxAreaPx: cells * step * step });
+              }
+              return { candidateCount: candidates.length, candidates };
+            })();
             return {
               location: window.location.href,
               atlasPathCount: paths.length,
@@ -85,6 +118,7 @@ async function main() {
               svgRect: rect ? { width: Math.round(rect.width), height: Math.round(rect.height) } : null,
               samplePath: paths[0]?.getAttribute('d')?.slice(0, 120) ?? null,
               resources,
+              gapAudit,
               visibleText: document.body.innerText.includes('Source · UCLA CD Maps'),
             };
           }
@@ -100,6 +134,9 @@ async function main() {
     const record = { origin, route, moduleSrc, ...surface, screenshotPath, capturedAt: new Date().toISOString() };
     await fs.writeFile(output, `${JSON.stringify(record, null, 2)}\n`);
     console.log(JSON.stringify(record, null, 2));
+    if (record.gapAudit.candidateCount > 0) {
+      throw new Error(`Visible-map fracture gate found ${record.gapAudit.candidateCount} small enclosed unpainted surface component(s)`);
+    }
   } finally {
     cdp.close();
   }
