@@ -1185,6 +1185,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify playback sequencing from the 89th through 119th Congress, including validated-frame readiness, pause, restart, speed selection, and completion behavior
 - [x] Verify the playback controls in desktop and mobile layouts, run final quality gates, publish the update, and document the sandbox production-build memory limitation
 
+## Admin Atlas Operations (Aug 20)
+- [x] Add Admin-only Atlas frame-health status with 31-frame, 50-state, geometry, party-overlay, source-boundary, and verification-history visibility
+- [x] Add a guarded Admin playback check that records start, readiness, pause, speed, final-frame completion, and restart outcomes without changing public map data
+- [x] Add editor-approved historical notes with state/Congress scope, source links, draft/approved visibility, public presentation, and full audit metadata
+- [x] Verify protected Admin access, public source boundaries, desktop/mobile workflow, regression tests, build, publication, and Atlas Operations completion report
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

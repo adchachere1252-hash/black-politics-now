@@ -51,6 +51,7 @@ import { getLatestDailyOperationalSnapshot } from "./agentDailySummary";
 import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, executeAgentTaskWithChangeSet, getAgentChangeProposals, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, getLatestPortraitResearchBatch, reviewAgentChangeProposal, reviewAgentRecommendation, runAgentTaskResearchNow, runElectionDayCommandResearch, runPortraitResearchTask, runResearchDesk, setAgentDefaultOwners, setAgentPriorityMode, startAllPortraitResearch, updateAgentTask } from "./agentDesk";
 import { getEngagementSummary, recordAnonymousPageView } from "./siteAnalytics";
 import { createCertificationArchive, getCertificationArchivePreview, getCertifiedResultArchiveDetail, getCertifiedResultArchives } from "./certifiedResultsArchive";
+import { getApprovedAtlasEditorialNotes, getAtlasEditorialNotes, getAtlasOperations, runAtlasPlaybackCheck, saveAtlasEditorialNote, setAtlasEditorialNoteApproval } from "./atlasOperations";
 
 export const appRouter = router({
   system: systemRouter,
@@ -77,6 +78,21 @@ export const appRouter = router({
     engagementSummary: adminProcedure
       .input(z.object({ days: z.union([z.literal(7), z.literal(30)]).default(7) }).optional())
       .query(async ({ input }) => getEngagementSummary(input?.days ?? 7)),
+  }),
+
+  atlasOperations: router({
+    publicNotes: publicProcedure
+      .input(z.object({ stateCode: z.string().length(2), congress: z.number().int().min(89).max(119) }))
+      .query(async ({ input }) => getApprovedAtlasEditorialNotes(input.stateCode, input.congress)),
+    health: adminProcedure.query(async () => getAtlasOperations()),
+    notes: adminProcedure.query(async () => getAtlasEditorialNotes()),
+    runPlaybackCheck: adminProcedure.mutation(async ({ ctx }) => runAtlasPlaybackCheck(ctx.user.name ?? "Administrator")),
+    saveNote: adminProcedure
+      .input(z.object({ id: z.number().int().positive().optional(), stateCode: z.string().regex(/^[A-Za-z]{2}$/), congress: z.number().int().min(89).max(119), title: z.string().min(4).max(200), body: z.string().min(20).max(5000), sourceLabel: z.string().min(2).max(160), sourceUrl: z.string().url().max(2048) }))
+      .mutation(async ({ input, ctx }) => saveAtlasEditorialNote({ ...input, savedBy: ctx.user.name ?? "Administrator" })),
+    setNoteApproval: adminProcedure
+      .input(z.object({ id: z.number().int().positive(), approved: z.boolean() }))
+      .mutation(async ({ input, ctx }) => setAtlasEditorialNoteApproval({ ...input, reviewedBy: ctx.user.name ?? "Administrator" })),
   }),
 
   // ─── Podcast ─────────────────────────────────────────────────────────────────

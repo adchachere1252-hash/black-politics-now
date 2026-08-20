@@ -21,6 +21,20 @@ function createAdminContext(): TrpcContext {
   };
 }
 
+describe("Atlas Operations router", () => {
+  it("keeps frame health Admin-only while allowing the public Atlas to request only approved notes", async () => {
+    const publicCaller = appRouter.createCaller(createPublicContext());
+    const adminCaller = appRouter.createCaller(createAdminContext());
+    await expect(publicCaller.atlasOperations.health()).rejects.toThrow();
+    const health = await adminCaller.atlasOperations.health();
+    expect(health.health).toHaveLength(31);
+    expect(health.health.every((frame) => frame.ready && frame.stateCount === 50)).toBe(true);
+    const notes = await publicCaller.atlasOperations.publicNotes({ stateCode: "AL", congress: 119 });
+    expect(Array.isArray(notes)).toBe(true);
+    expect(notes.every((note) => !Object.hasOwn(note, "status") && !Object.hasOwn(note, "createdBy"))).toBe(true);
+  });
+});
+
 describe("news router", () => {
   it("returns a source-backed public newsroom feed with article metadata", async () => {
     const caller = appRouter.createCaller(createPublicContext());

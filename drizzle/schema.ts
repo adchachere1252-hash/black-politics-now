@@ -790,6 +790,56 @@ export const candidateRemovalAudit = mysqlTable("candidate_removal_audit", {
 export type CandidateRemovalAudit = typeof candidateRemovalAudit.$inferSelect;
 
 // ═══════════════════════════════════════════════════════════════════════════
+// HISTORICAL ATLAS OPERATIONS
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * A durable result for a guarded Atlas operations check. These records monitor
+ * source-registry and playback contracts only; they never rewrite UCLA
+ * geometry, Census apportionment, or Voteview roster data.
+ */
+export const atlasOperationsAudits = mysqlTable("atlas_operations_audits", {
+  id: int("id").autoincrement().primaryKey(),
+  auditType: mysqlEnum("audit_type", ["playback_contract"]).notNull(),
+  status: mysqlEnum("status", ["passed", "warning", "failed"]).notNull(),
+  summary: text("summary").notNull(),
+  detailsJson: text("details_json").notNull(),
+  initiatedBy: varchar("initiated_by", { length: 128 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("atlas_operations_audit_created_idx").on(table.createdAt),
+  index("atlas_operations_audit_type_created_idx").on(table.auditType, table.createdAt),
+]);
+
+export type AtlasOperationsAudit = typeof atlasOperationsAudits.$inferSelect;
+
+/**
+ * Editor-controlled context attached to a single state and Congress. Only an
+ * approved note can be displayed publicly; all source URLs and review fields
+ * remain durable so editorial context never masquerades as source geometry.
+ */
+export const atlasEditorialNotes = mysqlTable("atlas_editorial_notes", {
+  id: int("id").autoincrement().primaryKey(),
+  stateCode: varchar("state_code", { length: 2 }).notNull(),
+  congress: int("congress").notNull(),
+  title: varchar("title", { length: 200 }).notNull(),
+  body: text("body").notNull(),
+  sourceLabel: varchar("source_label", { length: 160 }).notNull(),
+  sourceUrl: text("source_url").notNull(),
+  status: mysqlEnum("status", ["draft", "approved"]).default("draft").notNull(),
+  createdBy: varchar("created_by", { length: 128 }).notNull(),
+  approvedBy: varchar("approved_by", { length: 128 }),
+  approvedAt: timestamp("approved_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+}, (table) => [
+  index("atlas_editorial_note_scope_idx").on(table.stateCode, table.congress, table.status),
+  index("atlas_editorial_note_status_updated_idx").on(table.status, table.updatedAt),
+]);
+
+export type AtlasEditorialNote = typeof atlasEditorialNotes.$inferSelect;
+
+// ═══════════════════════════════════════════════════════════════════════════
 // AUTONOMOUS RESEARCH DESK
 // ═══════════════════════════════════════════════════════════════════════════
 
