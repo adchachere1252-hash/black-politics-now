@@ -39,9 +39,9 @@ import { queuePodcastRecoveryRequest } from "./podcastRecovery";
 import { getEasternDate } from "./dailyBriefSafeguards";
 import { buildPodcastShowNotes, getPodcastAnalytics, getPodcastShowNotes, recordPodcastPlay, savePodcastShowNotes } from "./podcastLegacy";
 import { getDailyBriefQAScorecard } from "./dailyBriefBenchmark";
-import { getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getPublicElectionFreshness, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateGovernorCandidateLog, getGovernorCandidateLogHistory, updateSenateCandidateLog, updateHouseCandidateLog, getRaceCandidateLogHistory, updateReferendum } from "./electionDb";
+import { createGovernorRace, createHouseRace, createSenateRace, getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getPublicElectionFreshness, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateGovernorCandidateLog, getGovernorCandidateLogHistory, updateSenateCandidateLog, updateHouseCandidateLog, getRaceCandidateLogHistory, updateReferendum } from "./electionDb";
 import { fetchWithCache, getPersistedWordPressNews } from "./newsCache";
-import { getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, removeBlackRepresentationElection, removeBlackRepresentationProfile, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
+import { createBlackRepresentationContest, createBlackRepresentationProfile, getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, removeBlackRepresentationElection, removeBlackRepresentationProfile, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
 import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
 import { getWorldElectionRefreshOperations, runDatedWorldElectionRefresh } from "./worldElectionRefresh";
 import { advanceElectionDayRehearsal, getElectionDayCommandCenter, getElectionSourceConflictQueue, getPostElectionReconciliationReport, startElectionDayRehearsal } from "./electionDayCommandCenter";
@@ -213,6 +213,15 @@ export const appRouter = router({
         await updateHouseCandidateLog({ ...input, editorName: ctx.user.name ?? "Administrator" });
         return { success: true };
       }),
+    createSenateRace: adminProcedure
+      .input(z.object({ stateCode: z.string().length(2), stateName: z.string().min(2).max(64), candidate1Name: z.string().min(2).max(128), candidate1Party: z.enum(["D", "R", "I", "L", "G"]), candidate2Name: z.string().min(2).max(128), candidate2Party: z.enum(["D", "R", "I", "L", "G"]), rating: z.enum(["Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R", "Safe D", "Safe R"]), sourceUrl: z.string().url().max(2048), sourceLabel: z.string().min(2).max(256), editorNote: z.string().max(4000).optional().nullable() }))
+      .mutation(async ({ ctx, input }) => createSenateRace({ ...input, editorName: ctx.user.name ?? "Administrator" })),
+    createHouseRace: adminProcedure
+      .input(z.object({ stateCode: z.string().length(2), stateName: z.string().min(2).max(64), district: z.number().int().min(0).max(99), districtLabel: z.string().min(2).max(16).optional(), candidate1Name: z.string().min(2).max(128), candidate1Party: z.enum(["D", "R", "I", "L", "G"]), candidate2Name: z.string().min(2).max(128), candidate2Party: z.enum(["D", "R", "I", "L", "G"]), rating: z.enum(["Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R", "Safe D", "Safe R"]), sourceUrl: z.string().url().max(2048), sourceLabel: z.string().min(2).max(256), editorNote: z.string().max(4000).optional().nullable() }))
+      .mutation(async ({ ctx, input }) => createHouseRace({ ...input, editorName: ctx.user.name ?? "Administrator" })),
+    createGovernorRace: adminProcedure
+      .input(z.object({ stateCode: z.string().length(2), stateName: z.string().min(2).max(64), candidate1Name: z.string().min(2).max(128), candidate1Party: z.literal("D"), candidate2Name: z.string().min(2).max(128), candidate2Party: z.literal("R"), rating: z.enum(["Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R", "Safe D", "Safe R"]), sourceUrl: z.string().url().max(2048), sourceLabel: z.string().min(2).max(256), editorNote: z.string().max(4000).optional().nullable() }))
+      .mutation(async ({ ctx, input }) => createGovernorRace({ ...input, editorName: ctx.user.name ?? "Administrator" })),
     updateReferendum: adminProcedure
       .input(z.object({ id: z.number(), data: z.record(z.string(), z.unknown()) }))
       .mutation(async ({ input }) => { await updateReferendum(input.id, input.data as any); return { success: true }; }),
@@ -227,6 +236,25 @@ export const appRouter = router({
     updateBlackRepresentationElection: adminProcedure
       .input(z.object({ id: z.number(), data: z.record(z.string(), z.unknown()) }))
       .mutation(async ({ input }) => { await updateBlackRepresentationElection(input.id, input.data as any); return { success: true }; }),
+    createBlackRepresentationProfile: adminProcedure
+      .input(z.object({
+        district: z.string().min(1).max(16), member: z.string().min(2).max(128), party: z.enum(["D", "R", "I"]),
+        state: z.string().min(2).max(64), stateCode: z.string().length(2), chamber: z.enum(["house", "senate", "governor"]),
+        status: z.enum(["running", "retiring", "resigned", "withdrawn", "deceased", "lost_primary", "running_for_governor", "running_for_senate", "not_up_2026", "challenger", "advanced_to_general", "in_runoff", "too_close_to_call", "elected", "won_general", "lost_general"]),
+        roleType: z.enum(["incumbent", "nominee", "challenger", "former_member", "delegate"]), isCurrentMember: z.boolean(), upIn2026: z.boolean(),
+        raceStage: z.enum(["pre_primary", "primary", "runoff", "general", "special", "called", "not_up"]),
+        sourceUrl: z.string().url().max(2048), sourceLabel: z.string().min(2).max(160), additionNote: z.string().max(4000).optional().nullable(),
+      }))
+      .mutation(async ({ ctx, input }) => createBlackRepresentationProfile({ ...input, addedBy: ctx.user.name ?? "Administrator" })),
+    createBlackRepresentationContest: adminProcedure
+      .input(z.object({
+        district: z.string().min(1).max(16), state: z.string().min(2).max(64), stateCode: z.string().length(2), chamber: z.enum(["house", "senate", "governor"]),
+        electionType: z.enum(["primary", "runoff", "general", "special"]), resultStatus: z.enum(["called", "too_close_to_call", "upcoming", "uncontested", "withdrawn"]),
+        winnerName: z.string().max(128).optional().nullable(), winnerParty: z.string().max(8).optional().nullable(), runnerUpName: z.string().max(128).optional().nullable(), runnerUpParty: z.string().max(8).optional().nullable(),
+        generalOpponent: z.string().max(128).optional().nullable(), electionDate: z.string().max(32).optional().nullable(),
+        sourceUrl: z.string().url().max(2048), sourceLabel: z.string().min(2).max(160), additionNote: z.string().max(4000).optional().nullable(),
+      }))
+      .mutation(async ({ ctx, input }) => createBlackRepresentationContest({ ...input, addedBy: ctx.user.name ?? "Administrator" })),
     removeCbc: adminProcedure
       .input(z.object({ id: z.number().int().positive(), reason: z.string().min(12).max(1200), sourceUrl: z.string().url().max(2048).optional() }))
       .mutation(async ({ input, ctx }) => removeBlackRepresentationProfile({ ...input, removedBy: ctx.user.name ?? "Administrator" })),

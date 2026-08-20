@@ -260,6 +260,70 @@ export async function getRaceCandidateLogHistory(contestType: "senate" | "house"
   return db.select().from(electionCandidateEdits).where(and(eq(electionCandidateEdits.contestType, contestType), eq(electionCandidateEdits.contestId, id))).orderBy(desc(electionCandidateEdits.createdAt), desc(electionCandidateEdits.id)).limit(12);
 }
 
+export type NewRaceInput = {
+  stateCode: string;
+  stateName: string;
+  district?: number;
+  districtLabel?: string;
+  candidate1Name: string;
+  candidate1Party: "D" | "R" | "I" | "L" | "G";
+  candidate2Name: string;
+  candidate2Party: "D" | "R" | "I" | "L" | "G";
+  rating: "Solid D" | "Likely D" | "Lean D" | "Toss-up" | "Lean R" | "Likely R" | "Solid R" | "Safe D" | "Safe R";
+  sourceUrl: string;
+  sourceLabel: string;
+  editorNote?: string | null;
+  editorName: string;
+};
+
+function normalizedNewRace(input: NewRaceInput) {
+  const stateCode = input.stateCode.trim().toUpperCase();
+  if (stateCode.length !== 2) throw new Error("State code must have two letters.");
+  const sourceUrl = new URL(input.sourceUrl);
+  if (sourceUrl.protocol !== "https:" && sourceUrl.protocol !== "http:") throw new Error("Source URL must use HTTP or HTTPS.");
+  return { ...input, stateCode, stateName: input.stateName.trim(), candidate1Name: input.candidate1Name.trim(), candidate2Name: input.candidate2Name.trim(), sourceUrl: sourceUrl.toString(), sourceLabel: input.sourceLabel.trim() };
+}
+
+export async function createSenateRace(input: NewRaceInput) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const value = normalizedNewRace(input);
+  return db.transaction(async (tx) => {
+    const result = await tx.insert(senateRaces).values({ stateCode: value.stateCode, stateName: value.stateName, candidate1Name: value.candidate1Name, candidate1Party: value.candidate1Party, candidate2Name: value.candidate2Name, candidate2Party: value.candidate2Party, rating: value.rating, candidateSourceUrl: value.sourceUrl, candidateSourceLabel: value.sourceLabel, notes: value.editorNote || null });
+    const id = Number((Array.isArray(result) ? result[0] : result as any)?.insertId ?? 0);
+    await tx.insert(electionCandidateEdits).values({ contestType: "senate", contestId: id, stateCode: value.stateCode, districtLabel: null, candidate1Name: value.candidate1Name, candidate1Party: value.candidate1Party, candidate2Name: value.candidate2Name, candidate2Party: value.candidate2Party, sourceUrl: value.sourceUrl, sourceLabel: value.sourceLabel, editorName: value.editorName, editorNote: value.editorNote || "Initial contest creation", previousValue: JSON.stringify({}) });
+    return { id };
+  });
+}
+
+export async function createHouseRace(input: NewRaceInput) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const value = normalizedNewRace(input);
+  const district = Number(input.district);
+  if (!Number.isInteger(district) || district < 0 || district > 99) throw new Error("House district must be between 0 and 99.");
+  const districtLabel = input.districtLabel?.trim() || (district === 0 ? "At-large" : `District ${district}`);
+  return db.transaction(async (tx) => {
+    const result = await tx.insert(houseRaces).values({ stateCode: value.stateCode, stateName: value.stateName, district, districtLabel, candidate1Name: value.candidate1Name, candidate1Party: value.candidate1Party, candidate2Name: value.candidate2Name, candidate2Party: value.candidate2Party, rating: value.rating, candidateSourceUrl: value.sourceUrl, candidateSourceLabel: value.sourceLabel, notes: value.editorNote || null });
+    const id = Number((Array.isArray(result) ? result[0] : result as any)?.insertId ?? 0);
+    await tx.insert(electionCandidateEdits).values({ contestType: "house", contestId: id, stateCode: value.stateCode, districtLabel, candidate1Name: value.candidate1Name, candidate1Party: value.candidate1Party, candidate2Name: value.candidate2Name, candidate2Party: value.candidate2Party, sourceUrl: value.sourceUrl, sourceLabel: value.sourceLabel, editorName: value.editorName, editorNote: value.editorNote || "Initial contest creation", previousValue: JSON.stringify({}) });
+    return { id };
+  });
+}
+
+export async function createGovernorRace(input: NewRaceInput) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const value = normalizedNewRace(input);
+  if (value.candidate1Party !== "D" || value.candidate2Party !== "R") throw new Error("Governor creation requires the Democratic candidate first and Republican candidate second.");
+  return db.transaction(async (tx) => {
+    const result = await tx.insert(governorRaces).values({ stateCode: value.stateCode, stateName: value.stateName, previousParty: "I", rating: value.rating === "Safe D" ? "Solid D" : value.rating === "Safe R" ? "Solid R" : value.rating as any, demCandidate: value.candidate1Name, repCandidate: value.candidate2Name, candidateSourceUrl: value.sourceUrl, candidateSourceLabel: value.sourceLabel, notes: value.editorNote || null });
+    const id = Number((Array.isArray(result) ? result[0] : result as any)?.insertId ?? 0);
+    await tx.insert(governorCandidateEdits).values({ governorRaceId: id, stateCode: value.stateCode, demCandidate: value.candidate1Name, repCandidate: value.candidate2Name, sourceUrl: value.sourceUrl, sourceLabel: value.sourceLabel, editorName: value.editorName, editorNote: value.editorNote || "Initial contest creation", previousValue: JSON.stringify({}) });
+    return { id };
+  });
+}
+
 export async function updateReferendum(id: number, data: Record<string, unknown>) {
   const db = await getDb();
   if (!db) return;

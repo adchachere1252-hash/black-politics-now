@@ -1263,6 +1263,13 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Expand Candidate Changes with searchable Senate, House, and Governor tabs, direct contest editors, source cards, and audited change history
 - [x] Verify public candidate display, protected authorization, source validation, persistence, regression tests, production build, and a complete release checklist
 
+## Admin Race Creation, Black Representation Additions, and White Atlas State Boundaries (Aug 20)
+- [x] Add protected Admin creation flows for new Senate, House, Governor, and Black Representation races with required identity, jurisdiction, status, and source evidence
+- [x] Add protected Admin creation flow for Black Representation candidate profiles and link them to manually created contests for public map display
+- [x] Verify no creation flow can alter certified results or publish an unsupported record; retain immutable audit evidence for manual additions
+- [x] Apply and validate white source-derived state separators in Atlas party, boundary, and member modes without obscuring district geometry or party colors
+- [x] Verify Admin creation, public Black Representation display, Atlas desktop/mobile contrast, tests, build, and release checklist
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

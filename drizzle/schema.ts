@@ -840,6 +840,29 @@ export const candidateRemovalAudit = mysqlTable("candidate_removal_audit", {
 
 export type CandidateRemovalAudit = typeof candidateRemovalAudit.$inferSelect;
 
+/**
+ * Immutable source package retained when an administrator adds a Black
+ * Representation profile or contest through the protected Admin workflow.
+ */
+export const blackRepresentationAdditionAudit = mysqlTable("black_representation_addition_audit", {
+  id: int("id").autoincrement().primaryKey(),
+  targetType: mysqlEnum("target_type", ["black_representation_profile", "black_representation_contest"]).notNull(),
+  targetId: int("target_id").notNull(),
+  displayName: varchar("display_name", { length: 160 }).notNull(),
+  stateCode: varchar("state_code", { length: 2 }).notNull(),
+  district: varchar("district", { length: 16 }).notNull(),
+  sourceUrl: text("source_url").notNull(),
+  sourceLabel: varchar("source_label", { length: 160 }).notNull(),
+  addedBy: varchar("added_by", { length: 128 }).notNull(),
+  additionNote: text("addition_note"),
+  snapshotJson: text("snapshot_json").notNull(),
+  addedAt: timestamp("added_at").defaultNow().notNull(),
+}, (table) => [
+  index("black_rep_addition_target_idx").on(table.targetType, table.targetId, table.addedAt),
+]);
+
+export type BlackRepresentationAdditionAudit = typeof blackRepresentationAdditionAudit.$inferSelect;
+
 // ═══════════════════════════════════════════════════════════════════════════
 // HISTORICAL ATLAS OPERATIONS
 // ═══════════════════════════════════════════════════════════════════════════
