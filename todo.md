@@ -1148,6 +1148,11 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add a clear candidate-list action and guidance that opens the safeguarded removal flow without enabling accidental deletion
 - [x] Verify the visible removal path, confirmation requirements, audit behavior, tests, build, checkpoint, and delivery checklist
 
+## Candidates-Level Management and Save Verification (Aug 20)
+- [x] Verify the Candidates tab visibly presents Manage / delete profile for Black Representation candidate cards and opens the matching protected record
+- [x] Verify a protected candidate save persists to the shared public data contract and reaches the homepage within the documented 60-second refresh interval
+- [x] Repair any confirmed Candidates-level management or save-propagation defect, run checks, publish, and deliver the completed verification checklist
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

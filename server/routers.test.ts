@@ -235,6 +235,26 @@ describe("election router", () => {
     expect(frost.sourceUrl).toBe("https://dos.elections.myflorida.com/candidates/CanList.asp?elecid=20261103-GEN");
   });
 
+  it("persists an Admin Black Representation candidate save to the same public profile contract used by the homepage", async () => {
+    const publicCaller = appRouter.createCaller(createPublicContext());
+    const adminCaller = appRouter.createCaller(createAdminContext());
+    const before = await publicCaller.election.cbc() as any[];
+    const target = before.find((profile) => profile.member === "Maxwell Frost" && profile.district === "FL-10");
+
+    await expect(adminCaller.election.updateCbc({
+      id: target.id,
+      data: { cbcStatus: target.status, primaryResult: target.primaryResult ?? null, notes: target.notes ?? null },
+    })).resolves.toEqual({ success: true });
+
+    const after = await publicCaller.election.cbc() as any[];
+    expect(after.find((profile) => profile.id === target.id)).toMatchObject({
+      member: "Maxwell Frost",
+      district: "FL-10",
+      status: target.status,
+      primaryResult: target.primaryResult ?? null,
+    });
+  });
+
   it("allows an administrator to safely re-save every article-backed election record", async () => {
     const publicCaller = appRouter.createCaller(createPublicContext());
     const adminCaller = appRouter.createCaller(createAdminContext());

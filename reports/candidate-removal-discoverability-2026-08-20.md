@@ -19,3 +19,11 @@ The editor still prevents removal when the person has a linked contest record. C
 ## Verification
 
 The candidate-list route, protected mutation contracts, and public-access prohibition passed TypeScript and 34 targeted router tests. The removal flow is Admin-only and remains intentionally distinct from portrait/source-review actions.
+
+## Candidates-level save verification
+
+The **Manage / delete profile** action now appears directly on every Black Representation card in **Admin → Candidates** and again in its expanded candidate detail panel. It opens the same protected editor with the matching candidate name pre-filled in search; the destructive action is still one confirmation step deeper, preserving the reason and audit requirement.
+
+Candidate saves work through the shared `election.cbc` public data contract. A protected regression test re-saved Maxwell Frost’s stored Black Representation fields with an administrator caller, then immediately read the same profile through the public `election.cbc` procedure—the contract used by the homepage Black Reps map—and verified the persisted status and primary-result values. The homepage fetch policy rechecks that shared data every 60 seconds, while mutation success immediately invalidates the Admin cache.
+
+The candidate-management path, TypeScript, 35 targeted router tests, full regression suite, and production build all passed.
