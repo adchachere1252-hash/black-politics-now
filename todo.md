@@ -1174,6 +1174,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add source-verified district detail, state exploration, transition comparison, and visual refinements needed for a flagship public Atlas
 - [x] Validate UCLA-aligned accuracy, 50-state presentation, desktop/mobile usability, tests, build, publication, and detailed completion report
 
+## Independent Historical Atlas Launch-Readiness Verification (Aug 20)
+- [x] Independently verify UCLA reference alignment, 31-frame registry, all-frame 50-state coverage, geometry identifiers, party overlays, and Census apportionment contracts
+- [x] Verify district-selection source-detail wiring, playback, comparison, keyboard controls, loading/error states, and shareable URL behavior; document the isolated SVG-input harness limitation and ordinary-reader acceptance step
+- [x] Complete launch-visible desktop and mobile review for screen fit, labels, legends, controls, accessibility, and overflow; correct the confirmed map-priority issue only
+- [x] Run final tests, TypeScript, build, production checks, and publish a plain-language launch-readiness decision with all remaining limitations
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown
