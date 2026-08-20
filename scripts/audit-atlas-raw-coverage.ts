@@ -1,4 +1,6 @@
 import { geoAlbersUsa } from "d3-geo";
+import { gunzipSync } from "node:zlib";
+import { feature as topologyFeature } from "topojson-client";
 import { UCLA_TRUE_DISTRICT_ASSETS } from "../client/src/data/atlasTrueDistrictAssets";
 
 const ORIGIN = process.env.ATLAS_ORIGIN ?? "http://127.0.0.1:3000";
@@ -50,7 +52,8 @@ function components(empty: Uint8Array, width: number, height: number) {
 async function main() {
   const response = await fetch(`${ORIGIN}${UCLA_TRUE_DISTRICT_ASSETS[CONGRESS]}`);
   if (!response.ok) throw new Error(`${response.status}`);
-  const frame = await response.json();
+  const topology = JSON.parse(gunzipSync(new Uint8Array(await response.arrayBuffer())).toString("utf8"));
+  const frame = topologyFeature(topology, topology.objects.districts) as any;
   const projection = geoAlbersUsa().fitSize([1000, 620], frame as any);
   const width = Math.ceil(1000 / STEP), height = Math.ceil(620 / STEP), uncovered = new Uint8Array(width * height);
   for (let y = 0; y < height; y += 1) for (let x = 0; x < width; x += 1) {

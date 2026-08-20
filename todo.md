@@ -1209,6 +1209,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Preserve verified source metadata, party/member overlays, district interaction, playback, comparison, state detail, and responsive controls through the renderer rebuild
 - [x] Require desktop/mobile viewport acceptance, all-frame source-topology validation, and surface-gap measurement across boundary, party, member, early, modern, and comparison frames; document the full-page capture-tool limitation
 
+## Independent Deployed Atlas Verification After Canonical Renderer Release (Aug 20)
+- [x] Verify every deployed canonical topology asset for retrieval, gzip decoding, UCLA metadata, 50-state coverage, unique district keys, shared arcs, and source-safe feature counts
+- [x] Measure material internal gaps in deployed party, boundary, and member rendering across early, middle, and current Congresses, with representative state and national inspection
+- [x] Exercise deployed playback, comparison, direct district detail, source links, keyboard access, loading/error behavior, and mobile layout independently of the prior local validation
+- [x] Run final regression/build gates, document all evidence and limitations, correct any confirmed remaining defect, and publish a fresh verification decision
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown
