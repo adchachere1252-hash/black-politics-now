@@ -1153,6 +1153,15 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify a protected candidate save persists to the shared public data contract and reaches the homepage within the documented 60-second refresh interval
 - [x] Repair any confirmed Candidates-level management or save-propagation defect, run checks, publish, and deliver the completed verification checklist
 
+## Daily Intelligence Brief Status Check (Aug 20)
+- [x] Verify today’s source preflight, greeting and segment structure, Andrew/Jenny full-episode URLs, durations, and passed publication state
+- [x] Report the verified completion status or identify the exact guarded recovery action required
+
+## Guarded Daily Brief Recovery (Aug 20)
+- [x] Refresh the blocked Global Economy source preflight using fresh, independent coverage without weakening source-quality rules
+- [x] Run the current-date guarded generation, dual-voice audio, and full publication gates only after the source preflight passes
+- [x] Verify the complete Andrew/Jenny release, segment structure, duration, and source evidence before reporting recovery completion
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown
