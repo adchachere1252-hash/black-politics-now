@@ -18,8 +18,26 @@ export async function getAllRedistrictingStates() {
 
 export async function updateCbcMember(id: number, data: Record<string, unknown>) {
   const db = await getDb();
-  if (!db) return;
-  await db.update(cbcMembers).set(data as any).where(eq(cbcMembers.id, id));
+  if (!db) throw new Error("Database is unavailable.");
+  const [existing] = await db.select({ id: cbcMembers.id }).from(cbcMembers).where(eq(cbcMembers.id, id)).limit(1);
+  if (!existing) throw new Error("Black Representation profile was not found.");
+  const update: Record<string, unknown> = {};
+  const allowedStatuses = new Set(["running", "retiring", "resigned", "withdrawn", "deceased", "lost_primary", "running_for_governor", "running_for_senate", "not_up_2026", "challenger", "advanced_to_general", "in_runoff", "too_close_to_call", "elected", "won_general", "lost_general"]);
+  if (data.status !== undefined) {
+    if (typeof data.status !== "string" || !allowedStatuses.has(data.status)) throw new Error("Black Representation status is not supported.");
+    update.status = data.status;
+  }
+  if (data.primaryResult !== undefined) {
+    if (data.primaryResult !== null && typeof data.primaryResult !== "string") throw new Error("Primary result must be text or empty.");
+    update.primaryResult = typeof data.primaryResult === "string" ? data.primaryResult.trim() || null : null;
+  }
+  if (data.notes !== undefined) {
+    if (data.notes !== null && typeof data.notes !== "string") throw new Error("Profile notes must be text or empty.");
+    update.notes = typeof data.notes === "string" ? data.notes.trim() || null : null;
+  }
+  if (!Object.keys(update).length) throw new Error("Choose at least one supported profile field to save.");
+  await db.update(cbcMembers).set(update as any).where(eq(cbcMembers.id, id));
+  return { updated: true };
 }
 
 export async function getBlackRepresentationElections(stateCode?: string) {
@@ -35,8 +53,36 @@ export async function getBlackRepresentationElections(stateCode?: string) {
 
 export async function updateBlackRepresentationElection(id: number, data: Record<string, unknown>) {
   const db = await getDb();
-  if (!db) return;
-  await db.update(blackRepresentationElections).set(data as any).where(eq(blackRepresentationElections.id, id));
+  if (!db) throw new Error("Database is unavailable.");
+  const [existing] = await db.select({ id: blackRepresentationElections.id }).from(blackRepresentationElections).where(eq(blackRepresentationElections.id, id)).limit(1);
+  if (!existing) throw new Error("Black Representation contest was not found.");
+  const update: Record<string, unknown> = {};
+  const allowedStatuses = new Set(["called", "too_close_to_call", "upcoming", "uncontested", "withdrawn"]);
+  if (data.resultStatus !== undefined) {
+    if (typeof data.resultStatus !== "string" || !allowedStatuses.has(data.resultStatus)) throw new Error("Contest result status is not supported.");
+    update.resultStatus = data.resultStatus;
+  }
+  for (const field of ["winnerName", "generalOpponent"] as const) {
+    if (data[field] !== undefined) {
+      if (data[field] !== null && typeof data[field] !== "string") throw new Error(`${field} must be text or empty.`);
+      update[field] = typeof data[field] === "string" ? data[field].trim() || null : null;
+    }
+  }
+  if (data.winnerVotes !== undefined) {
+    if (data.winnerVotes !== null && (!Number.isInteger(data.winnerVotes) || Number(data.winnerVotes) < 0)) throw new Error("Winner votes must be a non-negative whole number.");
+    update.winnerVotes = data.winnerVotes;
+  }
+  if (data.winnerVotePct !== undefined) {
+    if (data.winnerVotePct !== null && (typeof data.winnerVotePct !== "number" || !Number.isFinite(data.winnerVotePct) || data.winnerVotePct < 0 || data.winnerVotePct > 100)) throw new Error("Winner percentage must be between 0 and 100.");
+    update.winnerVotePct = data.winnerVotePct;
+  }
+  if (data.sourceUrl !== undefined) {
+    if (data.sourceUrl !== null && typeof data.sourceUrl !== "string") throw new Error("Contest source must be text or empty.");
+    update.sourceUrl = data.sourceUrl ? validateAdditionSource(data.sourceUrl) : null;
+  }
+  if (!Object.keys(update).length) throw new Error("Choose at least one supported contest field to save.");
+  await db.update(blackRepresentationElections).set(update as any).where(eq(blackRepresentationElections.id, id));
+  return { updated: true };
 }
 
 function insertedId(result: unknown) {

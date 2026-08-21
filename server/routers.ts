@@ -233,10 +233,17 @@ export const appRouter = router({
       .input(z.object({ stateCode: z.string().length(2).optional() }).optional())
       .query(async ({ input }) => getBlackRepresentationElections(input?.stateCode)),
     updateCbc: adminProcedure
-      .input(z.object({ id: z.number(), data: z.record(z.string(), z.unknown()) }))
+      .input(z.object({ id: z.number().int().positive(), data: z.object({
+        status: z.enum(["running", "retiring", "resigned", "withdrawn", "deceased", "lost_primary", "running_for_governor", "running_for_senate", "not_up_2026", "challenger", "advanced_to_general", "in_runoff", "too_close_to_call", "elected", "won_general", "lost_general"]).optional(),
+        primaryResult: z.string().max(128).nullable().optional(), notes: z.string().max(4000).nullable().optional(),
+      }).refine((data) => Object.keys(data).length > 0, "Choose at least one supported profile field to save.") }))
       .mutation(async ({ input }) => { await updateCbcMember(input.id, input.data as any); return { success: true }; }),
     updateBlackRepresentationElection: adminProcedure
-      .input(z.object({ id: z.number(), data: z.record(z.string(), z.unknown()) }))
+      .input(z.object({ id: z.number().int().positive(), data: z.object({
+        resultStatus: z.enum(["called", "too_close_to_call", "upcoming", "uncontested", "withdrawn"]).optional(),
+        winnerName: z.string().max(128).nullable().optional(), winnerVotes: z.number().int().nonnegative().nullable().optional(),
+        winnerVotePct: z.number().min(0).max(100).nullable().optional(), generalOpponent: z.string().max(128).nullable().optional(), sourceUrl: z.string().url().max(2048).nullable().optional(),
+      }).refine((data) => Object.keys(data).length > 0, "Choose at least one supported contest field to save.") }))
       .mutation(async ({ input }) => { await updateBlackRepresentationElection(input.id, input.data as any); return { success: true }; }),
     createBlackRepresentationProfile: adminProcedure
       .input(z.object({

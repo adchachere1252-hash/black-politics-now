@@ -1303,6 +1303,11 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify Admin readiness, public playback availability, and the completed morning release decision
 - [x] Remove the detected unsupported “return tomorrow” closing line, rebuild both full-voice assets, and re-verify the August 21 publication gate
 
+## Black Representation Editor Save Verification (Aug 21)
+- [x] Trace the Add profile and Add race save requests through form validation, protected procedures, database persistence, and immutable audit history
+- [x] Reproduce and repair the confirmed profile status-field mismatch and false save-receipt defect without inserting fabricated public records
+- [x] Verify protected profile/contest saves, public refresh, creation-audit contract, and invalid/unauthorized failure handling before release
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

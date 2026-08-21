@@ -257,7 +257,7 @@ describe("election router", () => {
 
     await expect(adminCaller.election.updateCbc({
       id: target.id,
-      data: { cbcStatus: target.status, primaryResult: target.primaryResult ?? null, notes: target.notes ?? null },
+      data: { status: target.status, primaryResult: target.primaryResult ?? null, notes: target.notes ?? null },
     })).resolves.toEqual({ success: true });
 
     const after = await publicCaller.election.cbc() as any[];
@@ -267,6 +267,17 @@ describe("election router", () => {
       status: target.status,
       primaryResult: target.primaryResult ?? null,
     });
+  });
+
+  it("rejects the stale cbcStatus payload so the Admin editor cannot report a false profile save", async () => {
+    const publicCaller = appRouter.createCaller(createPublicContext());
+    const adminCaller = appRouter.createCaller(createAdminContext());
+    const [target] = await publicCaller.election.cbc() as any[];
+
+    await expect(adminCaller.election.updateCbc({
+      id: target.id,
+      data: { cbcStatus: target.status } as any,
+    })).rejects.toMatchObject({ code: "BAD_REQUEST" });
   });
 
   it("allows an administrator to safely re-save every article-backed election record", async () => {
