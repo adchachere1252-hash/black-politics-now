@@ -9,6 +9,7 @@ import { ElectionDayCommandCenterTab } from "@/components/ElectionDayCommandCent
 import { ElectionResultsControlRoomTab } from "@/components/ElectionResultsControlRoomTab";
 import { AtlasOperationsAdmin } from "@/components/AtlasOperationsAdmin";
 import { CandidateChangesTab } from "@/components/CandidateChangesTab";
+import { TickerManagerTab } from "@/components/TickerManagerTab";
 import MiniRepositoryGlobe from "@/components/MiniRepositoryGlobe";
 import { rankedWorldSignals, worldSignalLabel } from "@/lib/worldElectionDisplay";
 import { getAdminElectionEngineBadge } from "@/lib/electionFreshness";
@@ -133,17 +134,19 @@ export default function AdminPage() {
 }
 
 function ElectionOperationsTab({ onOpenPortraits, onManageBlackRepresentation }: { onOpenPortraits: (targetKey?: string) => void; onManageBlackRepresentation: (candidateName: string) => void }) {
-  const [section, setSection] = useState<"directory" | "sourcing" | "results">("directory");
+  const [section, setSection] = useState<"directory" | "sourcing" | "results" | "ticker">("directory");
   const tabs = [
     { key: "directory" as const, label: "Candidate directory", detail: "Find tracked candidates and open portrait or profile work." },
     { key: "sourcing" as const, label: "Candidate sourcing", detail: "Manage Senate, House, and Governor records with cited evidence." },
     { key: "results" as const, label: "Results & conflicts", detail: "Review returns, cited calls, conflicts, and operator activity." },
+    { key: "ticker" as const, label: "Ticker", detail: "Add, order, edit, or remove cited general-election names." },
   ];
   return <div className="space-y-5">
     <section className="rounded-xl border border-primary/25 bg-primary/[0.035] p-5 shadow-sm"><p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">Unified election workspace</p><h2 className="mt-1 flex items-center gap-2 text-xl font-bold"><Radio size={19} className="text-primary" /> Election Operations</h2><p className="mt-1 max-w-3xl text-sm text-muted-foreground">One protected workspace for candidate discovery, source-backed candidate changes, returns, cited winner confirmation, source conflicts, and immutable operator activity. Candidate sourcing never calls a winner; results confirmation remains a cited human decision.</p><div className="mt-4 flex flex-wrap gap-2">{tabs.map((tab) => <button key={tab.key} type="button" onClick={() => setSection(tab.key)} className={`rounded-md border px-3 py-2 text-left text-xs font-bold transition-colors ${section === tab.key ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-foreground hover:bg-muted"}`}><span className="block">{tab.label}</span><span className={`mt-0.5 block max-w-52 text-[10px] font-medium ${section === tab.key ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{tab.detail}</span></button>)}</div></section>
     {section === "directory" && <CandidatesOpsTab onOpenPortraits={onOpenPortraits} onManageBlackRepresentation={onManageBlackRepresentation} onOpenCandidateChanges={() => setSection("sourcing")} />}
     {section === "sourcing" && <CandidateChangesTab />}
     {section === "results" && <ElectionResultsControlRoomTab />}
+    {section === "ticker" && <TickerManagerTab />}
   </div>;
 }
 

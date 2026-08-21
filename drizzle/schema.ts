@@ -288,6 +288,46 @@ export const electionResultConfirmations = mysqlTable("election_result_confirmat
 
 export type ElectionResultConfirmation = typeof electionResultConfirmations.$inferSelect;
 
+/**
+ * Administrator-managed general-election outcomes that may supplement the
+ * race-derived public ticker. Entries are source-backed and never represent
+ * primary or runoff results.
+ */
+export const electionTickerEntries = mysqlTable("election_ticker_entries", {
+  id: int("id").autoincrement().primaryKey(),
+  jurisdiction: varchar("jurisdiction", { length: 160 }).notNull(),
+  chamber: mysqlEnum("chamber", ["Senate", "House", "Governor"]).notNull(),
+  winnerName: varchar("winner_name", { length: 128 }).notNull(),
+  winnerParty: mysqlEnum("winner_party", ["D", "R", "I", "L", "G"]).notNull(),
+  sourceUrl: varchar("source_url", { length: 2048 }).notNull(),
+  sourceLabel: varchar("source_label", { length: 256 }).notNull(),
+  sortOrder: int("sort_order").default(0).notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdBy: varchar("created_by", { length: 128 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+}, (table) => [
+  index("election_ticker_entries_active_order_idx").on(table.isActive, table.sortOrder, table.id),
+]);
+
+/** Immutable source-backed record of every ticker create, edit, reorder, or removal. */
+export const electionTickerEntryEdits = mysqlTable("election_ticker_entry_edits", {
+  id: int("id").autoincrement().primaryKey(),
+  tickerEntryId: int("ticker_entry_id").notNull(),
+  action: mysqlEnum("action", ["created", "updated", "reordered", "removed"]).notNull(),
+  sourceUrl: varchar("source_url", { length: 2048 }).notNull(),
+  sourceLabel: varchar("source_label", { length: 256 }).notNull(),
+  editorName: varchar("editor_name", { length: 128 }).notNull(),
+  editorNote: text("editor_note"),
+  previousValue: text("previous_value").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("election_ticker_entry_edits_entry_created_idx").on(table.tickerEntryId, table.createdAt),
+]);
+
+export type ElectionTickerEntry = typeof electionTickerEntries.$inferSelect;
+export type ElectionTickerEntryEdit = typeof electionTickerEntryEdits.$inferSelect;
+
 /** Immutable administrator record for manual Senate and House candidate-log updates. */
 export const electionCandidateEdits = mysqlTable("election_candidate_edits", {
   id: int("id").autoincrement().primaryKey(),

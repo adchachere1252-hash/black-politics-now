@@ -46,6 +46,7 @@ import { getPublicPrimaryContexts } from "./electionPrimaryContext";
 import { buildPodcastShowNotes, getPodcastAnalytics, getPodcastShowNotes, recordPodcastPlay, savePodcastShowNotes } from "./podcastLegacy";
 import { getDailyBriefQAScorecard } from "./dailyBriefBenchmark";
 import { createGovernorRace, createHouseRace, createSenateRace, getAllSenateRaces, getAllHouseRaces, getAllGovernorRaces, getAllReferendums, getPublicElectionFreshness, getScoreboard, searchRaces, getHouseRacesByState, updateSenateRace, updateHouseRace, updateGovernorRace, updateGovernorCandidateLog, getGovernorCandidateLogHistory, updateSenateCandidateLog, updateHouseCandidateLog, getRaceCandidateLogHistory, updateReferendum } from "./electionDb";
+import { createTickerEntry, getActiveTickerEntries, getAllTickerEntries, getTickerEntryHistory, removeTickerEntry, reorderTickerEntries, updateTickerEntry } from "./tickerDb";
 import { fetchWithCache, getPersistedWordPressNews } from "./newsCache";
 import { createBlackRepresentationContest, createBlackRepresentationProfile, getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, removeBlackRepresentationElection, removeBlackRepresentationProfile, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
 import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
@@ -152,6 +153,21 @@ export const appRouter = router({
     referendums: publicProcedure.query(async () => getAllReferendums()),
     scoreboard: publicProcedure.query(async () => getScoreboard()),
     freshness: publicProcedure.query(async () => getPublicElectionFreshness()),
+    tickerEntries: publicProcedure.query(async () => getActiveTickerEntries()),
+    tickerEntriesAdmin: adminProcedure.query(async () => getAllTickerEntries()),
+    tickerEntryHistory: adminProcedure.input(z.object({ id: z.number().int().positive() })).query(async ({ input }) => getTickerEntryHistory(input.id)),
+    createTickerEntry: adminProcedure
+      .input(z.object({ jurisdiction: z.string().min(2).max(160), chamber: z.enum(["Senate", "House", "Governor"]), winnerName: z.string().min(2).max(128), winnerParty: z.enum(["D", "R", "I", "L", "G"]), sourceUrl: electionSourceUrl, sourceLabel: z.string().min(2).max(256), editorNote: z.string().max(4000).optional().nullable() }))
+      .mutation(async ({ ctx, input }) => createTickerEntry({ ...input, editorName: ctx.user.name ?? "Administrator" })),
+    updateTickerEntry: adminProcedure
+      .input(z.object({ id: z.number().int().positive(), jurisdiction: z.string().min(2).max(160), chamber: z.enum(["Senate", "House", "Governor"]), winnerName: z.string().min(2).max(128), winnerParty: z.enum(["D", "R", "I", "L", "G"]), sourceUrl: electionSourceUrl, sourceLabel: z.string().min(2).max(256), editorNote: z.string().max(4000).optional().nullable() }))
+      .mutation(async ({ ctx, input }) => { const { id, ...entry } = input; return updateTickerEntry(id, { ...entry, editorName: ctx.user.name ?? "Administrator" }); }),
+    reorderTickerEntries: adminProcedure
+      .input(z.object({ orderedIds: z.array(z.number().int().positive()).min(1).max(200), editorNote: z.string().max(4000).optional().nullable() }))
+      .mutation(async ({ ctx, input }) => reorderTickerEntries(input.orderedIds, ctx.user.name ?? "Administrator", input.editorNote)),
+    removeTickerEntry: adminProcedure
+      .input(z.object({ id: z.number().int().positive(), editorNote: z.string().min(2).max(4000).optional().nullable() }))
+      .mutation(async ({ ctx, input }) => removeTickerEntry(input.id, ctx.user.name ?? "Administrator", input.editorNote)),
     primaryContexts: publicProcedure.query(async () => getPublicPrimaryContexts()),
     search: publicProcedure
       .input(z.object({ query: z.string().min(1).max(100) }))

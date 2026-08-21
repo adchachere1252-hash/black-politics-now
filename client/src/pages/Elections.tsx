@@ -139,6 +139,7 @@ export default function Elections() {
 
   const { data: senateRaces = [] } = trpc.election.senate.useQuery(undefined, { refetchInterval });
   const { data: houseRaces = [] } = trpc.election.house.useQuery(undefined, { refetchInterval });
+  const { data: tickerEntries = [] } = trpc.election.tickerEntries.useQuery(undefined, { refetchInterval });
   const { data: governors = [] } = trpc.election.governors.useQuery(undefined, { refetchInterval });
   const { data: cbcMembers = [] } = trpc.election.cbc.useQuery(undefined, { refetchInterval });
   const { data: blackRepresentationElections = [] } = trpc.election.blackRepresentationElections.useQuery(undefined, { refetchInterval });
@@ -344,7 +345,7 @@ export default function Elections() {
 
         {/* Results Ticker */}
         <div className="mb-6">
-          <ResultsTicker senateRaces={senateRaces as any[]} houseRaces={houseRaces as any[]} />
+          <ResultsTicker senateRaces={senateRaces as any[]} houseRaces={houseRaces as any[]} tickerEntries={tickerEntries as any[]} />
         </div>
 
         {/* Tabs + Filters (moved under ticker) */}

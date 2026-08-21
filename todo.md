@@ -1353,6 +1353,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Remove the duplicate standalone Results Control Room and Candidates Ops navigation entries while retaining all protected capabilities in the unified workspace
 - [x] Run non-destructive E2E verification for protected access, candidate sourcing safeguards, result-confirmation safeguards, public refresh, conflict handoff, and immutable activity history
 
+## General-Election Ticker Management (Aug 21)
+- [x] Audit the homepage ticker data source, general-election eligibility rules, Admin routes, public refresh behavior, and current audit coverage
+- [x] Build protected ticker entry management for source-backed general-election names and result items, including creation, editing, ordering, and removal
+- [x] Enforce Admin access, HTTP/HTTPS evidence, general-election-only eligibility, and immutable management history without creating a fabricated ticker entry during testing
+- [x] Verify public ticker refresh and continuous flow, Admin receipts and error states, and non-destructive E2E behavior before release
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

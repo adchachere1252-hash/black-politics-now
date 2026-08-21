@@ -13,20 +13,29 @@ interface TickerItem {
 interface ResultsTickerProps {
   senateRaces: any[];
   houseRaces: any[];
+  tickerEntries?: any[];
 }
 
-export function ResultsTicker({ senateRaces, houseRaces }: ResultsTickerProps) {
+export function ResultsTicker({ senateRaces, houseRaces, tickerEntries = [] }: ResultsTickerProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const calledRaces = useMemo(() => {
-    const results: TickerItem[] = [];
+    const managedResults: TickerItem[] = tickerEntries.map((entry: any) => ({ state: entry.jurisdiction, winner: entry.winnerName, party: entry.winnerParty, chamber: entry.chamber }));
+    const existing = new Set(managedResults.map((item) => `${item.state}|${item.chamber}|${item.winner}|${item.party}`));
+    const results: TickerItem[] = [...managedResults];
     senateRaces.forEach((r: any) => {
-      if (isFinalElectionTickerOutcome(r)) results.push({ state: r.stateName, winner: r.calledWinner, party: r.calledParty ?? "?", chamber: "Senate" });
+      if (isFinalElectionTickerOutcome(r)) {
+        const item = { state: r.stateName, winner: r.calledWinner, party: r.calledParty ?? "?", chamber: "Senate" };
+        if (!existing.has(`${item.state}|${item.chamber}|${item.winner}|${item.party}`)) results.push(item);
+      }
     });
     houseRaces.forEach((r: any) => {
-      if (isFinalElectionTickerOutcome(r)) results.push({ state: `${r.stateName}-${r.district ?? "AL"}`, winner: r.calledWinner, party: r.calledParty ?? "?", chamber: "House" });
+      if (isFinalElectionTickerOutcome(r)) {
+        const item = { state: `${r.stateName}-${r.district ?? "AL"}`, winner: r.calledWinner, party: r.calledParty ?? "?", chamber: "House" };
+        if (!existing.has(`${item.state}|${item.chamber}|${item.winner}|${item.party}`)) results.push(item);
+      }
     });
     return results;
-  }, [senateRaces, houseRaces]);
+  }, [senateRaces, houseRaces, tickerEntries]);
   const tickerSequences = useMemo(() => createTickerSequences(calledRaces), [calledRaces]);
 
   useEffect(() => {

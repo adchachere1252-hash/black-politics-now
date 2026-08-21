@@ -87,6 +87,7 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
   const { data: news, isLoading: newsLoading } = trpc.news.list.useQuery({ page: 1, perPage: 12 }, homepageContentQueryOptions);
   const { data: senateRaces, isLoading: senateLoading } = trpc.election.senate.useQuery(undefined, homepageElectionQueryOptions);
   const { data: houseRaces, isLoading: houseLoading } = trpc.election.house.useQuery(undefined, homepageElectionQueryOptions);
+  const { data: tickerEntries } = trpc.election.tickerEntries.useQuery(undefined, homepageElectionQueryOptions);
   const { data: governors, isLoading: governorLoading } = trpc.election.governors.useQuery(undefined, homepageElectionQueryOptions);
   const { data: cbcMembers, isLoading: blackRepresentationLoading } = trpc.election.cbc.useQuery(undefined, homepageElectionQueryOptions);
   const { data: blackRepresentationElections } = trpc.election.blackRepresentationElections.useQuery(undefined, homepageElectionQueryOptions);
@@ -213,7 +214,7 @@ export default function HomepageExample({ mode = "preview" }: { mode?: "preview"
     <div className="homepage-editorial-home homepage-atlas-shell hidden h-[calc(100dvh-64px)] overflow-hidden bg-background px-2 pb-0 pt-2 lg:block">
       <main className="homepage-atlas-main mx-auto flex h-full max-w-[1640px] min-h-0 flex-col overflow-hidden rounded-xl border border-border bg-card p-2 shadow-[0_18px_70px_rgba(17,24,39,0.12)] dark:shadow-black/35">
         {mode === "preview" && <div className="mb-2 flex shrink-0 items-center justify-between border-b border-border pb-1.5"><span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-primary">Black Politics Now · Homepage direction</span><span className="text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Reference-aligned visual example</span></div>}
-        <div className="mb-2 shrink-0"><ResultsTicker senateRaces={senateRaces as any[] ?? []} houseRaces={houseRaces as any[] ?? []} /></div>
+        <div className="mb-2 shrink-0"><ResultsTicker senateRaces={senateRaces as any[] ?? []} houseRaces={houseRaces as any[] ?? []} tickerEntries={tickerEntries as any[] ?? []} /></div>
         <section className="grid min-h-0 flex-1 grid-cols-[0.92fr_1.68fr_0.96fr] grid-rows-[minmax(0,1fr)] gap-2">
           <aside className="grid min-h-0 grid-rows-[minmax(0,1fr)_clamp(220px,31vh,286px)] gap-3 overflow-hidden">
             <section className="homepage-atlas-panel flex min-h-0 flex-col overflow-hidden rounded-lg border border-border bg-background/55 p-3">
