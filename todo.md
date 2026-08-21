@@ -1328,6 +1328,13 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Add candidate-name search, persisted submission/review receipts, and an approval block for selected portraits whose image preview cannot load
 - [x] Surface the existing protected candidate-specific portrait research action inside Portrait Review with a clear queued-work receipt and handoff to evidence review
 
+## Add Black Rep Profile End-to-End Check (Aug 21)
+- [x] Audit the Add Black Rep Profile form, source requirements, protected profile creation route, atomic public/audit write, and success/error feedback
+- [x] Run non-destructive authorization and invalid-input checks without creating a fabricated Black Representation profile
+- [x] Verify an existing source-backed profile and immutable addition audit record remain consistent with the public Black Representation query
+- [x] Record the complete end-to-end decision and owner-session visual acceptance boundary; correct the stale regression expectation revealed by final suite validation
+- [x] Correct the stale Stacey Plaskett public-profile regression expectation revealed by final suite validation
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

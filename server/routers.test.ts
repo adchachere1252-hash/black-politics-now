@@ -105,7 +105,7 @@ describe("election router", () => {
     ]);
     expect(members).toEqual(expect.arrayContaining([
       expect.objectContaining({ member: "David Crowley", stateCode: "WI", status: "advanced_to_general" }),
-      expect.objectContaining({ member: "Stacey Plaskett", stateCode: "VI", status: "advanced_to_general" }),
+      expect.objectContaining({ member: "Stacey Plaskett", stateCode: "VI", status: "elected" }),
       expect.objectContaining({ member: "Julian Beaudion", stateCode: "SD", status: "withdrawn" }),
       expect.objectContaining({ member: "Colin Allred", stateCode: "TX", status: "advanced_to_general" }),
     ]));
