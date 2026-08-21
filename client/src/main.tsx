@@ -6,6 +6,7 @@ import { createRoot } from "react-dom/client";
 import superjson from "superjson";
 import App from "./App";
 import { startLogin } from "./const";
+import { resolveTrpcEndpoint } from "./lib/trpcEndpoint";
 import "./index.css";
 
 const queryClient = new QueryClient();
@@ -40,7 +41,9 @@ queryClient.getMutationCache().subscribe(event => {
 const trpcClient = trpc.createClient({
   links: [
     httpBatchLink({
-      url: "/api/trpc",
+      // An absolute same-origin URL remains valid in the embedded WebDev preview
+      // as well as on the published domain, avoiding relative-base parsing errors.
+      url: resolveTrpcEndpoint(),
       transformer: superjson,
       headers() {
         // Preview auto-login fallback: when the browser blocks iframe cookies

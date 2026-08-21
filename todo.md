@@ -1385,6 +1385,13 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Correct agent tasks marked ready without a portrait-source proposal, support valid replacement targets, and surface research result packages inside Portrait Review
 - [x] Return an actionable blocked research outcome when the model service is unavailable instead of exposing a raw research exception or a false-ready state
 
+## GitHub Synchronization and Homepage Query Repair (Aug 21)
+- [x] Push the 46 committed project updates to the configured GitHub main branch and verify the remote is synchronized
+- [x] Trace the homepage API Query Error to its client input, endpoint URL construction, or server response contract using current logs and code
+- [x] Repair the malformed relative-base risk with a preview-safe absolute endpoint and add regression coverage for URL construction
+- [x] Verify public homepage rendering, full regression, TypeScript, and production build; final release commit will be pushed to GitHub
+- [x] Harden the preview client’s tRPC endpoint as an absolute same-origin URL so embedded preview requests never rely on a malformed relative base
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown
