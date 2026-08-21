@@ -128,7 +128,7 @@ export default function AdminPage() {
       {tab === "results" && <ElectionResultsControlRoomTab />}
       {tab === "podcast" && <PodcastOpsTab />}
       {tab === "elections" && <ElectionOpsTab initialGovernorSearch={governorCandidateSearch} />}
-      {tab === "candidateChanges" && <CandidateChangesTab onManageGovernor={openGovernorCandidateEditor} />}
+      {tab === "candidateChanges" && <CandidateChangesTab />}
       {tab === "candidates" && <CandidatesOpsTab onOpenPortraits={openCandidatePortrait} onManageBlackRepresentation={openBlackRepresentationRecord} onManageGovernor={openGovernorCandidateEditor} />}
       {tab === "cbc" && <CbcOpsTab initialSearch={blackRepresentationSearch} />}
       {tab === "atlasWorld" && <AtlasWorldOpsTab />}

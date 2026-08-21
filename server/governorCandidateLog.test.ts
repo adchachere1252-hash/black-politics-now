@@ -27,7 +27,10 @@ describe("Governor candidate-log contract", () => {
     expect(admin).toContain("Manage Governor candidate log");
     expect(admin).toContain("Search a Governor contest or candidate...");
     expect(admin).toContain('label: "Candidate Changes"');
-    expect(candidateChanges).toContain("Manage Florida candidates");
+    expect(candidateChanges).toContain("GovernorCandidateLogEditor");
+    expect(candidateChanges).toContain("updateGovernorCandidateLog.useMutation");
+    expect(candidateChanges).toContain("The public Governor record and private source history refreshed.");
+    expect(candidateChanges).not.toContain("onManageGovernor");
     expect(candidateChanges).toContain("Change candidates");
     expect(candidateChanges).toContain("The public Senate record and private source history refreshed.");
     expect(candidateChanges).toContain("The public House record and private source history refreshed.");

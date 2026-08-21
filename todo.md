@@ -1342,6 +1342,11 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Record the complete end-to-end decision and owner-session visual acceptance boundary; repair the confirmed source-protocol safeguard gap before release
 - [x] Enforce HTTP/HTTPS source protocols server-side for protected Senate, House, and Governor candidate updates and race creation
 
+## Governor Candidate Changes Direct Sourcing (Aug 21)
+- [x] Audit the Governor path from Candidate Changes and identify why it leaves the workspace for Election Ops
+- [x] Keep Governor contest search, source-backed candidate editing, save receipts, and private history directly inside Candidate Changes, matching Senate and House
+- [x] Verify the direct Governor save route preserves protected source validation, public record refresh, immutable history, and no Election Ops redirect
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown
