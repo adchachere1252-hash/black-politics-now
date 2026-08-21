@@ -1392,6 +1392,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify public homepage rendering, full regression, TypeScript, and production build; final release commit will be pushed to GitHub
 - [x] Harden the preview client’s tRPC endpoint as an absolute same-origin URL so embedded preview requests never rely on a malformed relative base
 
+## Admin Homepage Health and Release Observability (Aug 21)
+- [x] Audit existing homepage public queries, retry behavior, Admin Overview status data, and available local GitHub release metadata
+- [x] Add a protected Homepage API Health badge and recent public-query retry/failure telemetry with clear healthy, retrying, and needs-attention states
+- [x] Add a protected Release Checklist card showing the endpoint, retry policy, remote GitHub main status, and user-facing verification guidance
+- [x] Run non-destructive E2E checks for telemetry schema, zero-failure health state, retry configuration, Admin contract, release status behavior, and homepage build without injecting fake public failures
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

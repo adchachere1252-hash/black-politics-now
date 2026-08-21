@@ -57,6 +57,7 @@ import { getLatestPortraitResearchItems } from "./agentDesk";
 import { getLatestDailyOperationalSnapshot } from "./agentDailySummary";
 import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, executeAgentTaskWithChangeSet, getAgentChangeProposals, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, getLatestPortraitResearchBatch, reviewAgentChangeProposal, reviewAgentRecommendation, runAgentTaskResearchNow, runElectionDayCommandResearch, runPortraitResearchTask, runResearchDesk, setAgentDefaultOwners, setAgentPriorityMode, startAllPortraitResearch, updateAgentTask } from "./agentDesk";
 import { getEngagementSummary, recordAnonymousPageView } from "./siteAnalytics";
+import { getHomepageHealthStatus, recordHomepageQueryTelemetry } from "./homepageHealth";
 import { createCertificationArchive, getCertificationArchivePreview, getCertifiedResultArchiveDetail, getCertifiedResultArchives } from "./certifiedResultsArchive";
 import { getApprovedAtlasEditorialNotes, getAtlasEditorialNotes, getAtlasOperations, runAtlasPlaybackCheck, saveAtlasEditorialNote, setAtlasEditorialNoteApproval } from "./atlasOperations";
 
@@ -85,6 +86,13 @@ export const appRouter = router({
     engagementSummary: adminProcedure
       .input(z.object({ days: z.union([z.literal(7), z.literal(30)]).default(7) }).optional())
       .query(async ({ input }) => getEngagementSummary(input?.days ?? 7)),
+  }),
+
+  homepageHealth: router({
+    reportPublicQueryFailure: publicProcedure
+      .input(z.object({ queryPath: z.string().min(1).max(160), attempt: z.number().int().min(1).max(3), errorCategory: z.string().min(1).max(120) }))
+      .mutation(async ({ input }) => recordHomepageQueryTelemetry(input)),
+    status: adminProcedure.query(async () => getHomepageHealthStatus()),
   }),
 
   atlasOperations: router({

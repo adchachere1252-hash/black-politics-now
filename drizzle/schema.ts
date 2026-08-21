@@ -52,6 +52,21 @@ export const siteAnalyticsEvents = mysqlTable("site_analytics_events", {
 
 export type SiteAnalyticsEvent = typeof siteAnalyticsEvents.$inferSelect;
 
+/**
+ * Bounded operational telemetry for failed public queries. It stores no request
+ * body, session value, or user identity; it is used only for Admin health review.
+ */
+export const homepageQueryTelemetry = mysqlTable("homepage_query_telemetry", {
+  id: int("id").autoincrement().primaryKey(),
+  queryPath: varchar("query_path", { length: 160 }).notNull(),
+  attempt: tinyint("attempt").notNull().default(1),
+  errorCategory: varchar("error_category", { length: 120 }).notNull(),
+  observedAt: timestamp("observed_at").defaultNow().notNull(),
+}, (table) => [
+  index("homepage_query_telemetry_observed_idx").on(table.observedAt),
+  index("homepage_query_telemetry_path_observed_idx").on(table.queryPath, table.observedAt),
+]);
+
 // ═══════════════════════════════════════════════════════════════════════════
 // ELECTION CENTER TABLES (ported from election-map-2026)
 // ═══════════════════════════════════════════════════════════════════════════

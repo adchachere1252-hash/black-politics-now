@@ -27,6 +27,10 @@ queryClient.getQueryCache().subscribe(event => {
     const error = event.query.state.error;
     redirectToLoginIfUnauthorized(error);
     console.error("[API Query Error]", error);
+    const path = event.query.queryKey.filter((value: unknown): value is string => typeof value === "string").join(".");
+    if (path && !(error instanceof TRPCClientError && error.message === UNAUTHED_ERR_MSG)) {
+      trpcClient.homepageHealth.reportPublicQueryFailure.mutate({ queryPath: path, attempt: Math.max(1, event.query.state.fetchFailureCount), errorCategory: error instanceof Error ? error.name || "QueryError" : "QueryError" }).catch(() => undefined);
+    }
   }
 });
 
