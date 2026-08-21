@@ -1282,6 +1282,11 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Repair the managed-storage portrait submission defect and add regression coverage for the fixed path
 - [x] Run full tests, TypeScript, build, public/administrative workflow checks, and publish a transparent verification decision
 
+## Source-Backed Black Representation Profile Save Verification (Aug 21)
+- [x] Verify the exact Create source-backed profile form validates all required fields and submits to the protected profile-creation procedure
+- [x] Verify successful profile creation writes the Black Representation record and immutable addition-audit evidence, then appears in the public map query
+- [x] Verify unauthorized, incomplete, or invalid-source submissions cannot save; repair any confirmed defect and publish the save decision
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

@@ -33,6 +33,10 @@ describe("manual race and Black Representation creation contract", () => {
     expect(admin).toContain("Add Black Rep race");
     expect(admin).toContain("Create source-backed profile");
     expect(admin).toContain("Create source-backed race");
+    expect(admin).toContain("createProfile.mutate(input)");
+    expect(admin).toContain("utils.election.cbc.invalidate()");
+    expect(cbcDb).toContain("return db.transaction(async (tx) => {");
+    expect(cbcDb).toContain('targetType: "black_representation_profile"');
   });
 
   it("uses white state separators over colored Atlas layers without making them a boundary-data category", () => {

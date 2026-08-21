@@ -66,6 +66,7 @@ describe("strict Admin control matrix", () => {
     await expect(caller.election.updateReferendum({ id: 1, data: { status: "Updated" } })).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(caller.election.updateCbc({ id: 1, data: { notes: "Updated" } })).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(caller.election.updateBlackRepresentationElection({ id: 1, data: { notes: "Updated" } })).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(caller.election.createBlackRepresentationProfile({ district: "At-large", member: "Example Candidate", party: "D", state: "Example", stateCode: "EX", chamber: "house", status: "running", roleType: "challenger", isCurrentMember: false, upIn2026: true, raceStage: "general", sourceUrl: "https://evidence.example/profile", sourceLabel: "Verification source" })).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(caller.world.runRefreshNow()).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(caller.podcast.requestCurrentGuardedRecovery()).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(caller.electionDay.runAgentResearch({})).rejects.toMatchObject({ code: "FORBIDDEN" });
@@ -81,5 +82,10 @@ describe("strict Admin control matrix", () => {
   it("keeps the Daily Brief QA Scorecard inside the protected Admin boundary", async () => {
     const caller = appRouter.createCaller(createContext("user"));
     await expect(caller.podcast.qaScorecard()).rejects.toMatchObject({ code: "FORBIDDEN" });
+  });
+
+  it("rejects an invalid profile-source protocol before a protected profile insert can begin", async () => {
+    const caller = appRouter.createCaller(createContext("admin"));
+    await expect(caller.election.createBlackRepresentationProfile({ district: "At-large", member: "Example Candidate", party: "D", state: "Example", stateCode: "EX", chamber: "house", status: "running", roleType: "challenger", isCurrentMember: false, upIn2026: true, raceStage: "general", sourceUrl: "ftp://invalid.example/profile", sourceLabel: "Invalid protocol check" })).rejects.toThrow("A source URL must use HTTP or HTTPS.");
   });
 });
