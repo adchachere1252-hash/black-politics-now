@@ -1,5 +1,5 @@
 import { and, desc, eq, inArray } from "drizzle-orm";
-import { agentChangeProposals, agentRecommendations, electionDayRehearsals, electionDayStatus, governorRaces, houseRaces, senateRaces } from "../drizzle/schema";
+import { agentChangeProposals, agentRecommendations, electionDayRehearsals, electionDayStatus, electionResultConfirmations, governorRaces, houseRaces, senateRaces } from "../drizzle/schema";
 import { getDb } from "./db";
 
 const REHEARSAL_STEPS = ["heartbeat", "triage", "research", "review"] as const;
@@ -202,4 +202,131 @@ export async function getPostElectionReconciliationReport() {
     sourceConflicts: { open: conflicts.length, highPriority: conflicts.filter((item) => item.priority === "high").length },
     nextAction: conflicts.length ? "Review the cited source-conflict queue before any correction is approved." : "Continue ordinary source monitoring until final reconciliation can be closed.",
   };
+}
+
+type ResultRaceType = "senate" | "house" | "governor";
+
+function sourceAgeMinutes(updatedAt: Date | null | undefined) {
+  if (!updatedAt) return null;
+  return Math.max(0, Math.floor((Date.now() - new Date(updatedAt).getTime()) / 60_000));
+}
+
+function nameAndPartyCandidates(raceType: ResultRaceType, race: any) {
+  if (raceType === "governor") return [
+    { name: race.demCandidate, party: "D" },
+    { name: race.repCandidate, party: "R" },
+  ].filter((candidate) => isNamed(candidate.name));
+  return [
+    { name: race.candidate1Name, party: race.candidate1Party },
+    { name: race.candidate2Name, party: race.candidate2Party },
+  ].filter((candidate) => isNamed(candidate.name) && ["D", "R", "I"].includes(candidate.party));
+}
+
+function resultRoomRace(raceType: ResultRaceType, race: any, confirmation: any | undefined) {
+  const candidates = nameAndPartyCandidates(raceType, race);
+  const candidateVotes = raceType === "governor"
+    ? [{ name: race.demCandidate, party: "D", votes: Number(race.demVotes ?? 0), pct: null }, { name: race.repCandidate, party: "R", votes: Number(race.repVotes ?? 0), pct: null }]
+    : [{ name: race.candidate1Name, party: race.candidate1Party, votes: Number(race.candidate1Votes ?? 0), pct: Number(race.candidate1VotePct ?? 0) || null }, { name: race.candidate2Name, party: race.candidate2Party, votes: Number(race.candidate2Votes ?? 0), pct: Number(race.candidate2VotePct ?? 0) || null }];
+  const totalVotes = candidateVotes.reduce((total, candidate) => total + candidate.votes, 0);
+  const jurisdiction = raceType === "senate" ? `${race.stateName} Senate` : raceType === "house" ? `${race.stateName} ${race.districtLabel}` : `${race.stateName} Governor`;
+  return {
+    id: race.id,
+    raceType,
+    jurisdiction,
+    stateCode: race.stateCode,
+    reportingPct: Number(race.pctReporting ?? 0),
+    totalVotes,
+    status: race.status,
+    calledWinner: race.calledWinner,
+    calledParty: race.calledParty,
+    calledSourceUrl: race.calledSourceUrl,
+    candidates: candidateVotes,
+    confirmableCandidates: candidates,
+    updatedAt: race.updatedAt,
+    sourceAgeMinutes: sourceAgeMinutes(race.updatedAt),
+    confirmation: confirmation ? { id: confirmation.id, sourceUrl: confirmation.sourceUrl, sourceLabel: confirmation.sourceLabel, confirmedBy: confirmation.confirmedBy, confirmedAt: confirmation.confirmedAt, confirmationNote: confirmation.confirmationNote } : null,
+  };
+}
+
+/**
+ * Private control-room data consolidates existing election rows, durable source
+ * conflicts, and immutable human result confirmations. It does not poll, call,
+ * or publish any result simply by being read.
+ */
+export async function getElectionResultsControlRoom() {
+  const db = await getDb();
+  if (!db) return null;
+  const [heartbeatRows, senate, house, governor, confirmations, sourceConflicts] = await Promise.all([
+    db.select().from(electionDayStatus).where(eq(electionDayStatus.id, 1)).limit(1),
+    db.select().from(senateRaces),
+    db.select().from(houseRaces),
+    db.select().from(governorRaces),
+    db.select().from(electionResultConfirmations).orderBy(desc(electionResultConfirmations.confirmedAt)).limit(30),
+    getElectionSourceConflictQueue(),
+  ]);
+  const confirmationByRace = new Map<string, typeof confirmations[number]>();
+  for (const confirmation of confirmations) {
+    const key = `${confirmation.raceType}:${confirmation.raceId}`;
+    if (!confirmationByRace.has(key)) confirmationByRace.set(key, confirmation);
+  }
+  const races = [
+    ...senate.map((race) => resultRoomRace("senate", race, confirmationByRace.get(`senate:${race.id}`))),
+    ...house.map((race) => resultRoomRace("house", race, confirmationByRace.get(`house:${race.id}`))),
+    ...governor.map((race) => resultRoomRace("governor", race, confirmationByRace.get(`governor:${race.id}`))),
+  ].sort((a, b) => b.reportingPct - a.reportingPct || b.totalVotes - a.totalVotes || a.jurisdiction.localeCompare(b.jurisdiction));
+  const heartbeat = heartbeatRows[0] ?? null;
+  return {
+    generatedAt: new Date(),
+    heartbeat: heartbeat ? { mode: heartbeat.mode, sourceName: heartbeat.sourceName, sourceHealth: heartbeat.sourceHealth, heartbeatAt: heartbeat.heartbeatAt, lastPollAt: heartbeat.lastPollAt, lastSummary: heartbeat.lastSummary, failedPolls: heartbeat.failedPolls } : null,
+    summary: {
+      total: races.length,
+      reporting: races.filter((race) => race.reportingPct > 0 || race.totalVotes > 0).length,
+      called: races.filter((race) => Boolean(race.calledWinner)).length,
+      humanConfirmed: confirmations.length,
+      conflicts: sourceConflicts.length,
+    },
+    races,
+    sourceConflicts,
+    activity: confirmations,
+  };
+}
+
+export async function confirmElectionResult(input: { raceType: ResultRaceType; raceId: number; winnerName: string; winnerParty: "D" | "R" | "I"; sourceUrl: string; sourceLabel: string; confirmationNote?: string | null; confirmedBy: string }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const sourceUrl = input.sourceUrl.trim();
+  try {
+    const url = new URL(sourceUrl);
+    if (url.protocol !== "https:" && url.protocol !== "http:") throw new Error("Unsupported protocol");
+  } catch {
+    throw new Error("A valid HTTPS or HTTP result source is required.");
+  }
+  if (!input.sourceLabel.trim()) throw new Error("A result source label is required.");
+
+  const config = input.raceType === "senate" ? { table: senateRaces, label: (race: any) => `${race.stateName} Senate` }
+    : input.raceType === "house" ? { table: houseRaces, label: (race: any) => `${race.stateName} ${race.districtLabel}` }
+    : { table: governorRaces, label: (race: any) => `${race.stateName} Governor` };
+
+  return db.transaction(async (tx) => {
+    const [race] = await tx.select().from(config.table).where(eq(config.table.id, input.raceId)).limit(1);
+    if (!race) throw new Error("Race was not found.");
+    const candidate = nameAndPartyCandidates(input.raceType, race).find((item) => item.name?.trim() === input.winnerName.trim() && item.party === input.winnerParty);
+    if (!candidate) throw new Error("Choose a currently mapped Democratic, Republican, or Independent candidate before confirming a result.");
+    const jurisdiction = config.label(race);
+    const priorValue = JSON.stringify({ status: race.status, calledWinner: race.calledWinner, calledParty: race.calledParty, calledAt: race.calledAt, calledSourceUrl: race.calledSourceUrl });
+    await tx.update(config.table).set({ status: "Called", calledWinner: candidate.name, calledParty: candidate.party, calledAt: Date.now(), calledSourceUrl: sourceUrl } as any).where(eq(config.table.id, input.raceId));
+    await tx.insert(electionResultConfirmations).values({
+      raceType: input.raceType,
+      raceId: input.raceId,
+      jurisdiction,
+      winnerName: candidate.name,
+      winnerParty: candidate.party,
+      sourceUrl,
+      sourceLabel: input.sourceLabel.trim(),
+      confirmationNote: input.confirmationNote?.trim() || null,
+      confirmedBy: input.confirmedBy,
+      priorValue,
+    });
+    return { success: true, jurisdiction, winnerName: candidate.name, winnerParty: candidate.party };
+  });
 }

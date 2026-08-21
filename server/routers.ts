@@ -45,7 +45,7 @@ import { fetchWithCache, getPersistedWordPressNews } from "./newsCache";
 import { createBlackRepresentationContest, createBlackRepresentationProfile, getAllCbcMembers, getAllRedistrictingStates, getBlackRepresentationElections, removeBlackRepresentationElection, removeBlackRepresentationProfile, updateBlackRepresentationElection, updateCbcMember } from "./cbcDb";
 import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
 import { getWorldElectionRefreshOperations, runDatedWorldElectionRefresh } from "./worldElectionRefresh";
-import { advanceElectionDayRehearsal, getElectionDayCommandCenter, getElectionSourceConflictQueue, getPostElectionReconciliationReport, startElectionDayRehearsal } from "./electionDayCommandCenter";
+import { advanceElectionDayRehearsal, confirmElectionResult, getElectionDayCommandCenter, getElectionResultsControlRoom, getElectionSourceConflictQueue, getPostElectionReconciliationReport, startElectionDayRehearsal } from "./electionDayCommandCenter";
 import { getPortraitManagementTargets, getPortraitSubmissionTargets, getPortraitSubmissions, portraitPhotoFields, portraitProvenanceTypes, portraitTargetTypes, reviewPortraitSubmission, submitPortraitSubmission, uploadPortraitImage } from "./portraitReview";
 import { getLatestPortraitResearchItems } from "./agentDesk";
 import { getLatestDailyOperationalSnapshot } from "./agentDailySummary";
@@ -275,8 +275,12 @@ export const appRouter = router({
 
   electionDay: router({
     commandCenter: adminProcedure.query(async () => getElectionDayCommandCenter()),
+    resultsControlRoom: adminProcedure.query(async () => getElectionResultsControlRoom()),
     sourceConflicts: adminProcedure.query(async () => getElectionSourceConflictQueue()),
     reconciliation: adminProcedure.query(async () => getPostElectionReconciliationReport()),
+    confirmResult: adminProcedure
+      .input(z.object({ raceType: z.enum(["senate", "house", "governor"]), raceId: z.number().int().positive(), winnerName: z.string().min(2).max(128), winnerParty: z.enum(["D", "R", "I"]), sourceUrl: z.string().url().max(2048), sourceLabel: z.string().min(2).max(256), confirmationNote: z.string().max(4000).optional().nullable() }))
+      .mutation(async ({ input, ctx }) => confirmElectionResult({ ...input, confirmedBy: ctx.user.name ?? "Administrator" })),
     runAgentResearch: adminProcedure
       .input(z.object({ triageIndex: z.number().int().min(0).max(11).optional() }).optional())
       .mutation(async ({ input, ctx }) => runElectionDayCommandResearch(input?.triageIndex, ctx.user.name ?? "Administrator")),

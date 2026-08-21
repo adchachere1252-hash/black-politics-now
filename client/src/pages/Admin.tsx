@@ -6,6 +6,7 @@ import { AgentProposedChangesTab } from "@/components/AgentProposedChangesTab";
 import { PortraitReviewTab } from "@/components/PortraitReviewTab";
 import { PodcastPublishingKit } from "@/components/PodcastPublishingKit";
 import { ElectionDayCommandCenterTab } from "@/components/ElectionDayCommandCenterTab";
+import { ElectionResultsControlRoomTab } from "@/components/ElectionResultsControlRoomTab";
 import { AtlasOperationsAdmin } from "@/components/AtlasOperationsAdmin";
 import { CandidateChangesTab } from "@/components/CandidateChangesTab";
 import MiniRepositoryGlobe from "@/components/MiniRepositoryGlobe";
@@ -17,13 +18,13 @@ import { getAdminFreshness } from "@/lib/adminFreshness";
 import { useEffect, useState, useMemo } from "react";
 import { ArrowUpRight, Shield, Radio, MapPin, Users, Save, Check, Search, SearchCheck, Star, Sparkles, AlertTriangle, CheckCircle2, Clock3, FileText, Headphones, ListChecks, RefreshCw, ShieldCheck, ImagePlus, FileDiff, Radar, Globe2, ExternalLink, BarChart3, Monitor, Smartphone, TabletSmartphone, MousePointerClick, BellRing, Trash2 } from "lucide-react";
 
-type AdminTab = "overview" | "command" | "podcast" | "elections" | "candidateChanges" | "candidates" | "cbc" | "atlasWorld" | "agent" | "changes" | "portraits" | "audience";
+type AdminTab = "overview" | "command" | "results" | "podcast" | "elections" | "candidateChanges" | "candidates" | "cbc" | "atlasWorld" | "agent" | "changes" | "portraits" | "audience";
 
 export default function AdminPage() {
   const { user, isAuthenticated, loading } = useAuth();
   const [tab, setTab] = useState<AdminTab>(() => {
     const requested = typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("tab");
-    return requested === "command" || requested === "podcast" || requested === "elections" || requested === "candidateChanges" || requested === "candidates" || requested === "cbc" || requested === "atlasWorld" || requested === "agent" || requested === "changes" || requested === "portraits" || requested === "audience" ? requested : "overview";
+    return requested === "command" || requested === "results" || requested === "podcast" || requested === "elections" || requested === "candidateChanges" || requested === "candidates" || requested === "cbc" || requested === "atlasWorld" || requested === "agent" || requested === "changes" || requested === "portraits" || requested === "audience" ? requested : "overview";
   });
   const [focusRecommendationId, setFocusRecommendationId] = useState<number | undefined>();
   const [portraitTargetKey, setPortraitTargetKey] = useState<string | undefined>();
@@ -94,6 +95,7 @@ export default function AdminPage() {
           {([
           { key: "overview", label: "Overview", icon: Shield },
           { key: "command", label: "Command Center", icon: Radar },
+          { key: "results", label: "Results Control Room", icon: Radio },
           { key: "podcast", label: "Podcast Ops", icon: Radio },
           { key: "elections", label: "Election Ops", icon: MapPin },
           { key: "candidateChanges", label: "Candidate Changes", icon: Users },
@@ -123,6 +125,7 @@ export default function AdminPage() {
 
       {tab === "overview" && <OverviewTab onReview={(id) => { setFocusRecommendationId(id); navigateToTab("agent"); }} onNavigate={(destination) => destination === "portraits" ? openActivePortraitBatch() : navigateToTab(destination)} onNavigateAdmin={navigateToTab} />}
       {tab === "command" && <ElectionDayCommandCenterTab />}
+      {tab === "results" && <ElectionResultsControlRoomTab />}
       {tab === "podcast" && <PodcastOpsTab />}
       {tab === "elections" && <ElectionOpsTab initialGovernorSearch={governorCandidateSearch} />}
       {tab === "candidateChanges" && <CandidateChangesTab onManageGovernor={openGovernorCandidateEditor} />}

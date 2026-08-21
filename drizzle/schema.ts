@@ -263,6 +263,31 @@ export const governorCandidateEdits = mysqlTable("governor_candidate_edits", {
 
 export type GovernorCandidateEdit = typeof governorCandidateEdits.$inferSelect;
 
+/**
+ * Immutable evidence-backed record of a human result confirmation made through
+ * the Election Results Control Room. It is separate from automated source
+ * polling and preserves the prior public race state for later reconciliation.
+ */
+export const electionResultConfirmations = mysqlTable("election_result_confirmations", {
+  id: int("id").autoincrement().primaryKey(),
+  raceType: mysqlEnum("race_type", ["senate", "house", "governor"]).notNull(),
+  raceId: int("race_id").notNull(),
+  jurisdiction: varchar("jurisdiction", { length: 160 }).notNull(),
+  winnerName: varchar("winner_name", { length: 128 }).notNull(),
+  winnerParty: mysqlEnum("winner_party", ["D", "R", "I"]).notNull(),
+  sourceUrl: varchar("source_url", { length: 2048 }).notNull(),
+  sourceLabel: varchar("source_label", { length: 256 }).notNull(),
+  confirmationNote: text("confirmation_note"),
+  confirmedBy: varchar("confirmed_by", { length: 128 }).notNull(),
+  priorValue: text("prior_value").notNull(),
+  confirmedAt: timestamp("confirmed_at").defaultNow().notNull(),
+}, (table) => [
+  index("election_result_confirmations_race_idx").on(table.raceType, table.raceId, table.confirmedAt),
+  index("election_result_confirmations_confirmed_at_idx").on(table.confirmedAt),
+]);
+
+export type ElectionResultConfirmation = typeof electionResultConfirmations.$inferSelect;
+
 /** Immutable administrator record for manual Senate and House candidate-log updates. */
 export const electionCandidateEdits = mysqlTable("election_candidate_edits", {
   id: int("id").autoincrement().primaryKey(),

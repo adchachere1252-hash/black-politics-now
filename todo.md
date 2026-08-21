@@ -1308,6 +1308,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Reproduce and repair the confirmed profile status-field mismatch and false save-receipt defect without inserting fabricated public records
 - [x] Verify protected profile/contest saves, public refresh, creation-audit contract, and invalid/unauthorized failure handling before release
 
+## Election Results Control Room (Aug 21)
+- [x] Audit the existing Election Day Command Center, Election Ops, source-conflict review, winner-confirmation, and audit-log data paths for reusable capabilities
+- [x] Build a protected Admin Election Results Control Room with Senate, House, and Governor monitoring, reporting percentages, source freshness, filters, and clear zero-reporting states
+- [x] Add a source-required human winner-confirmation workflow, conflict-review handoff, and recent operator activity feed without auto-calling races from the dashboard
+- [x] Add regression coverage and verify authorized and unauthorized behavior, public-result refresh contract, error states, responsive Admin implementation, and production build before release
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown
