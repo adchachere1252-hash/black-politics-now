@@ -1292,6 +1292,11 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Improve the Admin form guidance and field limits so a user can understand and enter a valid jurisdiction without raw validation failure
 - [x] Verify valid long jurisdictions save through profile and contest creation while unsupported/oversized values remain blocked safely
 
+## Change Candidates Panel End-to-End Save Verification (Aug 21)
+- [x] Verify Senate, House, and Governor candidate-change forms validate source-backed inputs and call the intended protected save procedures
+- [x] Verify successful saves update the public contest record, append immutable edit history, and refresh the Admin panel state
+- [x] Verify unauthorized, invalid, and failed submissions cannot publish candidate changes; add visible save receipts and release the validated workflow
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

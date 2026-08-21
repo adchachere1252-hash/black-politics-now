@@ -6,6 +6,7 @@ const persistence = readFileSync(new URL("./electionDb.ts", import.meta.url), "u
 const router = readFileSync(new URL("./routers.ts", import.meta.url), "utf8");
 const admin = readFileSync(new URL("../client/src/pages/Admin.tsx", import.meta.url), "utf8");
 const candidateChanges = readFileSync(new URL("../client/src/components/CandidateChangesTab.tsx", import.meta.url), "utf8");
+const verifier = readFileSync(new URL("../scripts/verify-change-candidates-end-to-end.ts", import.meta.url), "utf8");
 
 describe("Governor candidate-log contract", () => {
   it("keeps candidate source fields and an immutable audit record in the election schema", () => {
@@ -27,5 +28,11 @@ describe("Governor candidate-log contract", () => {
     expect(admin).toContain('label: "Candidate Changes"');
     expect(candidateChanges).toContain("Manage Florida candidates");
     expect(candidateChanges).toContain("Change candidates");
+    expect(candidateChanges).toContain("The public Senate record and private source history refreshed.");
+    expect(candidateChanges).toContain("The public House record and private source history refreshed.");
+    expect(admin).toContain("The public Governor record and private source history refreshed.");
+    expect(verifier).toContain("updateSenateCandidateLog");
+    expect(verifier).toContain("updateHouseCandidateLog");
+    expect(verifier).toContain("updateGovernorCandidateLog");
   });
 });

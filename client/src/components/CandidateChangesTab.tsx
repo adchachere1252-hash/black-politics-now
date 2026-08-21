@@ -23,15 +23,16 @@ function RaceCandidateLogEditor({ race, type, onClose }: { race: any; type: "sen
   const [sourceLabel, setSourceLabel] = useState(race.candidateSourceLabel ?? "");
   const [editorNote, setEditorNote] = useState("");
   const [error, setError] = useState("");
+  const [savedMessage, setSavedMessage] = useState("");
   const historyQuery = type === "senate"
     ? trpc.election.senateCandidateHistory.useQuery({ id: race.id })
     : trpc.election.houseCandidateHistory.useQuery({ id: race.id });
   const saveSenate = trpc.election.updateSenateCandidateLog.useMutation({
-    onSuccess: async () => { await Promise.all([utils.election.senate.invalidate(), utils.election.senateCandidateHistory.invalidate({ id: race.id })]); setEditorNote(""); setError(""); },
+    onSuccess: async () => { await Promise.all([utils.election.senate.invalidate(), utils.election.senateCandidateHistory.invalidate({ id: race.id })]); setEditorNote(""); setError(""); setSavedMessage("Saved. The public Senate record and private source history refreshed."); },
     onError: (mutationError) => setError(mutationError.message || "Candidate log could not be saved."),
   });
   const saveHouse = trpc.election.updateHouseCandidateLog.useMutation({
-    onSuccess: async () => { await Promise.all([utils.election.house.invalidate(), utils.election.houseCandidateHistory.invalidate({ id: race.id })]); setEditorNote(""); setError(""); },
+    onSuccess: async () => { await Promise.all([utils.election.house.invalidate(), utils.election.houseCandidateHistory.invalidate({ id: race.id })]); setEditorNote(""); setError(""); setSavedMessage("Saved. The public House record and private source history refreshed."); },
     onError: (mutationError) => setError(mutationError.message || "Candidate log could not be saved."),
   });
   const saving = saveSenate.isPending || saveHouse.isPending;
@@ -46,6 +47,7 @@ function RaceCandidateLogEditor({ race, type, onClose }: { race: any; type: "sen
       const verifiedUrl = new URL(sourceUrl.trim());
       if (!/^https?:$/.test(verifiedUrl.protocol)) throw new Error("Unsupported protocol");
       const input = { id: race.id, candidate1Name: candidate1Name.trim(), candidate1Party, candidate2Name: candidate2Name.trim(), candidate2Party, candidateSourceUrl: verifiedUrl.toString(), candidateSourceLabel: sourceLabel.trim(), editorNote: editorNote.trim() || null };
+      setSavedMessage("");
       if (type === "senate") saveSenate.mutate(input);
       else saveHouse.mutate(input);
     } catch {
@@ -62,7 +64,7 @@ function RaceCandidateLogEditor({ race, type, onClose }: { race: any; type: "sen
     </div>
     <div className="mt-2 grid gap-2 sm:grid-cols-2"><label className="text-xs font-semibold text-muted-foreground">Source label<input value={sourceLabel} onChange={(event) => setSourceLabel(event.target.value)} placeholder="Official filing or reporting outlet" className="mt-1 h-9 w-full rounded border border-border bg-background px-2 text-sm text-foreground" /></label><label className="text-xs font-semibold text-muted-foreground">Source URL<input value={sourceUrl} onChange={(event) => setSourceUrl(event.target.value)} placeholder="https://…" type="url" className="mt-1 h-9 w-full rounded border border-border bg-background px-2 text-sm text-foreground" /></label></div>
     <label className="mt-2 block text-xs font-semibold text-muted-foreground">Editor note (private audit context)<textarea value={editorNote} onChange={(event) => setEditorNote(event.target.value)} placeholder="Why this candidate log changed" className="mt-1 min-h-16 w-full rounded border border-border bg-background px-2 py-2 text-sm text-foreground" /></label>
-    <div className="mt-3 flex flex-wrap items-center gap-2"><button type="button" onClick={save} disabled={saving} className="inline-flex items-center gap-1 rounded bg-primary px-3 py-2 text-xs font-bold text-primary-foreground disabled:opacity-50">{saving ? "Saving candidate log…" : <><Save size={13} /> Save candidate log</>}</button>{race.candidateSourceUrl && <a href={race.candidateSourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-primary underline underline-offset-4">Current public source <ExternalLink size={12} /></a>}{error && <span className="text-xs text-destructive">{error}</span>}</div>
+    <div className="mt-3 flex flex-wrap items-center gap-2"><button type="button" onClick={save} disabled={saving} className="inline-flex items-center gap-1 rounded bg-primary px-3 py-2 text-xs font-bold text-primary-foreground disabled:opacity-50">{saving ? "Saving candidate log…" : <><Save size={13} /> Save candidate log</>}</button>{race.candidateSourceUrl && <a href={race.candidateSourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-primary underline underline-offset-4">Current public source <ExternalLink size={12} /></a>}{savedMessage && <span role="status" className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">{savedMessage}</span>}{error && <span className="text-xs text-destructive">{error}</span>}</div>
     {history.length > 0 && <div className="mt-3 border-t border-primary/15 pt-3"><p className="text-[10px] font-bold uppercase tracking-[.12em] text-primary">Recent private change history</p><div className="mt-2 space-y-1.5">{history.slice(0, 3).map((item: any) => <div key={item.id} className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-muted-foreground"><span><strong className="text-foreground">{item.candidate1Name || "—"}</strong> ({item.candidate1Party || "?"}) vs <strong className="text-foreground">{item.candidate2Name || "—"}</strong> ({item.candidate2Party || "?"})</span><a href={item.sourceUrl} target="_blank" rel="noreferrer" className="text-primary underline underline-offset-2">{item.sourceLabel}</a></div>)}</div></div>}
   </section>;
 }
