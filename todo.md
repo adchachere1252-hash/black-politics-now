@@ -1366,6 +1366,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Run non-destructive E2E checks for authorization, unmapped-winner rejection, cited winner-to-ticker preparation, public refresh contract, and immutable history
 - [x] Record the current no-fixture boundary: no active cited human confirmation is available to add to the ticker without making a real public result decision
 
+## Original Repository Candidate Image Parity Check (Aug 21)
+- [x] Inspect the original election-map repository’s candidate-image assets, image maps, and source data without executing untrusted repository code
+- [x] Compare original candidate-image coverage and mappings to the current portrait directory, approved submissions, public race records, and repository fallback resolver
+- [x] Run non-destructive E2E checks for candidate discovery, portrait review integrity, public image resolution, unreachable/missing assets, and identity-mismatch signals
+- [x] Reconcile only confirmed reusable original-repository image assets with explicit provenance; the compiled original map is already byte-identical to the current fallback map
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown
