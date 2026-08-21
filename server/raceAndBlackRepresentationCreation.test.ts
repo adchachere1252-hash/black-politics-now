@@ -29,6 +29,8 @@ describe("manual race and Black Representation creation contract", () => {
     expect(cbcDb).toContain("createBlackRepresentationProfile");
     expect(cbcDb).toContain("createBlackRepresentationContest");
     expect(cbcDb).toContain("validateAdditionSource");
+    expect(router).toContain("district: z.string().min(1).max(128)");
+    expect(schema).toContain('district: varchar("district", { length: 128 }).notNull()');
     expect(admin).toContain("Add Black Rep profile");
     expect(admin).toContain("Add Black Rep race");
     expect(admin).toContain("Create source-backed profile");

@@ -240,7 +240,7 @@ export const appRouter = router({
       .mutation(async ({ input }) => { await updateBlackRepresentationElection(input.id, input.data as any); return { success: true }; }),
     createBlackRepresentationProfile: adminProcedure
       .input(z.object({
-        district: z.string().min(1).max(16), member: z.string().min(2).max(128), party: z.enum(["D", "R", "I"]),
+        district: z.string().min(1).max(128), member: z.string().min(2).max(128), party: z.enum(["D", "R", "I"]),
         state: z.string().min(2).max(64), stateCode: z.string().length(2), chamber: z.enum(["house", "senate", "governor"]),
         status: z.enum(["running", "retiring", "resigned", "withdrawn", "deceased", "lost_primary", "running_for_governor", "running_for_senate", "not_up_2026", "challenger", "advanced_to_general", "in_runoff", "too_close_to_call", "elected", "won_general", "lost_general"]),
         roleType: z.enum(["incumbent", "nominee", "challenger", "former_member", "delegate"]), isCurrentMember: z.boolean(), upIn2026: z.boolean(),
@@ -250,7 +250,7 @@ export const appRouter = router({
       .mutation(async ({ ctx, input }) => createBlackRepresentationProfile({ ...input, addedBy: ctx.user.name ?? "Administrator" })),
     createBlackRepresentationContest: adminProcedure
       .input(z.object({
-        district: z.string().min(1).max(16), state: z.string().min(2).max(64), stateCode: z.string().length(2), chamber: z.enum(["house", "senate", "governor"]),
+        district: z.string().min(1).max(128), state: z.string().min(2).max(64), stateCode: z.string().length(2), chamber: z.enum(["house", "senate", "governor"]),
         electionType: z.enum(["primary", "runoff", "general", "special"]), resultStatus: z.enum(["called", "too_close_to_call", "upcoming", "uncontested", "withdrawn"]),
         winnerName: z.string().max(128).optional().nullable(), winnerParty: z.string().max(8).optional().nullable(), runnerUpName: z.string().max(128).optional().nullable(), runnerUpParty: z.string().max(8).optional().nullable(),
         generalOpponent: z.string().max(128).optional().nullable(), electionDate: z.string().max(32).optional().nullable(),

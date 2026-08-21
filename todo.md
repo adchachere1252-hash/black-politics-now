@@ -1287,6 +1287,11 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify successful profile creation writes the Black Representation record and immutable addition-audit evidence, then appears in the public map query
 - [x] Verify unauthorized, incomplete, or invalid-source submissions cannot save; repair any confirmed defect and publish the save decision
 
+## Black Representation District / Jurisdiction Length Validation Fix (Aug 21)
+- [x] Expand the protected profile and contest district/jurisdiction validation to support legitimate long labels consistently with database storage
+- [x] Improve the Admin form guidance and field limits so a user can understand and enter a valid jurisdiction without raw validation failure
+- [x] Verify valid long jurisdictions save through profile and contest creation while unsupported/oversized values remain blocked safely
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

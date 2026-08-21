@@ -88,4 +88,10 @@ describe("strict Admin control matrix", () => {
     const caller = appRouter.createCaller(createContext("admin"));
     await expect(caller.election.createBlackRepresentationProfile({ district: "At-large", member: "Example Candidate", party: "D", state: "Example", stateCode: "EX", chamber: "house", status: "running", roleType: "challenger", isCurrentMember: false, upIn2026: true, raceStage: "general", sourceUrl: "ftp://invalid.example/profile", sourceLabel: "Invalid protocol check" })).rejects.toThrow("A source URL must use HTTP or HTTPS.");
   });
+
+  it("accepts a legitimate long jurisdiction through API validation before rejecting an invalid source protocol", async () => {
+    const caller = appRouter.createCaller(createContext("admin"));
+    await expect(caller.election.createBlackRepresentationProfile({ district: "U.S. Virgin Islands at-large", member: "Example Candidate", party: "D", state: "U.S. Virgin Islands", stateCode: "VI", chamber: "house", status: "running", roleType: "challenger", isCurrentMember: false, upIn2026: true, raceStage: "general", sourceUrl: "ftp://invalid.example/profile", sourceLabel: "Long jurisdiction validation check" })).rejects.toThrow("A source URL must use HTTP or HTTPS.");
+    await expect(caller.election.createBlackRepresentationContest({ district: "U.S. Virgin Islands at-large", state: "U.S. Virgin Islands", stateCode: "VI", chamber: "house", electionType: "general", resultStatus: "upcoming", sourceUrl: "ftp://invalid.example/contest", sourceLabel: "Long jurisdiction validation check" })).rejects.toThrow("A source URL must use HTTP or HTTPS.");
+  });
 });

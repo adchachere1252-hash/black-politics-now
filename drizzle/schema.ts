@@ -738,7 +738,7 @@ export const cbcMembers = mysqlTable("cbc_members", {
   id: int("id").autoincrement().primaryKey(),
   // District is deliberately not unique: an incumbent, successor nominee, and
   // challenger can all be relevant to Black political representation in one race.
-  district: varchar("district", { length: 16 }).notNull(),
+  district: varchar("district", { length: 128 }).notNull(),
   member: varchar("member", { length: 128 }).notNull(),
   party: mysqlEnum("party", ["D", "R", "I"]).notNull(),
   state: varchar("state", { length: 64 }).notNull(),
@@ -789,7 +789,7 @@ export type InsertCbcMember = typeof cbcMembers.$inferInsert;
  */
 export const blackRepresentationElections = mysqlTable("black_representation_elections", {
   id: int("id").autoincrement().primaryKey(),
-  district: varchar("district", { length: 16 }).notNull(),
+  district: varchar("district", { length: 128 }).notNull(),
   state: varchar("state", { length: 64 }).notNull(),
   stateCode: varchar("state_code", { length: 2 }).notNull(),
   chamber: mysqlEnum("chamber", ["house", "senate", "governor"]).notNull(),
@@ -830,7 +830,7 @@ export const candidateRemovalAudit = mysqlTable("candidate_removal_audit", {
   targetId: int("target_id").notNull(),
   displayName: varchar("display_name", { length: 160 }).notNull(),
   stateCode: varchar("state_code", { length: 2 }),
-  district: varchar("district", { length: 16 }),
+  district: varchar("district", { length: 128 }),
   reason: text("reason").notNull(),
   sourceUrl: text("source_url"),
   removedBy: varchar("removed_by", { length: 128 }).notNull(),
@@ -850,7 +850,7 @@ export const blackRepresentationAdditionAudit = mysqlTable("black_representation
   targetId: int("target_id").notNull(),
   displayName: varchar("display_name", { length: 160 }).notNull(),
   stateCode: varchar("state_code", { length: 2 }).notNull(),
-  district: varchar("district", { length: 16 }).notNull(),
+  district: varchar("district", { length: 128 }).notNull(),
   sourceUrl: text("source_url").notNull(),
   sourceLabel: varchar("source_label", { length: 160 }).notNull(),
   addedBy: varchar("added_by", { length: 128 }).notNull(),
