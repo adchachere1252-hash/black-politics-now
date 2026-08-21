@@ -15,7 +15,7 @@ import { invokeLLM, listLLMModels } from "./_core/llm";
 import { fetchWithCache } from "./newsCache";
 import { getEpisodesFormatted } from "./podcastDb";
 import { getWorldElections } from "./worldDb";
-import { getPortraitSubmissionTargets } from "./portraitReview";
+import { getPortraitManagementTargets, getPortraitSubmissionTargets } from "./portraitReview";
 import { getElectionDayCommandCenter } from "./electionDayCommandCenter";
 
 export type SourceItem = {
@@ -60,6 +60,10 @@ export function resolvePortraitResearchOutcome(hasSourceProposal: boolean) {
       status: "blocked" as const,
       error: "Evidence needed: this research pass found no source-backed portrait proposal. Add an official campaign, government, or verified provenance lead to create a visual review package.",
     };
+}
+
+export function portraitResearchUnavailableMessage() {
+  return "The evidence research assistant is temporarily unavailable. Use an official campaign, government, or verified provenance lead to submit a direct image package for human review. No portrait was changed.";
 }
 
 function sourceMarkdown(sourceIds: string[], sourceItems: SourceItem[]) {
@@ -732,9 +736,9 @@ export async function runPortraitResearchTask(
 ) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  const targets = await getPortraitSubmissionTargets();
+  const targets = await getPortraitManagementTargets();
   const current = targets.find((item) => item.targetType === target.targetType && item.targetRecordId === target.targetRecordId && item.targetPhotoField === target.targetPhotoField && item.candidateName === target.candidateName);
-  if (!current) throw new Error("This candidate is no longer a current missing-photo target");
+  if (!current) throw new Error("This candidate is no longer available in the portrait directory");
   const model = await resolveModel();
   const sourceRows = [{ id: "portrait-target", title: `${current.candidateName} — ${current.location}`, url: `${PUBLIC_SITE_ORIGIN}/admin?tab=portraits`, excerpt: "Administrator-selected private portrait research target. A portrait cannot be submitted or applied without verified provenance review." }];
   if (target.sourceLead?.trim()) sourceRows.push({ id: "administrator-source-lead", title: `Administrator-provided source lead for ${current.candidateName}`, url: target.sourceLead.trim(), excerpt: "Use this lead only as supplied context. Confirm candidate identity and provenance before proposing a portrait source; do not invent a direct image URL." });
@@ -744,7 +748,23 @@ export async function runPortraitResearchTask(
   const taskId = insertedId(await db.insert(agentTasks).values({ recommendationId, title: `Portrait source research: ${current.candidateName}`, description: `Research target: ${current.candidateName} (${current.location}). Target reference: ${current.targetType}/${current.targetRecordId}/${current.targetPhotoField}. ${target.sourceLead?.trim() ? `Official source lead: ${target.sourceLead.trim()}. ` : ""}Do not submit or apply a portrait. Return a portrait_source proposal only when supported by exact evidence in the supplied context.`, owner: "Data Desk", executionMode: "agent", executionScope: "Return a private source-cited portrait research package. Never alter a public profile.", sourceRequirements: "Use supplied context only. Do not invent image URLs, source pages, or provenance.", createdBy: requestedBy }), "portrait research task");
   const [task] = await db.select().from(agentTasks).where(eq(agentTasks.id, taskId)).limit(1);
   if (!task) throw new Error("Unable to create portrait research task");
-  return executeAgentTaskWithChangeSet(task.id, requestedBy);
+  let completedTask;
+  try {
+    completedTask = await executeAgentTaskWithChangeSet(task.id, requestedBy);
+  } catch {
+    const message = portraitResearchUnavailableMessage();
+    await db.update(agentTasks).set({ status: "blocked", executionError: message, executionCompletedAt: new Date() }).where(eq(agentTasks.id, task.id));
+    const [blockedTask] = await db.select().from(agentTasks).where(eq(agentTasks.id, task.id)).limit(1);
+    return { task: blockedTask ?? task, proposals: [] };
+  }
+  const proposals = await db.select().from(agentChangeProposals).where(and(eq(agentChangeProposals.taskId, completedTask.id), eq(agentChangeProposals.kind, "portrait_source")));
+  const outcome = resolvePortraitResearchOutcome(proposals.length > 0);
+  if (outcome.status === "blocked") {
+    await db.update(agentTasks).set({ status: outcome.status, executionError: outcome.error, executionCompletedAt: new Date() }).where(eq(agentTasks.id, completedTask.id));
+    const [blockedTask] = await db.select().from(agentTasks).where(eq(agentTasks.id, completedTask.id)).limit(1);
+    return { task: blockedTask ?? completedTask, proposals: [] };
+  }
+  return { task: completedTask, proposals };
 }
 
 export async function getLatestPortraitResearchBatch() {
@@ -800,10 +820,9 @@ async function executePortraitResearchBatch(batchId: number, requestedBy: string
       const item = items[cursor++];
       await db.update(portraitResearchBatchItems).set({ status: "in_progress", startedAt: new Date() }).where(eq(portraitResearchBatchItems.id, item.id));
       try {
-        const task = await runPortraitResearchTask({ targetType: item.targetType, targetRecordId: item.targetRecordId, targetPhotoField: item.targetPhotoField, candidateName: item.candidateName }, requestedBy);
-        const portraitProposals = await db.select({ id: agentChangeProposals.id })
-          .from(agentChangeProposals)
-          .where(and(eq(agentChangeProposals.taskId, task.id), eq(agentChangeProposals.kind, "portrait_source")));
+        const research = await runPortraitResearchTask({ targetType: item.targetType, targetRecordId: item.targetRecordId, targetPhotoField: item.targetPhotoField, candidateName: item.candidateName }, requestedBy);
+        const task = research.task;
+        const portraitProposals = research.proposals;
         const outcome = resolvePortraitResearchOutcome(portraitProposals.length > 0);
         await db.update(portraitResearchBatchItems).set({
           status: outcome.status,

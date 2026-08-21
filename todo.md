@@ -1377,6 +1377,14 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Identify unlinked local image assets, missing or broken image references, and default placeholders; classify each as intentional UI fallback, development artifact, or public-content risk
 - [x] Validate representative public image rendering and document safe cleanup candidates or required remediation without changing candidate or editorial images
 
+## Candidate Photo Workflow and AI Research Repair (Aug 21)
+- [x] Trace the selected-candidate Portrait Review workflow from candidate discovery through AI research queueing, task execution, evidence persistence, upload/submission, approval/denial, public application, and audit history
+- [x] Reproduce the AI research failure and repair its unsafe false-ready and raw-error behavior without creating a fabricated portrait
+- [x] Simplify Portrait Review into clearly labeled state-specific steps with visible receipts, queue status, evidence handoff, and actionable recovery messages
+- [x] Run non-destructive E2E checks for research access, task queueing/status, evidence-review handoff, upload/submission guards, approval/denial, public application, and immutable history
+- [x] Correct agent tasks marked ready without a portrait-source proposal, support valid replacement targets, and surface research result packages inside Portrait Review
+- [x] Return an actionable blocked research outcome when the model service is unavailable instead of exposing a raw research exception or a false-ready state
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resolvePortraitResearchOutcome, summarizePortraitResearchBatchItems } from "./agentDesk";
+import { portraitResearchUnavailableMessage, resolvePortraitResearchOutcome, summarizePortraitResearchBatchItems } from "./agentDesk";
 
 describe("Portrait Research batch progress", () => {
   it("keeps every private item status visible to an administrator", () => {
@@ -16,5 +16,16 @@ describe("Portrait Research batch progress", () => {
       error: expect.stringContaining("Evidence needed"),
     });
     expect(resolvePortraitResearchOutcome(true)).toEqual({ status: "ready_for_review", error: null });
+  });
+
+  it("returns a reviewer-facing blocked explanation when a direct portrait-source package is unavailable", () => {
+    const outcome = resolvePortraitResearchOutcome(false);
+    expect(outcome.status).toBe("blocked");
+    expect(outcome.error).toContain("Evidence needed");
+  });
+
+  it("gives an actionable manual recovery path when the research model is unavailable", () => {
+    expect(portraitResearchUnavailableMessage()).toContain("official campaign");
+    expect(portraitResearchUnavailableMessage()).toContain("No portrait was changed");
   });
 });

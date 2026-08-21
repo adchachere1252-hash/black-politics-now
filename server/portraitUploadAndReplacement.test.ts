@@ -51,8 +51,9 @@ describe("Portrait upload, replacement, and public-application contract", () => 
   it("provides the existing protected candidate-specific research route inside Portrait Review without auto-publishing an image", () => {
     expect(router).toContain("researchNow: adminProcedure");
     expect(reviewUi).toContain("trpc.portraits.researchNow.useMutation");
-    expect(reviewUi).toContain("Ask AI to research official sources");
-    expect(reviewUi).toContain("Research queued. The evidence package will return to the portrait review workflow");
+    expect(reviewUi).toContain("Check available evidence");
+    expect(reviewUi).toContain("Research found a reviewable source package");
+    expect(reviewUi).toContain("No direct image package was found");
     expect(reviewUi).toContain("never publishes an image automatically");
   });
 });
