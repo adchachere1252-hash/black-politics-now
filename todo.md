@@ -1297,6 +1297,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify successful saves update the public contest record, append immutable edit history, and refresh the Admin panel state
 - [x] Verify unauthorized, invalid, and failed submissions cannot publish candidate changes; add visible save receipts and release the validated workflow
 
+## Morning Daily Intelligence Brief Verification (Aug 21)
+- [x] Verify today’s source preflight, editorial structure, segment completeness, Andrew/Jenny audio, full-episode publication, and public presentation
+- [x] Run the guarded recovery only after the verified publication gate was incomplete, retaining source and dual-voice safeguards
+- [x] Verify Admin readiness, public playback availability, and the completed morning release decision
+- [x] Remove the detected unsupported “return tomorrow” closing line, rebuild both full-voice assets, and re-verify the August 21 publication gate
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown
