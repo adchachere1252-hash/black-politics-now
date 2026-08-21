@@ -1276,6 +1276,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify autonomous refresh scheduling, last-success evidence, failure behavior, and clear Admin freshness/primary-review visibility
 - [x] Verify homepage and Admin display, tests, production build, and publish a source-backed freshness decision
 
+## Candidate Creation and Portrait Workflow End-to-End Verification (Aug 20)
+- [x] Verify new Senate, House, Governor, and Black Representation candidate/race creation from Admin through protected persistence, source audit, and public display contracts
+- [x] Verify portrait submission, preview, review, approval, rejection, storage, replacement, and public image refresh contracts without adding fabricated records or images
+- [x] Repair the managed-storage portrait submission defect and add regression coverage for the fixed path
+- [x] Run full tests, TypeScript, build, public/administrative workflow checks, and publish a transparent verification decision
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

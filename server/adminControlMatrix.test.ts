@@ -13,13 +13,14 @@ function createContext(role: "admin" | "user"): TrpcContext {
 describe("strict Admin control matrix", () => {
   it("loads every safe Admin workspace query and every portrait batch filter", async () => {
     const caller = appRouter.createCaller(createContext("admin"));
-    const [podcast, qaScorecard, commandCenter, worldOperations, batch, targets, pendingPortraits, recommendations, runs, settings, tasks, changes, queued, inProgress, ready, blocked, skipped] = await Promise.all([
+    const [podcast, qaScorecard, commandCenter, worldOperations, batch, targets, managementTargets, pendingPortraits, recommendations, runs, settings, tasks, changes, queued, inProgress, ready, blocked, skipped] = await Promise.all([
       caller.podcast.operations(),
       caller.podcast.qaScorecard(),
       caller.electionDay.commandCenter(),
       caller.world.refreshOperations(),
       caller.portraits.latestResearchBatch(),
       caller.portraits.targets(),
+      caller.portraits.managementTargets(),
       caller.portraits.submissions({ status: "pending" }),
       caller.agent.recommendations(),
       caller.agent.runs(),
@@ -39,6 +40,7 @@ describe("strict Admin control matrix", () => {
     expect(worldOperations).toBeDefined();
     expect(batch === null || typeof batch === "object").toBe(true);
     expect(Array.isArray(targets)).toBe(true);
+    expect(Array.isArray(managementTargets)).toBe(true);
     expect(Array.isArray(pendingPortraits)).toBe(true);
     expect(Array.isArray(recommendations)).toBe(true);
     expect(Array.isArray(runs)).toBe(true);
@@ -56,6 +58,7 @@ describe("strict Admin control matrix", () => {
     const caller = appRouter.createCaller(createContext("user"));
 
     await expect(caller.portraits.review({ id: 30001, decision: "approved" })).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(caller.portraits.upload({ fileName: "portrait.png", contentType: "image/png", dataBase64: "iVBORw0KGgo=" })).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(caller.portraits.startAllResearch()).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(caller.election.updateSenate({ id: 1, data: { calledWinner: "Example", calledSourceUrl: "https://evidence.example/results" } })).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(caller.election.updateHouse({ id: 1, data: { candidate1Photo: "https://images.example/portrait.jpg" } })).rejects.toMatchObject({ code: "FORBIDDEN" });

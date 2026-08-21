@@ -2,6 +2,7 @@ import { desc, eq } from "drizzle-orm";
 import { cbcMembers, candidatePortraitSubmissions, governorRaces, houseRaces, senateRaces } from "../drizzle/schema";
 import { getDb } from "./db";
 import { photoWithRepositoryFallback } from "./candidatePhotoResolver";
+import { storagePut } from "./storage";
 
 export const portraitTargetTypes = ["senate", "house", "governor", "black_representation"] as const;
 export const portraitPhotoFields = ["candidate1", "candidate2", "dem", "rep", "profile"] as const;
@@ -17,6 +18,11 @@ function assertHttpsUrl(value: string, label: string) {
   } catch {
     throw new Error(`${label} must be a valid HTTPS URL`);
   }
+}
+
+function assertPortraitImageUrl(value: string) {
+  if (value.startsWith("/manus-storage/candidate-portraits/")) return;
+  assertHttpsUrl(value, "Portrait image URL");
 }
 
 function normalizeName(value: string | null | undefined) {
@@ -37,6 +43,27 @@ export type PortraitSubmissionInput = {
   provenanceType: typeof portraitProvenanceTypes[number];
   submissionNote?: string;
 };
+
+export type PortraitUploadInput = {
+  fileName: string;
+  contentType: "image/jpeg" | "image/png" | "image/webp" | "image/gif";
+  dataBase64: string;
+};
+
+const portraitContentTypes = new Set<PortraitUploadInput["contentType"]>(["image/jpeg", "image/png", "image/webp", "image/gif"]);
+const portraitExtensions: Record<PortraitUploadInput["contentType"], string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+  "image/gif": "gif",
+};
+
+function hasValidImageSignature(bytes: Buffer, contentType: PortraitUploadInput["contentType"]) {
+  if (contentType === "image/jpeg") return bytes.length > 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
+  if (contentType === "image/png") return bytes.length > 8 && bytes.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]));
+  if (contentType === "image/gif") return bytes.length > 6 && (bytes.subarray(0, 6).toString("ascii") === "GIF87a" || bytes.subarray(0, 6).toString("ascii") === "GIF89a");
+  return bytes.length > 12 && bytes.subarray(0, 4).toString("ascii") === "RIFF" && bytes.subarray(8, 12).toString("ascii") === "WEBP";
+}
 
 async function validateTarget(input: Pick<PortraitSubmissionInput, "targetType" | "targetRecordId" | "targetPhotoField" | "candidateName">) {
   const db = await getDb();
@@ -93,6 +120,37 @@ export async function getPortraitSubmissionTargets() {
   return targets.sort((a, b) => a.candidateName.localeCompare(b.candidateName));
 }
 
+/** Returns every valid public portrait slot so an Administrator can replace an existing photo after source review. */
+export async function getPortraitManagementTargets() {
+  const db = await getDb();
+  if (!db) return [];
+  const [senate, house, governor, representation] = await Promise.all([
+    db.select().from(senateRaces), db.select().from(houseRaces), db.select().from(governorRaces), db.select().from(cbcMembers),
+  ]);
+  const targets: Array<{ targetType: PortraitTargetType; targetRecordId: number; targetPhotoField: PortraitPhotoField; candidateName: string; location: string; currentPhotoUrl: string | null }> = [];
+  const add = (targetType: PortraitTargetType, targetRecordId: number, targetPhotoField: PortraitPhotoField, candidateName: string | null, storedPhoto: string | null, location: string) => {
+    if (!candidateName?.trim()) return;
+    targets.push({ targetType, targetRecordId, targetPhotoField, candidateName, location, currentPhotoUrl: photoWithRepositoryFallback(candidateName, storedPhoto) ?? null });
+  };
+  senate.forEach((race) => { add("senate", race.id, "candidate1", race.candidate1Name, race.candidate1Photo, `${race.stateName} Senate`); add("senate", race.id, "candidate2", race.candidate2Name, race.candidate2Photo, `${race.stateName} Senate`); });
+  house.forEach((race) => { add("house", race.id, "candidate1", race.candidate1Name, race.candidate1Photo, `${race.stateName} ${race.districtLabel}`); add("house", race.id, "candidate2", race.candidate2Name, race.candidate2Photo, `${race.stateName} ${race.districtLabel}`); });
+  governor.forEach((race) => { add("governor", race.id, "dem", race.demCandidate, race.demPhoto, `${race.stateName} Governor`); add("governor", race.id, "rep", race.repCandidate, race.repPhoto, `${race.stateName} Governor`); });
+  representation.forEach((profile) => add("black_representation", profile.id, "profile", profile.member, profile.photo, `${profile.state} ${profile.district}`));
+  return targets.sort((a, b) => a.candidateName.localeCompare(b.candidateName));
+}
+
+export async function uploadPortraitImage(input: PortraitUploadInput, uploadedBy: string) {
+  if (!portraitContentTypes.has(input.contentType)) throw new Error("Upload a JPG, PNG, WEBP, or GIF portrait image");
+  const payload = input.dataBase64.includes(",") ? input.dataBase64.slice(input.dataBase64.indexOf(",") + 1) : input.dataBase64;
+  if (!/^[A-Za-z0-9+/=]+$/.test(payload)) throw new Error("Portrait upload is not valid base64 image data");
+  const bytes = Buffer.from(payload, "base64");
+  if (!bytes.length || bytes.length > 5 * 1024 * 1024) throw new Error("Portrait image must be between 1 byte and 5 MB");
+  if (!hasValidImageSignature(bytes, input.contentType)) throw new Error("Portrait file content does not match the selected image format");
+  const safeActor = uploadedBy.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").slice(0, 48) || "administrator";
+  const extension = portraitExtensions[input.contentType];
+  return storagePut(`candidate-portraits/${safeActor}/portrait.${extension}`, bytes, input.contentType);
+}
+
 export async function getPortraitSubmissions(status?: "pending" | "approved" | "rejected") {
   const db = await getDb();
   if (!db) return [];
@@ -101,7 +159,7 @@ export async function getPortraitSubmissions(status?: "pending" | "approved" | "
 }
 
 export async function submitPortraitSubmission(input: PortraitSubmissionInput, submittedBy: string) {
-  assertHttpsUrl(input.imageUrl, "Portrait image URL");
+  assertPortraitImageUrl(input.imageUrl);
   assertHttpsUrl(input.sourceUrl, "Provenance source URL");
   await validateTarget(input);
   const db = await getDb();

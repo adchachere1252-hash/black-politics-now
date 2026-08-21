@@ -46,7 +46,7 @@ import { createBlackRepresentationContest, createBlackRepresentationProfile, get
 import { getWorldElections, getWorldElectionsByCountry } from "./worldDb";
 import { getWorldElectionRefreshOperations, runDatedWorldElectionRefresh } from "./worldElectionRefresh";
 import { advanceElectionDayRehearsal, getElectionDayCommandCenter, getElectionSourceConflictQueue, getPostElectionReconciliationReport, startElectionDayRehearsal } from "./electionDayCommandCenter";
-import { getPortraitSubmissionTargets, getPortraitSubmissions, portraitPhotoFields, portraitProvenanceTypes, portraitTargetTypes, reviewPortraitSubmission, submitPortraitSubmission } from "./portraitReview";
+import { getPortraitManagementTargets, getPortraitSubmissionTargets, getPortraitSubmissions, portraitPhotoFields, portraitProvenanceTypes, portraitTargetTypes, reviewPortraitSubmission, submitPortraitSubmission, uploadPortraitImage } from "./portraitReview";
 import { getLatestPortraitResearchItems } from "./agentDesk";
 import { getLatestDailyOperationalSnapshot } from "./agentDailySummary";
 import { answerReaderQuestion, approveRecommendationToTask, assignAgentRecommendation, executeAgentTaskWithChangeSet, getAgentChangeProposals, getAgentRecommendations, getAgentRuns, getAgentSettings, getAgentTasks, getLatestPortraitResearchBatch, reviewAgentChangeProposal, reviewAgentRecommendation, runAgentTaskResearchNow, runElectionDayCommandResearch, runPortraitResearchTask, runResearchDesk, setAgentDefaultOwners, setAgentPriorityMode, startAllPortraitResearch, updateAgentTask } from "./agentDesk";
@@ -309,6 +309,7 @@ export const appRouter = router({
 
   portraits: router({
     targets: adminProcedure.query(async () => getPortraitSubmissionTargets()),
+    managementTargets: adminProcedure.query(async () => getPortraitManagementTargets()),
     submissions: adminProcedure
       .input(z.object({ status: z.enum(["pending", "approved", "rejected"]).optional() }).optional())
       .query(async ({ input }) => getPortraitSubmissions(input?.status)),
@@ -324,6 +325,9 @@ export const appRouter = router({
         submissionNote: z.string().max(2000).optional(),
       }))
       .mutation(async ({ input, ctx }) => submitPortraitSubmission(input, ctx.user.name || "Administrator")),
+    upload: adminProcedure
+      .input(z.object({ fileName: z.string().min(1).max(160), contentType: z.enum(["image/jpeg", "image/png", "image/webp", "image/gif"]), dataBase64: z.string().min(4).max(7_000_000) }))
+      .mutation(async ({ input, ctx }) => uploadPortraitImage(input, ctx.user.name || "Administrator")),
     review: adminProcedure
       .input(z.object({ id: z.number().int().positive(), decision: z.enum(["approved", "rejected"]), reviewNote: z.string().max(2000).optional() }))
       .mutation(async ({ input, ctx }) => reviewPortraitSubmission(input.id, input.decision, ctx.user.name || "Administrator", input.reviewNote)),
