@@ -1372,6 +1372,11 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Run non-destructive E2E checks for candidate discovery, portrait review integrity, public image resolution, unreachable/missing assets, and identity-mismatch signals
 - [x] Reconcile only confirmed reusable original-repository image assets with explicit provenance; the compiled original map is already byte-identical to the current fallback map
 
+## Image Asset and Placeholder Audit (Aug 21)
+- [x] Inventory all local image files, configured remote image maps, image references, and image-like placeholder components without deleting assets
+- [x] Identify unlinked local image assets, missing or broken image references, and default placeholders; classify each as intentional UI fallback, development artifact, or public-content risk
+- [x] Validate representative public image rendering and document safe cleanup candidates or required remediation without changing candidate or editorial images
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown
