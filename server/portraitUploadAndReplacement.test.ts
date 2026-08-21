@@ -32,4 +32,27 @@ describe("Portrait upload, replacement, and public-application contract", () => 
     expect(portraitReview).toContain("db.update(cbcMembers).set({ photo: submission.imageUrl })");
     expect(portraitReview).toContain('if (submission.status !== "pending") throw new Error("Portrait submission has already been reviewed")');
   });
+
+  it("lets an administrator find a candidate and only reports saved after the submission or review mutation resolves", () => {
+    expect(reviewUi).toContain("candidateQuery");
+    expect(reviewUi).toContain("visibleTargets");
+    expect(reviewUi).toContain("Search name, state, district, or office");
+    expect(reviewUi).toContain("source-backed portrait is now in the Approve / Deny queue");
+    expect(reviewUi).toContain("public portrait and private review record refreshed");
+  });
+
+  it("blocks approval for a selected proposal whose visual preview fails, while preserving denial for documented follow-up", () => {
+    expect(reviewUi).toContain("selectedPreviewUnavailable");
+    expect(reviewUi).toContain("onError={() => setSelectedPreviewUnavailable(true)}");
+    expect(reviewUi).toContain("disabled={review.isPending || selectedPreviewUnavailable}");
+    expect(reviewUi).toContain("Preview failed to load. Deny this item with a reason or replace the source package; approval is blocked.");
+  });
+
+  it("provides the existing protected candidate-specific research route inside Portrait Review without auto-publishing an image", () => {
+    expect(router).toContain("researchNow: adminProcedure");
+    expect(reviewUi).toContain("trpc.portraits.researchNow.useMutation");
+    expect(reviewUi).toContain("Ask AI to research official sources");
+    expect(reviewUi).toContain("Research queued. The evidence package will return to the portrait review workflow");
+    expect(reviewUi).toContain("never publishes an image automatically");
+  });
 });

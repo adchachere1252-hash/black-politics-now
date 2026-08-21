@@ -1320,6 +1320,14 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Verify a real existing public called result remains consistent with source/audit display, browser presentation, and current public result queries without fabricating a new call
 - [x] Record the completed end-to-end decision and owner-session visual acceptance boundary; no code remediation was needed
 
+## Portrait Review End-to-End Verification (Aug 21)
+- [x] Audit candidate target search, candidate-name filtering, research-request routing, source/image submission, managed-file upload, approval, denial, replacement, public application, and audit history
+- [x] Repair the confirmed in-workspace candidate discovery, persisted-save feedback, and selected-preview approval gaps without adding a fabricated portrait
+- [x] Run non-destructive protected E2E checks for target discovery, invalid-submission guards, existing approved outcomes, public photo visibility, and immutable review history without adding a fabricated portrait
+- [x] Verify the live Admin privacy boundary and document the owner-session visual acceptance step for the complete portrait workflow
+- [x] Add candidate-name search, persisted submission/review receipts, and an approval block for selected portraits whose image preview cannot load
+- [x] Surface the existing protected candidate-specific portrait research action inside Portrait Review with a clear queued-work receipt and handoff to evidence review
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown
