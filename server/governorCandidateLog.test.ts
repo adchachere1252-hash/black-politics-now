@@ -24,9 +24,9 @@ describe("Governor candidate-log contract", () => {
     expect(router).toContain("governorCandidateHistory: adminProcedure");
     expect(admin).toContain("Manage candidates");
     expect(admin).toContain("Manual general-election candidate log");
-    expect(admin).toContain("Manage Governor candidate log");
-    expect(admin).toContain("Search a Governor contest or candidate...");
-    expect(admin).toContain('label: "Candidate Changes"');
+    expect(admin).toContain('label: "Election Operations"');
+    expect(admin).toContain('section === "sourcing" && <CandidateChangesTab />');
+    expect(admin).not.toContain('label: "Candidate Changes"');
     expect(candidateChanges).toContain("GovernorCandidateLogEditor");
     expect(candidateChanges).toContain("updateGovernorCandidateLog.useMutation");
     expect(candidateChanges).toContain("The public Governor record and private source history refreshed.");

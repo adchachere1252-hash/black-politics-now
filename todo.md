@@ -1347,6 +1347,12 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Keep Governor contest search, source-backed candidate editing, save receipts, and private history directly inside Candidate Changes, matching Senate and House
 - [x] Verify the direct Governor save route preserves protected source validation, public record refresh, immutable history, and no Election Ops redirect
 
+## Unified Election Operations End-to-End Check (Aug 21)
+- [x] Audit Results Control Room, Candidates Ops, Candidate Changes, and Election Day navigation to identify overlapping Admin entry points and reusable data contracts
+- [x] Build one protected Election Operations workspace with clearly separated candidate sourcing, live results, source conflicts, and activity history sections
+- [x] Remove the duplicate standalone Results Control Room and Candidates Ops navigation entries while retaining all protected capabilities in the unified workspace
+- [x] Run non-destructive E2E verification for protected access, candidate sourcing safeguards, result-confirmation safeguards, public refresh, conflict handoff, and immutable activity history
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown
