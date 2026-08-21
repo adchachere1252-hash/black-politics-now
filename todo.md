@@ -1359,6 +1359,13 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Enforce Admin access, HTTP/HTTPS evidence, general-election-only eligibility, and immutable management history without creating a fabricated ticker entry during testing
 - [x] Verify public ticker refresh and continuous flow, Admin receipts and error states, and non-destructive E2E behavior before release
 
+## Guided Winner-to-Ticker Workflow (Aug 21)
+- [x] Audit the current Results & Conflicts winner confirmation and Ticker entry flows to identify unclear handoffs and duplicated manual fields
+- [x] Add plain-language in-workspace guidance that explains the three steps: review cited result, confirm mapped winner, and add the verified outcome to the ticker
+- [x] Add a protected Add to ticker action that carries a confirmed result’s name, party, jurisdiction, and source into the ticker without retyping or loosening source safeguards
+- [x] Run non-destructive E2E checks for authorization, unmapped-winner rejection, cited winner-to-ticker preparation, public refresh contract, and immutable history
+- [x] Record the current no-fixture boundary: no active cited human confirmation is available to add to the ticker without making a real public result decision
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

@@ -26,6 +26,7 @@ describe("Election Results Control Room", () => {
     const user = appRouter.createCaller(createContext("user"));
     await expect(user.electionDay.resultsControlRoom()).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(user.electionDay.confirmResult({ raceType: "senate", raceId: 1, winnerName: "Example Candidate", winnerParty: "D", sourceLabel: "Example source", sourceUrl: "https://evidence.example/result" })).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(user.electionDay.addConfirmedWinnerToTicker({ raceType: "senate", raceId: 1 })).rejects.toMatchObject({ code: "FORBIDDEN" });
   });
 
   it("rejects an unmapped winner before it can change a public race or create an operator confirmation", async () => {
@@ -40,6 +41,12 @@ describe("Election Results Control Room", () => {
       winnerParty: "D",
       sourceLabel: "Guardrail verification source",
       sourceUrl: "https://evidence.example/guardrail",
+      addToTicker: true,
     })).rejects.toThrow("Choose a currently mapped Democratic, Republican, or Independent candidate");
+  });
+
+  it("refuses a ticker handoff unless the race already has a cited human confirmation", async () => {
+    const admin = appRouter.createCaller(createContext("admin"));
+    await expect(admin.electionDay.addConfirmedWinnerToTicker({ raceType: "senate", raceId: 999999 })).rejects.toThrow("Confirm a mapped winner with a cited source");
   });
 });

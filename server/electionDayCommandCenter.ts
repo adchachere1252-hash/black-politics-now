@@ -1,5 +1,5 @@
 import { and, desc, eq, inArray } from "drizzle-orm";
-import { agentChangeProposals, agentRecommendations, electionDayRehearsals, electionDayStatus, electionResultConfirmations, governorRaces, houseRaces, senateRaces } from "../drizzle/schema";
+import { agentChangeProposals, agentRecommendations, electionDayRehearsals, electionDayStatus, electionResultConfirmations, electionTickerEntries, electionTickerEntryEdits, governorRaces, houseRaces, senateRaces } from "../drizzle/schema";
 import { getDb } from "./db";
 
 const REHEARSAL_STEPS = ["heartbeat", "triage", "research", "review"] as const;
@@ -291,7 +291,17 @@ export async function getElectionResultsControlRoom() {
   };
 }
 
-export async function confirmElectionResult(input: { raceType: ResultRaceType; raceId: number; winnerName: string; winnerParty: "D" | "R" | "I"; sourceUrl: string; sourceLabel: string; confirmationNote?: string | null; confirmedBy: string }) {
+async function addTickerEntryForConfirmation(tx: any, confirmation: { jurisdiction: string; winnerName: string; winnerParty: "D" | "R" | "I"; sourceUrl: string; sourceLabel: string }, chamber: "Senate" | "House" | "Governor", editorName: string, editorNote?: string | null) {
+  const [existing] = await tx.select().from(electionTickerEntries).where(and(eq(electionTickerEntries.isActive, true), eq(electionTickerEntries.jurisdiction, confirmation.jurisdiction), eq(electionTickerEntries.chamber, chamber), eq(electionTickerEntries.winnerName, confirmation.winnerName), eq(electionTickerEntries.winnerParty, confirmation.winnerParty))).limit(1);
+  if (existing) return { tickerAdded: false, tickerEntryId: existing.id };
+  const [last] = await tx.select({ sortOrder: electionTickerEntries.sortOrder }).from(electionTickerEntries).where(eq(electionTickerEntries.isActive, true)).orderBy(desc(electionTickerEntries.sortOrder)).limit(1);
+  const result = await tx.insert(electionTickerEntries).values({ jurisdiction: confirmation.jurisdiction, chamber, winnerName: confirmation.winnerName, winnerParty: confirmation.winnerParty, sourceUrl: confirmation.sourceUrl, sourceLabel: confirmation.sourceLabel, sortOrder: (last?.sortOrder ?? -1) + 1, isActive: true, createdBy: editorName });
+  const id = Number((Array.isArray(result) ? result[0] : result as any)?.insertId ?? 0);
+  await tx.insert(electionTickerEntryEdits).values({ tickerEntryId: id, action: "created", sourceUrl: confirmation.sourceUrl, sourceLabel: confirmation.sourceLabel, editorName, editorNote: editorNote || "Created from a cited human winner confirmation in Election Operations.", previousValue: JSON.stringify({}) });
+  return { tickerAdded: true, tickerEntryId: id };
+}
+
+export async function confirmElectionResult(input: { raceType: ResultRaceType; raceId: number; winnerName: string; winnerParty: "D" | "R" | "I"; sourceUrl: string; sourceLabel: string; confirmationNote?: string | null; confirmedBy: string; addToTicker?: boolean }) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
   const sourceUrl = input.sourceUrl.trim();
@@ -327,6 +337,22 @@ export async function confirmElectionResult(input: { raceType: ResultRaceType; r
       confirmedBy: input.confirmedBy,
       priorValue,
     });
-    return { success: true, jurisdiction, winnerName: candidate.name, winnerParty: candidate.party };
+    const ticker = input.addToTicker ? await addTickerEntryForConfirmation(tx, { jurisdiction, winnerName: candidate.name, winnerParty: candidate.party, sourceUrl, sourceLabel: input.sourceLabel.trim() }, raceTypeLabel(input.raceType), input.confirmedBy, input.confirmationNote) : { tickerAdded: false, tickerEntryId: null };
+    return { success: true, jurisdiction, winnerName: candidate.name, winnerParty: candidate.party, ...ticker };
+  });
+}
+
+function raceTypeLabel(raceType: ResultRaceType): "Senate" | "House" | "Governor" {
+  return raceType === "senate" ? "Senate" : raceType === "house" ? "House" : "Governor";
+}
+
+export async function addConfirmedWinnerToTicker(input: { raceType: ResultRaceType; raceId: number; editorName: string }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  return db.transaction(async (tx) => {
+    const [confirmation] = await tx.select().from(electionResultConfirmations).where(and(eq(electionResultConfirmations.raceType, input.raceType), eq(electionResultConfirmations.raceId, input.raceId))).orderBy(desc(electionResultConfirmations.confirmedAt), desc(electionResultConfirmations.id)).limit(1);
+    if (!confirmation) throw new Error("Confirm a mapped winner with a cited source before adding it to the ticker.");
+    const ticker = await addTickerEntryForConfirmation(tx, confirmation, raceTypeLabel(input.raceType), input.editorName, "Added from a previously confirmed cited winner in Election Operations.");
+    return { jurisdiction: confirmation.jurisdiction, winnerName: confirmation.winnerName, ...ticker };
   });
 }
