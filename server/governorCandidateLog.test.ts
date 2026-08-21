@@ -19,7 +19,8 @@ describe("Governor candidate-log contract", () => {
     expect(persistence).toContain("updateGovernorCandidateLog");
     expect(persistence).toContain("previousValue: JSON.stringify(prior)");
     expect(router).toContain("updateGovernorCandidateLog: adminProcedure");
-    expect(router).toContain("candidateSourceUrl: z.string().url()");
+    expect(router).toContain("candidateSourceUrl: electionSourceUrl");
+    expect(router).toContain("Source URL must use HTTP or HTTPS.");
     expect(router).toContain("governorCandidateHistory: adminProcedure");
     expect(admin).toContain("Manage candidates");
     expect(admin).toContain("Manual general-election candidate log");

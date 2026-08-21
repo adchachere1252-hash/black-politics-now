@@ -1335,6 +1335,13 @@ The following earlier duplicate checklist is retained as project history. The ex
 - [x] Record the complete end-to-end decision and owner-session visual acceptance boundary; correct the stale regression expectation revealed by final suite validation
 - [x] Correct the stale Stacey Plaskett public-profile regression expectation revealed by final suite validation
 
+## Election Ops End-to-End Check (Aug 21)
+- [x] Audit Election Ops dashboard controls, Senate/House/Governor data paths, protected candidate and race procedures, source requirements, source conflicts, and audit histories
+- [x] Run non-destructive authorization and invalid-input checks without creating a fabricated candidate, race, vote total, or winner
+- [x] Verify existing source-backed Senate, House, and Governor records remain consistent across protected history and public race queries
+- [x] Record the complete end-to-end decision and owner-session visual acceptance boundary; repair the confirmed source-protocol safeguard gap before release
+- [x] Enforce HTTP/HTTPS source protocols server-side for protected Senate, House, and Governor candidate updates and race creation
+
 ## General-Election Candidate Outcomes (Aug 19)
 - [x] Verify Maxwell Frost’s Florida 10 unopposed general-election status with official and independent sources
 - [x] Add Won General Election and Lost General Election values to the Black Representation candidate-status schema and protected Admin dropdown

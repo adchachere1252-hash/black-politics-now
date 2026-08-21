@@ -24,6 +24,13 @@ describe("Senate and House candidate-log contract", () => {
     expect(router).toContain("houseCandidateHistory: adminProcedure");
   });
 
+  it("enforces HTTP or HTTPS evidence links server-side for Election Ops changes and new race records", () => {
+    expect(router).toContain("const electionSourceUrl");
+    expect(router).toContain("Source URL must use HTTP or HTTPS.");
+    expect(router).toContain("candidateSourceUrl: electionSourceUrl");
+    expect(router).toContain("sourceUrl: electionSourceUrl");
+  });
+
   it("presents searchable Senate, House, and Governor race management from Candidate Changes", () => {
     expect(workspace).toContain('type RaceType = "senate" | "house" | "governor"');
     expect(workspace).toContain("Senate contests");

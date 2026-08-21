@@ -20,6 +20,11 @@ export function requireManualCallEvidence(data: Record<string, unknown>) {
   }
 }
 
+const electionSourceUrl = z.string().url().max(2048).refine((value) => {
+  const protocol = new URL(value).protocol;
+  return protocol === "https:" || protocol === "http:";
+}, "Source URL must use HTTP or HTTPS.");
+
 function publicNewsListPost(post: any) {
   return {
     id: post.id,
@@ -171,7 +176,7 @@ export const appRouter = router({
         repCandidate: z.string().min(2).max(128),
         demPreviousOffice: z.string().max(256).optional().nullable(),
         repPreviousOffice: z.string().max(256).optional().nullable(),
-        candidateSourceUrl: z.string().url().max(2048),
+        candidateSourceUrl: electionSourceUrl,
         candidateSourceLabel: z.string().min(2).max(256),
         editorNote: z.string().max(4000).optional().nullable(),
       }))
@@ -192,7 +197,7 @@ export const appRouter = router({
         candidate1Party: z.enum(["D", "R", "I", "L", "G"]),
         candidate2Name: z.string().min(2).max(128),
         candidate2Party: z.enum(["D", "R", "I", "L", "G"]),
-        candidateSourceUrl: z.string().url().max(2048),
+        candidateSourceUrl: electionSourceUrl,
         candidateSourceLabel: z.string().min(2).max(256),
         editorNote: z.string().max(4000).optional().nullable(),
       }))
@@ -207,7 +212,7 @@ export const appRouter = router({
         candidate1Party: z.enum(["D", "R", "I", "L", "G"]),
         candidate2Name: z.string().min(2).max(128),
         candidate2Party: z.enum(["D", "R", "I", "L", "G"]),
-        candidateSourceUrl: z.string().url().max(2048),
+        candidateSourceUrl: electionSourceUrl,
         candidateSourceLabel: z.string().min(2).max(256),
         editorNote: z.string().max(4000).optional().nullable(),
       }))
@@ -216,13 +221,13 @@ export const appRouter = router({
         return { success: true };
       }),
     createSenateRace: adminProcedure
-      .input(z.object({ stateCode: z.string().length(2), stateName: z.string().min(2).max(64), candidate1Name: z.string().min(2).max(128), candidate1Party: z.enum(["D", "R", "I", "L", "G"]), candidate2Name: z.string().min(2).max(128), candidate2Party: z.enum(["D", "R", "I", "L", "G"]), rating: z.enum(["Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R", "Safe D", "Safe R"]), sourceUrl: z.string().url().max(2048), sourceLabel: z.string().min(2).max(256), editorNote: z.string().max(4000).optional().nullable() }))
+      .input(z.object({ stateCode: z.string().length(2), stateName: z.string().min(2).max(64), candidate1Name: z.string().min(2).max(128), candidate1Party: z.enum(["D", "R", "I", "L", "G"]), candidate2Name: z.string().min(2).max(128), candidate2Party: z.enum(["D", "R", "I", "L", "G"]), rating: z.enum(["Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R", "Safe D", "Safe R"]), sourceUrl: electionSourceUrl, sourceLabel: z.string().min(2).max(256), editorNote: z.string().max(4000).optional().nullable() }))
       .mutation(async ({ ctx, input }) => createSenateRace({ ...input, editorName: ctx.user.name ?? "Administrator" })),
     createHouseRace: adminProcedure
-      .input(z.object({ stateCode: z.string().length(2), stateName: z.string().min(2).max(64), district: z.number().int().min(0).max(99), districtLabel: z.string().min(2).max(16).optional(), candidate1Name: z.string().min(2).max(128), candidate1Party: z.enum(["D", "R", "I", "L", "G"]), candidate2Name: z.string().min(2).max(128), candidate2Party: z.enum(["D", "R", "I", "L", "G"]), rating: z.enum(["Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R", "Safe D", "Safe R"]), sourceUrl: z.string().url().max(2048), sourceLabel: z.string().min(2).max(256), editorNote: z.string().max(4000).optional().nullable() }))
+      .input(z.object({ stateCode: z.string().length(2), stateName: z.string().min(2).max(64), district: z.number().int().min(0).max(99), districtLabel: z.string().min(2).max(16).optional(), candidate1Name: z.string().min(2).max(128), candidate1Party: z.enum(["D", "R", "I", "L", "G"]), candidate2Name: z.string().min(2).max(128), candidate2Party: z.enum(["D", "R", "I", "L", "G"]), rating: z.enum(["Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R", "Safe D", "Safe R"]), sourceUrl: electionSourceUrl, sourceLabel: z.string().min(2).max(256), editorNote: z.string().max(4000).optional().nullable() }))
       .mutation(async ({ ctx, input }) => createHouseRace({ ...input, editorName: ctx.user.name ?? "Administrator" })),
     createGovernorRace: adminProcedure
-      .input(z.object({ stateCode: z.string().length(2), stateName: z.string().min(2).max(64), candidate1Name: z.string().min(2).max(128), candidate1Party: z.literal("D"), candidate2Name: z.string().min(2).max(128), candidate2Party: z.literal("R"), rating: z.enum(["Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R", "Safe D", "Safe R"]), sourceUrl: z.string().url().max(2048), sourceLabel: z.string().min(2).max(256), editorNote: z.string().max(4000).optional().nullable() }))
+      .input(z.object({ stateCode: z.string().length(2), stateName: z.string().min(2).max(64), candidate1Name: z.string().min(2).max(128), candidate1Party: z.literal("D"), candidate2Name: z.string().min(2).max(128), candidate2Party: z.literal("R"), rating: z.enum(["Solid D", "Likely D", "Lean D", "Toss-up", "Lean R", "Likely R", "Solid R", "Safe D", "Safe R"]), sourceUrl: electionSourceUrl, sourceLabel: z.string().min(2).max(256), editorNote: z.string().max(4000).optional().nullable() }))
       .mutation(async ({ ctx, input }) => createGovernorRace({ ...input, editorName: ctx.user.name ?? "Administrator" })),
     updateReferendum: adminProcedure
       .input(z.object({ id: z.number(), data: z.record(z.string(), z.unknown()) }))
